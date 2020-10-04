@@ -359,10 +359,7 @@
             "goron_color",
             "zora_color",
             "silver_gauntlets_color",
-            "golden_gauntlets_color",
-            "sword_trail_duration",
-            "sword_trail_color_inner",
-            "sword_trail_color_outer"
+            "golden_gauntlets_color"
           ]
         },
         {
@@ -378,8 +375,8 @@
           ]
         },
         {
-          "name": "navi_section",
-          "text": "Navi Colors",
+          "name": "misc_section",
+          "text": "Misc.",
           "is_colors": true,
           "col_span": 2,
           "row_span": [5,5,5],
@@ -391,7 +388,10 @@
             "navi_color_npc_inner",
             "navi_color_npc_outer",
             "navi_color_prop_inner",
-            "navi_color_prop_outer"
+            "navi_color_prop_outer",
+            "sword_trail_color_inner",
+            "sword_trail_color_outer",
+            "sword_trail_duration"
           ]
         }
       ]

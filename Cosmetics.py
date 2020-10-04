@@ -169,8 +169,11 @@ def get_sword_colors():
     return list(sword_colors.keys())
 
 
-def get_sword_color_options():
-    return meta_color_choices + get_sword_colors()
+def get_sword_color_options(outer=False):
+    if outer:
+        return ["[Same as Inner]"] + meta_color_choices + get_sword_colors()
+    else:
+        return meta_color_choices + get_sword_colors()
 
 
 def get_gauntlet_colors():
@@ -401,6 +404,12 @@ def patch_sword_trails(rom, settings, log, symbols):
         # handle random
         if sword_trail_option == 'Random Choice':
             sword_trail_option = random.choice(sword_color_list)
+
+        # handle same as inner
+        if index == 0:
+            sword_trail_option_inner = sword_trail_option
+        if index != 0 and sword_trail_option == '[Same as Inner]':
+            sword_trail_option = sword_trail_option_inner
 
         custom_color = False
         for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):

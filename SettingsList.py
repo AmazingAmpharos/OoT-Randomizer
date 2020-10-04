@@ -3211,7 +3211,7 @@ setting_infos = [
         ''',
         default        = False,
         disable    = {
-            True : {'sections' : [ "equipment_section", "ui_section", "navi_section" ]
+            True : {'sections' : [ "equipment_section", "ui_section", "misc_section" ]
             }
         }
     ),
@@ -3302,7 +3302,7 @@ setting_infos = [
             ]
         }
     ),
-        Setting_Info(
+    Setting_Info(
         name           = 'navi_color_default_outer',
         type           = str,
         gui_text       = "Outer",
@@ -3459,6 +3459,53 @@ setting_infos = [
         }
 
     ),
+    Setting_Info(
+        name           = 'sword_trail_color_inner',
+        type           = str,
+        gui_text       = 'Sword Trail Inner',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_sword_color_options(),
+        default        = 'White',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+            'Rainbow': Rainbow sword trails.
+        ''',
+        gui_params     = {
+            'no_line_break' : True,
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'sword_trail_color_outer',
+        type           = str,
+        gui_text       = 'Outer',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_sword_color_options(True),
+        default        = '[Same as Inner]',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+            'Rainbow': Rainbow sword trails.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
     Combobox(
         name           = 'sword_trail_duration',
         gui_text       = 'Sword Trail Duration',
@@ -3481,52 +3528,6 @@ setting_infos = [
                 (20, 1)
             ]
         }
-    ),
-    Setting_Info(
-        name           = 'sword_trail_color_inner',
-        type           = str,
-        gui_text       = 'Sword Trail Inner Color',
-        gui_type       = "Combobox",
-        shared         = False,
-        choices        = get_sword_color_options(),
-        default        = 'White',
-        gui_tooltip    = '''\
-            'Random Choice': Choose a random
-            color from this list of colors.
-            'Completely Random': Choose a random
-            color from any color the N64 can draw.
-            'Rainbow': Rainbow sword trails.
-        ''',
-        gui_params     = {
-            'randomize_key': 'randomize_all_cosmetics',
-            'distribution': [
-                ('Completely Random', 1),
-            ]
-        }
-
-    ),
-    Setting_Info(
-        name           = 'sword_trail_color_outer',
-        type           = str,
-        gui_text       = 'Sword Trail Outer Color',
-        gui_type       = "Combobox",
-        shared         = False,
-        choices        = get_sword_color_options(),
-        default        = 'White',
-        gui_tooltip    = '''\
-                  'Random Choice': Choose a random
-                  color from this list of colors.
-                  'Completely Random': Choose a random
-                  color from any color the N64 can draw.
-                  'Rainbow': Rainbow sword trails.
-        ''',
-        gui_params     = {
-            'randomize_key': 'randomize_all_cosmetics',
-            'distribution': [
-                ('Completely Random', 1),
-            ]
-        }
-
     ),
     Setting_Info(
         name           = 'silver_gauntlets_color',
