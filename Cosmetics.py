@@ -80,6 +80,20 @@ sword_colors = {        # Initial Color            Fade Color
     "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
 }
 
+boomerang_trail_colors = {
+    "Rainbow":           Color(0x00, 0x00, 0x00),
+    "Yellow":            Color(0xFF, 0xFF, 0x64),
+    "Red":               Color(0xFF, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x00, 0xFF),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
+}
+
 gauntlet_colors = {
     "Silver":            Color(0xFF, 0xFF, 0xFF),
     "Gold":              Color(0xFE, 0xCF, 0x0F),
@@ -175,6 +189,17 @@ def get_sword_color_options(outer=False):
         return ["[Same as Inner]"] + meta_color_choices + get_sword_colors()
     else:
         return meta_color_choices + get_sword_colors()
+
+
+def get_boomerang_trail_colors():
+    return list(boomerang_trail_colors.keys())
+
+
+def get_boomerang_trail_color_options(outer=False):
+    if outer:
+        return ["[Same as Inner]"] + meta_color_choices + get_boomerang_trail_colors()
+    else:
+        return meta_color_choices + get_boomerang_trail_colors()
 
 
 def get_gauntlet_colors():
@@ -404,14 +429,14 @@ def patch_navi_colors(rom, settings, log, symbols):
 def patch_sword_trails(rom, settings, log, symbols):
     # patch sword trail colors
     sword_trails = [
-        ('Initial Sword Trail', settings.sword_trail_color_inner, settings.sword_trail_color_outer,
+        ('Sword Trail', settings.sword_trail_color_inner, settings.sword_trail_color_outer,
             [(0x00BEFF7C, 0xB0, 0x40, 0xB0, 0xFF), (0x00BEFF84, 0x20, 0x00, 0x10, 0x00)],
             symbols['CFG_RAINBOW_SWORD_INNER_ENABLED'], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
     ]
 
     sword_color_list = get_sword_colors()
 
-    for sword_trail_name, option_inner, option_outer, sword_trail_addresses, rainbow_inner_symbol, rainbow_outer_symbol in sword_trails:
+    for trail_name, option_inner, option_outer, trail_addresses, rainbow_inner_symbol, rainbow_outer_symbol in sword_trails:
 
         # handle random choice
         if option_inner == 'Random Choice':
@@ -425,7 +450,7 @@ def patch_sword_trails(rom, settings, log, symbols):
         inner_color = None
         outer_color = None
         colors = []
-        for index, (address, inner_transparency, inner_white_transparency, outer_transparency, outer_white_transparency) in enumerate(sword_trail_addresses):
+        for index, (address, inner_transparency, inner_white_transparency, outer_transparency, outer_white_transparency) in enumerate(trail_addresses):
             # set rainbow option
             if option_inner == 'Rainbow':
                 rom.write_byte(rainbow_inner_symbol, 0x01)
@@ -474,13 +499,75 @@ def patch_sword_trails(rom, settings, log, symbols):
             color = outer_color + inner_color
             rom.write_bytes(address, color)
 
-        log.sword_colors[sword_trail_name] = [dict(
+        log.sword_colors[trail_name] = [dict(
             option1=option_inner, color1=''.join(['{:02X}'.format(c) for c in inner_c[0:3]]), 
             option2=option_outer, color2=''.join(['{:02X}'.format(c) for c in outer_c[0:3]]))
             for (inner_c, outer_c) in colors]
 
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
+
+
+def patch_boomerang_trails(rom, settings, log, symbols):
+    # patch boomerang trail colors
+    boomerang_trails = [
+        ('Boomerang Trail', settings.boomerang_trail_color_inner, settings.boomerang_trail_color_outer,
+            (symbols['CFG_BOOM_TRAIL_INNER_COLOR'], symbols['CFG_BOOM_TRAIL_OUTER_COLOR'],
+             symbols['CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED'], symbols['CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED'])),
+    ]
+
+    boomerang_trail_color_list = get_boomerang_trail_colors()
+
+    for trail_name, option_inner, option_outer, trail_symbols in boomerang_trails:
+        color_inner_symbol, color_outer_symbol, rainbow_inner_symbol, rainbow_outer_symbol = trail_symbols
+
+        # handle random choice
+        if option_inner == 'Random Choice':
+            option_inner = random.choice(boomerang_trail_color_list)
+        if option_outer == 'Random Choice':
+            option_outer = random.choice(boomerang_trail_color_list)
+
+        if option_outer == '[Same as Inner]':
+            option_outer = option_inner
+
+        inner_color = None
+        outer_color = None
+
+        # set rainbow option
+        if option_inner == 'Rainbow':
+            rom.write_byte(rainbow_inner_symbol, 0x01)
+            inner_color = [0x00, 0x00, 0x00]
+        if option_outer == 'Rainbow':
+            rom.write_byte(rainbow_outer_symbol, 0x01)
+            outer_color = [0x00, 0x00, 0x00]
+
+        # completely random is random for every subgroup
+        if option_inner == 'Completely Random':
+            inner_color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        if option_outer == 'Completely Random':
+            outer_color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+
+        # grab the color from the list
+        if option_inner in boomerang_trail_colors:
+            inner_color = list(boomerang_trail_colors[option_inner])
+        if option_outer in boomerang_trail_colors:
+            outer_color = list(boomerang_trail_colors[option_outer])
+
+        # build color from hex code
+        if inner_color is None:
+            inner_color = list(int(option_inner[i:i+2], 16) for i in (0, 2, 4))
+            option_inner = 'Custom'
+        if outer_color is None:
+            outer_color = list(int(option_outer[i:i+2], 16) for i in (0, 2, 4))
+            option_outer = 'Custom'
+
+        # write colors
+        rom.write_bytes(color_inner_symbol, inner_color)
+        rom.write_bytes(color_outer_symbol, outer_color)
+
+        log.boomerang_trail_colors[trail_name] = [dict(
+            option1=option_inner, color1=''.join(['{:02X}'.format(c) for c in inner_color]), 
+            option2=option_outer, color2=''.join(['{:02X}'.format(c) for c in outer_color]))]
 
 
 def patch_gauntlet_colors(rom, settings, log, symbols):
@@ -794,6 +881,7 @@ patch_sets = {
             patch_magic_colors,
             patch_button_colors,
             patch_navi_colors,
+            patch_boomerang_trails,
         ],
         "symbols": {
             "CFG_MAGIC_COLOR": 0x0004,
@@ -805,17 +893,21 @@ patch_sets = {
             "CFG_SHOP_CURSOR_COLOR": 0x0028,
             "CFG_A_NOTE_COLOR": 0x002E,
             "CFG_C_NOTE_COLOR": 0x0034,
-            "CFG_DISPLAY_DPAD": 0x003A,
-            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x003B,
-            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x003C,
-            "CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED": 0x003D,
-            "CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED": 0x003E,
-            "CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED": 0x003F,
-            "CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED": 0x0040,
-            "CFG_RAINBOW_NAVI_NPC_INNER_ENABLED": 0x0041,
-            "CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED": 0x0042,
-            "CFG_RAINBOW_NAVI_PROP_INNER_ENABLED": 0x0043,
-            "CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED": 0x0044,
+            "CFG_BOOM_TRAIL_INNER_COLOR": 0x003A,
+            "CFG_BOOM_TRAIL_OUTER_COLOR": 0x003D,
+            "CFG_DISPLAY_DPAD": 0x0040,
+            "CFG_RAINBOW_SWORD_INNER_ENABLED": 0x0041,
+            "CFG_RAINBOW_SWORD_OUTER_ENABLED": 0x0042,
+            "CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED": 0x0043,
+            "CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED": 0x0044,
+            "CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED": 0x0045,
+            "CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED": 0x0046,
+            "CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED": 0x0047,
+            "CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED": 0x0048,
+            "CFG_RAINBOW_NAVI_NPC_INNER_ENABLED": 0x0049,
+            "CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED": 0x004A,
+            "CFG_RAINBOW_NAVI_PROP_INNER_ENABLED": 0x004B,
+            "CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED": 0x004C,
         }
     },
 }
@@ -877,6 +969,7 @@ class CosmeticsLog(object):
         self.tunic_colors = {}
         self.navi_colors = {}
         self.sword_colors = {}
+        self.boomerang_trail_colors = {}
         self.gauntlet_colors = {}
         self.heart_colors = {}
         self.magic_colors = {}
@@ -927,6 +1020,11 @@ class CosmeticsLog(object):
 
         if 'sword_trail_duration' in self.__dict__:
             output += format_string.format(key='Sword Trail Duration:', value=self.sword_trail_duration, width=padding)
+
+        for boomerang_trail, list in self.boomerang_trail_colors.items():
+            for i, options in enumerate(list):
+                color_option_string = '{option1}, {option2} (#{color1}, #{color2})'
+                output += format_string.format(key=(boomerang_trail+':') if i == 0 else '', value=color_option_string.format(option1=options['option1'], color1=options['color1'], option2=options['option2'], color2=options['color2']), width=padding)
 
         for gauntlet, options in self.gauntlet_colors.items():
             color_option_string = '{option} (#{color})'

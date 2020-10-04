@@ -2,8 +2,9 @@ import argparse
 import re
 import math
 import json
-from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options,\
-    get_gauntlet_color_options, get_magic_color_options, get_heart_color_options, get_button_color_options
+from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options, \
+    get_boomerang_trail_color_options, get_gauntlet_color_options, get_magic_color_options, \
+    get_heart_color_options, get_button_color_options
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
@@ -3451,6 +3452,53 @@ setting_infos = [
         gui_type       = "Combobox",
         shared         = False,
         choices        = get_navi_color_options(True),
+        default        = '[Same as Inner]',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+            'Rainbow': Cycle through a color rainbow.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'boomerang_trail_color_inner',
+        type           = str,
+        gui_text       = 'Boomerang Trail Inner',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_boomerang_trail_color_options(),
+        default        = 'Yellow',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+            'Rainbow': Cycle through a color rainbow.
+        ''',
+        gui_params     = {
+            'no_line_break' : True,
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'boomerang_trail_color_outer',
+        type           = str,
+        gui_text       = 'Outer',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_boomerang_trail_color_options(True),
         default        = '[Same as Inner]',
         gui_tooltip    = '''\
             'Random Choice': Choose a random

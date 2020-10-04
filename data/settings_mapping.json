@@ -389,6 +389,8 @@
             "navi_color_npc_outer",
             "navi_color_prop_inner",
             "navi_color_prop_outer",
+            "boomerang_trail_color_inner",
+            "boomerang_trail_color_outer",
             "sword_trail_color_inner",
             "sword_trail_color_outer",
             "sword_trail_duration"

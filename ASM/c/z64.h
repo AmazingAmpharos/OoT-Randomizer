@@ -792,7 +792,8 @@ typedef struct
   char         unk_03_[0x0237];      /* 0x0435 */
   uint32_t     state_flags_1;        /* 0x066C */
   uint32_t     state_flags_2;        /* 0x0670 */
-  char         unk_04_[0x0008];      /* 0x0674 */
+  char         unk_04_[0x0004];      /* 0x0674 */
+  z64_actor_t *boomerang_actor;      /* 0x0678 */
   z64_actor_t *navi_actor;           /* 0x067C */
   char         unk_05_[0x01A8];      /* 0x0680 */
   float        linear_vel;           /* 0x0828 */
@@ -1127,6 +1128,80 @@ typedef struct
   char              ctxt_size;                /* 0x002C */
                                               /* 0x0030 */
 } z64_state_ovl_t;
+
+typedef struct
+{
+  /* state ? */
+  int32_t           state;                    /* 0x0000 */
+  /* elapsed time */
+  int32_t           time;                     /* 0x0004 */
+  /* point 1 */
+  int16_t           p1x;                      /* 0x0008 */
+  int16_t           p1y;                      /* 0x000A */
+  int16_t           p1z;                      /* 0x000C */
+  /* point 2 */
+  int16_t           p2x;                      /* 0x000E */
+  int16_t           p2y;                      /* 0x0010 */
+  int16_t           p2z;                      /* 0x0012 */
+  /* flags ? */
+  uint16_t          flags;                    /* 0x0014 */
+  char              pad_00_[0x0002];          /* 0x0016 */
+                                              /* 0x0018 */
+} z64_trail_cp_t;
+
+typedef struct
+{
+  /* control points */
+  z64_trail_cp_t    cp[16];                   /* 0x0000 */
+  /* interpolation mode ? */
+  uint32_t          ipn_mode;                 /* 0x0180 */
+  /* parameter for interpolation mode 4 */
+  float             f184;                     /* 0x0184 */
+  /* flags ? */
+  uint16_t          h188;                     /* 0x0188 */
+  /* counter increment, counter, what for ? */
+  int16_t           h18A;                     /* 0x018A */
+  int16_t           h18C;                     /* 0x018C */
+  /* point 1 starting color */
+  colorRGBA8_t      p1_start;                 /* 0x018E */
+  /* point 2 starting color */
+  colorRGBA8_t      p2_start;                 /* 0x0192 */
+  /* point 1 ending color */
+ colorRGBA8_t       p1_end;                   /* 0x0196 */
+  /* point 2 ending color */
+  colorRGBA8_t      p2_end;                   /* 0x019A */
+  /* number of active control points */
+  uint8_t           n_cp;                     /* 0x019E */
+  /* control point duration */
+  uint8_t           duration;                 /* 0x019F */
+  /* unknown */
+  uint8_t           b1A0;                     /* 0x01A0 */
+  /* render mode */
+  /* 0:   simple */
+  /* 1:   simple with alternate colors */
+  /* 2+:  smooth */
+  uint8_t           mode;                     /* 0x01A1 */
+  /* alternate colors */
+  /* inner color */
+  uint8_t           m1r1;                     /* 0x01A2 */
+  uint8_t           m1g1;                     /* 0x01A3 */
+  uint8_t           m1b1;                     /* 0x01A4 */
+  uint8_t           m1a1;                     /* 0x01A5 */
+  /* outer color */
+  uint8_t           m1r2;                     /* 0x01A6 */
+  uint8_t           m1g2;                     /* 0x01A7 */
+  uint8_t           m1b2;                     /* 0x01A8 */
+  uint8_t           m1a2;                     /* 0x01A9 */
+                                              /* 0x01AC */
+} z64_trail_fx_t;
+
+typedef struct
+{
+  uint8_t           active;                   /* 0x0000 */
+  char              pad_00_[0x0003];          /* 0x0001 */
+  z64_trail_fx_t    fx;                       /* 0x0004 */
+                                              /* 0x01B0 */
+} z64_trail_t;
 
 /* dram addresses */
 #define z64_osSendMesg_addr                     0x80001E20
