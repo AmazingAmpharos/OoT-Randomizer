@@ -1731,3 +1731,19 @@ skip_GS_BGS_text:
 
 .orga 0xE1F794
 @medigoron_check_return:
+
+;==================================================================================================
+; Bombchu Ticking Color
+;==================================================================================================
+.orga 0xD5FF28
+.area 0x74, 0
+    addiu   sp, sp, -0x18
+    sw      v0, 0x10(sp)
+    sw      ra, 0x14(sp)
+    jal     get_bombchu_back_color
+    mov.s   f12, f0
+    move    t5, v0
+    lw      v0, 0x10(sp)
+    lw      ra, 0x14(sp)
+    addiu   sp, sp, 0x18
+.endarea

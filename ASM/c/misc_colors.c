@@ -72,6 +72,95 @@ void update_boomerang_trail_colors()
     }
 }
 
+extern colorRGB8_t CFG_BOMBCHU_TRAIL_INNER_COLOR;
+extern colorRGB8_t CFG_BOMBCHU_TRAIL_OUTER_COLOR;
+
+extern uint8_t CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED;
+extern uint8_t CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED;
+
+void update_bombchu_trail_colors()
+{
+    int inner_enabled = !(CFG_BOMBCHU_TRAIL_INNER_COLOR.r == 0xFA &&
+                          CFG_BOMBCHU_TRAIL_INNER_COLOR.g == 0x00 &&
+                          CFG_BOMBCHU_TRAIL_INNER_COLOR.b == 0x00);
+    int outer_enabled = !(CFG_BOMBCHU_TRAIL_OUTER_COLOR.r == 0xFA &&
+                          CFG_BOMBCHU_TRAIL_OUTER_COLOR.g == 0x00 &&
+                          CFG_BOMBCHU_TRAIL_OUTER_COLOR.b == 0x00);
+
+    colorRGB8_t rainbow_color_inner = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
+    colorRGB8_t rainbow_color_outer = get_rainbow_color(frames, CYCLE_FRAMES_OUTER);
+
+    z64_actor_t *explosive = z64_game.actor_list[ACTORTYPE_EXPLOSIVES].first;
+    while (explosive != NULL)
+    {
+        if (explosive->main_proc != NULL && explosive->actor_id == 0xDA) // En_Bom_Chu
+        {
+            uint32_t effect_index_1 = *((uint32_t*)(((uint32_t)explosive) + 0x16C));
+            uint32_t effect_index_2 = *((uint32_t*)(((uint32_t)explosive) + 0x170));
+
+            z64_trail_t *trail_1 = ((z64_trail_t*)0x80115C3C) + effect_index_1 - 3;
+            z64_trail_t *trail_2 = ((z64_trail_t*)0x80115C3C) + effect_index_2 - 3;
+
+            if (CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED)
+            {
+                trail_1->fx.p1_start.color = rainbow_color_inner;
+                trail_2->fx.p1_start.color = rainbow_color_inner;
+                trail_1->fx.p1_end.color = rainbow_color_inner;
+                trail_2->fx.p1_end.color = rainbow_color_inner;
+            }
+            else if (inner_enabled)
+            {
+                trail_1->fx.p1_start.color = CFG_BOMBCHU_TRAIL_INNER_COLOR;
+                trail_2->fx.p1_start.color = CFG_BOMBCHU_TRAIL_INNER_COLOR;
+                trail_1->fx.p1_end.color = CFG_BOMBCHU_TRAIL_INNER_COLOR;
+                trail_2->fx.p1_end.color = CFG_BOMBCHU_TRAIL_INNER_COLOR;
+            }
+
+            if (CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED)
+            {
+                trail_1->fx.p2_start.color = rainbow_color_outer;
+                trail_2->fx.p2_start.color = rainbow_color_outer;
+                trail_1->fx.p2_end.color = rainbow_color_outer;
+                trail_2->fx.p2_end.color = rainbow_color_outer;
+            }
+            else if (outer_enabled)
+            {
+                trail_1->fx.p2_start.color = CFG_BOMBCHU_TRAIL_OUTER_COLOR;
+                trail_2->fx.p2_start.color = CFG_BOMBCHU_TRAIL_OUTER_COLOR;
+                trail_1->fx.p2_end.color = CFG_BOMBCHU_TRAIL_OUTER_COLOR;
+                trail_2->fx.p2_end.color = CFG_BOMBCHU_TRAIL_OUTER_COLOR;
+            }
+        }
+
+        explosive = explosive->next;
+    }
+}
+
+uint32_t get_bombchu_back_color(float brightness)
+{
+    colorRGB8_t color;
+
+    if (CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED)
+        color = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
+    else
+        color = CFG_BOMBCHU_TRAIL_INNER_COLOR;
+
+    if (color.r == 0xFA && color.g == 0x00 && color.b == 0x00)
+    {
+        color.r = 9.0f + brightness * 209.0f;
+        color.g = 9.0f + brightness * 34.0f;
+        color.b = 35.0f + brightness * -35.0f;
+    }
+    else
+    {
+        color.r *= brightness;
+        color.g *= brightness;
+        color.b *= brightness;
+    }
+
+    return (color.r << 24) | (color.g << 16) | (color.b << 8) | 0xFF;
+}
+
 typedef struct
 {
     colorRGBA8_t inner;
@@ -155,5 +244,6 @@ void update_misc_colors()
     frames++;
     update_sword_trail_colors();
     update_boomerang_trail_colors();
+    update_bombchu_trail_colors();
     update_navi_colors();
 }
