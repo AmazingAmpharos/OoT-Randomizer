@@ -4,7 +4,7 @@ import math
 import json
 from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_trail_color_options, \
     get_bombchu_trail_color_options, get_boomerang_trail_color_options, get_gauntlet_color_options, \
-    get_magic_color_options, get_heart_color_options, get_button_color_options
+    get_magic_color_options, get_heart_color_options, get_button_color_options, get_shield_frame_color_options
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
@@ -3662,6 +3662,28 @@ setting_infos = [
         shared         = False,
         choices        = get_gauntlet_color_options(),
         default        = 'Gold',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'mirror_shield_frame_color',
+        type           = str,
+        gui_text       = 'Mirror Shield Frame Color',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_shield_frame_color_options(),
+        default        = 'Red',
         gui_tooltip    = '''\
             'Random Choice': Choose a random
             color from this list of colors.

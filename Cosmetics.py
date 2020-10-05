@@ -123,6 +123,19 @@ gauntlet_colors = {
     "Purple":            Color(0x80, 0x00, 0x80),
 }
 
+shield_frame_colors = {
+    "Red":               Color(0xD7, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x40, 0xD8),
+    "Yellow":            Color(0xFF, 0xFF, 0x64),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
+}
+
 heart_colors = {
     "Red":          Color(0xFF, 0x46, 0x32),
     "Green":        Color(0x46, 0xC8, 0x32),
@@ -232,6 +245,14 @@ def get_gauntlet_colors():
 
 def get_gauntlet_color_options():
     return meta_color_choices + get_gauntlet_colors()
+
+
+def get_shield_frame_colors():
+    return list(shield_frame_colors.keys())
+
+
+def get_shield_frame_color_options():
+    return meta_color_choices + get_shield_frame_colors()
 
 
 def get_heart_colors():
@@ -690,6 +711,36 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
         log.gauntlet_colors[gauntlet] = dict(option=gauntlet_option, color=''.join(['{:02X}'.format(c) for c in color]))
 
 
+def patch_shield_frame_colors(rom, settings, log, symbols):
+    # patch shield frame colors
+    shield_frames = [
+        ('Mirror Shield Frame', settings.mirror_shield_frame_color,
+            [0xFA7274, 0xFA776C, 0xFAA27C, 0xFAC564, 0xFAC984, 0xFAEDD4],
+            ([0x1616FCC], [0x1616FD4])),
+    ]
+    shield_frame_color_list = get_shield_frame_colors()
+
+    for shield_frame, shield_frame_option, addresses, model_addresses in shield_frames:
+        # handle random
+        if shield_frame_option == 'Random Choice':
+            shield_frame_option = random.choice(shield_frame_color_list)
+        # handle completely random
+        if shield_frame_option == 'Completely Random':
+            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+        # grab the color from the list
+        elif shield_frame_option in shield_frame_colors:
+            color = list(shield_frame_colors[shield_frame_option])
+        # build color from hex code
+        else:
+            color = list(int(shield_frame_option[i:i+2], 16) for i in (0, 2 ,4))
+            shield_frame_option = 'Custom'
+        for address in addresses:
+            rom.write_bytes(address, color)
+        if settings.correct_model_colors and shield_frame_option != 'Red':
+            patch_model_colors(rom, color, model_addresses)
+        log.shield_frame_colors[shield_frame] = dict(option=shield_frame_option, color=''.join(['{:02X}'.format(c) for c in color]))
+
+
 def patch_heart_colors(rom, settings, log, symbols):
     # patch heart colors
     hearts = [
@@ -898,6 +949,7 @@ global_patch_sets = [
     patch_music,
     patch_tunic_colors,
     patch_gauntlet_colors,
+    patch_shield_frame_colors,
     patch_sfx,
     patch_instrument,    
 ]
@@ -1067,6 +1119,7 @@ class CosmeticsLog(object):
         self.bombchu_trail_colors = {}
         self.boomerang_trail_colors = {}
         self.gauntlet_colors = {}
+        self.shield_frame_colors = {}
         self.heart_colors = {}
         self.magic_colors = {}
         self.button_colors = {}
@@ -1104,6 +1157,26 @@ class CosmeticsLog(object):
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=tunic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
+        for gauntlet, options in self.gauntlet_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for shield_frame, options in self.shield_frame_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=shield_frame+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for heart, options in self.heart_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=heart+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for magic, options in self.magic_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
+        for button, options in self.button_colors.items():
+            color_option_string = '{option} (#{color})'
+            output += format_string.format(key=button+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
+
         for navi_action, list in self.navi_colors.items():
             for i, options in enumerate(list):
                 color_option_string = '{option1}, {option2} (#{color1}, #{color2})'
@@ -1126,22 +1199,6 @@ class CosmeticsLog(object):
 
         if 'sword_trail_duration' in self.__dict__:
             output += format_string.format(key='Sword Trail Duration:', value=self.sword_trail_duration, width=padding)
-
-        for gauntlet, options in self.gauntlet_colors.items():
-            color_option_string = '{option} (#{color})'
-            output += format_string.format(key=gauntlet+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-            
-        for heart, options in self.heart_colors.items():
-            color_option_string = '{option} (#{color})'
-            output += format_string.format(key=heart+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-
-        for magic, options in self.magic_colors.items():
-            color_option_string = '{option} (#{color})'
-            output += format_string.format(key=magic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
-
-        for button, options in self.button_colors.items():
-            color_option_string = '{option} (#{color})'
-            output += format_string.format(key=button+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
         output += '\n\nSFX:\n'
         for key, value in self.sfx.items():
