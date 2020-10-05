@@ -8,7 +8,7 @@ class CollapseList(list):
     pass
 class CollapseDict(dict):
     pass
-class AllignedDict(dict):
+class AlignedDict(dict):
     def __init__(self, src_dict, depth):
         self.depth = depth - 1
         super().__init__(src_dict)
@@ -75,7 +75,7 @@ def dump_dict(obj, current_indent='', sub_width=None):
         if sub_width[0] == 0:
             key_width = sub_width[1]
 
-    if isinstance(obj, AllignedDict):
+    if isinstance(obj, AlignedDict):
         sub_keys = get_keys(obj, obj.depth)
         sub_width = (obj.depth, reduce(lambda acc, entry: max(acc, len(entry)), sub_keys, 0))
 
