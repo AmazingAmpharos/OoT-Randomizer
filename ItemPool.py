@@ -1051,7 +1051,7 @@ def get_pool_core(world):
         placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
         placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
         placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
-    elif world.shuffle_smallkeys == 'keysanity':
+    elif world.shuffle_smallkeys in ['dungeons', 'overworld', 'keysanity']:
         if world.gerudo_fortress == 'fast':
             pool.append('Small Key (Gerudo Fortress)')
             placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
@@ -1083,7 +1083,7 @@ def get_pool_core(world):
     if world.shuffle_gerudo_card and world.item_pool_value == 'plentiful':
         pending_junk_pool.append('Gerudo Membership Card')
 
-    if world.item_pool_value == 'plentiful' and world.shuffle_smallkeys == 'keysanity':
+    if world.item_pool_value == 'plentiful' and world.shuffle_smallkeys in ['dungeons', 'overworld', 'keysanity']:
         pending_junk_pool.append('Small Key (Bottom of the Well)')
         pending_junk_pool.append('Small Key (Forest Temple)')
         pending_junk_pool.append('Small Key (Fire Temple)')
@@ -1093,14 +1093,14 @@ def get_pool_core(world):
         pending_junk_pool.append('Small Key (Gerudo Training Grounds)')
         pending_junk_pool.append('Small Key (Ganons Castle)')
 
-    if world.item_pool_value == 'plentiful' and world.shuffle_bosskeys == 'keysanity':
+    if world.item_pool_value == 'plentiful' and world.shuffle_bosskeys in ['dungeons', 'overworld', 'keysanity']:
         pending_junk_pool.append('Boss Key (Forest Temple)')
         pending_junk_pool.append('Boss Key (Fire Temple)')
         pending_junk_pool.append('Boss Key (Water Temple)')
         pending_junk_pool.append('Boss Key (Shadow Temple)')
         pending_junk_pool.append('Boss Key (Spirit Temple)')
 
-    if world.item_pool_value == 'plentiful' and world.shuffle_ganon_bosskey == 'keysanity':
+    if world.item_pool_value == 'plentiful' and world.shuffle_ganon_bosskey in ['dungeons', 'overworld', 'keysanity']:
         pending_junk_pool.append('Boss Key (Ganons Castle)')
 
     if world.shopsanity == 'off':
