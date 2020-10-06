@@ -2,9 +2,14 @@ from version import __version__
 from Utils import data_path
 from Colors import *
 import random
+import logging
 import Music as music
 import Sounds as sfx
 import IconManip as icon
+from JSONDump import dump_obj, CollapseList, CollapseDict, AlignedDict, SortedDict
+from SettingsList import setting_infos
+from Plandomizer import InvalidFileException
+import json
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -29,7 +34,7 @@ def patch_music(rom, settings, log, symbols):
     # patch music
     if settings.background_music != 'normal' or settings.fanfares != 'normal':
         music.restore_music(rom)
-        log.bgm = music.randomize_music(rom, settings)
+        log.bgm = music.randomize_music(rom, settings, log.src_dict.get('bgm', {}))
     else:
         music.restore_music(rom)
 
@@ -61,13 +66,18 @@ def patch_tunic_icon(rom, tunic, color):
 def patch_tunic_colors(rom, settings, log, symbols):
     # patch tunic colors
     tunics = [
-        ('Kokiri Tunic', settings.kokiri_color, 0x00B6DA38),
-        ('Goron Tunic',  settings.goron_color,  0x00B6DA3B),
-        ('Zora Tunic',   settings.zora_color,   0x00B6DA3E),
+        ('Kokiri Tunic', 'kokiri_color', 0x00B6DA38),
+        ('Goron Tunic',  'goron_color',  0x00B6DA3B),
+        ('Zora Tunic',   'zora_color',   0x00B6DA3E),
     ]
     tunic_color_list = get_tunic_colors()
 
-    for tunic, tunic_option, address in tunics:
+    for tunic, tunic_setting, address in tunics:
+        tunic_option = settings.__dict__[tunic_setting]
+        # Handle Plando
+        if log.src_dict.get('equipment_colors', {}).get(tunic_setting, {}).get('color', ''):
+            tunic_option = log.src_dict['equipment_colors'][tunic_setting]['color']
+
         # handle random
         if tunic_option == 'Random Choice':
             tunic_option = random.choice(tunic_color_list)
@@ -91,6 +101,10 @@ def patch_tunic_colors(rom, settings, log, symbols):
             patch_tunic_icon(rom, tunic, color)
 
         log.tunic_colors[tunic] = dict(option=tunic_option, color=''.join(['{:02X}'.format(c) for c in color]))
+        log.equipment_colors[tunic_setting] = CollapseDict({
+            ':option': tunic_option,
+            'color': ''.join(['{:02X}'.format(c) for c in color]),
+        })
 
 
 def patch_navi_colors(rom, settings, log, symbols):
@@ -160,7 +174,7 @@ def patch_navi_colors(rom, settings, log, symbols):
             color = inner_color + [0xFF] + outer_color + [0xFF]
             rom.write_bytes(address, color)
 
-        log.navi_colors[navi_action] = [dict(
+        log.navi_colors_txt[navi_action] = [dict(
             option1=navi_option_inner, color1=''.join(['{:02X}'.format(c) for c in inner_c]), 
             option2=navi_option_outer, color2=''.join(['{:02X}'.format(c) for c in outer_c]))
             for (inner_c, outer_c) in colors]
@@ -169,22 +183,28 @@ def patch_navi_colors(rom, settings, log, symbols):
 def patch_sword_trails(rom, settings, log, symbols):
     # patch sword trail colors
     sword_trails = [
-        ('Inner Initial Sword Trail', settings.sword_trail_color_inner, 
+        ('Inner Initial Sword Trail', 'inner',
             [(0x00BEFF80, 0xB0, 0x40), (0x00BEFF88, 0x20, 0x00)], symbols['CFG_RAINBOW_SWORD_INNER_ENABLED']),
-        ('Outer Initial Sword Trail', settings.sword_trail_color_outer, 
+        ('Outer Initial Sword Trail', 'outer',
             [(0x00BEFF7C, 0xB0, 0xFF), (0x00BEFF84, 0x10, 0x00)], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
     ]
 
     sword_color_list = get_sword_colors()
 
+    log.equipment_colors['sword_trail_color'] = {}
     for index, item in enumerate(sword_trails):
-        sword_trail_name, sword_trail_option, sword_trail_addresses, sword_trail_rainbow_symbol = item
+        sword_trail_name, sword_trail_setting_ending, sword_trail_addresses, sword_trail_rainbow_symbol = item
+        sword_trail_setting = 'sword_trail_color_' + sword_trail_setting_ending
+        sword_trail_option = settings.__dict__[sword_trail_setting]
+        # Handle Plando
+        #if log.src_dict.get('equipment_colors', {}).get('sword_trail_color').get(sword_trail_setting_ending, {}).get('color', ''):
+        #    sword_trail_option = log.src_dict['equipment_colors']['sword_trail_color'][sword_trail_setting_ending]['color']
 
         # handle random
         if sword_trail_option == 'Random Choice':
             sword_trail_option = random.choice(sword_color_list)
 
-        custom_color = False
+        custom_color = []
         for index, (address, transparency, white_transparency) in enumerate(sword_trail_addresses):
             # set rainbow option
             if sword_trail_option == 'Rainbow':
@@ -206,7 +226,7 @@ def patch_sword_trails(rom, settings, log, symbols):
             # build color from hex code
             else:
                 color = list(int(sword_trail_option[i:i+2], 16) for i in (0, 2, 4))
-                custom_color = True
+                custom_color.append(color)
 
             if sword_trail_option == 'White':
                 color = color + [white_transparency]
@@ -219,6 +239,13 @@ def patch_sword_trails(rom, settings, log, symbols):
             sword_trail_option = 'Custom'
         if sword_trail_name not in log.sword_colors:
             log.sword_colors[sword_trail_name] = [dict(option=sword_trail_option, color=''.join(['{:02X}'.format(c) for c in color[0:3]]))]
+        #if sword_trail_option == "Rainbow":
+        #    log.equipment_colors['sword_trail_color'][sword_trail_setting_ending] = dict(color=sword_trail_option)
+        #else:
+        #    log.equipment_colors['sword_trail_color'][sword_trail_setting_ending] = dict({
+        #        ':option': sword_trail_option,
+        #        'colors': ''.join(['{:02X}'.format(c) for c in color]),
+        #    })
     log.sword_trail_duration = settings.sword_trail_duration
     rom.write_byte(0x00BEFF8C, settings.sword_trail_duration)
 
@@ -226,14 +253,19 @@ def patch_sword_trails(rom, settings, log, symbols):
 def patch_gauntlet_colors(rom, settings, log, symbols):
     # patch gauntlet colors
     gauntlets = [
-        ('Silver Gauntlets', settings.silver_gauntlets_color, 0x00B6DA44,
+        ('Silver Gauntlets', 'silver_gauntlets_color', 0x00B6DA44,
             ([0x173B4CC], [0x173B4D4, 0x173B50C, 0x173B514])), # GI Model DList colors
-        ('Gold Gauntlets', settings.golden_gauntlets_color,  0x00B6DA47,
+        ('Gold Gauntlets', 'golden_gauntlets_color',  0x00B6DA47,
             ([0x173B4EC], [0x173B4F4, 0x173B52C, 0x173B534])), # GI Model DList colors
     ]
     gauntlet_color_list = get_gauntlet_colors()
 
-    for gauntlet, gauntlet_option, address, model_addresses in gauntlets:
+    for gauntlet, gauntlet_setting, address, model_addresses in gauntlets:
+        gauntlet_option = settings.__dict__[gauntlet_setting]
+        # Handle Plando
+        if log.src_dict.get('equipment_colors', {}).get(gauntlet_setting, {}).get('color', ''):
+            gauntlet_option = log.src_dict['equipment_colors'][gauntlet_setting]['color']
+
         # handle random
         if gauntlet_option == 'Random Choice':
             gauntlet_option = random.choice(gauntlet_color_list)
@@ -251,7 +283,10 @@ def patch_gauntlet_colors(rom, settings, log, symbols):
         if settings.correct_model_colors:
             patch_model_colors(rom, color, model_addresses)
         log.gauntlet_colors[gauntlet] = dict(option=gauntlet_option, color=''.join(['{:02X}'.format(c) for c in color]))
-
+        log.equipment_colors[gauntlet_setting] = CollapseDict({
+            ':option': gauntlet_option,
+            'color': ''.join(['{:02X}'.format(c) for c in color]),
+        })
 
 def patch_heart_colors(rom, settings, log, symbols):
     # patch heart colors
@@ -563,13 +598,13 @@ def patch_cosmetics(settings, rom):
 
         # warn if patching a legacy format
         if cosmetic_version != rom.read_int32(rom.sym('COSMETIC_FORMAT_VERSION')):
-            log.error = "ROM uses old cosmetic patch format."
+            log.errors.append("ROM uses old cosmetic patch format.")
 
         for patch_func in versioned_patch_set['patches']:
             patch_func(rom, settings, log, cosmetic_context_symbols)
     else:
         # Unknown patch format
-        log.error = "Unable to patch some cosmetics. ROM uses unknown cosmetic patch format."
+        log.errors.append("Unable to patch some cosmetics. ROM uses unknown cosmetic patch format.")
 
     return log
 
@@ -578,29 +613,113 @@ class CosmeticsLog(object):
 
     def __init__(self, settings):
         self.settings = settings
+
+        # Text File Dictionaries
+        # Eventually destined to die, along with text file generation, once JSON and plando are done.
         self.tunic_colors = {}
-        self.navi_colors = {}
+        self.navi_colors_txt = {}
         self.sword_colors = {}
         self.gauntlet_colors = {}
         self.heart_colors = {}
         self.magic_colors = {}
         self.button_colors = {}
         self.sfx = {}
+
+        # JSON Dictionaries
+        self.equipment_colors = {}
+        self.ui_colors = {}
+        self.navi_colors = {}
+
+        # Text/JSON File Dictionaries
         self.bgm = {}
-        self.error = None
+
+        self.src_dict = {}
+        self.errors = []
+
+        if self.settings.enable_cosmetic_file:
+            if self.settings.cosmetic_file:
+                try:
+                    if any(map(self.settings.cosmetic_file.endswith, ['.z64', '.n64', '.v64'])):
+                        raise InvalidFileException("Your Ocarina of Time ROM doesn't belong in the cosmetics plandomizer setting. If you don't know what this is for, or don't plan to use it, disable cosmetic plandomizer and try again.")
+                    with open(self.settings.cosmetic_file) as infile:
+                        self.src_dict = json.load(infile)
+                except json.decoder.JSONDecodeError as e:
+                    raise InvalidFileException(f"Invalid Cosmetic Plandomizer File. Make sure the file is a valid JSON file. Failure reason: {str(e)}") from None
+                except FileNotFoundError:
+                    message = "Cosmetic Plandomizer file not found at %s" % (self.settings.cosmetic_file)
+                    logging.getLogger('').warning(message)
+                    self.errors.append(message)
+                    self.settings.enable_cosmetic_file = False
+                except InvalidFileException as e:
+                    logging.getLogger('').warning(str(e))
+                    self.errors.append(str(e))
+                    self.settings.enable_cosmetic_file = False
+            else:
+                logging.getLogger('').warning("Cosmetic Plandomizer enabled, but no file provided.")
+                self.settings.enable_cosmetic_file = False
+
+        if self.src_dict.get('settings', {}):
+            valid_settings = []
+            for setting in setting_infos:
+                if setting.name not in self.src_dict['settings'] or not setting.cosmetic:
+                    continue
+                self.settings.__dict__[setting.name] = self.src_dict['settings'][setting.name]
+                valid_settings.append(setting.name)
+            for setting in list(self.src_dict['settings'].keys()):
+                if setting not in valid_settings:
+                    del self.src_dict['settings'][setting]
+
+        if 'settings' in self.src_dict:
+            self.src_dict['_settings'] = self.src_dict['settings']
+            del self.src_dict['settings']
+
+
+    def to_json(self):
+        self_dict = {
+            ':version': __version__,
+            ':enable_cosmetic_file': True,
+            'settings': self.settings.to_json_cosmetics(),
+            'equipment_colors': self.equipment_colors,
+            'ui_colors': self.ui_colors,
+            'navi_colors': self.navi_colors,
+            'bgm': self.bgm,
+        }
+
+        if (not self.settings.enable_cosmetic_file):
+            del self_dict[':enable_cosmetic_file'] # Done this way for ordering purposes.
+
+#        for color_set in ['tunic_colors', 'navi_colors', 'sword_colors', 'gauntlet_colors', 'heart_colors', 'magic_colors', 'button_colors']:
+#            for color in self.__dict__[color_set]:
+#                self_dict[color_set][color] = self.__dict__[color_set][color]
+#                #del self_dict[color_set][color]['option']
+
+        if self.errors:
+            self_dict[":error"] = self.errors
+
+        return self_dict
+
+
+    def to_str(self):
+        return dump_obj(self.to_json(), ensure_ascii=False)
 
 
     def to_file(self, filename):
+        json = self.to_str()
         with open(filename, 'w') as outfile:
-            outfile.write(self.cosmetics_output())
+            outfile.write(json)
 
 
-    def cosmetics_output(self):
+    def to_txt_file(self, filename):
+        with open(filename, 'w') as outfile:
+            outfile.write(self.to_txt())
+
+
+    def to_txt(self):
         output = ''
         output += 'OoT Randomizer Version %s - Cosmetics Log\n' % (__version__)
 
-        if self.error:
-            output += 'Error: %s\n' % self.error
+        for error in self.errors:
+            output += 'Error: %s\n' % error
 
         format_string = '\n{key:{width}} {value}'
         padding = 40
@@ -619,7 +738,7 @@ class CosmeticsLog(object):
             color_option_string = '{option} (#{color})'
             output += format_string.format(key=tunic+':', value=color_option_string.format(option=options['option'], color=options['color']), width=padding)
 
-        for navi_action, list in self.navi_colors.items():
+        for navi_action, list in self.navi_colors_txt.items():
             for i, options in enumerate(list):
                 color_option_string = '{option1}, {option2} (#{color1}, #{color2})'
                 output += format_string.format(key=(navi_action+':') if i == 0 else '', value=color_option_string.format(option1=options['option1'], color1=options['color1'], option2=options['option2'], color2=options['color2']), width=padding)

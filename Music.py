@@ -88,10 +88,6 @@ ocarina_sequence_ids = [
     ("Song of Storms", 0x49)
 ]
 
-# Hardcoded Plando
-bgm_mapping = {
-}
-
 # Represents the information associated with a sequence, aside from the sequence data itself
 class TableEntry(object):
     def __init__(self, name, cosmetic_name, type = 0x0202, instrument_set = 0x03, replaces = -1, vanilla_id = -1):
@@ -341,13 +337,13 @@ def shuffle_pointers_table(rom, ids, music_mapping, log):
     return log
 
 
-def randomize_music(rom, settings):
+def randomize_music(rom, settings, music_mapping):
     log = {}
     sequences = []
     target_sequences = []
     fanfare_sequences = []
     fanfare_target_sequences = []
-    music_mapping = bgm_mapping.copy()
+    music_mapping = music_mapping.copy() # Make sure we aren't operating directly on this.
 
     # Include ocarina songs in fanfare pool if checked
     ff_ids = fanfare_sequence_ids.copy()
@@ -368,13 +364,13 @@ def randomize_music(rom, settings):
         if settings.background_music in ['random', 'random_custom_only'] or music_mapping:
             sequences, target_sequences = process_sequences(rom, sequences, target_sequences, bgm_sequence_ids)
             if settings.background_music == 'random_custom_only':
-                sequences = [seq for seq in sequences if seq.cosmetic_name not in [x[0] for x in bgm_sequence_ids] or seq.cosmetic_name in music_mapping]
+                sequences = [seq for seq in sequences if seq.cosmetic_name not in [x[0] for x in bgm_sequence_ids] or seq.cosmetic_name in music_mapping.values()]
             sequences, log = shuffle_music(sequences, target_sequences, music_mapping, log)
 
         if settings.fanfares in ['random', 'random_custom_only'] or music_mapping:
             fanfare_sequences, fanfare_target_sequences = process_sequences(rom, fanfare_sequences, fanfare_target_sequences, ff_ids, 'fanfare')
             if settings.fanfares == 'random_custom_only':
-                fanfare_sequences = [seq for seq in fanfare_sequences if seq.cosmetic_name not in [x[0] for x in fanfare_sequence_ids] or seq.cosmetic_name in music_mapping]
+                fanfare_sequences = [seq for seq in fanfare_sequences if seq.cosmetic_name not in [x[0] for x in fanfare_sequence_ids] or seq.cosmetic_name in music_mapping.values()]
             fanfare_sequences, log = shuffle_music(fanfare_sequences, fanfare_target_sequences, music_mapping, log)
 
         rebuild_sequences(rom, sequences + fanfare_sequences)

@@ -284,6 +284,11 @@ class Settings:
                 if setting.shared and setting.name not in self._disabled}
 
 
+    def to_json_cosmetics(self):
+        return {setting.name: self.__dict__[setting.name] for setting in setting_infos
+                if setting.cosmetic and setting.name not in self._disabled}
+
+
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments
 def get_settings_from_command_line_args():
     parser = argparse.ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
