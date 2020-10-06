@@ -1761,6 +1761,9 @@ setting_infos = [
             allowing access to Gerudo Training Grounds.
         ''',
         shared         = True,
+        disable        = {
+            'open' : {'settings' : ['shuffle_fortresskeys']}
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
         },
@@ -2567,6 +2570,36 @@ setting_infos = [
             Try different combination out, such as:
             'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
             for a milder Keysanity experience.
+        ''',
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Combobox(
+        name           = 'shuffle_fortresskeys',
+        gui_text       = 'Gerudo Fortress Keys',
+        default        = 'vanilla',
+        disabled_default = 'remove',
+        choices        = {
+            'vanilla':   'Vanilla Locations',
+            'overworld': 'Overworld Only',
+            'dungeons':  'Dungeons Only',
+            'keysanity': 'Anywhere',
+        },
+        gui_tooltip    = '''\
+            'Vanilla': Gerudo Fortress Keys will appear in their
+            vanilla location, dropping from fighting Gerudo guards
+            that attack when trying to free the jailed carpenters.
+            
+            'Overworld Only': Gerudo Fortress Keys can only appear
+             outside of dungeons.
+            
+            'Dungeons Only': Gerudo Fortress Keys can only appear
+             inside of dungeons.
+
+            'Anywhere': Gerudo Fortress Keys can appear anywhere
+            in the world.
         ''',
         shared         = True,
         gui_params     = {
