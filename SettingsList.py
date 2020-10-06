@@ -2,7 +2,7 @@ import argparse
 import re
 import math
 import json
-from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options,\
+from Colors import get_tunic_color_options, get_navi_color_options, get_sword_color_options,\
     get_gauntlet_color_options, get_magic_color_options, get_heart_color_options, get_a_button_color_options,\
     get_b_button_color_options, get_c_button_color_options, get_start_button_color_options
 from Location import LocationIterator
