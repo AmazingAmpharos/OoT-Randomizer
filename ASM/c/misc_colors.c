@@ -3,8 +3,8 @@
 #include "rainbow.h"
 #include "z64.h"
 
-#define CYCLE_FRAMES_OUTER 10
-#define CYCLE_FRAMES_INNER 12
+#define SWORD_CYCLE_FRAMES_OUTER 10
+#define SWORD_CYCLE_FRAMES_INNER 12
 
 static uint32_t frames = 0;
 
@@ -17,18 +17,21 @@ void update_sword_trail_colors()
 
     if (CFG_RAINBOW_SWORD_INNER_ENABLED)
     {
-        colorRGB8_t color_inner = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
+        colorRGB8_t color_inner = get_rainbow_color(frames, SWORD_CYCLE_FRAMES_INNER);
         sword_trail_colors[1].color = color_inner;
         sword_trail_colors[3].color = color_inner;
     }
 
     if (CFG_RAINBOW_SWORD_OUTER_ENABLED)
     {
-        colorRGB8_t color_outer = get_rainbow_color(frames, CYCLE_FRAMES_OUTER);
+        colorRGB8_t color_outer = get_rainbow_color(frames, SWORD_CYCLE_FRAMES_OUTER);
         sword_trail_colors[0].color = color_outer;
         sword_trail_colors[2].color = color_outer;
     }
 }
+
+#define BOOM_CYCLE_FRAMES_OUTER 5
+#define BOOM_CYCLE_FRAMES_INNER 6
 
 extern colorRGB8_t CFG_BOOM_TRAIL_INNER_COLOR;
 extern colorRGB8_t CFG_BOOM_TRAIL_OUTER_COLOR;
@@ -49,8 +52,8 @@ void update_boomerang_trail_colors()
 
             if (CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED)
             {
-                trail->fx.p1_start.color = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
-                trail->fx.p1_end.color = get_rainbow_color(frames + CYCLE_FRAMES_INNER, CYCLE_FRAMES_INNER);
+                trail->fx.p1_start.color = get_rainbow_color(frames, BOOM_CYCLE_FRAMES_INNER);
+                trail->fx.p1_end.color = get_rainbow_color(frames + 2 * BOOM_CYCLE_FRAMES_INNER, BOOM_CYCLE_FRAMES_INNER);
             }
             else
             {
@@ -60,8 +63,8 @@ void update_boomerang_trail_colors()
 
             if (CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED)
             {
-                trail->fx.p2_start.color = get_rainbow_color(frames, CYCLE_FRAMES_OUTER);
-                trail->fx.p2_end.color = get_rainbow_color(frames + CYCLE_FRAMES_OUTER, CYCLE_FRAMES_OUTER);
+                trail->fx.p2_start.color = get_rainbow_color(frames, BOOM_CYCLE_FRAMES_OUTER);
+                trail->fx.p2_end.color = get_rainbow_color(frames + 2 * BOOM_CYCLE_FRAMES_OUTER, BOOM_CYCLE_FRAMES_OUTER);
             }
             else
             {
@@ -71,6 +74,9 @@ void update_boomerang_trail_colors()
         }
     }
 }
+
+#define BOMBCHU_CYCLE_FRAMES_OUTER 7
+#define BOMBCHU_CYCLE_FRAMES_INNER 9
 
 extern colorRGB8_t CFG_BOMBCHU_TRAIL_INNER_COLOR;
 extern colorRGB8_t CFG_BOMBCHU_TRAIL_OUTER_COLOR;
@@ -87,8 +93,10 @@ void update_bombchu_trail_colors()
                           CFG_BOMBCHU_TRAIL_OUTER_COLOR.g == 0x00 &&
                           CFG_BOMBCHU_TRAIL_OUTER_COLOR.b == 0x00);
 
-    colorRGB8_t rainbow_color_inner = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
-    colorRGB8_t rainbow_color_outer = get_rainbow_color(frames, CYCLE_FRAMES_OUTER);
+    colorRGB8_t rainbow_color_inner_start = get_rainbow_color(frames, BOMBCHU_CYCLE_FRAMES_INNER);
+    colorRGB8_t rainbow_color_inner_end = get_rainbow_color(frames + 2 * BOMBCHU_CYCLE_FRAMES_INNER, BOMBCHU_CYCLE_FRAMES_INNER);
+    colorRGB8_t rainbow_color_outer_start = get_rainbow_color(frames, BOMBCHU_CYCLE_FRAMES_OUTER);
+    colorRGB8_t rainbow_color_outer_end = get_rainbow_color(frames + 2 * BOMBCHU_CYCLE_FRAMES_OUTER, BOMBCHU_CYCLE_FRAMES_OUTER);
 
     z64_actor_t *explosive = z64_game.actor_list[ACTORTYPE_EXPLOSIVES].first;
     while (explosive != NULL)
@@ -103,10 +111,10 @@ void update_bombchu_trail_colors()
 
             if (CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED)
             {
-                trail_1->fx.p1_start.color = rainbow_color_inner;
-                trail_2->fx.p1_start.color = rainbow_color_inner;
-                trail_1->fx.p1_end.color = rainbow_color_inner;
-                trail_2->fx.p1_end.color = rainbow_color_inner;
+                trail_1->fx.p1_start.color = rainbow_color_inner_start;
+                trail_2->fx.p1_start.color = rainbow_color_inner_start;
+                trail_1->fx.p1_end.color = rainbow_color_inner_end;
+                trail_2->fx.p1_end.color = rainbow_color_inner_end;
             }
             else if (inner_enabled)
             {
@@ -118,10 +126,10 @@ void update_bombchu_trail_colors()
 
             if (CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED)
             {
-                trail_1->fx.p2_start.color = rainbow_color_outer;
-                trail_2->fx.p2_start.color = rainbow_color_outer;
-                trail_1->fx.p2_end.color = rainbow_color_outer;
-                trail_2->fx.p2_end.color = rainbow_color_outer;
+                trail_1->fx.p2_start.color = rainbow_color_outer_start;
+                trail_2->fx.p2_start.color = rainbow_color_outer_start;
+                trail_1->fx.p2_end.color = rainbow_color_outer_end;
+                trail_2->fx.p2_end.color = rainbow_color_outer_end;
             }
             else if (outer_enabled)
             {
@@ -141,7 +149,7 @@ uint32_t get_bombchu_back_color(float brightness)
     colorRGB8_t color;
 
     if (CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED)
-        color = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
+        color = get_rainbow_color(frames, BOMBCHU_CYCLE_FRAMES_INNER);
     else
         color = CFG_BOMBCHU_TRAIL_INNER_COLOR;
 
@@ -166,6 +174,9 @@ typedef struct
     colorRGBA8_t inner;
     colorRGBA8_t outer;
 } navi_color_t;
+
+#define NAVI_CYCLE_FRAMES_OUTER 12
+#define NAVI_CYCLE_FRAMES_INNER 14
 
 extern uint8_t CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED;
 extern uint8_t CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED;
@@ -205,8 +216,8 @@ void update_navi_colors()
     if (!rainbow_inner_enabled && !rainbow_outer_enabled)
         return;
 
-    colorRGB8_t color_inner = get_rainbow_color(frames, CYCLE_FRAMES_INNER);
-    colorRGB8_t color_outer = get_rainbow_color(frames, CYCLE_FRAMES_OUTER);
+    colorRGB8_t color_inner = get_rainbow_color(frames, NAVI_CYCLE_FRAMES_INNER);
+    colorRGB8_t color_outer = get_rainbow_color(frames, NAVI_CYCLE_FRAMES_OUTER);
 
     navi_color_t *navi_ref_colors = (navi_color_t*)0x800E8214;
     if (rainbow_inner_enabled)
