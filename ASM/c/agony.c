@@ -42,8 +42,7 @@ static const alpha_data_t* alpha_frame = ALPHA_DATA + ALPHA_ANIM_TERMINATE;
 void agony_inside_radius_setup() {
 }
 
-void agony_outside_radius_setup()
-{
+void agony_outside_radius_setup() {
     if (alpha_frame == ALPHA_DATA + ALPHA_ANIM_HOLD) {
         alpha_frame = ALPHA_DATA + ALPHA_ANIM_FADE;
     }
@@ -58,7 +57,7 @@ void agony_vibrate_setup() {
     }
 }
 
-void draw_agony_graphic(int offset, unsigned char alpha) {
+void draw_agony_graphic(int hoffset, int voffset, unsigned char alpha) {
     // terminate if alpha level prohibited (changed areas)
     unsigned char maxalpha = (unsigned char)z64_game.hud_alpha_channels.minimap;
     if (maxalpha == 0xAA) maxalpha = 0xFF;
@@ -73,16 +72,21 @@ void draw_agony_graphic(int offset, unsigned char alpha) {
     gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
     sprite_load(db, &quest_items_sprite, 9, 1);
-    sprite_draw(db, &quest_items_sprite, 0, 27+offset, 189, 16, 16);
+    sprite_draw(db, &quest_items_sprite, 0, 27+hoffset, 189+voffset, 16, 16);
     gDPPipeSync(db->p++);
 }
 
 void draw_agony() {
     if (alpha_frame != ALPHA_DATA + ALPHA_ANIM_TERMINATE) {
         unsigned char alpha = alpha_frame->alpha_level;
-        int offset = alpha_frame->pos;
+        int hoffset = alpha_frame->pos;
         alpha_frame = ALPHA_DATA + alpha_frame->next;
-        draw_agony_graphic(offset, alpha);
+        int scene_index = z64_game.scene_index;
+        int voffset = 0;
+        if (scene_index < 0x11 && z64_file.dungeon_keys[scene_index] >= 0) {
+            voffset = -17;
+        }
+        draw_agony_graphic(hoffset, voffset, alpha);
     }
 }
 
