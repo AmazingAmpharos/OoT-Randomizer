@@ -89,6 +89,7 @@ RANDO_CONTEXT:
 .include "equip_swap_fix.asm"
 .include "carpet_salesman.asm"
 .include "medigoron.asm"
+.include "misc_colors.asm"
 
 .align 0x10
 .importobj "../build/bundle.o"
