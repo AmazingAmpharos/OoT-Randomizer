@@ -3,7 +3,8 @@ import re
 import math
 import json
 from Cosmetics import get_tunic_color_options, get_navi_color_options, get_sword_color_options,\
-    get_gauntlet_color_options, get_magic_color_options, get_heart_color_options, get_button_color_options
+    get_gauntlet_color_options, get_magic_color_options, get_heart_color_options, get_a_button_color_options,\
+    get_b_button_color_options, get_c_button_color_options, get_start_button_color_options
 from Location import LocationIterator
 import Sounds as sfx
 from Utils import data_path
@@ -3617,17 +3618,80 @@ setting_infos = [
 
     ),
     Setting_Info(
-        name           = 'button_colors',
+        name           = 'a_button_color',
         type           = str,
-        gui_text       = 'HUD Button Colors',
+        gui_text       = 'A Button Color',
         gui_type       = "Combobox",
         shared         = False,
-        choices        = get_button_color_options(),
-        default        = 'N64',
+        choices        = get_a_button_color_options(),
+        default        = 'N64 Blue',
         gui_tooltip    = '''\
-            'N64': Default button colors.
-            'GameCube': Uses the button colors from
-            the GameCube releases of the game.
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'b_button_color',
+        type           = str,
+        gui_text       = 'B Button Color',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_b_button_color_options(),
+        default        = 'N64 Green',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'c_button_color',
+        type           = str,
+        gui_text       = 'C Button Color',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_c_button_color_options(),
+        default        = 'Yellow',
+        gui_tooltip    = '''\
+            'Random Choice': Choose a random
+            color from this list of colors.
+            'Completely Random': Choose a random
+            color from any color the N64 can draw.
+        ''',
+        gui_params     = {
+            'randomize_key': 'randomize_all_cosmetics',
+            'distribution': [
+                ('Completely Random', 1),
+            ]
+        }
+
+    ),
+    Setting_Info(
+        name           = 'start_button_color',
+        type           = str,
+        gui_text       = 'Start Button Color',
+        gui_type       = "Combobox",
+        shared         = False,
+        choices        = get_start_button_color_options(),
+        default        = 'N64 Red',
+        gui_tooltip    = '''\
             'Random Choice': Choose a random
             color from this list of colors.
             'Completely Random': Choose a random

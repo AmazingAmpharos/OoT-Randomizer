@@ -374,7 +374,10 @@
           "settings": [
             "heart_color",
             "magic_color",
-            "button_colors"
+            "a_button_color",
+            "b_button_color",
+            "c_button_color",
+            "start_button_color"
           ]
         },
         {
