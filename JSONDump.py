@@ -33,7 +33,7 @@ def dump_scalar(obj, ensure_ascii=False):
 
 
 def dump_list(obj, current_indent='', ensure_ascii=False):
-    entries = [dump_obj(value, current_indent + INDENT, ensure_ascii) for value in obj]
+    entries = [dump_obj(value, current_indent + INDENT, ensure_ascii=ensure_ascii) for value in obj]
 
     if len(entries) == 0:
         return '[]'
