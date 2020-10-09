@@ -23,6 +23,11 @@ bunny_hood :
     bne     t0, a3, @@return   ; Branch if Link is not walking or running forward
     nop
 
+    la      t0, FAST_BUNNY_HOOD_ENABLED
+    lbu     t0, 0x00(t0)
+    beqz    t0, @@return
+    nop
+
     lui     t0, 0x3fc0
     mtc1    t0, f22            ; f22 = 1.5
     nop
