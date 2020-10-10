@@ -218,7 +218,6 @@ def patch_and_output(settings, window, spoiler, rom, start):
                     cosmetics_log_filename = "%sP%d_Cosmetics.json" % (outfilebase, world.id + 1)
                 else:
                     cosmetics_log_filename = '%s_Cosmetics.json' % outfilebase
-                cosmetics_log.to_txt_file(os.path.join(output_dir, cosmetics_log_filename.replace(".json", ".txt")))
                 cosmetics_log.to_file(os.path.join(output_dir, cosmetics_log_filename))
                 file_list.append(cosmetics_log_filename)
             cosmetics_log = None
@@ -302,7 +301,6 @@ def patch_and_output(settings, window, spoiler, rom, start):
         else:
             filename = '%s_Cosmetics.json' % outfilebase
         cosmetic_path = os.path.join(output_dir, filename)
-        cosmetics_log.to_txt_file(cosmetic_path.replace(".json", ".txt"))
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
@@ -405,7 +403,6 @@ def from_patch_file(settings, window=dummy_window()):
         else:
             filename = '%s_Cosmetics.json' % outfilebase
         cosmetic_path = os.path.join(output_dir, filename)
-        cosmetics_log.to_txt_file(cosmetic_path.replace(".json", ".txt"))
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
@@ -480,7 +477,6 @@ def cosmetic_patch(settings, window=dummy_window()):
         else:
             filename = '%s_Cosmetics.json' % outfilebase
         cosmetic_path = os.path.join(output_dir, filename)
-        cosmetics_log.to_txt_file(cosmetic_path.replace(".json", ".txt"))
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
