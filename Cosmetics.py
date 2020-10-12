@@ -34,7 +34,8 @@ def patch_music(rom, settings, log, symbols):
     # patch music
     if settings.background_music != 'normal' or settings.fanfares != 'normal' or log.src_dict.get('bgm', {}):
         music.restore_music(rom)
-        log.bgm = music.randomize_music(rom, settings, log.src_dict.get('bgm', {}))
+        log.bgm, errors = music.randomize_music(rom, settings, log.src_dict.get('bgm', {}))
+        log.errors.extend(errors)
     else:
         music.restore_music(rom)
 

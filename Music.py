@@ -2,6 +2,7 @@
 
 import random
 import os
+from Utils import compare_version
 
 
 # Format: (Title, Sequence ID)
@@ -347,6 +348,7 @@ def shuffle_pointers_table(rom, ids, music_mapping, log):
 
 def randomize_music(rom, settings, music_mapping):
     log = {}
+    errors = []
     sequences = []
     target_sequences = []
     fanfare_sequences = []
@@ -396,7 +398,15 @@ def randomize_music(rom, settings, music_mapping):
             music_mapping[bgm[0]] = bgm[0]
 
     # If not creating patch file, shuffle audio sequences. Otherwise, shuffle pointer table
-    if settings.compress_rom != 'Patch':
+    # If generating from patch, also do a version check to make sure custom sequences are supported.
+    custom_sequences_enabled = settings.compress_rom != 'Patch'
+    if settings.patch_file != '':
+        rom_version_bytes = rom.read_bytes(0x35, 3)
+        rom_version = f'{rom_version_bytes[0]}.{rom_version_bytes[1]}.{rom_version_bytes[2]}'
+        if compare_version(rom_version, '4.11.13') < 0:
+            errors.append("Custom music is not supported by this patch version. Only randomizing vanilla music.")
+            custom_sequences_enabled = False
+    if custom_sequences_enabled:
         if settings.background_music in ['random', 'random_custom_only'] or bgm_mapped:
             process_sequences(rom, sequences, target_sequences, disabled_source_sequences, disabled_target_sequences, bgm_ids)
             if settings.background_music == 'random_custom_only':
@@ -423,7 +433,7 @@ def randomize_music(rom, settings, music_mapping):
     if disabled_target_sequences:
         log = disable_music(rom, disabled_target_sequences.values(), log)
 
-    return log
+    return log, errors
 
 
 def disable_music(rom, ids, log):
