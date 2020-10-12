@@ -39,6 +39,7 @@ tunic_colors = {
 }
 
 NaviColors = {          # Inner Core Color         Outer Glow Color
+    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
     "Gold":              (Color(0xFE, 0xCC, 0x3C), Color(0xFE, 0xC0, 0x07)),
     "White":             (Color(0xFF, 0xFF, 0xFF), Color(0x00, 0x00, 0xFF)),
     "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
@@ -60,18 +61,45 @@ NaviColors = {          # Inner Core Color         Outer Glow Color
     "Phantom Zelda":     (Color(0x97, 0x7A, 0x6C), Color(0x6F, 0x46, 0x67)),
 }
 
-sword_colors = {        # Initial Color            Fade Color
-    "Rainbow":           (Color(0x00, 0x00, 0x00), Color(0x00, 0x00, 0x00)),
-    "White":             (Color(0xFF, 0xFF, 0xFF), Color(0xFF, 0xFF, 0xFF)),
-    "Red":               (Color(0xFF, 0x00, 0x00), Color(0xFF, 0x00, 0x00)),
-    "Green":             (Color(0x00, 0xFF, 0x00), Color(0x00, 0xFF, 0x00)),
-    "Blue":              (Color(0x00, 0x00, 0xFF), Color(0x00, 0x00, 0xFF)),
-    "Cyan":              (Color(0x00, 0xFF, 0xFF), Color(0x00, 0xFF, 0xFF)),
-    "Magenta":           (Color(0xFF, 0x00, 0xFF), Color(0xFF, 0x00, 0xFF)),
-    "Orange":            (Color(0xFF, 0xA5, 0x00), Color(0xFF, 0xA5, 0x00)),
-    "Gold":              (Color(0xFF, 0xD7, 0x00), Color(0xFF, 0xD7, 0x00)),
-    "Purple":            (Color(0x80, 0x00, 0x80), Color(0x80, 0x00, 0x80)),
-    "Pink":              (Color(0xFF, 0x69, 0xB4), Color(0xFF, 0x69, 0xB4)),
+sword_trail_colors = {
+    "Rainbow":           Color(0x00, 0x00, 0x00),
+    "White":             Color(0xFF, 0xFF, 0xFF),
+    "Red":               Color(0xFF, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x00, 0xFF),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
+}
+
+bombchu_trail_colors = {
+    "Rainbow":           Color(0x00, 0x00, 0x00),
+    "Red":               Color(0xFA, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x00, 0xFF),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
+}
+
+boomerang_trail_colors = {
+    "Rainbow":           Color(0x00, 0x00, 0x00),
+    "Yellow":            Color(0xFF, 0xFF, 0x64),
+    "Red":               Color(0xFF, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x00, 0xFF),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
 }
 
 gauntlet_colors = {
@@ -88,6 +116,19 @@ gauntlet_colors = {
     "Orange":            Color(0xDA, 0x38, 0x00),
     "Lime":              Color(0x5B, 0xA8, 0x06),
     "Purple":            Color(0x80, 0x00, 0x80),
+}
+
+shield_frame_colors = {
+    "Red":               Color(0xD7, 0x00, 0x00),
+    "Green":             Color(0x00, 0xFF, 0x00),
+    "Blue":              Color(0x00, 0x40, 0xD8),
+    "Yellow":            Color(0xFF, 0xFF, 0x64),
+    "Cyan":              Color(0x00, 0xFF, 0xFF),
+    "Magenta":           Color(0xFF, 0x00, 0xFF),
+    "Orange":            Color(0xFF, 0xA5, 0x00),
+    "Gold":              Color(0xFF, 0xD7, 0x00),
+    "Purple":            Color(0x80, 0x00, 0x80),
+    "Pink":              Color(0xFF, 0x69, 0xB4),
 }
 
 heart_colors = {
@@ -225,13 +266,38 @@ def get_navi_color_options(outer=False):
     else:
         return meta_color_choices + get_navi_colors()
 
-    
-def get_sword_colors():
-    return list(sword_colors.keys())
+
+def get_sword_trail_colors():
+    return list(sword_trail_colors.keys())
 
 
-def get_sword_color_options():
-    return meta_color_choices + get_sword_colors()
+def get_sword_trail_color_options(outer=False):
+    if outer:
+        return ["[Same as Inner]"] + meta_color_choices + get_sword_trail_colors()
+    else:
+        return meta_color_choices + get_sword_trail_colors()
+
+
+def get_bombchu_trail_colors():
+    return list(bombchu_trail_colors.keys())
+
+
+def get_bombchu_trail_color_options(outer=False):
+    if outer:
+        return ["[Same as Inner]"] + meta_color_choices + get_bombchu_trail_colors()
+    else:
+        return meta_color_choices + get_bombchu_trail_colors()
+
+
+def get_boomerang_trail_colors():
+    return list(boomerang_trail_colors.keys())
+
+
+def get_boomerang_trail_color_options(outer=False):
+    if outer:
+        return ["[Same as Inner]"] + meta_color_choices + get_boomerang_trail_colors()
+    else:
+        return meta_color_choices + get_boomerang_trail_colors()
 
 
 def get_gauntlet_colors():
@@ -240,6 +306,14 @@ def get_gauntlet_colors():
 
 def get_gauntlet_color_options():
     return meta_color_choices + get_gauntlet_colors()
+
+
+def get_shield_frame_colors():
+    return list(shield_frame_colors.keys())
+
+
+def get_shield_frame_color_options():
+    return meta_color_choices + get_shield_frame_colors()
 
 
 def get_heart_colors():

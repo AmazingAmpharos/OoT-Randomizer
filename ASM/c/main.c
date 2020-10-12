@@ -7,7 +7,7 @@
 #include "text.h"
 #include "util.h"
 #include "dpad.h"
-#include "rainbow_sword.h"
+#include "misc_colors.h"
 #include "hud_colors.h"
 #include "z64.h"
 #include "chests.h"
@@ -26,7 +26,7 @@ void c_init() {
 void before_game_state_update() {
     handle_pending_items();
     handle_dpad();
-    update_color();
+    update_misc_colors();
     update_hud_colors();
     process_extern_ctxt();
     override_fog_state();
