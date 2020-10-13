@@ -94,18 +94,52 @@ def getRequiredHints(world):
     return ret
 
 
+# Helpers for conditional always hints
+def stones_required_by_settings(world):
+    if world.bridge == 'stones':
+        return world.bridge_stones
+    elif world.shuffle_ganon_bosskey == 'lacs_stones':
+        return world.lacs_stones
+    elif world.bridge == 'dungeons':
+        return max(world.bridge_rewards - 6, 0)
+    elif world.shuffle_ganon_bosskey == 'lacs_dungeons':
+        return max(world.lacs_rewards - 6, 0)
+
+    return 0
+
+
+def medallions_required_by_settings(world):
+    if world.bridge == 'medallions':
+        return world.bridge_medallions
+    elif world.shuffle_ganon_bosskey == 'lacs_medallions':
+        return world.lacs_medallions
+    elif world.bridge == 'dungeons':
+        return max(world.bridge_rewards - 3, 0)
+    elif world.shuffle_ganon_bosskey == 'lacs_dungeons':
+        return max(world.lacs_rewards - 3, 0)
+
+    return 0
+
+
+def tokens_required_by_settings(world):
+    if world.bridge == 'tokens':
+        return world.bridge_tokens
+
+    return 0
+
+
 # Hints required under certain settings
 conditional_always = {
     'Market 10 Big Poes':           lambda world: world.big_poe_count > 3,
     'Deku Theater Skull Mask':      lambda world: world.hint_dist == 'tournament' and world.open_kakariko == 'closed' and not world.complete_mask_quest,
     'Deku Theater Mask of Truth':   lambda world: not world.complete_mask_quest,
-    'Song from Ocarina of Time':    lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
-    'HF Ocarina of Time Item':      lambda world: world.bridge not in ('stones', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_stones', 'lacs_dungeons'),
-    'Sheik in Kakariko':            lambda world: world.bridge not in ('medallions', 'dungeons') and world.shuffle_ganon_bosskey not in ('lacs_medallions', 'lacs_dungeons'),
+    'Song from Ocarina of Time':    lambda world: stones_required_by_settings(world) < 2,
+    'HF Ocarina of Time Item':      lambda world: stones_required_by_settings(world) < 2,
+    'Sheik in Kakariko':            lambda world: medallions_required_by_settings(world) < 5,
     'DMT Biggoron':                 lambda world: world.logic_earliest_adult_trade != 'claim_check' or world.logic_latest_adult_trade != 'claim_check',
-    'Kak 50 Gold Skulltula Reward': lambda world: world.bridge != 'tokens' or world.bridge_tokens < 50,
-    'Kak 40 Gold Skulltula Reward': lambda world: world.bridge != 'tokens' or world.bridge_tokens < 40,
-    'Kak 30 Gold Skulltula Reward': lambda world: world.bridge != 'tokens' or world.bridge_tokens < 30,
+    'Kak 30 Gold Skulltula Reward': lambda world: tokens_required_by_settings(world) < 30,
+    'Kak 40 Gold Skulltula Reward': lambda world: tokens_required_by_settings(world) < 40,
+    'Kak 50 Gold Skulltula Reward': lambda world: tokens_required_by_settings(world) < 50,
 }
 
 
@@ -223,7 +257,6 @@ hintTable = {
     'Deku Seeds (30)':                                          (["catapult ammo", "lots-o-seeds"], "Deku Seeds (30 pieces)", 'item'),
     'Gold Skulltula Token':                                     (["proof of destruction", "an arachnid chip", "spider remains", "one percent of a curse"], "a Gold Skulltula Token", 'item'),
 
-    'Deku Theater Mask of Truth':                                  ("showing a #truthful eye to the crowd# rewards", "the #Mask of Truth# yields", ['overworld', 'sometimes']),
     'ZR Frogs Ocarina Game':                                       (["an #amphibian feast# yields", "the #croaking choir's magnum opus# awards", "the #froggy finale# yields"], "the final reward from the #Frogs of Zora's River# is", 'always'),
     'KF Links House Cow':                                          ("the #bovine bounty of a horseback hustle# gifts", "#Malon's obstacle course# leads to", 'always'),
 
@@ -238,6 +271,7 @@ hintTable = {
 
     'Market 10 Big Poes':                                          ("#ghost hunters# will be rewarded with", "catching #Big Poes# leads to", ['overworld', 'sometimes']),
     'Deku Theater Skull Mask':                                     ("the #Skull Mask# yields", None, ['overworld', 'sometimes']),
+    'Deku Theater Mask of Truth':                                  ("showing a #truthful eye to the crowd# rewards", "the #Mask of Truth# yields", ['overworld', 'sometimes']),
     'HF Ocarina of Time Item':                                     ("the #treasure thrown by Princess Zelda# is", None, ['overworld', 'sometimes']),
     'DMT Biggoron':                                                ("#Biggoron# crafts", None, ['overworld', 'sometimes']),
     'Kak 50 Gold Skulltula Reward':                                (["#50 bug badges# rewards", "#50 spider souls# yields", "#50 auriferous arachnids# lead to"], "slaying #50 Gold Skulltulas# reveals", ['overworld', 'sometimes']),
