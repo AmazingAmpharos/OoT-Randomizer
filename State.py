@@ -60,6 +60,10 @@ class State(object):
         return all(map(self.prog_items.__contains__, items))
 
 
+    def count_of(self, items):
+        return len(list(filter(self.prog_items.__contains__, items)))
+
+
     def item_count(self, item):
         return self.prog_items[item]
 
@@ -81,6 +85,17 @@ class State(object):
             + self.item_count('Piece of Heart') // 4
             + 3 # starting hearts
         )
+
+    def has_medallions(self, count):
+        return self.count_of(ItemInfo.medallions) >= count
+
+
+    def has_stones(self, count):
+        return self.count_of(ItemInfo.stones) >= count
+
+
+    def has_dungeon_rewards(self, count):
+        return (self.count_of(ItemInfo.medallions) + self.count_of(ItemInfo.stones)) >= count
 
 
     def had_night_start(self):

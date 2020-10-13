@@ -1030,20 +1030,24 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Set up Rainbow Bridge conditions
     symbol = rom.sym('RAINBOW_BRIDGE_CONDITION')
+    count_symbol = rom.sym('RAINBOW_BRIDGE_COUNT')
     if world.bridge == 'open':
         rom.write_int32(symbol, 0)
         save_context.write_bits(0xEDC, 0x20) # "Rainbow Bridge Built by Sages"
     elif world.bridge == 'medallions':
         rom.write_int32(symbol, 1)
+        rom.write_int16(count_symbol, world.bridge_medallions)
     elif world.bridge == 'dungeons':
         rom.write_int32(symbol, 2)
+        rom.write_int16(count_symbol, world.bridge_rewards)
     elif world.bridge == 'stones':
         rom.write_int32(symbol, 3)
+        rom.write_int16(count_symbol, world.bridge_stones)
     elif world.bridge == 'vanilla':
         rom.write_int32(symbol, 4)
     elif world.bridge == 'tokens':
         rom.write_int32(symbol, 5)
-        rom.write_int16(rom.sym('RAINBOW_BRIDGE_TOKENS'), world.bridge_tokens)
+        rom.write_int16(count_symbol, world.bridge_tokens)
 
     if world.triforce_hunt:
         rom.write_int16(rom.sym('triforce_pieces_requied'), world.triforce_goal)
@@ -1051,12 +1055,16 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Set up LACS conditions.
     symbol = rom.sym('LACS_CONDITION')
+    count_symbol = rom.sym('LACS_CONDITION_COUNT')
     if world.lacs_condition == 'medallions':
         rom.write_int32(symbol, 1)
+        rom.write_int16(count_symbol, world.lacs_medallions)
     elif world.lacs_condition == 'dungeons':
         rom.write_int32(symbol, 2)
+        rom.write_int16(count_symbol, world.lacs_rewards)
     elif world.lacs_condition == 'stones':
         rom.write_int32(symbol, 3)
+        rom.write_int16(count_symbol, world.lacs_stones)
     else:
         rom.write_int32(symbol, 0)
 
