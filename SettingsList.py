@@ -1910,21 +1910,6 @@ setting_infos = [
             "hide_when_disabled": True,
         },
     ),
-    Scale(
-        name           = 'bridge_tokens',
-        gui_text       = "Skulltulas Required for Bridge",
-        default        = 100,
-        min            = 1,
-        max            = 100,
-        gui_tooltip    = '''\
-            Select the amount of Gold Skulltula Tokens required to spawn the rainbow bridge.
-        ''',
-        shared         = True,
-        disabled_default = 0,
-        gui_params     = {
-            "hide_when_disabled": True,
-        },
-    ),
     Combobox(
         name           = 'logic_rules',
         gui_text       = 'Logic Rules',
