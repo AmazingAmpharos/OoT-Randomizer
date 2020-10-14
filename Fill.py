@@ -230,7 +230,7 @@ def fill_dungeons_restrictive(window, worlds, search, shuffled_locations, dungeo
     # sort in the order Other, Small Key, Boss Key before placing dungeon items
     # python sort is stable, so the ordering is still random within groups
     # fill_restrictive processes the resulting list backwards so the Boss Keys will actually be placed first
-    sort_order = {"BossKey": 3, "SmallKey": 2}
+    sort_order = {"BossKey": 3, "GanonBossKey": 3, "SmallKey": 2}
     dungeon_items.sort(key=lambda item: sort_order.get(item.type, 1))
 
     # place dungeon items
@@ -271,6 +271,13 @@ def fill_dungeon_unique_item(window, worlds, search, fill_locations, itempool):
         # cache this list to flag afterwards
         all_dungeon_locations.extend(dungeon_locations)
 
+        # Sort major items in such a way that they are placed first if dungeon restricted.
+        # There still won't be enough locations for small keys in one item per dungeon mode, though.
+        for item in list(major_items):
+            if not item.world.get_region('Root').can_fill(item):
+                major_items.remove(item)
+                major_items.append(item)
+
         # place 1 item into the dungeon
         fill_restrictive(window, worlds, base_search, dungeon_locations, major_items, 1)
 
@@ -285,6 +292,11 @@ def fill_dungeon_unique_item(window, worlds, search, fill_locations, itempool):
     # locations instead of the dungeon because some locations are not in the dungeon
     for location in all_dungeon_locations:
         location.minor_only = True
+
+    # Error out if we have any items that won't be placeable in the overworld left.
+    for item in major_items:
+        if not item.world.get_region('Root').can_fill(item):
+            raise FillError(f"No more dungeon locations available for {item.name} to be placed with 'Dungeons Have One Major Item' enabled.")
 
     logger.info("Unique dungeon items placed")
 

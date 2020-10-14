@@ -67,18 +67,18 @@ class Region(object):
             is_self_dungeon_restricted = self.world.shuffle_mapcompass in ['dungeon', 'vanilla']
             is_dungeon_restricted = self.world.shuffle_mapcompass == 'dungeons'
             is_overworld_restricted = self.world.shuffle_mapcompass == 'overworld'
-        elif item.smallkey and item.type != 'FortressSmallKey':
+        elif item.type == 'SmallKey':
             is_self_dungeon_restricted = self.world.shuffle_smallkeys in ['dungeon', 'vanilla']
             is_dungeon_restricted = self.world.shuffle_smallkeys == 'dungeons'
             is_overworld_restricted = self.world.shuffle_smallkeys == 'overworld'
         elif item.type == 'FortressSmallKey':
             is_dungeon_restricted = self.world.shuffle_fortresskeys == 'dungeons'
             is_overworld_restricted = self.world.shuffle_fortresskeys == 'overworld'
-        elif item.bosskey and not item.name.endswith('(Ganons Castle)'):
+        elif item.type == 'BossKey':
             is_self_dungeon_restricted = self.world.shuffle_bosskeys in ['dungeon', 'vanilla']
             is_dungeon_restricted = self.world.shuffle_bosskeys == 'dungeons'
             is_overworld_restricted = self.world.shuffle_bosskeys == 'overworld'
-        elif item.bosskey and item.name.endswith('(Ganons Castle)'):
+        elif item.type == 'GanonBossKey':
             is_self_dungeon_restricted = self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']
             is_dungeon_restricted = self.world.shuffle_ganon_bosskey == 'dungeons'
             is_overworld_restricted = self.world.shuffle_ganon_bosskey == 'overworld'

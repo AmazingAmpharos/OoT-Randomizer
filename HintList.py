@@ -202,6 +202,7 @@ hintTable = {
     'Map':                                                      (["a dungeon atlas", "blueprints"], "a Map", 'item'),
     'Compass':                                                  (["a treasure tracker", "a magnetic needle"], "a Compass", 'item'),
     'BossKey':                                                  (["a master of unlocking", "a dungeon's master pass"], "a Boss Key", 'item'),
+    'GanonBossKey':                                             (["a master of unlocking", "a dungeon's master pass"], "a Boss Key", 'item'),
     'SmallKey':                                                 (["a tool for unlocking", "a dungeon pass", "a lock remover", "a lockpick"], "a Small Key", 'item'),
     'FortressSmallKey':                                         (["a get out of jail free card"], "a Jail Key", 'item'),
     'KeyError':                                                 (["something mysterious", "an unknown treasure"], "An Error (Please Report This)", 'item'),

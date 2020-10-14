@@ -2571,6 +2571,9 @@ setting_infos = [
             'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
             for a milder Keysanity experience.
         ''',
+        disable        = {
+            'dungeons': {'settings': ['one_item_per_dungeon']},
+        },
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -2583,9 +2586,9 @@ setting_infos = [
         disabled_default = 'remove',
         choices        = {
             'vanilla':   'Vanilla Locations',
-            'overworld': 'Overworld Only',
-            'dungeons':  'Dungeons Only',
-            'keysanity': 'Anywhere',
+            'overworld': 'Overworld Only (Keysanity)',
+            'dungeons':  'Any Dungeon (Keysanity)',
+            'keysanity': 'Anywhere (Keysanity)',
         },
         gui_tooltip    = '''\
             'Vanilla': Gerudo Fortress Keys will appear in their

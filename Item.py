@@ -95,7 +95,7 @@ class Item(object):
 
     @property
     def bosskey(self):
-        return self.type == 'BossKey'
+        return self.type == 'BossKey' or self.type == 'GanonBossKey'
 
 
     @property
@@ -130,9 +130,9 @@ class Item(object):
             return False
         if self.type == 'FortressSmallKey' and self.world.shuffle_fortresskeys == 'vanilla':
             return False
-        if self.bosskey and not self.name.endswith('(Ganons Castle)') and self.world.shuffle_bosskeys in ['dungeon', 'vanilla']:
+        if self.type == 'BossKey' and self.world.shuffle_bosskeys in ['dungeon', 'vanilla']:
             return False
-        if self.bosskey and self.name.endswith('(Ganons Castle)') and self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']:
+        if self.type == 'GanonBossKey' and self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']:
             return False
 
         return True
