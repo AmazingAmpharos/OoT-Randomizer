@@ -133,6 +133,8 @@ player.
 * Removed tricks
   * `Water Temple Boss Key Chest with Iron Boots`
   * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
+* Changed Tricks
+  * Burning the two vertical webs in the Deku Tree basement with bow is now default logic. The relevant trick has been renamed to `Deku Tree Basement Web to Gohma with Bow` to reflect this.
 * New "Hint Distribution" customization options
   * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
   * Custom hint distributions can be added to this folder, or defined directly in Plando files.
