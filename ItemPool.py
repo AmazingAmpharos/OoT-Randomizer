@@ -817,7 +817,9 @@ def get_pool_core(world):
     elif world.item_pool_value == 'plentiful':
         ruto_bottles += 1
 
-    if world.shuffle_weird_egg:
+    if world.free_zelda:
+        placed_items['HC Malon Egg'] = 'Recovery Heart'
+    elif world.shuffle_weird_egg:
         pool.append('Weird Egg')
     else:
         placed_items['HC Malon Egg'] = 'Weird Egg'

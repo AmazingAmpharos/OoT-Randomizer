@@ -1985,6 +1985,15 @@ setting_infos = [
         disabled_default = 0,
     ),
     Checkbutton(
+        name           = 'free_zelda',
+        gui_text       = 'Free Zelda',
+        gui_tooltip    = '''\
+            Start having already met Zelda and obtained
+            Zelda's Letter along with the song from Impa.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
         name           = 'no_escape_sequence',
         gui_text       = 'Skip Tower Escape Sequence',
         gui_tooltip    = '''\

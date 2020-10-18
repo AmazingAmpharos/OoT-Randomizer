@@ -6,7 +6,8 @@
             "Links Pocket": "True"
         },
         "exits": {
-            "Root Exits": "is_starting_age or Time_Travel"
+            "Root Exits": "is_starting_age or Time_Travel",
+            "HC Garden Locations": "free_zelda"
         }
     },
     {
@@ -440,7 +441,7 @@
         "exits": {
             "Market": "True",
             #// garden will logically need weird-egg as letter first can screw over the mask quest
-            "HC Garden": "Weird_Egg or (not shuffle_weird_egg)",
+            "HC Garden": "Weird_Egg or free_zelda or (not shuffle_weird_egg)",
             "HC Great Fairy Fountain": "True",
             "HC Storms Grotto": "can_play(Song_of_Storms)"
         }
@@ -448,12 +449,18 @@
     {
         "region_name": "HC Garden",
         "hint": "Hyrule Castle",
+        "exits": {
+            "HC Garden Locations": "True",
+            "Hyrule Castle Grounds": "True"
+        }
+    },
+    {
+        # Directly reachable from Root in "Free Zelda"
+        "region_name": "HC Garden Locations",
+        "hint": "Hyrule Castle",
         "locations": {
             "HC Zeldas Letter": "True",
             "Song from Impa": "True"
-        },
-        "exits": {
-            "Hyrule Castle Grounds": "True"
         }
     },
     {
