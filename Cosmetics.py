@@ -391,17 +391,17 @@ def patch_navi_colors(rom, settings, log, symbols):
         # colors for Navi
         ('Navi Idle',            settings.navi_color_default_inner, settings.navi_color_default_outer,
             [0x00B5E184], # Default (Player)
-            symbols['CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED']),
+            symbols.get('CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED', None), symbols.get('CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED', None)),
         ('Navi Targeting Enemy', settings.navi_color_enemy_inner,   settings.navi_color_enemy_outer,
             [0x00B5E19C, 0x00B5E1BC],  # Enemy, Boss
-            symbols['CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED']),
+            symbols.get('CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED', None), symbols.get('CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED', None)),
         ('Navi Targeting NPC',   settings.navi_color_npc_inner,     settings.navi_color_npc_outer,
             [0x00B5E194], # NPC
-            symbols['CFG_RAINBOW_NAVI_NPC_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED']),
+            symbols.get('CFG_RAINBOW_NAVI_NPC_INNER_ENABLED', None), symbols.get('CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED', None)),
         ('Navi Targeting Prop',  settings.navi_color_prop_inner,    settings.navi_color_prop_outer,
             [0x00B5E174, 0x00B5E17C, 0x00B5E18C, 0x00B5E1A4, 0x00B5E1AC,
              0x00B5E1B4, 0x00B5E1C4, 0x00B5E1CC, 0x00B5E1D4], # Everything else
-            symbols['CFG_RAINBOW_NAVI_PROP_INNER_ENABLED'], symbols['CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED']),
+            symbols.get('CFG_RAINBOW_NAVI_PROP_INNER_ENABLED', None), symbols.get('CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED', None)),
     ]
 
     navi_color_list = get_navi_colors()
@@ -422,16 +422,20 @@ def patch_navi_colors(rom, settings, log, symbols):
         colors = []
         for address in navi_addresses:
             # set rainbow option
-            if navi_option_inner == 'Rainbow':
+            if rainbow_inner_symbol is not None and navi_option_inner == 'Rainbow':
                 rom.write_byte(rainbow_inner_symbol, 0x01)
                 inner_color = [0x00, 0x00, 0x00]
-            else:
+            elif rainbow_inner_symbol is not None:
                 rom.write_byte(rainbow_inner_symbol, 0x00)
-            if navi_option_outer == 'Rainbow':
+            else:
+                navi_option_inner = 'Completely Random'
+            if rainbow_outer_symbol is not None and navi_option_outer == 'Rainbow':
                 rom.write_byte(rainbow_outer_symbol, 0x01)
                 outer_color = [0x00, 0x00, 0x00]
-            else:
+            elif rainbow_outer_symbol is not None:
                 rom.write_byte(rainbow_outer_symbol, 0x00)
+            else:
+                navi_option_outer = 'Completely Random'
 
             # completely random is random for every subgroup
             if navi_option_inner == 'Completely Random':
@@ -480,7 +484,7 @@ def patch_sword_trails(rom, settings, log, symbols):
     sword_trails = [
         ('Sword Trail', settings.sword_trail_color_inner, settings.sword_trail_color_outer,
             [(0x00BEFF7C, 0xB0, 0x40, 0xB0, 0xFF), (0x00BEFF84, 0x20, 0x00, 0x10, 0x00)],
-            symbols['CFG_RAINBOW_SWORD_INNER_ENABLED'], symbols['CFG_RAINBOW_SWORD_OUTER_ENABLED']),
+            symbols.get('CFG_RAINBOW_SWORD_INNER_ENABLED', None), symbols.get('CFG_RAINBOW_SWORD_OUTER_ENABLED', None)),
     ]
 
     sword_trail_color_list = get_sword_trail_colors()
@@ -501,16 +505,20 @@ def patch_sword_trails(rom, settings, log, symbols):
         colors = []
         for address, inner_transparency, inner_white_transparency, outer_transparency, outer_white_transparency in trail_addresses:
             # set rainbow option
-            if option_inner == 'Rainbow':
+            if rainbow_inner_symbol is not None and option_inner == 'Rainbow':
                 rom.write_byte(rainbow_inner_symbol, 0x01)
                 inner_color = [0x00, 0x00, 0x00]
-            else:
+            elif rainbow_inner_symbol is not None:
                 rom.write_byte(rainbow_inner_symbol, 0x00)
-            if option_outer == 'Rainbow':
+            else:
+                option_inner = 'Completely Random'
+            if rainbow_outer_symbol is not None and option_outer == 'Rainbow':
                 rom.write_byte(rainbow_outer_symbol, 0x01)
                 outer_color = [0x00, 0x00, 0x00]
-            else:
+            elif rainbow_outer_symbol is not None:
                 rom.write_byte(rainbow_outer_symbol, 0x00)
+            else:
+                option_outer = 'Completely Random'
 
             # completely random is random for every subgroup
             if option_inner == 'Completely Random':
@@ -960,6 +968,8 @@ global_patch_sets = [
     patch_targeting,
     patch_music,
     patch_tunic_colors,
+    patch_navi_colors,
+    patch_sword_trails,
     patch_gauntlet_colors,
     patch_shield_frame_colors,
     patch_sfx,
@@ -1079,10 +1089,6 @@ def patch_cosmetics(settings, rom):
     random.seed()
     settings.resolve_random_settings(cosmetic=True)
 
-    # patch cosmetics that use vanilla oot data, and always compatible
-    for patch_func in global_patch_sets:
-        patch_func(rom, settings, log, {})
-
     # try to detect the cosmetic patch data format
     versioned_patch_set = None
     cosmetic_context = rom.read_int32(rom.sym('RANDO_CONTEXT') + 4)
@@ -1112,9 +1118,17 @@ def patch_cosmetics(settings, rom):
         if cosmetic_version != rom.read_int32(rom.sym('COSMETIC_FORMAT_VERSION')):
             log.error = "ROM uses old cosmetic patch format."
 
+        # patch cosmetics that use vanilla oot data, and always compatible
+        for patch_func in [patch for patch in global_patch_sets if patch not in versioned_patch_set['patches']]:
+            patch_func(rom, settings, log, {})
+
         for patch_func in versioned_patch_set['patches']:
             patch_func(rom, settings, log, cosmetic_context_symbols)
     else:
+        # patch cosmetics that use vanilla oot data, and always compatible
+        for patch_func in global_patch_sets:
+            patch_func(rom, settings, log, {})
+
         # Unknown patch format
         log.error = "Unable to patch some cosmetics. ROM uses unknown cosmetic patch format."
 
