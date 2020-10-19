@@ -5,10 +5,7 @@
     "add_locations":         [
         { "location": "Deku Theater Skull Mask", "types": ["always"] }
     ],
-    "remove_locations":      [
-        { "location": "Kak 40 Gold Skulltula Reward", "types": ["always"] },
-        { "location": "Kak 50 Gold Skulltula Reward", "types": ["always"] },
-        { "location": "GF HBA 1500 Points", "types": ["sometimes"] }],
+    "remove_locations":      [],
     "add_items":             [],
     "remove_items":          [],
     "dungeons_woth_limit":   2,
