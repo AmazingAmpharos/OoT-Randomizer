@@ -66,10 +66,9 @@
             #placement this is not an issue as Adult can go back to forest for the Baba's there.
             #Entrance rando cannot rely on this for the case forest completion was done on non
             #repeatable access.
-            "Deku Baba Sticks": "(is_adult and not shuffle_dungeon_entrances) or Kokiri_Sword or Boomerang",
-            "Deku Baba Nuts": "
-                (is_adult and not shuffle_dungeon_entrances) or Slingshot or Sticks or 
-                has_explosives or Kokiri_Sword or can_use(Dins_Fire)",
+            "Deku Baba Sticks": "
+                (is_adult and not shuffle_dungeon_entrances) or can_use(Kokiri_Sword) or can_use(Boomerang)",
+            "Deku Baba Nuts": "is_adult and not shuffle_dungeon_entrances",
             "KF Deku Tree Gossip Stone (Left)": "True",
             "KF Deku Tree Gossip Stone (Right)": "True"
         },
@@ -580,7 +579,7 @@
             "Market Potion Shop": "is_child and at_day",
             "Market Treasure Chest Game": "is_child and at_night",
             "Market Bombchu Shop": "is_child and at_night",
-            "Market Dog Lady": "is_child",
+            "Market Dog Lady House": "is_child",
             "Market Man in Green House": "is_child and at_night"
         }
     },
@@ -743,7 +742,7 @@
     {
         "region_name": "Market Shooting Gallery",
         "locations": {
-            "Market Shooting Gallery": "is_child"
+            "Market Shooting Gallery Reward": "is_child"
         },
         "exits": {
             "Market": "True"
@@ -779,7 +778,7 @@
     {
         "region_name": "Market Treasure Chest Game",
         "locations": {
-            "Market Treasure Chest Game": "can_use(Lens_of_Truth)"
+            "Market Treasure Chest Game Reward": "can_use(Lens_of_Truth)"
         },
         "exits": {
             "Market": "True"
@@ -802,9 +801,9 @@
         }
     },
     {
-        "region_name": "Market Dog Lady",
+        "region_name": "Market Dog Lady House",
         "locations": {
-            "Market Dog Lady": "at_night"
+            "Market Lost Dog": "at_night"
         },
         "exits": {
             "Market": "True"
@@ -979,7 +978,7 @@
     {
         "region_name": "Kak Shooting Gallery",
         "locations": {
-            "Kak Shooting Gallery": "is_adult and Bow"
+            "Kak Shooting Gallery Reward": "is_adult and Bow"
         },
         "exits": {
             "Kakariko Village": "True"
@@ -1134,7 +1133,7 @@
                 (damage_multiplier != 'ohko') or can_use(Nayrus_Love) or Fairy or can_use(Hover_Boots) or
                 (is_adult and here(can_plant_bean and (has_explosives or Progressive_Strength_Upgrade)))",
             "DMT GS Bean Patch": "
-                can_plant_bugs and
+                can_plant_bugs and can_child_attack and
                     (has_explosives or Progressive_Strength_Upgrade or
                     (logic_dmt_soil_gs and can_use(Boomerang)))",
             "DMT GS Near Kak": "can_blast_or_smash",
@@ -1150,7 +1149,9 @@
             "Kak Behind Gate": "True",
             "Goron City": "True",
             "Death Mountain Summit": "
-                here(can_blast_or_smash) or (is_adult and here(can_plant_bean and Progressive_Strength_Upgrade))",
+                here(can_blast_or_smash) or
+                    (is_adult and here(can_plant_bean and Progressive_Strength_Upgrade)) or
+                    (logic_dmt_climb_hovers and can_use(Hover_Boots))",
             "Dodongos Cavern Entryway": "
                 has_explosives or Progressive_Strength_Upgrade or is_adult",
             "DMT Storms Grotto": "can_open_storm_grotto"
@@ -1227,6 +1228,9 @@
             "GC Rolling Goron as Child": "
                 is_child and 
                 (has_explosives or (Progressive_Strength_Upgrade and logic_child_rolling_with_strength))",
+            "GC Medigoron": "
+                is_adult and Progressive_Wallet and 
+                (can_blast_or_smash or Progressive_Strength_Upgrade)",
             "GC Rolling Goron as Adult": "'Stop GC Rolling Goron as Adult'",
             "GC GS Boulder Maze": "is_child and has_explosives",
             "GC GS Center Platform": "is_adult",
@@ -1250,12 +1254,14 @@
                 (is_adult and 'Stop GC Rolling Goron as Adult') or
                 (is_child and can_play(Zeldas_Lullaby))",
             "GC Grotto": "
-                is_adult and 
+                is_adult and
                 ((can_play(Song_of_Time) and 
-                    ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                        can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love))) or 
-                (damage_multiplier != 'ohko' and can_use(Goron_Tunic) and can_use(Hookshot)) or 
-                (can_use(Nayrus_Love) and can_use(Hookshot)))"
+                        ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
+                            can_use(Goron_Tunic) or can_use(Longshot) or can_use(Nayrus_Love))) or 
+                    (can_use(Hookshot) and
+                        ((damage_multiplier != 'ohko' and can_use(Goron_Tunic)) or
+                            can_use(Nayrus_Love) or
+                            (damage_multiplier != 'ohko' and damage_multiplier != 'quadruple' and logic_goron_grotto))))"
         }
     },
     {
@@ -1465,7 +1471,9 @@
             "Gossip Stone Fairy": "can_summon_gossip_fairy and has_bottle",
             "Bean Plant Fairy": "can_plant_bean and can_play(Song_of_Storms) and has_bottle",
             "Butterfly Fairy": "can_use(Sticks) and has_bottle",
-            "Bug Shrub": "can_cut_shrubs and has_bottle"
+            "Bug Shrub": "
+                (is_child or can_use(Hover_Boots) or (is_adult and logic_zora_river_lower)) and
+                can_cut_shrubs and has_bottle"
         },
         "exits": {
             "ZR Front": "True",
@@ -1504,7 +1512,8 @@
                 is_child and Rutos_Letter and zora_fountain != 'open'",
             "ZD King Zora Thawed": "'King Zora Thawed'",
             "ZD GS Frozen Waterfall": "
-                is_adult and at_night and (Progressive_Hookshot or Bow or Magic_Meter)",
+                is_adult and at_night and
+                (Progressive_Hookshot or Bow or Magic_Meter or logic_domain_gs)",
             "ZD Gossip Stone": "True",
             "Gossip Stone Fairy": "can_summon_gossip_fairy_without_suns and has_bottle",
             "Fish Group": "is_child and has_bottle",
@@ -1847,7 +1856,9 @@
     {
         "region_name": "HC Storms Grotto",
         "locations": {
-            "HC GS Storms Grotto": "can_blast_or_smash and (can_use(Boomerang) or can_use(Hookshot))",
+            "HC GS Storms Grotto": "
+                (can_blast_or_smash or (is_child and logic_castle_storms_gs)) and
+                (can_use(Boomerang) or can_use(Hookshot))",
             "HC Storms Grotto Gossip Stone": "can_blast_or_smash",
             "Gossip Stone Fairy": "can_blast_or_smash and can_summon_gossip_fairy and has_bottle",
             "Wandering Bugs": "can_blast_or_smash and has_bottle",

@@ -33,6 +33,7 @@ item_table = {
     'Eyedrops':                                        ('Item',     True,  0x25, None),
     'Claim Check':                                     ('Item',     True,  0x26, None),
     'Kokiri Sword':                                    ('Item',     True,  0x27, None),
+    'Giants Knife':                                    ('Item',     True,  0x28, None),
     'Deku Shield':                                     ('Item',     None,  0x29, None),
     'Hylian Shield':                                   ('Item',     None,  0x2A, None),
     'Mirror Shield':                                   ('Item',     True,  0x2B, None),

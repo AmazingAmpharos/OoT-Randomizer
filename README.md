@@ -103,17 +103,56 @@ player.
   * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
 * New setting `Complete Mask Quest`
   * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
+* Updated setting `Shuffle Songs`
+  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
+  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
+  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
+* New setting `Shuffle Medigoron & Carpet Salesman`
+  * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
 * New cosmetic setting `HUD Button Colors`
   * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
-  * Or you can completely randomize all the button colors.
+  * Or you can randomize the button color scheme. (We'll try to keep the button text readable.)
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* New tricks
+  * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
+  * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
+  * `Spirit Temple Main Room Jump from Hands to Upper Ledges` - make a precise jump without Hookshot or Hover Boots.
+  * `Water Temple Falling Platform Room GS with Boomerang` - use the Boomerang from the very edge of the platform.
+  * `Death Mountain Trail Climb with Hover Boots` - get past the boulders without destroying them.
+  * `Zora's Domain GS with No Additional Items` - use only a jumpslash.
+  * `Ice Cavern Block Room GS with Hover Boots` - reach the GS with the Hover Boots to jumpslash it.
+  * `Hyrule Castle Storms Grotto GS with Just Boomerang` - make a precise throw with the Boomerang to send it behind the wall.
+  * `Water Temple Central Pillar GS with Iron Boots` - unlock the door on the middle level before raising the water.
+  * `Water Temple Dragon Statue Switch from Above the Water as Adult` - trigger the switch from dry land, then use Iron Boots, any Scale, or a jump dive coming from the river.
+  * `Water Temple Dragon Statue Switch from Above the Water as Child` - same but for child. The Scale dive is very precise.
+  * `Goron City Grotto with Hookshot While Taking Damage` - brave the heat, but be quick.
+  * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
+  * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
+* Removed tricks
+  * `Water Temple Boss Key Chest with Iron Boots`
+  * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
+* New "Hint Distribution" customization options
+  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
+  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
+  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
+  * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
+* Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
+* Tournament hint distribution changes <!-- keep updated if there are changes later -->
+  * Temple of Time stones all provide the same hint.
+  * Grotto stones are disabled and only provide junk hints.
+  * Only "always" and "WotH" hints have duplicates now.
+  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 0 barren, 4(remainder) sometimes.
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
+* Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
+* Avoid crashing on some systems when using child items as adult.
+* Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
+* Prevent Gerudo guards from throwing child Link in jail.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:
@@ -135,6 +174,7 @@ player.
 * The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
+* Changed some C code to support GCC 10 in development n64 compilation.
 * Added decompressor source and updated Decompress binaries.
 * OoTRandomizer.py returns an error code on failure to interact better with user scripting.
 * Plandomizer distribution files are copied to the Output directory next to the Spoiler and Cosmetics logs.

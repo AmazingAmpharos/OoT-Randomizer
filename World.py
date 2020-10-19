@@ -1,21 +1,23 @@
 import copy
 import logging
 import random
+import os
 
 from DungeonList import create_dungeons
 from Entrance import Entrance
 from HintList import getRequiredHints
-from Hints import get_hint_area
+from Hints import get_hint_area, hint_dist_keys
 from Item import Item, ItemFactory, MakeEventItem
 from ItemList import item_table
 from Location import Location, LocationFactory
 from LocationList import business_scrubs
+from Plandomizer import InvalidFileException
 from Region import Region, TimeOfDay
 from Rules import set_rules, set_shop_rules
 from RuleParser import Rule_AST_Transformer
 from SettingsList import get_setting_info, get_settings_from_section
 from State import State
-from Utils import read_json
+from Utils import read_json, data_path
 
 class World(object):
 
@@ -35,6 +37,7 @@ class World(object):
         self.maximum_wallets = 0
         self.light_arrow_location = None
         self.triforce_count = 0
+        self.bingosync_url = None
 
         self.parser = Rule_AST_Transformer(self)
         self.event_items = set()
@@ -108,7 +111,65 @@ class World(object):
 
         self.resolve_random_settings()
 
+        if len(settings.hint_dist_user) == 0:
+            dists_json = os.listdir(data_path('Hints/'))
+            for d in dists_json:
+                dist = read_json(os.path.join(data_path('Hints/'), d))
+                if dist['name'] == self.hint_dist:
+                    self.hint_dist_user = dist
+        else:
+            self.hint_dist = 'custom'
+            
+        # Validate hint distribution format
+        # Originally built when I was just adding the type distributions
+        # Location/Item Additions and Overrides are not validated
+        hint_dist_valid = False
+        if all(key in self.hint_dist_user['distribution'] for key in hint_dist_keys):
+            hint_dist_valid = True
+            sub_keys = {'order', 'weight', 'fixed', 'copies'}
+            for key in self.hint_dist_user['distribution']:
+                if not all(sub_key in sub_keys for sub_key in self.hint_dist_user['distribution'][key]):
+                    hint_dist_valid = False
+        if not hint_dist_valid:
+            raise InvalidFileException("""Hint distributions require all hint types be present in the distro 
+                                          (trial, always, woth, barren, item, song, overworld, dungeon, entrance,
+                                          sometimes, random, junk, named-item). If a hint type should not be
+                                          shuffled, set its order to 0. Hint type format is \"type\": { 
+                                          \"order\": 0, \"weight\": 0.0, \"fixed\": 0, \"copies\": 0 }""")
+        
+        self.added_hint_types = {}
+        self.item_added_hint_types = {}
+        self.hint_type_overrides = {}
+        self.item_hint_type_overrides = {}
+        for dist in hint_dist_keys:
+            self.added_hint_types[dist] = []
+            for loc in self.hint_dist_user['add_locations']:
+                if 'types' in loc:
+                    if dist in loc['types']:
+                        self.added_hint_types[dist].append(loc['location'])
+            self.item_added_hint_types[dist] = []
+            for i in self.hint_dist_user['add_items']:
+                if dist in i['types']:
+                    self.item_added_hint_types[dist].append(i['item'])
+            self.hint_type_overrides[dist] = []
+            for loc in self.hint_dist_user['remove_locations']:
+                if dist in loc['types']:
+                    self.hint_type_overrides[dist].append(loc['location'])
+            self.item_hint_type_overrides[dist] = []
+            for i in self.hint_dist_user['remove_items']:
+                if dist in i['types']:
+                    self.item_hint_type_overrides[dist].append(i['item'])
+
+        self.hint_text_overrides = {}
+        for loc in self.hint_dist_user['add_locations']:
+            if 'text' in loc:
+                # Arbitrarily throw an error at 80 characters to prevent overfilling the text box.
+                if len(loc['text']) > 80:
+                    raise Exception('Custom hint text too large for %s', loc['location'])
+                self.hint_text_overrides.update({loc['location']: loc['text']})
+
         self.always_hints = [hint.name for hint in getRequiredHints(self)]
+        
         self.state = State(self)
 
         # Allows us to cut down on checking whether some items are required
@@ -596,6 +657,14 @@ class World(object):
             exclude_item_list.append('Serenade of Water')
             exclude_item_list.append('Prelude of Light')
 
+        for i in self.item_hint_type_overrides['barren']:
+            if i in exclude_item_list:
+                exclude_item_list.remove(i)
+
+        for i in self.item_added_hint_types['barren']:
+            if not (i in exclude_item_list):
+                exclude_item_list.append(i)
+
         # The idea here is that if an item shows up in woth, then the only way
         # that another copy of that major item could ever be required is if it
         # is a progressive item. Normally this applies to things like bows, bombs
@@ -635,7 +704,8 @@ class World(object):
                 world_id = location.item.world.id
                 item = location.item
 
-                if (not location.item.majoritem) or (location.item.name in exclude_item_list):
+                if ((not location.item.majoritem) or (location.item.name in exclude_item_list)) and \
+                    (location.item.name not in self.item_hint_type_overrides['barren']):
                     # Minor items are always useless in logic
                     continue
 

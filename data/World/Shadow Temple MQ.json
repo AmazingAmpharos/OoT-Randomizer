@@ -62,11 +62,13 @@
             "Shadow Temple MQ Falling Spikes Switch Chest": "
                 (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
             "Shadow Temple MQ Invisible Spikes Chest": "
-                Hover_Boots and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)) and (Small_Key_Shadow_Temple, 3)",
+                Hover_Boots and (Small_Key_Shadow_Temple, 3) and
+                (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))",
             "Shadow Temple MQ Stalfos Room Chest": "
-                Hover_Boots and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)) and (Small_Key_Shadow_Temple, 3) 
-                and Progressive_Hookshot",
-            "Shadow Temple MQ GS Falling Spikes Room": "Progressive_Hookshot"
+                Hover_Boots and (Small_Key_Shadow_Temple, 3) and Progressive_Hookshot and
+                (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))",
+            "Shadow Temple MQ GS Falling Spikes Room": "
+                (logic_shadow_umbrella_gs and Hover_Boots) or Progressive_Hookshot"
         },
         "exits": {
             "Shadow Temple Wind Tunnel": "

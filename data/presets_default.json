@@ -275,6 +275,7 @@
     "shuffle_weird_egg": true,
     "shuffle_gerudo_card": true,
     "shuffle_beans": true,
+    "shuffle_medigoron_carpet_salesman": true,
     "shuffle_mapcompass": "remove",
     "shuffle_smallkeys": "keysanity",
     "shuffle_bosskeys": "keysanity",

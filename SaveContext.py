@@ -855,10 +855,14 @@ class SaveContext():
         "Mirror Shield"  : {'equip_items.mirror_shield' : True},
         "Kokiri Sword"   : {'equip_items.kokiri_sword'  : True},
         "Master Sword"   : {'equip_items.master_sword'  : True},
+        "Giants Knife" : {
+            'equip_items.biggoron_sword' : True,
+            'bgs_hits_left'              : 8,
+        },
         "Biggoron Sword" : {
             'equip_items.biggoron_sword' : True,
             'bgs_flag'                   : True,
-            'bgs_hits_left'              : True,
+            'bgs_hits_left'              : 1,
         },
         "Gerudo Membership Card" : {'quest.gerudos_card'             : True},
         "Stone of Agony"         : {'quest.stone_of_agony'           : True},

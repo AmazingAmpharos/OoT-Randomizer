@@ -51,7 +51,7 @@ location_table = {
     "LW Near Shortcuts Grotto Chest":                  ("Chest",       0x3E,  0x14, None,                     ("the Lost Woods", "Forest", "Grottos")),
     "DMT Storms Grotto Chest":                         ("Chest",       0x3E,  0x17, None,                     ("Death Mountain Trail", "Death Mountain", "Grottos")),
     "DMC Upper Grotto Chest":                          ("Chest",       0x3E,  0x1A, None,                     ("Death Mountain Crater", "Death Mountain", "Grottos")),
-    "Market Treasure Chest Game":                      ("Chest",       0x10,  0x0A, None,                     ("the Market", "Market", "Minigames")),
+    "Market Treasure Chest Game Reward":               ("Chest",       0x10,  0x0A, None,                     ("the Market", "Market", "Minigames")),
 
     "ToT Light Arrows Cutscene":                       ("Cutscene",    0xFF,  0x01, None,                     ("Temple of Time", "Market",)),
     "LW Gift from Saria":                              ("Cutscene",    0xFF,  0x02, None,                     ("the Lost Woods", "Forest",)),
@@ -87,7 +87,7 @@ location_table = {
     "Market Bombchu Bowling First Prize":              ("NPC",         0x4B,  0x34, None,                     ("the Market", "Market", "Minigames")),
     "Market Bombchu Bowling Second Prize":             ("NPC",         0x4B,  0x3E, None,                     ("the Market", "Market", "Minigames")),
     "Market Bombchu Bowling Bombchus":                 ("NPC",         0x4B,  None, None,                     ("the Market", "Market", "Minigames")),
-    "Market Dog Lady":                                 ("NPC",         0x35,  0x3E, None,                     ("the Market", "Market",)),
+    "Market Lost Dog":                                 ("NPC",         0x35,  0x3E, None,                     ("the Market", "Market",)),
     "LW Skull Kid":                                    ("NPC",         0x5B,  0x3E, None,                     ("the Lost Woods", "Forest",)),
     "LW Ocarina Memory Game":                          ("NPC",         0x5B,  0x76, None,                     ("the Lost Woods", "Forest", "Minigames")),
     "Kak 10 Gold Skulltula Reward":                    ("NPC",         0x50,  0x45, None,                     ("Kakariko Village", "Kakariko", "Skulltula House")),
@@ -101,8 +101,8 @@ location_table = {
     "ZR Frogs in the Rain":                            ("NPC",         0x54,  0x3E, None,                     ("Zora's River", "Minigames",)),
     "GF HBA 1000 Points":                              ("NPC",         0x5D,  0x3E, None,                     ("Gerudo's Fortress", "Gerudo", "Minigames")),
     "GF HBA 1500 Points":                              ("NPC",         0x5D,  0x30, None,                     ("Gerudo's Fortress", "Gerudo", "Minigames")),
-    "Market Shooting Gallery":                         ("NPC",         0x42,  0x60, None,                     ("the Market", "Market", "Minigames")),
-    "Kak Shooting Gallery":                            ("NPC",         0x42,  0x30, None,                     ("Kakariko Village", "Kakariko", "Minigames")),
+    "Market Shooting Gallery Reward":                  ("NPC",         0x42,  0x60, None,                     ("the Market", "Market", "Minigames")),
+    "Kak Shooting Gallery Reward":                     ("NPC",         0x42,  0x30, None,                     ("Kakariko Village", "Kakariko", "Minigames")),
     "LW Target in Woods":                              ("NPC",         0x5B,  0x60, None,                     ("the Lost Woods", "Forest",)),
     "Deku Theater Skull Mask":                         ("NPC",         0x3E,  0x77, None,                     ("the Lost Woods", "Forest", "Grottos")),
     "Deku Theater Mask of Truth":                      ("NPC",         0x3E,  0x7A, None,                     ("the Lost Woods", "Forest", "Need Spiritual Stones", "Grottos")),
@@ -116,7 +116,8 @@ location_table = {
     "LH Sun":                                          ("NPC",         0x57,  0x58, None,                     ("Lake Hylia",)),
     "GF Gerudo Membership Card":                       ("NPC",         0x0C,  0x3A, None,                     ("Gerudo's Fortress", "Gerudo",)),
     "HF Ocarina of Time Item":                         ("NPC",         0x51,  0x0C, None,                     ("Hyrule Field", "Need Spiritual Stones",)),
-    "Wasteland Bombchu Salesman":                      ("NPC",         None,  None, None,                     ("Haunted Wasteland",)),
+    "Wasteland Bombchu Salesman":                      ("NPC",         0x5E,  0x03, None,                     ("Haunted Wasteland",)),
+    "GC Medigoron":                                    ("NPC",         0x62,  0x28, None,                     ("Goron City",)),
 
     "Kak Impas House Freestanding PoH":                ("Collectable", 0x37,  0x01, None,                     ("Kakariko Village", "Kakariko",)),
     "HF Tektite Grotto Freestanding PoH":              ("Collectable", 0x3E,  0x01, None,                     ("Hyrule Field", "Grottos",)),
@@ -143,7 +144,7 @@ location_table = {
     "GF South F2 Carpenter":                           ("Collectable", 0x0C,  0x0F, None,                     ("Gerudo's Fortress", "Gerudo",)),
 
     "Pierre":                                          ("Event",       None,  None, None,                     None),
-    "Deliver Rutos Letter":                           ("Event",       None,  None, None,                     None),
+    "Deliver Rutos Letter":                            ("Event",       None,  None, None,                     None),
     "Master Sword Pedestal":                           ("Event",       None,  None, None,                     None),
 
     "Deku Baba Sticks":                                ("Drop",        None,  None, None,                     None),
@@ -159,7 +160,7 @@ location_table = {
     "Wandering Bugs":                                  ("Drop",        None,  None, None,                     None),
     "Fairy Pot":                                       ("Drop",        None,  None, None,                     None),
     "Free Fairies":                                    ("Drop",        None,  None, None,                     None),
-    "Wall Switch Fairy":                               ("Drop",        None,  None, None,                     None),
+    "Wall Fairy":                                      ("Drop",        None,  None, None,                     None),
     "Butterfly Fairy":                                 ("Drop",        None,  None, None,                     None),
     "Gossip Stone Fairy":                              ("Drop",        None,  None, None,                     None),
     "Bean Plant Fairy":                                ("Drop",        None,  None, None,                     None),
@@ -906,9 +907,16 @@ location_groups = {
     'Collectable': [name for (name, data) in location_table.items() if data[0] == 'Collectable'],
     'BossHeart': [name for (name, data) in location_table.items() if data[0] == 'BossHeart'],
     'CollectableLike': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token')],
-    'CanSee': [name for (name, data) in location_table.items() if data[0] in ('Collectable', 'BossHeart', 'GS Token', 'Shop')],
+    'CanSee': [name for (name, data) in location_table.items()
+               if data[0] in ('Collectable', 'BossHeart', 'GS Token', 'Shop')
+               # Treasure Box Shop, Bombchu Bowling, Hyrule Field (OoT), Lake Hylia (RL/FA)
+               or data[0:1] in [['Chest', 0x10], ['NPC', 0x4B], ['NPC', 0x51], ['NPC', 0x57]]],
     'Dungeon': [name for (name, data) in location_table.items() if data[4] is not None and any(dungeon in data[4] for dungeon in dungeons)],
 }
+
+
+def location_is_viewable(loc_name, correct_chest_sizes):
+    return correct_chest_sizes and loc_name in location_groups['Chest'] or loc_name in location_groups['CanSee']
 
 
 # Function to run exactly once after after placing items in drop locations for each world

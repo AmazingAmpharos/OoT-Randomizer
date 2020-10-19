@@ -172,16 +172,17 @@
           "text": "Shuffle",
           "row_span": [6,6,9],
           "settings": [
+            "shuffle_song_items",
             "shopsanity",
             "tokensanity",
             "shuffle_scrubs",
             "shuffle_cows",
-            "shuffle_song_items",
             "shuffle_kokiri_sword",
             "shuffle_ocarinas",
             "shuffle_weird_egg",
             "shuffle_gerudo_card",
-            "shuffle_beans"
+            "shuffle_beans",
+            "shuffle_medigoron_carpet_salesman"
           ]
         },
         {
@@ -310,6 +311,7 @@
             "clearer_hints",
             "hints",
             "hint_dist",
+            "bingosync_url",
             "text_shuffle",
             "damage_multiplier",
             "starting_tod"
