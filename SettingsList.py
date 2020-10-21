@@ -211,20 +211,18 @@ logic_tricks = {
         'tooltip' : '''\
                     Can be defeated by doing a precise jump slash.
                     '''},
-    'Deku Tree Basement Webs with Bow': {
+    'Deku Tree Basement Web to Gohma with Bow': {
         'name'    : 'logic_deku_b1_webs_with_bow',
         'tags'    : ("Deku Tree", "Entrance",),
         'tooltip' : '''\
-                    All spider web walls in Deku Tree basement can be burnt
-                    by adult using just a bow shooting through torches. Applies
-                    to the web obstructing the door to the single scrub room,
-                    the web obstructing the bombable wall in the back room
-                    and the circular floor web dropping to Gohma.
+                    All spider web walls in the Deku Tree basement can be burnt
+                    as adult with just a bow by shooting through torches. This
+                    trick only applies to the circular web leading to Gohma,
+                    the two vertical webs are always in logic.
 
-                    For the circular web dropping to Gohma, backflip onto the
-                    chest near the torch at the bottom of the vine wall. With a
-                    precise position you can shoot through the torch to the
-                    right edge of the circular web.
+                    Backflip onto the chest near the torch at the bottom of
+                    the vine wall. With precise positioning you can shoot
+                    through the torch to the right edge of the circular web.
 
                     This allows completion of adult Deku Tree with no fire source.
                     '''},
