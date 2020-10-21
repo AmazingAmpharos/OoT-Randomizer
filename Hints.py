@@ -873,7 +873,7 @@ def buildBridgeReqsString(world):
 def buildGanonBossKeyString(world):
     string = "\x13\x74" # Boss Key Icon
     if world.shuffle_ganon_bosskey == 'remove':
-        string += "And the door of the \x05\x41evil ruler\x05\x40's chamber will be left #unlocked#."
+        string += "And the door to the \x05\x41evil one\x05\x40's chamber will be left #unlocked#."
     else:
         if 'lacs_' in world.shuffle_ganon_bosskey:
             item_req_string = getHint(world.shuffle_ganon_bosskey, world.clearer_hints).text
@@ -882,7 +882,7 @@ def buildGanonBossKeyString(world):
             bk_location_string = "provided by Zelda once %s are retrieved" % item_req_string
         else:
             bk_location_string = getHint('ganonBK_' + world.shuffle_ganon_bosskey, world.clearer_hints).text
-        string += "And the key to the \x05\x41evil\x05\x40 will be %s." % bk_location_string
+        string += "And the \x05\x41evil one\x05\x40's key will be %s." % bk_location_string
     return str(GossipText(string, ['Yellow'], prefix=''))
 
 

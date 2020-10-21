@@ -130,6 +130,9 @@ player.
   * `Goron City Grotto with Hookshot While Taking Damage` - brave the heat, but be quick.
   * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
   * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
+* Updated altar text in the Temple of Time
+  * Now provides rainbow bridge requirements and the shuffle mode of Ganon's Castle Boss Key (info otherwise available in the seed settings). These are always available at the altar regardless of Maps/Compass settings.
+  * Removed misleading vanilla text from the child altar.
 * Removed tricks
   * `Water Temple Boss Key Chest with Iron Boots`
   * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
