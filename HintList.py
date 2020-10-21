@@ -1206,9 +1206,9 @@ hintTable = {
     'Links Pocket':                                             ("One in #@'s pocket#...", "One #@ already has#...", 'boss'),
 
     'bridge_vanilla':                                           ("the #Shadow and Spirit Medallions# as well as the #Light Arrows#", None, 'bridge'),
-    'bridge_stones':                                            ("all Spiritual Stones", None, 'bridge'),
-    'bridge_medallions':                                        ("all Medallions", None, 'bridge'),
-    'bridge_dungeons':                                          ("all Spiritual Stones and Medallions", None, 'bridge'),
+    'bridge_stones':                                            ("Spiritual Stones", None, 'bridge'),
+    'bridge_medallions':                                        ("Medallions", None, 'bridge'),
+    'bridge_dungeons':                                          ("Spiritual Stones and Medallions", None, 'bridge'),
     'bridge_tokens':                                            ("Gold Skulltula Tokens", None, 'bridge'),
 
     'ganonBK_dungeon':                                          ("hidden somewhere #inside its castle#", None, 'ganonBossKey'),
@@ -1217,9 +1217,10 @@ hintTable = {
     'ganonBK_triforce':                                         ("given to the Hero once the #Triforce# is completed", None, 'ganonBossKey'),
 
     'lacs_vanilla':                                             ("the #Shadow and Spirit Medallions#", None, 'lacs'),
-    'lacs_medallions':                                          ("all Medallions", None, 'lacs'),
-    'lacs_stones':                                              ("all Spiritual Stones", None, 'lacs'),
-    'lacs_dungeons':                                            ("all Spiritual Stones and Medallions", None, 'lacs'),
+    'lacs_medallions':                                          ("Medallions", None, 'lacs'),
+    'lacs_stones':                                              ("Spiritual Stones", None, 'lacs'),
+    'lacs_dungeons':                                            ("Spiritual Stones and Medallions", None, 'lacs'),
+    'lacs_tokens':                                              ("Gold Skulltula Tokens", None, 'lacs'),
 
     'Spiritual Stone Text Start':                               ("3 Spiritual Stones found in Hyrule...", None, 'altar'),
     'Child Altar Text End':                                     ("\x13\x07Ye who may become a Hero...&Stand with the Ocarina and&play the Song of Time.", None, 'altar'),
