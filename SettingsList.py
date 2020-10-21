@@ -1364,7 +1364,7 @@ setting_infos = [
         gui_type    = "Textinput",
         shared      = False,
         choices     = {},
-        default     = "OOTE",
+        default     = "NICE",
         gui_tooltip = """\
             4 characters, should end with E to ensure Dolphin compatibility.
             Note: If you have multiple OoTR WAD files with different Channel IDs installed, the game can crash on a soft reset. Use a Title Deleter to remove old WADs.
