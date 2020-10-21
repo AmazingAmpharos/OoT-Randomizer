@@ -704,6 +704,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_byte(0xB6D3D2, 0x00) # Gerudo Training Grounds
     rom.write_byte(0xB6D42A, 0x00) # Inside Ganon's Castle
 
+    #Tell Sheik at Ice Cavern we are always an Adult
+    rom.write_int32(0xC7B9C0, 0x00000000)
+    rom.write_int32(0xC7BAEC, 0x00000000)
+    rom.write_int32(0xc7BCA4, 0x00000000)
+
     # Allow Farore's Wind in dungeons where it's normally forbidden
     rom.write_byte(0xB6D3D3, 0x00) # Gerudo Training Grounds
     rom.write_byte(0xB6D42B, 0x00) # Inside Ganon's Castle
@@ -867,11 +872,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
         #Tell the well water we are always a child.
         rom.write_int32(0xDD5BF4, 0x00000000)
-
-        #Tell Sheik at Ice Cavern we are always an Adult
-        rom.write_int32(0xC7B9C0, 0x00000000)
-        rom.write_int32(0xC7BAEC, 0x00000000)
-        rom.write_int32(0xc7BCA4, 0x00000000)
 
         #Make the Adult well blocking stone dissappear if the well has been drained by
         #checking the well drain event flag instead of links age. This actor doesn't need a
