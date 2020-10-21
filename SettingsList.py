@@ -141,7 +141,7 @@ logic_tricks = {
                     '''},
     'Hidden Grottos without Stone of Agony': {
         'name'    : 'logic_grottos_without_agony',
-        'tags'    : ("General", "Entrance"),
+        'tags'    : ("General", "Entrance",),
         'tooltip' : '''\
                     Allows entering hidden grottos without the
                     Stone of Agony.
@@ -211,20 +211,18 @@ logic_tricks = {
         'tooltip' : '''\
                     Can be defeated by doing a precise jump slash.
                     '''},
-    'Deku Tree Basement Webs with Bow': {
+    'Deku Tree Basement Web to Gohma with Bow': {
         'name'    : 'logic_deku_b1_webs_with_bow',
         'tags'    : ("Deku Tree", "Entrance",),
         'tooltip' : '''\
-                    All spider web walls in Deku Tree basement can be burnt
-                    by adult using just a bow shooting through torches. Applies
-                    to the web obstructing the door to the single scrub room,
-                    the web obstructing the bombable wall in the back room
-                    and the circular floor web dropping to Gohma.
+                    All spider web walls in the Deku Tree basement can be burnt
+                    as adult with just a bow by shooting through torches. This
+                    trick only applies to the circular web leading to Gohma;
+                    the two vertical webs are always in logic.
 
-                    For the circular web dropping to Gohma, backflip onto the
-                    chest near the torch at the bottom of the vine wall. With a
-                    precise position you can shoot through the torch to the
-                    right edge of the circular web.
+                    Backflip onto the chest near the torch at the bottom of
+                    the vine wall. With precise positioning you can shoot
+                    through the torch to the right edge of the circular web.
 
                     This allows completion of adult Deku Tree with no fire source.
                     '''},
@@ -383,7 +381,7 @@ logic_tricks = {
                     '''},
     'Spirit Temple Main Room Jump from Hands to Upper Ledges': {
         'name'    : 'logic_spirit_lobby_jump',
-        'tags'    : ("Spirit Temple", "Skulltulas"),
+        'tags'    : ("Spirit Temple", "Skulltulas",),
         'tooltip' : '''\
                     A precise jump to obtain the following as adult
                     without needing one of Hookshot or Hover Boots:
@@ -442,7 +440,7 @@ logic_tricks = {
                     '''},
     'Fire Temple MQ Flame Wall Maze Skip': {
         'name'    : 'logic_fire_mq_flame_maze',
-        'tags'    : ("Fire Temple", "Skulltulas"),
+        'tags'    : ("Fire Temple", "Skulltulas",),
         'tooltip' : '''\
                     If you move quickly you can sneak past the edge of
                     a flame wall before it can rise up to block you.
@@ -866,7 +864,7 @@ logic_tricks = {
                     '''},
     'Hyrule Castle Storms Grotto GS with Just Boomerang': {
         'name'    : 'logic_castle_storms_gs',
-        'tags'    : ("Hyrule Castle", "Skulltulas"),
+        'tags'    : ("Hyrule Castle", "Skulltulas",),
         'tooltip' : '''\
                     With precise throws, the Boomerang alone can
                     kill the Skulltula and collect the token,
@@ -1028,7 +1026,7 @@ logic_tricks = {
                     '''},
     'Goron City Grotto with Hookshot While Taking Damage': {
         'name'    : 'logic_goron_grotto',
-        'tags'    : ("Goron City"),
+        'tags'    : ("Goron City",),
         'tooltip' : '''\
                     It is possible to reach the Goron City Grotto by
                     quickly using the Hookshot while in the midst of
@@ -2724,8 +2722,8 @@ setting_infos = [
             Gives the Map and Compass extra functionality.
             Map will tell if a dungeon is vanilla or Master Quest.
             Compass will tell what medallion or stone is within.
-            The Temple of Time Altar will no longer provide any
-            information.
+            The Temple of Time Altar will no longer provide
+            information on the location of medallions and stones.
 
             'Maps/Compasses: Remove': The dungeon information is
             not available anywhere in the game.
