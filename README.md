@@ -22,9 +22,9 @@ https://ootrandomizer.com
 If you wish to run the script raw, clone this repository and either run ```Gui.py``` for a
 graphical interface or ```OoTRandomizer.py``` for the command line version. They both require Python 3.6+. This will be fully featured,
 but the seeds you generate will have different random factors than the bundled release.
-For usage of the GUI [NodeJS](https://nodejs.org/en/download/) (v12, with npm) will additionally need to be installed.
-The first time ```Gui.py``` is ran it will need to install necessary components, which could take a few minutes. Subsequent instances will run much quicker.
-Built-in WAD injection is only supported on the website. To create a WAD from a seed created locally either use 
+To use the GUI, [NodeJS](https://nodejs.org/en/download/) (v12, with npm) will additionally need to be installed.
+The first time ```Gui.py``` is run it will need to install necessary components, which could take a few minutes. Subsequent instances will run much quicker.
+Built-in WAD injection is only supported on the website. To create a WAD from a seed created locally, either use 
 [gzinject](https://github.com/krimtonz/gzinject/tree/0.2.0) or output a patch file and run that through the website.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version ```1.0 NTSC-US```. This randomizer includes an in-built decompressor, but if
@@ -45,12 +45,12 @@ Please follow the guides on our wiki carefully to ensure a stable game experienc
 This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a new, more dynamic play experience.
 Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks with any possible usage of keys in dungeons.
 
-The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
+The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent the use of glitches for those players who enjoy that sort of thing, though we offer no guarantees that all glitches will have identical behavior to the original game.
 Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or other items that may not have been as important in the original game.
 
 Each major dungeon will earn you a random Spiritual Stone or Medallion once completed.
 The particular dungeons where these can be found, as well as other relevant dungeon information can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
-Note, however, that the unlock conditions for dungeon information is settings-dependant.
+Note, however, that the unlock conditions for dungeon information are settings-dependent.
 
 As a service to the player in this very long game, many cutscenes have been greatly shortened or removed, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
