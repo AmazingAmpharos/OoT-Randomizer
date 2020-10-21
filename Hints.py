@@ -808,36 +808,40 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
                 fixed_hint_types.insert(0, hint_type)
 
 
-# builds boss reward text that is displayed at the temple of time altar for child and adult, pull based off of item in a fixed order.
-def buildBossRewardHints(world, messages):
+# builds text that is displayed at the temple of time altar for child and adult, rewards pulled based off of item in a fixed order.
+def buildAltarHints(world, messages, include_rewards=True):
     # text that appears at altar as a child.
-    bossRewardsSpiritualStones = [
-        ('Kokiri Emerald',   'Green'),
-        ('Goron Ruby',       'Red'),
-        ('Zora Sapphire',    'Blue'),
-    ]
     child_text = '\x08'
-    child_text += getHint('Spiritual Stone Text Start', world.clearer_hints).text
-    for (reward, color) in bossRewardsSpiritualStones:
-        child_text += buildBossString(reward, color, world)
-    child_text += getHint('Spiritual Stone Text End', world.clearer_hints).text
+    if include_rewards:
+        bossRewardsSpiritualStones = [
+            ('Kokiri Emerald',   'Green'), 
+            ('Goron Ruby',       'Red'), 
+            ('Zora Sapphire',    'Blue'),
+        ]
+        child_text += getHint('Spiritual Stone Text Start', world.clearer_hints).text + '\x04'
+        for (reward, color) in bossRewardsSpiritualStones:
+            child_text += buildBossString(reward, color, world)
+    child_text += getHint('Child Altar Text End', world.clearer_hints).text
     child_text += '\x0B'
     update_message_by_id(messages, 0x707A, get_raw_text(child_text), 0x20)
 
     # text that appears at altar as an adult.
-    bossRewardsMedallions = [
-        ('Light Medallion',  'Light Blue'),
-        ('Forest Medallion', 'Green'),
-        ('Fire Medallion',   'Red'),
-        ('Water Medallion',  'Blue'),
-        ('Shadow Medallion', 'Pink'),
-        ('Spirit Medallion', 'Yellow'),
-    ]
     adult_text = '\x08'
-    adult_text += getHint('Medallion Text Start', world.clearer_hints).text
-    for (reward, color) in bossRewardsMedallions:
-        adult_text += buildBossString(reward, color, world)
-    adult_text += getHint('Medallion Text End', world.clearer_hints).text
+    adult_text += getHint('Adult Altar Text Start', world.clearer_hints).text + '\x04'
+    if include_rewards:
+        bossRewardsMedallions = [
+            ('Light Medallion',  'Light Blue'),
+            ('Forest Medallion', 'Green'),
+            ('Fire Medallion',   'Red'),
+            ('Water Medallion',  'Blue'),
+            ('Shadow Medallion', 'Pink'),
+            ('Spirit Medallion', 'Yellow'),
+        ]
+        for (reward, color) in bossRewardsMedallions:
+            adult_text += buildBossString(reward, color, world)
+    adult_text += buildBridgeReqsString(world)
+    adult_text += '\x04'
+    adult_text += buildGanonBossKeyString(world)
     adult_text += '\x0B'
     update_message_by_id(messages, 0x7057, get_raw_text(adult_text), 0x20)
 
@@ -850,6 +854,36 @@ def buildBossString(reward, color, world):
             location_text = getHint(location.name, world.clearer_hints).text
             return str(GossipText("\x08\x13%s%s" % (item_icon, location_text), [color], prefix='')) + '\x04'
     return ''
+
+
+def buildBridgeReqsString(world):
+    string = "\x13\x12" # Light Arrow Icon
+    if world.bridge == 'open':
+        string += "The awakened ones will have #already created a bridge# to the castle where the evil dwells."
+    else:
+        item_req_string = getHint('bridge_' + world.bridge, world.clearer_hints).text
+        if world.bridge == 'tokens':
+            item_req_string = str(world.bridge_tokens) + ' ' + item_req_string
+        if '#' not in item_req_string:
+            item_req_string = '#%s#' % item_req_string
+        string += "The awakened ones will await for the Hero to collect %s." % item_req_string
+    return str(GossipText(string, ['Green'], prefix=''))
+
+
+def buildGanonBossKeyString(world):
+    string = "\x13\x74" # Boss Key Icon
+    if world.shuffle_ganon_bosskey == 'remove':
+        string += "And the door to the \x05\x41evil one\x05\x40's chamber will be left #unlocked#."
+    else:
+        if 'lacs_' in world.shuffle_ganon_bosskey:
+            item_req_string = getHint(world.shuffle_ganon_bosskey, world.clearer_hints).text
+            if '#' not in item_req_string:
+                item_req_string = '#%s#' % item_req_string
+            bk_location_string = "provided by Zelda once %s are retrieved" % item_req_string
+        else:
+            bk_location_string = getHint('ganonBK_' + world.shuffle_ganon_bosskey, world.clearer_hints).text
+        string += "And the \x05\x41evil one\x05\x40's key will be %s." % bk_location_string
+    return str(GossipText(string, ['Yellow'], prefix=''))
 
 
 # fun new lines for Ganon during the final battle
@@ -872,10 +906,11 @@ def buildGanonText(world, messages):
     elif world.light_arrow_location:
         text = get_raw_text(getHint('Light Arrow Location', world.clearer_hints).text)
         location = world.light_arrow_location
-        location_hint = get_hint_area(location).replace('Ganon\'s Castle', 'my castle')
+        location_hint = get_hint_area(location)
         if world.id != location.world.id:
             text += "\x05\x42Player %d's\x05\x40 %s" % (location.world.id +1, get_raw_text(location_hint))
         else:
+            location_hint = location_hint.replace('Ganon\'s Castle', 'my castle')
             text += get_raw_text(location_hint)
     else:
         text = get_raw_text(getHint('Validation Line', world.clearer_hints).text)
