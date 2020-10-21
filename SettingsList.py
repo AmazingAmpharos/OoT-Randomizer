@@ -217,7 +217,7 @@ logic_tricks = {
         'tooltip' : '''\
                     All spider web walls in the Deku Tree basement can be burnt
                     as adult with just a bow by shooting through torches. This
-                    trick only applies to the circular web leading to Gohma,
+                    trick only applies to the circular web leading to Gohma;
                     the two vertical webs are always in logic.
 
                     Backflip onto the chest near the torch at the bottom of
