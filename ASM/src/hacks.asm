@@ -1044,7 +1044,8 @@ skip_GS_BGS_text:
 ; Warp song speedup
 ;==================================================================================================
 ;
-.orga 0xBEA044 ;manually set next entrance and fade out type
+;manually set next entrance and fade out type
+.orga 0xBEA044 
    jal      warp_speedup
    nop
 

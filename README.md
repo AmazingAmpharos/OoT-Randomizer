@@ -88,11 +88,9 @@ issue. You should always Hard Reset to avoid this issue entirely.
 * Versions older than 2.4 of Project64 have known compatablity issues with OoTR. To avoid this either 
 [update to v2.4 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
 * Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
-In particular, there is a risk of softlocking when giving the Poacher's Saw to the carpenter and mashing through the text with B.
 * Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
-* This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantageous to the
-player.
+* This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain.
 
 ## Changelog
 
@@ -162,6 +160,13 @@ player.
   * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 0 barren, 4(remainder) sometimes.
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
+* Various Quality of Life improvements
+  * Speed up boulder lifting
+  * Speed up Gold Gauntlet boulder lifting
+  * Speed up learning Windmill song 
+  * Speed up learning Malons song
+  * Speed up Kakariko gate opening and closing
+  * Twinrova waits for player to reach the top platform before starting, preventing early snipes
 
 #### Bug Fixes
 * Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
@@ -169,6 +174,13 @@ player.
 * Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent Gerudo guards from throwing child Link in jail.
+* Prevent Collection Delay from the Carpenter Boss when mashing through the text with an item in hand
+* Gray note songs do not play back when learning them, adding consistency and preventing suns song from causing bugs
+* Empty Bomb fix improved to work in all scenarios
+* Fast warp song hack now sets transition to white fade so that it is consistent
+* Royal Family Tomb moves out of the way instantly 
+* Fix Zelda from being frozen at the start of the final battle
+* Drop ruto before entering Big Octo room if miniboss has been defeated
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:
