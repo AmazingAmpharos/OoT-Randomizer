@@ -5,11 +5,11 @@
     "Light Arrows": 1
   },
   "locations": {
-    "Tektite Grotto Freestanding PoH":                       ["Bow", "Magic Meter", "Light Arrows"],
-    "Redead Grotto Chest":                                   ["Bow", "Magic Meter", "Light Arrows"],
-    "Kakariko Back Grotto Chest":                            ["Bow", "Magic Meter", "Light Arrows"],
-    "Mountain Storms Grotto Chest":                          ["Bow", "Magic Meter", "Light Arrows"],
-    "Top of Crater Grotto Chest":                            ["Bow", "Magic Meter", "Light Arrows"],
-    "Zora River Plateau Open Grotto Chest":                  ["Bow", "Magic Meter", "Light Arrows"]
+    "HF Tektite Grotto Freestanding PoH":   ["Bow", "Magic Meter", "Light Arrows"],
+    "Kak Redead Grotto Chest":              ["Bow", "Magic Meter", "Light Arrows"],
+    "Kak Open Grotto Chest":                ["Bow", "Magic Meter", "Light Arrows"],
+    "DMT Storms Grotto Chest":              ["Bow", "Magic Meter", "Light Arrows"],
+    "DMC Upper Grotto Chest":               ["Bow", "Magic Meter", "Light Arrows"],
+    "ZR Open Grotto Chest":                 ["Bow", "Magic Meter", "Light Arrows"]
   }
 }

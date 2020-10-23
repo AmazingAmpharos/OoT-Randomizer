@@ -8,10 +8,10 @@
             #by putting the babas here.
             "Deku Baba Nuts": "is_adult",
             "Deku Baba Sticks": "is_adult",
-            "Forest Temple First Chest": "True",
-            "Forest Temple Chest Behind Lobby": "can_jumpslash",
-            "GS Forest Temple First Room": "can_use(Dins_Fire) or can_use_projectile or (can_jumpslash and can_live_dmg(0.5))",
-            "GS Forest Temple Lobby": "can_use(Hookshot) or can_use(Boomerang) or can_hover"
+            "Forest Temple First Room Chest": "True",
+            "Forest Temple First Stalfos Chest": "can_jumpslash",
+            "Forest Temple GS First Room": "can_use(Dins_Fire) or can_use_projectile or (can_jumpslash and can_live_dmg(0.5))",
+            "Forest Temple GS Lobby": "can_use(Hookshot) or can_use(Boomerang) or can_hover"
         },
         "exits": {
             "Forest Temple NW Outdoors": "True",
@@ -26,7 +26,7 @@
         "region_name": "Forest Temple NW Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "GS Forest Temple Outdoor West": "
+            "Forest Temple GS Level Island Courtyard": "
                 can_use(Longshot) or 
                 at('Forest Temple Outside Upper Ledge', can_use(Hookshot) or can_hover)"
         },
@@ -44,10 +44,10 @@
         "region_name": "Forest Temple NE Outdoors",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple Outside Hookshot Chest": "
+            "Forest Temple Raised Island Courtyard Chest": "
                 can_use(Hookshot) or
                 at('Forest Temple Falling Room', True) or can_hover",
-            "GS Forest Temple Outdoor East": "
+            "Forest Temple GS Raised Island Courtyard": "
                 can_use(Hookshot) or can_hover or
                 at('Forest Temple Falling Room', can_use(Bow) or can_use(Dins_Fire) or has_explosives or can_use(Boomerang))"
         },
@@ -80,7 +80,7 @@
             "Forest Temple Amy and Meg": "can_use(Bow)"
         },
         "locations": {
-            "Forest Temple Falling Room Chest": "True"
+            "Forest Temple Falling Ceiling Room Chest": "True"
         },
         "exits": {
             "Forest Temple NE Outdoors": "True"
@@ -90,7 +90,7 @@
         "region_name": "Forest Temple Block Push Room",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple Block Push Chest": "
+            "Forest Temple Eye Switch Chest": "
                 Progressive_Strength_Upgrade and (can_use(Bow) or can_use(Slingshot))"
         },
         "exits": {
@@ -143,8 +143,8 @@
         "region_name": "Forest Temple Basement",
         "dungeon": "Forest Temple",
         "locations": {
-            "Forest Temple Near Boss Chest": "True",
-            "GS Forest Temple Basement": "can_use(Hookshot) or can_use(Boomerang) or can_hover"
+            "Forest Temple Basement Chest": "True",
+            "Forest Temple GS Basement": "can_use(Hookshot) or can_use(Boomerang) or can_hover"
         },
         "exits":{
             "Forest Temple Boss Room": "Boss_Key_Forest_Temple"
@@ -154,7 +154,7 @@
         "region_name": "Forest Temple Boss Room",
         "dungeon": "Forest Temple",
         "locations": {
-            "Phantom Ganon Heart": "(can_use(Hookshot) or can_use(Bow)) or 
+            "Forest Temple Phantom Ganon Heart": "(can_use(Hookshot) or can_use(Bow)) or 
                 (can_use(Slingshot) and (Kokiri_Sword or Sticks))",
             "Phantom Ganon": "(can_use(Hookshot) or can_use(Bow)) or 
                 (can_use(Slingshot) and (Kokiri_Sword or Sticks))"

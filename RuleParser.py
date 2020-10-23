@@ -201,6 +201,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
 
     def visit_Subscript(self, node):
         if isinstance(node.value, ast.Name):
+            s = node.slice if isinstance(node.slice, ast.Name) else node.slice.value
             return ast.Subscript(
                 value=ast.Attribute(
                     value=ast.Attribute(
@@ -209,7 +210,7 @@ class Rule_AST_Transformer(ast.NodeTransformer):
                         ctx=ast.Load()),
                     attr=node.value.id,
                     ctx=ast.Load()),
-                slice=ast.Index(value=ast.Str(node.slice.value.id.replace('_', ' '))),
+                slice=ast.Index(value=ast.Str(s.id.replace('_', ' '))),
                 ctx=node.ctx)
         else:
             return node

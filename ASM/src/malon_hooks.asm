@@ -18,6 +18,7 @@ malon_handle_staff:
     bnez    t2, @@return
     nop
     jal     0x800DD400 ;show staff
+    nop
 @@return:
     lw      ra, 0x14(sp)
     jr      ra
@@ -60,7 +61,31 @@ malon_check_give_item:
     addiu   sp, sp, 0x18
 
 ;============================================
+;if songs as items is not on, show a text box saying what song you got
+malon_show_text:
+    addiu   sp, sp, -0x20
+    sw      ra, 0x14(sp)
+    sw      at, 0x18(sp)
+    sw      a0, 0x1C(sp)
+    lb      t2, SONGS_AS_ITEMS
+    bnez    t2, @@return ;if songs as items is on, reutrn
+    nop
+    la      a0, GLOBAL_CONTEXT
+    lbu     a1, MALON_TEXT_ID
+    li      a2, 0
+    jal     0x800DCE14   ;show song text
+    nop
+    li      a0, 0x4802    ;NA_SE_SY_CORRECT_CHIME
+    jal     0x800646F0    ;play "correct" sound
+    nop
+@@return:
+    lw      a0, 0x1C(sp)
+    lw      at, 0x18(sp)
+    lw      ra, 0x14(sp)
+    jr      ra
+    addiu   sp, sp, 0x20
 
+;=============================================
 ;for songs as items not on, handle resetting dialog state and flag
 ;after item is given, restore malon so she can talk again
 malon_set_wait:
@@ -76,7 +101,7 @@ malon_set_wait:
     addiu   a0, a1, 0x20D8 ;msgCtx
     jal     0x800DD464     ;returns dialog state
     nop
-    addiu   at, r0, 0x0008
+    addiu   at, r0, 0x0002
     bne     v0, at, @@return
     la      t0, 0x801D8966 ;globalCtx->msgCtx.unk_E3EE 
     li      t1, 0x0004

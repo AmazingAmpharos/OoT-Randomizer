@@ -6,7 +6,8 @@
             "Gerudo Training Grounds Lobby Left Chest": "can_use(Bow) or can_use(Slingshot)",
             "Gerudo Training Grounds Lobby Right Chest": "can_use(Bow) or can_use(Slingshot)",
             "Gerudo Training Grounds Stalfos Chest": "can_jumpslash",
-            "Gerudo Training Grounds Beamos Chest": "has_explosives and can_jumpslash"
+            "Gerudo Training Grounds Beamos Chest": "has_explosives and can_jumpslash",
+            "Wall Fairy": "has_bottle and can_use(Bow)" #in the Beamos room shoot the Gerudo symbol above the door to the lava room.
         },
         "exits": {
             "Gerudo Training Grounds Heavy Block Room": "True",
@@ -65,7 +66,7 @@
         "dungeon": "Gerudo Training Grounds",
         "locations": {
             "Gerudo Training Grounds Hammer Room Clear Chest": "True",
-            "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Hammer) or 
+            "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Megaton_Hammer) or 
                 can_live_dmg(0.5) or can_use(Nayrus_Love)"
         },
         "exits": {

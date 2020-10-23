@@ -22,33 +22,43 @@ https://ootrandomizer.com
 If you wish to run the script raw, clone this repository and either run ```Gui.py``` for a
 graphical interface or ```OoTRandomizer.py``` for the command line version. They both require Python 3.6+. This will be fully featured,
 but the seeds you generate will have different random factors than the bundled release.
+To use the GUI, [NodeJS](https://nodejs.org/en/download/) (v12, with npm) will additionally need to be installed.
+The first time ```Gui.py``` is run it will need to install necessary components, which could take a few minutes. Subsequent instances will run much quicker.
+Built-in WAD injection is only supported on the website. To create a WAD from a seed created locally, either use 
+[gzinject](https://github.com/krimtonz/gzinject/tree/0.2.0) or output a patch file and run that through the website.
 
 This randomizer requires The Legend of Zelda: Ocarina of Time version ```1.0 NTSC-US```. This randomizer includes an in-built decompressor, but if
 the user wishes a pre-decompressed ROM may be supplied as input. Please be sure your input ROM filename is either a .n64 or .z64 file. For users
 playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
 impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, the recommended emulator is RetroArch; it has been shown to work with minimal issues. Bizhawk and Mupen64plus are generally good choices
-too. If you want to play on Project 64 for whatever reason, you can, but you will need to set the rando to use 8 MB of RAM and will want to play with the
-cheat code ```8109C58A 0000``` to partially fix Project 64's tragically poor handling of OoT's pause menu. Project 64 also has one particular crash that only
-happens for some unknown settings configurations; we cannot support this. We cannot emphasize enough that it is a discouraged emulator to use.
+For general use, there are three recommended emulators: [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch), 
+[Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk) and [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64). 
+In a nutshell the differences are: Bizhawk is resource-intensive, but easy to set up and the only emulator to support 
+[Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive but can be frustrating to set up; 
+Project64 is easy to set up and the least resource-intensive, but versions compatible with OoTR are banned for races organized by our community. 
+Please follow the guides on our wiki carefully to ensure a stable game experience. For questions and tech support we kindly refer you to our 
+[Discord](https://discord.gg/q6m6kzK).
 
 ## General Description
 
 This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a new, more dynamic play experience.
 Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks with any possible usage of keys in dungeons.
 
-The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
+The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent the use of glitches for those players who enjoy that sort of thing, though we offer no guarantees that all glitches will have identical behavior to the original game.
 Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or other items that may not have been as important in the original game.
 
 Each major dungeon will earn you a random Spiritual Stone or Medallion once completed.
 The particular dungeons where these can be found, as well as other relevant dungeon information can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
+Note, however, that the unlock conditions for dungeon information are settings-dependent.
 
-As a service to the player in this very long game, many cutscenes have been greatly shortened, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
+As a service to the player in this very long game, many cutscenes have been greatly shortened or removed, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
 
 ### Getting Stuck
 
-With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. Before reporting an issue, please make sure to check out [our Logic wiki page](https://wiki.ootrandomizer.com/index.php?title=Logic).
+With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. 
+Before reporting an issue, please make sure to check out [our Logic wiki page](https://wiki.ootrandomizer.com/index.php?title=Logic). 
+We also have many community members who can help out in our [Discord](https://discord.gg/8nmX7fa).
 
 ### Settings
 
@@ -75,9 +85,10 @@ Unfortunately, a few known issues exist. These will hopefully be addressed in fu
 
 * The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and Hard Reset (NOT savestate) and return to fix the
 issue. You should always Hard Reset to avoid this issue entirely.
-* Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
-easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.
+* Versions older than 2.4 of Project64 have known compatablity issues with OoTR. To avoid this either 
+[update to v2.4 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
 * Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
+In particular, there is a risk of softlocking when giving the Poacher's Saw to the carpenter and mashing through the text with B.
 * Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
 * This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantageous to the
@@ -88,22 +99,101 @@ player.
 ### Dev
 
 #### New Features
+* New setting `Skip Some Minigame Phases`
+  * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
+  * Replaces the `Skip First Dampé Race` setting.
+* `Lens of Truth` setting has been removed and replaced with several independent tricks.
+  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
+  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
+  * Shadow Temples are split into two separate areas for these tricks.
+  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
+  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
+* New setting `Kakariko Gate`
+  * Allows configuring how the Kakariko Gate and the Happy Mask Shop will open.
+  * Default (vanilla) behavior requires showing Zelda's Letter to the guard to open the gate and the shop.
+  * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
+* New setting `Complete Mask Quest`
+  * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
+* Updated setting `Shuffle Songs`
+  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
+  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
+  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
+* New setting `Shuffle Medigoron & Carpet Salesman`
+  * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
 * New cosmetic setting `HUD Button Colors`
-  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme.
-  * Or you can completely randomize all the button colors.
+  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
+  * Or you can randomize the button color scheme. (We'll try to keep the button text readable.)
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* New tricks
+  * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
+  * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
+  * `Spirit Temple Main Room Jump from Hands to Upper Ledges` - make a precise jump without Hookshot or Hover Boots.
+  * `Water Temple Falling Platform Room GS with Boomerang` - use the Boomerang from the very edge of the platform.
+  * `Death Mountain Trail Climb with Hover Boots` - get past the boulders without destroying them.
+  * `Zora's Domain GS with No Additional Items` - use only a jumpslash.
+  * `Ice Cavern Block Room GS with Hover Boots` - reach the GS with the Hover Boots to jumpslash it.
+  * `Hyrule Castle Storms Grotto GS with Just Boomerang` - make a precise throw with the Boomerang to send it behind the wall.
+  * `Water Temple Central Pillar GS with Iron Boots` - unlock the door on the middle level before raising the water.
+  * `Water Temple Dragon Statue Switch from Above the Water as Adult` - trigger the switch from dry land, then use Iron Boots, any Scale, or a jump dive coming from the river.
+  * `Water Temple Dragon Statue Switch from Above the Water as Child` - same but for child. The Scale dive is very precise.
+  * `Goron City Grotto with Hookshot While Taking Damage` - brave the heat, but be quick.
+  * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
+  * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
+* Removed tricks
+  * `Water Temple Boss Key Chest with Iron Boots`
+  * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
+* Changed Tricks
+  * Burning the two vertical webs in the Deku Tree basement with bow is now default logic. The relevant trick has been renamed to `Deku Tree Basement Web to Gohma with Bow` to reflect that it now only applies to the web immediately before Gohma.
+* Updated altar text in the Temple of Time
+  * Now provides rainbow bridge requirements and the shuffle mode of Ganon's Castle Boss Key (info otherwise available in the seed settings). These are always available at the altar regardless of Maps/Compass settings.
+  * Removed misleading vanilla text from the child altar.
+* New "Hint Distribution" customization options
+  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
+  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
+  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
+  * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
+* Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
+* Tournament hint distribution changes <!-- keep updated if there are changes later -->
+  * Temple of Time stones all provide the same hint.
+  * Grotto stones are disabled and only provide junk hints.
+  * Only "always" and "WotH" hints have duplicates now.
+  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 0 barren, 4(remainder) sometimes.
+* Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
+* Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
+* Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
+* Avoid crashing on some systems when using child items as adult.
+* Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
+* Prevent Gerudo guards from throwing child Link in jail.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
+* Fix some issues with `Randomize Main Rules`:
+  * Closed Forest implies starting as child.
+  * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
+* Fix a rare issue in ER with using time-passing regions to gain new access.
+* Fix a rare issue where settings strings weren't allocated enough bits.
+* The seed generator can now retry a few times in case of failure.
+* Exclude a line from text shuffle so the Malon race is completable.
+* Minor plandomizer fixes and improvements.
+* Various logic fixes.
 
 #### Other Changes
+* Most locations and a few items have been renamed to improve spoiler output and standardize.
+  * This will break settings and distribution files from previous versions that reference these locations and items.
+* In-game hints overhaul.
+* File 3 has been removed from generated ROMs to free up some space.
+* The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
+* The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
+* Changed some C code to support GCC 10 in development n64 compilation.
 * Added decompressor source and updated Decompress binaries.
+* OoTRandomizer.py returns an error code on failure to interact better with user scripting.
+* Plandomizer distribution files are copied to the Output directory next to the Spoiler and Cosmetics logs.
 * Mweep.
 
 ### 5.2
@@ -291,7 +381,7 @@ player.
     * This allows playing with open bridge while still requiring dungeon completion
   * This replaces the Remove Ganon’s Boss Door Lock option
 * Plentiful Item Pool
-  * Duplicate Letter in a Bottle added to plentiful item pool
+  * Duplicate Ruto's Letter added to plentiful item pool
 * With `Start With Max Rupees` option enabled, wallet upgrades items now fill to max rupees
 
 #### Bug Fixes
@@ -373,7 +463,7 @@ player.
 * Start with Tycoon wallet
 * Open Zora's Fountain
   * King Zora is moved to the side from the start of the game.
-  * Letter in a Bottle is removed from the item pool and replaced with an Empty Bottle.
+  * Ruto's Letter is removed from the item pool and replaced with an Empty Bottle.
 * Randomize starting time of day
 * Ice traps setting
     * Off: All ice traps are removed

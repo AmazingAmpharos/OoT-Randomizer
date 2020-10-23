@@ -444,10 +444,7 @@ class WorldDistribution(object):
     def collect_starters(self, state):
         for (name, record) in self.starting_items.items():
             for _ in range(record.count):
-                try:
-                    item = ItemFactory("Bottle" if name == "Bottle with Milk (Half)" else name)
-                except KeyError:
-                    continue
+                item = ItemFactory("Bottle" if name == "Bottle with Milk (Half)" else name)
                 state.collect(item)
 
 
@@ -579,7 +576,7 @@ class WorldDistribution(object):
         world = worlds[self.id]
         locations = {}
         if self.locations:
-            locations = {loc: self.locations[loc] for loc in random.sample(self.locations.keys(), len(self.locations))}
+            locations = {loc: self.locations[loc] for loc in random.sample(sorted(self.locations), len(self.locations))}
         used_items = []
         for (location_name, record) in pattern_dict_items(locations):
             if record.item is None:
@@ -620,14 +617,14 @@ class WorldDistribution(object):
             if record.item in item_groups['DungeonReward']:
                 raise RuntimeError('Cannot place dungeon reward %s in world %d in location %s.' % (record.item, self.id + 1, location_name))
 
-            if record.item == '#Junk' and location.type == 'Song' and not world.shuffle_song_items:
+            if record.item == '#Junk' and location.type == 'Song' and world.shuffle_song_items == 'song':
                 record.item = '#JunkSong'
 
             ignore_pools = None
             is_invert = pattern_matcher(record.item)('!')
-            if is_invert and location.type != 'Song' and not world.shuffle_song_items:
+            if is_invert and location.type != 'Song' and world.shuffle_song_items == 'song':
                 ignore_pools = [2]
-            if is_invert and location.type == 'Song' and not world.shuffle_song_items:
+            if is_invert and location.type == 'Song' and world.shuffle_song_items == 'song':
                 ignore_pools = [i for i in range(len(item_pools)) if i != 2]
             if location.type == 'Shop':
                 ignore_pools = [i for i in range(len(item_pools)) if i != 0]
@@ -796,11 +793,26 @@ class WorldDistribution(object):
 
 class Distribution(object):
     def __init__(self, settings, src_dict=None):
-        if src_dict is None:
-            src_dict = {}
+        self.src_dict = src_dict or {}
         self.settings = settings
         self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
-        self.update(src_dict, update_all=True)
+        # One-time init
+        update_dict = {
+            'file_hash': (self.src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
+            'playthrough': None,
+            'entrance_playthrough': None,
+            '_settings': self.src_dict.get('settings', {}),
+        }
+
+        self.settings.__dict__.update(update_dict['_settings'])
+        if 'settings' in self.src_dict:
+            self.src_dict['_settings'] = self.src_dict['settings']
+            del self.src_dict['settings']
+
+        self.__dict__.update(update_dict)
+
+        # Init we have to do every time we retry
+        self.reset()
 
 
     # adds the location entry only if there is no record for that location already
@@ -843,41 +855,27 @@ class Distribution(object):
             raise RuntimeError('Too many Triforce Pieces in starting items. There should be at most %d and there are %d.' % (worlds[0].triforce_goal - 1, total_starting_count))
 
 
-    def update(self, src_dict, update_all=False):
-        update_dict = {
-            'file_hash': (src_dict.get('file_hash', []) + [None, None, None, None, None])[0:5],
-            'playthrough': None,
-            'entrance_playthrough': None,
-            '_settings': src_dict.get('settings', {}),
-        }
+    def reset(self):
+        for world in self.world_dists:
+            world.update({}, update_all=True)
 
-        self.settings.__dict__.update(update_dict['_settings'])
-        if 'settings' in src_dict:
-            src_dict['_settings'] = src_dict['settings']
-            del src_dict['settings']
-
-        if update_all:
-            self.__dict__.update(update_dict)
-            for world in self.world_dists:
-                world.update({}, update_all=True)
-        else:
-            for k in src_dict:
-                setattr(self, k, update_dict[k])
-
-
-        if 'starting_items' not in src_dict:
+        if 'starting_items' not in self.src_dict:
             self.populate_starting_items_from_settings()
 
+        world_names = ['World %d' % (i + 1) for i in range(len(self.world_dists))]
+
         for k in per_world_keys:
-            if k in src_dict:
-                for world_id, world in enumerate(self.world_dists):
-                    world_key = 'World %d' % (world_id + 1)
-                    if world_key in src_dict[k]:
-                        world.update({k: src_dict[k][world_key]})
-                        del src_dict[k][world_key]
-                for world in self.world_dists:
-                    if src_dict[k]:
-                        world.update({k: src_dict[k]})
+            if k in self.src_dict:
+                # For each entry here of the form 'World %d', apply that entry to that world.
+                # If there are any entries that aren't of this form,
+                # apply them all to each world.
+                for world_id, world_name in enumerate(world_names):
+                    if world_name in self.src_dict[k]:
+                        self.world_dists[world_id].update({k: self.src_dict[k][world_name]})
+                src_all = {key: val for key, val in self.src_dict[k].items() if key not in world_names}
+                if src_all:
+                    for world in self.world_dists:
+                        world.update({k: src_all})
 
 
     def populate_starting_items_from_settings(self):
@@ -889,14 +887,14 @@ class Distribution(object):
                 if not item.special:
                     data[item.itemname] += 1
                 else:
-                    if item.itemname == 'Bottle with Letter' and self.settings.zora_fountain != 'open':
-                        data['Bottle with Letter'] = 1
-                    elif item.itemname in ['Bottle', 'Bottle with Letter']:
+                    if item.itemname == 'Rutos Letter' and self.settings.zora_fountain != 'open':
+                        data['Rutos Letter'] = 1
+                    elif item.itemname in ['Bottle', 'Rutos Letter']:
                         data['Bottle'] += 1
                     else:
                         raise KeyError("invalid special item: {}".format(item.itemname))
             else:
-                raise KeyError("invalid starting item: {}".format(item.itemname))
+                raise KeyError("invalid starting item: {}".format(itemsetting))
 
         # add ammo
         for item in list(data.keys()):
@@ -927,6 +925,7 @@ class Distribution(object):
             'file_hash': CollapseList(self.file_hash),
             ':seed': self.settings.seed,
             ':settings_string': self.settings.settings_string,
+            ':enable_distribution_file': self.settings.enable_distribution_file,
             'settings': self.settings.to_json(),
         }
 
@@ -1098,7 +1097,7 @@ def pattern_dict_items(pattern_dict):
     """
     # TODO: This has the same issue with the invert pattern as items do.
     #  It pulls randomly(?) from all locations instead of ones that make sense.
-    #  e.g. "!Queen Gohma" results in "Kokiri Sword Chest"
+    #  e.g. "!Queen Gohma" results in "KF Kokiri Sword Chest"
     for (key, value) in pattern_dict.items():
         if is_pattern(key):
             pattern = lambda loc: pattern_matcher(key)(loc.name)

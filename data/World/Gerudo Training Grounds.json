@@ -6,7 +6,8 @@
             "Gerudo Training Grounds Lobby Left Chest": "can_use(Bow) or can_use(Slingshot)",
             "Gerudo Training Grounds Lobby Right Chest": "can_use(Bow) or can_use(Slingshot)",
             "Gerudo Training Grounds Stalfos Chest": "is_adult or Kokiri_Sword",
-            "Gerudo Training Grounds Beamos Chest": "has_explosives and (is_adult or Kokiri_Sword)"
+            "Gerudo Training Grounds Beamos Chest": "has_explosives and (is_adult or Kokiri_Sword)",
+            "Wall Fairy": "has_bottle and can_use(Bow)" #in the Beamos room shoot the Gerudo symbol above the door to the lava room.
         },
         "exits": {
             "Gerudo Fortress": "True",
@@ -22,7 +23,7 @@
         "region_name": "Gerudo Training Grounds Central Maze",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Grounds, 3) and can_see_with_lens",
+            "Gerudo Training Grounds Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Grounds, 3) and (logic_lens_gtg or can_use(Lens_of_Truth))",
             "Gerudo Training Grounds Maze Path First Chest": "(Small_Key_Gerudo_Training_Grounds, 4)",
             "Gerudo Training Grounds Maze Path Second Chest": "(Small_Key_Gerudo_Training_Grounds, 6)",
             "Gerudo Training Grounds Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 7)",
@@ -64,10 +65,10 @@
         "dungeon": "Gerudo Training Grounds",
         "locations": {
             "Gerudo Training Grounds Hammer Room Clear Chest": "True",
-            "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Hammer)"
+            "Gerudo Training Grounds Hammer Room Switch Chest": "can_use(Megaton_Hammer)"
         },
         "exits": {
-            "Gerudo Training Grounds Eye Statue Lower": "can_use(Hammer) and Bow",
+            "Gerudo Training Grounds Eye Statue Lower": "can_use(Megaton_Hammer) and Bow",
             "Gerudo Training Grounds Lava Room": "True"
         }
     },
@@ -99,10 +100,10 @@
         },
         "exits": {
             "Gerudo Training Grounds Eye Statue Upper": "
-                can_see_with_lens and
+                (logic_lens_gtg or can_use(Lens_of_Truth)) and
                 (can_use(Hookshot) or (logic_gtg_fake_wall and can_use(Hover_Boots)))",
             "Gerudo Training Grounds Like Like Room": "
-                can_use(Silver_Gauntlets) and can_see_with_lens and
+                can_use(Silver_Gauntlets) and (logic_lens_gtg or can_use(Lens_of_Truth)) and
                 (can_use(Hookshot) or (logic_gtg_fake_wall and can_use(Hover_Boots)))"
         }
     },

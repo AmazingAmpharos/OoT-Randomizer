@@ -3,9 +3,9 @@
         "region_name": "Shadow Temple Entryway",
         "dungeon": "Shadow Temple",
         "exits": {
-            "Shadow Temple Warp Region": "True",
+            "Graveyard Warp Pad Region": "True",
             "Shadow Temple Beginning": "
-                can_see_with_lens and
+                (logic_lens_shadow_mq or can_use(Lens_of_Truth)) and
                 (can_use(Hover_Boots) or can_use(Hookshot))"
         }
     },
@@ -61,14 +61,19 @@
                 (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
             "Shadow Temple MQ Falling Spikes Switch Chest": "
                 (logic_shadow_umbrella and Hover_Boots) or Progressive_Strength_Upgrade",
-            "Shadow Temple MQ Invisible Spikes Chest": "Hover_Boots and (Small_Key_Shadow_Temple, 3)",
+            "Shadow Temple MQ Invisible Spikes Chest": "
+                Hover_Boots and (Small_Key_Shadow_Temple, 3) and
+                (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))",
             "Shadow Temple MQ Stalfos Room Chest": "
-                Hover_Boots and (Small_Key_Shadow_Temple, 3) and Progressive_Hookshot",
-            "GS Shadow Temple MQ Crusher Room": "Progressive_Hookshot"
+                Hover_Boots and (Small_Key_Shadow_Temple, 3) and Progressive_Hookshot and
+                (logic_lens_shadow_mq_back or can_use(Lens_of_Truth))",
+            "Shadow Temple MQ GS Falling Spikes Room": "
+                (logic_shadow_umbrella_gs and Hover_Boots) or Progressive_Hookshot"
         },
         "exits": {
             "Shadow Temple Wind Tunnel": "
-                Hover_Boots and Progressive_Hookshot and (Small_Key_Shadow_Temple, 4)"
+                Hover_Boots and (logic_lens_shadow_mq_back or can_use(Lens_of_Truth)) and 
+                Progressive_Hookshot and (Small_Key_Shadow_Temple, 4)"
         }
     },
     {
@@ -78,8 +83,8 @@
             "Shadow Temple MQ Wind Hint Chest": "True",
             "Shadow Temple MQ After Wind Enemy Chest": "True",
             "Shadow Temple MQ After Wind Hidden Chest": "True",
-            "GS Shadow Temple MQ Wind Hint Room": "True",
-            "GS Shadow Temple MQ After Wind": "True",
+            "Shadow Temple MQ GS Wind Hint Room": "True",
+            "Shadow Temple MQ GS After Wind": "True",
             "Nut Pot": "True"
         },
         "exits": {
@@ -91,14 +96,14 @@
         "region_name": "Shadow Temple Beyond Boat",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Bongo Bongo Heart": "
+            "Shadow Temple Bongo Bongo Heart": "
                 (Bow or (logic_shadow_statue and has_bombchus)) and
                 Boss_Key_Shadow_Temple",
             "Bongo Bongo": "
                 (Bow or (logic_shadow_statue and has_bombchus)) and
                 Boss_Key_Shadow_Temple",
-            "GS Shadow Temple MQ After Ship": "True",
-            "GS Shadow Temple MQ Near Boss": "Bow or (logic_shadow_statue and has_bombchus)"
+            "Shadow Temple MQ GS After Ship": "True",
+            "Shadow Temple MQ GS Near Boss": "Bow or (logic_shadow_statue and has_bombchus)"
         },
         "exits": {
             "Shadow Temple Invisible Maze": "

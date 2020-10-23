@@ -123,8 +123,20 @@ button_colors = {
                     Color(0x00, 0x32, 0xFF), Color(0xFF, 0xFF, 0x00),
                     Color(0x00, 0x64, 0xFF), Color(0xFF, 0x96, 0x00),
                     Color(0x50, 0x96, 0xFF), Color(0xFF, 0xFF, 0x32)),
+    
+    "MM N64":      (Color(0x64, 0xC8, 0xFF), Color(0x64, 0xFF, 0x78), Color(0xFF, 0xF0, 0x00), Color(0xFF, 0x82, 0x3C),
+                    Color(0x00, 0x50, 0xC8), Color(0x00, 0x50, 0xFF), Color(0x64, 0x64, 0xFF),
+                    Color(0x00, 0x32, 0xFF), Color(0xFF, 0xFF, 0x00),
+                    Color(0x00, 0x64, 0xFF), Color(0xFF, 0x96, 0x00),
+                    Color(0x50, 0x96, 0xFF), Color(0xFF, 0xFF, 0x32)),
 
     "GameCube":    (Color(0x00, 0xC8, 0x32), Color(0xFF, 0x1E, 0x1E), Color(0xFF, 0xA0, 0x00), Color(0x78, 0x78, 0x78),
+                    Color(0x00, 0xC8, 0x50), Color(0x00, 0xFF, 0x50), Color(0x64, 0xFF, 0x64),
+                    Color(0x00, 0xFF, 0x32), Color(0xFF, 0xFF, 0x00),
+                    Color(0x00, 0xFF, 0x64), Color(0xFF, 0x96, 0x00),
+                    Color(0x50, 0xFF, 0x96), Color(0xFF, 0xFF, 0x32)),
+    
+    "MM GameCube": (Color(0x64, 0xFF, 0x78), Color(0xFF, 0x64, 0x64), Color(0xFF, 0xF0, 0x00), Color(0x78, 0x78, 0x78),
                     Color(0x00, 0xC8, 0x50), Color(0x00, 0xFF, 0x50), Color(0x64, 0xFF, 0x64),
                     Color(0x00, 0xFF, 0x32), Color(0xFF, 0xFF, 0x00),
                     Color(0x00, 0xFF, 0x64), Color(0xFF, 0x96, 0x00),
@@ -191,6 +203,26 @@ def get_button_colors():
 
 def get_button_color_options():
     return ["Random Choice", "Completely Random"] + get_button_colors()
+
+
+def contrast_ratio(color1, color2):
+    # Based on accessibility standards (WCAG 2.0)
+    lum1 = relative_luminance(color1)
+    lum2 = relative_luminance(color2)
+    return (max(lum1, lum2) + 0.05) / (min(lum1, lum2) + 0.05)
+
+
+def relative_luminance(color):
+    color_ratios = list(map(lum_color_ratio, color))
+    return color_ratios[0] * 0.299 + color_ratios[1] * 0.587 + color_ratios[2] * 0.114
+
+
+def lum_color_ratio(val):
+    val /= 255
+    if val <= 0.03928:
+        return val / 12.92
+    else:
+        return pow((val + 0.055) / 1.055, 2.4)
 
 
 def patch_targeting(rom, settings, log, symbols):
@@ -520,12 +552,17 @@ def patch_button_colors(rom, settings, log, symbols):
     for button, symbol, byte_addresses in buttons:
         # handle completely random
         if button_option == 'Completely Random':
-            color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
+            fixed_font_color = [10, 10, 10]
+            color = [0, 0, 0]
+            # Avoid colors which have a low contrast with the font inside buttons (eg. the A letter)
+            while contrast_ratio(color, fixed_font_color) <= 3:
+                color = [random.getrandbits(8), random.getrandbits(8), random.getrandbits(8)]
         # grab the color from the list
         elif button_option in button_colors:
             color = list(button_colors[button_option][i])
         else:
             # Custom color not supported for these right now.
+            # Be careful with contrast issues if this ends up being supported. (see randomization above)
             log.error = "%s is an incorrect value. Skipping patching for that button." % button
             continue
 
@@ -627,7 +664,7 @@ def patch_instrument(rom, settings, log, symbols):
     else:
         choice = random.choice(list(instruments.keys()))
     rom.write_byte(0x00B53C7B, instruments[choice])
-    # For Skull Kids' minigame in Lost Woods
+    # For Lost Woods Skull Kids' minigame in Lost Woods
     rom.write_byte(0x00B4BF6F, instruments[choice])
     log.sfx['Ocarina'] = choice
 
@@ -843,7 +880,8 @@ class CosmeticsLog(object):
         for key, value in self.sfx.items():
             output += format_string.format(key=key+':', value=value, width=padding)
 
-        if self.settings.background_music == 'random' or self.settings.fanfares == 'random':
+        if self.settings.background_music == 'random' or self.settings.fanfares == 'random' or \
+            self.settings.compress_rom != 'Patch' and (self.settings.background_music == 'random_custom_only' or self.settings.fanfares == 'random_custom_only'):
             #music_padding = 1 + len(max(self.bgm.keys(), key=len))
             music_padding = 40
             output += '\n\nBackground Music:\n'

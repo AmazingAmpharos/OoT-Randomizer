@@ -16,17 +16,17 @@
                 (skipped_trials[Shadow] or 'Shadow Trial Clear') and 
                 (skipped_trials[Spirit] or 'Spirit Trial Clear') and 
                 (skipped_trials[Light] or 'Light Trial Clear')",
-            "Ganons Castle Deku Scrubs": "can_see_with_lens"
+            "Ganons Castle Deku Scrubs": "logic_lens_castle_mq or can_use(Lens_of_Truth)"
         }
     },
     {
         "region_name": "Ganons Castle Deku Scrubs",
         "locations": {
-            "GC MQ Deku Scrub Bombs": "True",
-            "GC MQ Deku Scrub Arrows": "True",
-            "GC MQ Deku Scrub Red Potion": "True",
-            "GC MQ Deku Scrub Green Potion": "True",
-            "GC MQ Deku Scrub Deku Nuts": "True"
+            "Ganons Castle MQ Deku Scrub Center-Left": "True",
+            "Ganons Castle MQ Deku Scrub Center": "True",
+            "Ganons Castle MQ Deku Scrub Center-Right": "True",
+            "Ganons Castle MQ Deku Scrub Left": "True",
+            "Ganons Castle MQ Deku Scrub Right": "True"
         }
     },
     {
@@ -36,8 +36,8 @@
             "Forest Trial Clear": "can_use(Light_Arrows) and can_play(Song_of_Time)"
         },
         "locations": {
-            "Ganons Castle MQ Forest Trial First Chest": "Bow",
-            "Ganons Castle MQ Forest Trial Second Chest": "has_fire_source",
+            "Ganons Castle MQ Forest Trial Eye Switch Chest": "Bow",
+            "Ganons Castle MQ Forest Trial Frozen Eye Switch Chest": "has_fire_source",
             "Ganons Castle MQ Forest Trial Freestanding Key": "Progressive_Hookshot"
         }
     },
@@ -68,16 +68,16 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Shadow Trial Clear": "
-                can_use(Light_Arrows) and can_see_with_lens and 
+                can_use(Light_Arrows) and (logic_lens_castle_mq or can_use(Lens_of_Truth)) and 
                 (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
         },
         "locations": {
-            "Ganons Castle MQ Shadow Trial First Chest": "
+            "Ganons Castle MQ Shadow Trial Bomb Flower Chest": "
                 (Bow and (Progressive_Hookshot or Hover_Boots)) or 
-                (Hover_Boots and can_see_with_lens and 
+                (Hover_Boots and (logic_lens_castle_mq or can_use(Lens_of_Truth)) and 
                     (has_explosives or Progressive_Strength_Upgrade or can_use(Dins_Fire)))",
-            "Ganons Castle MQ Shadow Trial Second Chest": "
-                Bow and can_see_with_lens and 
+            "Ganons Castle MQ Shadow Trial Eye Switch Chest": "
+                Bow and (logic_lens_castle_mq or can_use(Lens_of_Truth)) and 
                 (Hover_Boots or (Progressive_Hookshot and has_fire_source))"
         }
     },
@@ -86,25 +86,25 @@
         "dungeon": "Ganons Castle",
         "events": {
             "Spirit Trial Clear": "
-                can_use(Light_Arrows) and Hammer and 
+                can_use(Light_Arrows) and Megaton_Hammer and 
                 has_bombchus and Fire_Arrows and Mirror_Shield"
         },
         "locations": {
-            "Ganons Castle MQ Spirit Trial First Chest": "(Bow or logic_rusted_switches) and Hammer",
-            "Ganons Castle MQ Spirit Trial Second Chest": "
-                (Bow or logic_rusted_switches) and Hammer and 
-                has_bombchus and can_see_with_lens",
+            "Ganons Castle MQ Spirit Trial First Chest": "(Bow or logic_rusted_switches) and Megaton_Hammer",
+            "Ganons Castle MQ Spirit Trial Invisible Chest": "
+                (Bow or logic_rusted_switches) and Megaton_Hammer and 
+                has_bombchus and (logic_lens_castle_mq or can_use(Lens_of_Truth))",
             "Ganons Castle MQ Spirit Trial Sun Front Left Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Sun Back Left Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Golden Gauntlets Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield",
             "Ganons Castle MQ Spirit Trial Sun Back Right Chest": "
-                Hammer and has_bombchus and 
+                Megaton_Hammer and has_bombchus and 
                 can_use(Fire_Arrows) and Mirror_Shield"
         }
     },

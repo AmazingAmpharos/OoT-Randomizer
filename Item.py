@@ -147,20 +147,21 @@ class Item(object):
 def ItemFactory(items, world=None, event=False):
     if isinstance(items, str):
         if not event and items not in ItemInfo.items:
-            raise KeyError('Unknown Item: %s', items)
+            raise KeyError('Unknown Item: %s' % items)
         return Item(items, world, event)
 
     ret = []
     for item in items:
         if not event and item not in ItemInfo.items:
-            raise KeyError('Unknown Item: %s', item)
+            raise KeyError('Unknown Item: %s' % item)
         ret.append(Item(item, world, event))
 
     return ret
 
 
-def MakeEventItem(name, location):
-    item = ItemFactory(name, location.world, event=True)
+def MakeEventItem(name, location, item=None):
+    if item is None:
+        item = ItemFactory(name, location.world, event=True)
     location.world.push_item(location, item)
     location.locked = True
     if name not in item_table:

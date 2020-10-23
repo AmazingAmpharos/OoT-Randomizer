@@ -3,9 +3,9 @@
         "region_name": "Shadow Temple Entryway",
         "dungeon": "Shadow Temple",
         "exits": {
-            "Shadow Temple Warp Region": "True",
+            "Graveyard Warp Pad Region": "True",
             "Shadow Temple Beginning": "
-                can_see_with_lens and
+                (logic_lens_shadow or can_use(Lens_of_Truth)) and
                 (can_use(Hover_Boots) or can_use(Hookshot))"
         }
     },
@@ -42,17 +42,23 @@
             "Shadow Temple Falling Spikes Lower Chest": "True",
             "Shadow Temple Falling Spikes Upper Chest": "logic_shadow_umbrella or Progressive_Strength_Upgrade",
             "Shadow Temple Falling Spikes Switch Chest": "logic_shadow_umbrella or Progressive_Strength_Upgrade",
-            "Shadow Temple Invisible Spikes Chest": "(Small_Key_Shadow_Temple, 2)",
+            "Shadow Temple Invisible Spikes Chest": "
+                (Small_Key_Shadow_Temple, 2) and (logic_lens_shadow_back or can_use(Lens_of_Truth))",
             "Shadow Temple Freestanding Key": "
-                (Small_Key_Shadow_Temple, 2) and Progressive_Hookshot and 
+                (Small_Key_Shadow_Temple, 2) and (logic_lens_shadow_back or can_use(Lens_of_Truth)) 
+                and Progressive_Hookshot and 
                 (Bombs or Progressive_Strength_Upgrade or
                     (logic_shadow_freestanding_key and has_bombchus))",
-            "GS Shadow Temple Like Like Room": "True",
-            "GS Shadow Temple Crusher Room": "Progressive_Hookshot",
-            "GS Shadow Temple Single Giant Pot": "(Small_Key_Shadow_Temple, 2) and Progressive_Hookshot"
+            "Shadow Temple GS Like Like Room": "True",
+            "Shadow Temple GS Falling Spikes Room": "logic_shadow_umbrella_gs or Progressive_Hookshot",
+            "Shadow Temple GS Single Giant Pot": "
+                (Small_Key_Shadow_Temple, 2) and (logic_lens_shadow_back or can_use(Lens_of_Truth)) 
+                and Progressive_Hookshot"
         },
         "exits": {
-            "Shadow Temple Wind Tunnel": "Progressive_Hookshot and (Small_Key_Shadow_Temple, 3)"
+            "Shadow Temple Wind Tunnel": "
+                (logic_lens_shadow_back or can_use(Lens_of_Truth)) and 
+                Progressive_Hookshot and (Small_Key_Shadow_Temple, 3)"
         }
     },
     {
@@ -62,7 +68,7 @@
             "Shadow Temple Wind Hint Chest": "True",
             "Shadow Temple After Wind Enemy Chest": "True",
             "Shadow Temple After Wind Hidden Chest": "True",
-            "GS Shadow Temple Near Ship": "can_use(Longshot) and (Small_Key_Shadow_Temple, 4)"
+            "Shadow Temple GS Near Ship": "can_use(Longshot) and (Small_Key_Shadow_Temple, 4)"
         },
         "exits": {
             "Shadow Temple Beyond Boat": "can_play(Zeldas_Lullaby) and (Small_Key_Shadow_Temple, 4)"
@@ -74,14 +80,14 @@
         "locations": {
             "Shadow Temple Spike Walls Left Chest": "can_use(Dins_Fire)",
             "Shadow Temple Boss Key Chest": "can_use(Dins_Fire)",
-            "Shadow Temple Hidden Floormaster Chest": "True",
-            "Bongo Bongo Heart": "
+            "Shadow Temple Invisible Floormaster Chest": "True",
+            "Shadow Temple Bongo Bongo Heart": "
                 (Small_Key_Shadow_Temple, 5) and Boss_Key_Shadow_Temple and
                 (Bow or can_use(Distant_Scarecrow) or (logic_shadow_statue and has_bombchus))",
             "Bongo Bongo": "
                 (Small_Key_Shadow_Temple, 5) and Boss_Key_Shadow_Temple and
                 (Bow or can_use(Distant_Scarecrow) or (logic_shadow_statue and has_bombchus))",
-            "GS Shadow Temple Triple Giant Pot": "True"
+            "Shadow Temple GS Triple Giant Pot": "True"
         }
     }
 ]

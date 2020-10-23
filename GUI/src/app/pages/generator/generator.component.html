@@ -144,7 +144,7 @@
           <p class="footerInputLabel">Settings String</p>
           <!--Electron-->
           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
-            <input class="footerInput" nbInput type="text" maxlength="260" fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
+            <input class="footerInput" nbInput type="text" maxlength="1000" fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
             <button class="footerButton" nbButton status="info" size="small" (click)="copySettingsString()">Copy</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="importSettingsString()">Import</button>
             <!--Padding-->
@@ -157,7 +157,7 @@
           </ng-container>
           <!--Web-->
           <ng-container *ngIf="!global.getGlobalVar('electronAvailable')">
-            <input class="footerInputShort" nbInput type="text" maxlength="260" fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
+            <input class="footerInputShort" nbInput type="text" maxlength="1000" fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
             <button class="footerButton" nbButton status="info" size="small" (click)="copySettingsString()">Copy</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="settingsBusy = true; getSettingsString()">Get</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="importSettingsString()">Import</button>

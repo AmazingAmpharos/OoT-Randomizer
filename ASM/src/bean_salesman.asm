@@ -1,3 +1,7 @@
+SHUFFLE_BEANS:
+.byte 0x00
+.align 4
+
 ; Override the initial salesman bean count check if the salesman is randomized
 ; t1 = bean count value to use
 bean_initial_check:
@@ -6,9 +10,9 @@ bean_initial_check:
     beqz    t1, @@return
     lb      v0, -0x59A4(v0)     ; if the salesman isn't randomized, use the current bean count in save context (default code)
 
-    la      t2, SAVE_CONTEXT
-    lb      t1, 0xA18(t2)       ; load scene collectible flags (Zora River)
-    andi    at, t1, 0x01        ; check 0x01 flag (normally unused flag)
+    la      t2, GLOBAL_CONTEXT
+    lw      t1, 0x1D44(t2)      ; load scene collectible flags (Zora River)
+    andi    at, t1, 0x2         ; check flag 1 (normally unused flag)
     bnez    at, @@return
     li      v0, 0xA             ; if the flag is set, return with bean count = 10 (results in sold out)
     li      v0, 0               ; else, return with bean count = 0 (results in sell first bean)
@@ -48,10 +52,10 @@ bean_buy_item_hook:
     lb      t1, SHUFFLE_BEANS
     beqz    t1, @@return        ; Skip if the salesman isn't randomized
 
-    la      t2, SAVE_CONTEXT
-    lb      t1, 0xA18(t2)       ; load scene collectible flags (Zora River)
-    ori     t1, t1, 0x01        ; set 0x01 flag (custom bean salesman flag)
-    sb      t1, 0xA18(t2)
+    la      t2, GLOBAL_CONTEXT
+    lw      t1, 0x1D44(t2)      ; load scene collectible flags (Zora River)
+    ori     t1, t1, 0x2         ; set flag 1 (custom bean salesman flag)
+    sw      t1, 0x1D44(t2)
 
 @@return:
     jr      ra

@@ -5,7 +5,7 @@
         "locations": {
             "Gerudo Training Grounds MQ Lobby Left Chest": "True",
             "Gerudo Training Grounds MQ Lobby Right Chest": "True",
-            "Gerudo Training Grounds MQ Hidden Ceiling Chest": "can_see_with_lens",
+            "Gerudo Training Grounds MQ Hidden Ceiling Chest": "logic_lens_gtg_mq or can_use(Lens_of_Truth)",
             "Gerudo Training Grounds MQ Maze Path First Chest": "True",
             "Gerudo Training Grounds MQ Maze Path Second Chest": "True",
             "Gerudo Training Grounds MQ Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 1)"
@@ -20,7 +20,8 @@
         "region_name": "Gerudo Training Grounds Right Side",
         "dungeon": "Gerudo Training Grounds",
         "locations": {
-            "Gerudo Training Grounds MQ Dinolfos Chest": "is_adult"
+            "Gerudo Training Grounds MQ Dinolfos Chest": "is_adult",
+            "Wall Fairy": "has_bottle and can_use(Bow)" #in the Dinalfos room shoot the Gerudo symbol above the door to the lava room.
         },
         "exits": {
             # Still requires has_fire_source in the room
@@ -61,7 +62,7 @@
         },
         "exits": {
             "Gerudo Training Grounds Back Areas": "
-                is_adult and can_see_with_lens and Blue_Fire and
+                is_adult and (logic_lens_gtg_mq or can_use(Lens_of_Truth)) and Blue_Fire and
                 (can_play(Song_of_Time) or (logic_gtg_fake_wall and can_use(Hover_Boots)))"
         }
     },
@@ -74,7 +75,7 @@
             "Gerudo Training Grounds MQ Flame Circle Chest": "can_use(Hookshot) or Bow or has_explosives"
         },
         "exits": {
-            "Gerudo Training Grounds Central Maze Right": "Hammer",
+            "Gerudo Training Grounds Central Maze Right": "Megaton_Hammer",
             "Gerudo Training Grounds Right Side": "can_use(Longshot)"
         }
     },
