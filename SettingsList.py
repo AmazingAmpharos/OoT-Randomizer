@@ -1990,6 +1990,7 @@ setting_infos = [
         gui_tooltip    = '''\
             Start having already met Zelda and obtained
             Zelda's Letter along with the song from Impa.
+            This is incompatble with songs shuffled anywhere.
         ''',
         shared         = True,
     ),
@@ -2261,6 +2262,7 @@ setting_infos = [
             - Gerudo Training Ground's Ice Arrow Location
 
             'Anywhere': Songs can appear in any location.
+            This is incompatible with "Free Zelda".
         ''',
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -2269,6 +2271,9 @@ setting_infos = [
                 ('dungeon', 1),
                 ('any', 1),
             ],
+        },
+        disable        = {
+            'any' : {'settings' : ['free_zelda']}
         },
         shared         = True,
     ),
