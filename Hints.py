@@ -288,19 +288,25 @@ def colorText(gossip_text):
     return text
 
 
+# Peforms a breadth first search to find the closest hint area from a given spot (location or entrance)
+# May fail to find a hint if the given spot is only accessible from the root and not from any other region with a hint area
 def get_hint_area(spot):
-    if spot.parent_region.dungeon:
-        return spot.parent_region.dungeon.hint
-    elif spot.parent_region.hint:
-        return spot.parent_region.hint
-    # Breadth first search for connected regions with a max depth of 2
-    for entrance in spot.parent_region.entrances:
-        if entrance.parent_region.hint:
-            return entrance.parent_region.hint
-    for entrance in spot.parent_region.entrances:
-        for entrance2 in entrance.parent_region.entrances:
-            if entrance2.parent_region.hint:
-                return entrance2.parent_region.hint
+    already_checked = []
+    spot_queue = [spot]
+
+    while spot_queue:
+        current_spot = spot_queue.pop(0)
+        already_checked.append(current_spot)
+
+        parent_region = current_spot.parent_region
+    
+        if parent_region.dungeon:
+            return parent_region.dungeon.hint
+        elif parent_region.hint and (spot.parent_region.name == 'Root' or parent_region.name != 'Root'):
+            return parent_region.hint
+
+        spot_queue.extend(list(filter(lambda ent: ent not in already_checked, parent_region.entrances)))
+
     raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
@@ -475,12 +481,14 @@ def get_dungeon_hint(spoiler, world, checked):
 
 
 def get_entrance_hint(spoiler, world, checked):
-    if world.entrance_shuffle == 'off':
+    if not world.entrance_shuffle:
         return None
 
-    entrance_hints = getHintGroup('entrance', world)
-    entrance_hints = list(filter(lambda hint: hint.name not in checked, entrance_hints))
-    valid_entrance_hints = [entrance_hint for entrance_hint in entrance_hints if world.get_entrance(entrance_hint.name).shuffled]
+    entrance_hints = list(filter(lambda hint: hint.name not in checked, getHintGroup('entrance', world)))
+    shuffled_entrance_hints = list(filter(lambda entrance_hint: world.get_entrance(entrance_hint.name).shuffled, entrance_hints))
+
+    regions_with_hint = [hint.name for hint in getHintGroup('region', world)]
+    valid_entrance_hints = list(filter(lambda entrance_hint: world.get_entrance(entrance_hint.name).connected_region.name in regions_with_hint, shuffled_entrance_hints))
 
     if not valid_entrance_hints:
         return None

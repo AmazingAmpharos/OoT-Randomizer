@@ -24,7 +24,7 @@
                 (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"
         },
         "exits": {
-            "Fire Temple Entrance": "True",
+            "DMC Fire Temple Entrance": "True",
             "Fire Temple Big Lava Room":"
                 (Small_Key_Fire_Temple, 2) and
                 (logic_fewer_tunic_requirements or can_use(Goron_Tunic))"

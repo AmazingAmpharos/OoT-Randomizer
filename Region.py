@@ -79,6 +79,15 @@ class Region(object):
         return True
 
 
+    def get_scene(self):
+        if self.scene: 
+            return self.scene
+        elif self.dungeon:
+            return self.dungeon.name
+        else: 
+            return None
+
+
     def __str__(self):
         return str(self.__unicode__())
 
