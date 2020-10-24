@@ -1778,9 +1778,9 @@ setting_infos = [
         gui_tooltip    = '''\
             'Always Open': Rainbow Bridge is always present.
             'Vanilla Requirements': Spirit/Shadow Medallions and Light Arrows.
-            'Spiritual Stones': A configurable amount of 3 Spiritual Stones.
-            'Medallions': A configurable amount of 6 Medallions.
-            'Dungeons': A configurable amount of Dungeon Rewards (Medallions and Spiritual Stones).
+            'Spiritual Stones': A configurable amount of Spiritual Stones.
+            'Medallions': A configurable amount of Medallions.
+            'Dungeons': A configurable amount of Dungeon Rewards.
             'Gold Skulltula Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
@@ -2669,7 +2669,6 @@ setting_infos = [
             'On LACS: Medallions': A configurable amount of Medallions.
             'On LACS: Stones': A configurable amount of Spiritual Stones.
             'On LACS: Dungeons': A configurable amount of Dungeon Rewards.
-                                 (Spiritual Stones & Medallions).
             'On LACS: Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
