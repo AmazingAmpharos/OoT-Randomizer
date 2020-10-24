@@ -1940,12 +1940,12 @@ skip_GS_BGS_text:
     jal     malon_ra_displaced
     lw      v0, 0x1C44(a1)
 .skip 4 * 1
-    addiu  t9, r0, 0x02AE ;from malon entrance
+    nop
 .skip 4 * 2
     jal    malon_songs_as_items ;make branch fail if songs as items is on
     lhu    t8, 0x04C6(t8)
 .skip 4 * 5
-    sh     t9, 0x02(a3) ;set entrance from cutscene
+    nop
 .skip 4 * 1
     jal    malon_show_text  ;dont set next cutscene index, also show text if song
 .skip 4 * 2
@@ -1957,7 +1957,7 @@ skip_GS_BGS_text:
 
 ;set relevant flags and restore malon so she can talk again
 .orga 0xD7EC70
-    j    malon_set_wait
+    j    malon_reload
 
 ;==================================================================================================
 ; Clean Up Big Octo Room For Multiple Visits

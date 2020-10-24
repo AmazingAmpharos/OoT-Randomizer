@@ -86,39 +86,33 @@ malon_show_text:
     addiu   sp, sp, 0x20
 
 ;=============================================
-;for songs as items not on, handle resetting dialog state and flag
-;after item is given, restore malon so she can talk again
-malon_set_wait:
+;after item is given and text is closed, reload the scene
+malon_reload:
     addiu   sp, sp, -0x20
     sw      ra, 0x14(sp)
     sw      a0, 0x18(sp)
-    la      t3, SAVE_CONTEXT
-    lb      t4, 0xEDE(t3)
-    andi    t4, t4, 0x01
-    bnez    t4, @@item_done ;skip item stuff if flag is set
-    lb      t2, SONGS_AS_ITEMS
-    bnez    t2, @@return
     addiu   a0, a1, 0x20D8 ;msgCtx
     jal     0x800DD464     ;returns dialog state
     nop
     addiu   at, r0, 0x0002
     bne     v0, at, @@return
+    nop
     la      t0, 0x801D8966 ;globalCtx->msgCtx.unk_E3EE 
     li      t1, 0x0004
     sh      t1, 0x00(t0)
+    la      t3, SAVE_CONTEXT
     lb      t4, 0xEDE(t3)
-    ori    t4, t4, 0x01
+    ori     t4, t4, 0x01
     sb      t4, 0xEDE(t3) ;set flag for learned song
-    b       @@return
-    nop
-@@item_done:
-    lw      a0, 0x18(sp)
-    lw      t0, 0x138(a0)  ;overlay table entry
-    lw      t0, 0x10(t0)   ;overlay address
-    addiu   t1, t0, 0x0708 ;wait actionFunc offset
-    sw      t1, 0x0180(a0) ;store to actionFunc
-    sh      r0, 0x01D8(a0) ;reset malon so she can talk again
-
+    la      t1, 0x801DA2BA
+    li      t0, 0x02AE
+    sh      t0, 0x0(t1)   ;malon from eponas song entrance
+    li      t0, 0x2A
+    la      t1, 0x801DA2FE
+    sb      t0, 0x0(t1)   ;transition type
+    li      t0, 0x14
+    la      t1, 0x801DA2B5
+    sb      t0, 0x0(t1)   ;load flag
 @@return:
     lw      ra, 0x14(sp)
     jr      ra

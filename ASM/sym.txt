@@ -206,7 +206,7 @@
 80403084,code,malon_songs_as_items
 804030A8,code,malon_check_give_item
 804030E0,code,malon_show_text
-8040313C,code,malon_set_wait
+8040313C,code,malon_reload
 804031C4,code,drop_ruto
 80403258,code,check_kill_demoeffect
 804032C4,code,agony_distance_hook
