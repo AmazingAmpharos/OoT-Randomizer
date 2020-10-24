@@ -1694,6 +1694,11 @@ skip_GS_BGS_text:
 .orga 0xD69398
 @Twinrova_Update_Return:
 
+;force twinrova to move down out of the ceiling
+; Replaces: lw    s0, 0x13C(s1)
+.orga 0xD68F9C
+    jal     rova_move_down
+
 ;Remove the function call to set the boss music in Init
 ; Replaces: jal     0x800CAA70
 .orga 0xD62128
