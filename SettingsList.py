@@ -2480,13 +2480,13 @@ setting_infos = [
         gui_text       = 'Maps & Compasses',
         default        = 'dungeon',
         choices        = {
-            'remove':    'Remove',
-            'startwith': 'Start With',
-            'vanilla':   'Vanilla Locations',
-            'dungeon':   'Dungeon Only',
-            'overworld': 'Overworld Only',
-            'dungeons':  'Any Dungeon',
-            'keysanity': 'Anywhere',
+            'remove':      'Remove',
+            'startwith':   'Start With',
+            'vanilla':     'Vanilla Locations',
+            'dungeon':     'Dungeon Only',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere',
         },
         gui_tooltip    = '''\
             'Remove': Maps and Compasses are removed.
@@ -2527,12 +2527,12 @@ setting_infos = [
         gui_text       = 'Small Keys',
         default        = 'dungeon',
         choices        = {
-            'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',
-            'dungeon':   'Dungeon Only',
-            'overworld': 'Overworld Only (Keysanity)',
-            'dungeons':  'Any Dungeon (Keysanity)',
-            'keysanity': 'Anywhere (Keysanity)',
+            'remove':      'Remove (Keysy)',
+            'vanilla':     'Vanilla Locations',
+            'dungeon':     'Dungeon Only',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere (Keysanity)',
         },
         gui_tooltip    = '''\
             'Remove': Small Keys are removed. All locked
@@ -2583,10 +2583,10 @@ setting_infos = [
         default        = 'vanilla',
         disabled_default = 'remove',
         choices        = {
-            'vanilla':   'Vanilla Locations',
-            'overworld': 'Overworld Only (Keysanity)',
-            'dungeons':  'Any Dungeon (Keysanity)',
-            'keysanity': 'Anywhere (Keysanity)',
+            'vanilla':     'Vanilla Locations',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere (Keysanity)',
         },
         gui_tooltip    = '''\
             'Vanilla': Gerudo Fortress Keys will appear in their
@@ -2612,12 +2612,12 @@ setting_infos = [
         gui_text       = 'Boss Keys',
         default        = 'dungeon',
         choices        = {
-            'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',
-            'dungeon':   'Dungeon Only',
-            'overworld': 'Overworld Only (Keysanity)',
-            'dungeons':  'Any Dungeon (Keysanity)',
-            'keysanity': 'Anywhere (Keysanity)',
+            'remove':      'Remove (Keysy)',
+            'vanilla':     'Vanilla Locations',
+            'dungeon':     'Dungeon Only',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere (Keysanity)',
         },
         gui_tooltip    = '''\
             'Remove': Boss Keys are removed. All locked
@@ -2664,8 +2664,8 @@ setting_infos = [
             'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
             'dungeon':         "Dungeon Only",
-            'overworld':       "Overworld Only (Keysanity)",
-            'dungeons':        "Any Dungeon (Keysanity)",
+            'overworld':       "Overworld Only",
+            'any_dungeon':     "Any Dungeon",
             'keysanity':       "Anywhere (Keysanity)",
             'lacs_vanilla':    "On LACS: Vanilla",
             'lacs_medallions': "On LACS: Medallions",
