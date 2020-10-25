@@ -18,7 +18,7 @@ from Search import Search
 from Spoiler import HASH_ICONS
 from version import __version__
 from Utils import random_choices
-from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedDict
+from JSONDump import dump_obj, CollapseList, CollapseDict, AlignedDict, SortedDict
 import StartingItems
 
 
@@ -940,7 +940,7 @@ class Distribution(object):
                 self_dict.update({k: world_dist_dicts[0][k] for k in per_world_keys})
 
             if self.playthrough is not None:
-                self_dict[':playthrough'] = AllignedDict({
+                self_dict[':playthrough'] = AlignedDict({
                     sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
                     })
@@ -948,7 +948,7 @@ class Distribution(object):
                 }, depth=2)
 
             if self.entrance_playthrough is not None and len(self.entrance_playthrough) > 0:
-                self_dict[':entrance_playthrough'] = AllignedDict({
+                self_dict[':entrance_playthrough'] = AlignedDict({
                     sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
                     })

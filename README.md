@@ -131,9 +131,11 @@ player.
   * Conditional-always hints check for whether 2 or more dungeon rewards are required, as a backstop.
 * New setting `Fast Bunny Hood`
   * Allows manual toggling on/off of the 1.5x speed boost from MM.
-* New cosmetic setting `HUD Button Colors`
-  * The buttons shown on the HUD can be colored to match the N64 or Gamecube color scheme, of OoT or MM.
-  * Or you can randomize the button color scheme. (We'll try to keep the button text readable.)
+* New Cosmetic Plandomizer
+  * Use a JSON file to set your cosmetics and sound settings.
+  * We've added lots of new color options to pick from as well!
+* New cosmetic settings for HUD button colors
+  * These can all be set independently, defaulting to the N64 colors.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.

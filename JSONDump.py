@@ -8,7 +8,7 @@ class CollapseList(list):
     pass
 class CollapseDict(dict):
     pass
-class AllignedDict(dict):
+class AlignedDict(dict):
     def __init__(self, src_dict, depth):
         self.depth = depth - 1
         super().__init__(src_dict)
@@ -28,12 +28,12 @@ def is_dict(value):
     return isinstance(value, dict)
 
 
-def dump_scalar(obj):
-    return json.dumps(obj)
+def dump_scalar(obj, ensure_ascii=False):
+    return json.dumps(obj, ensure_ascii=ensure_ascii)
 
 
-def dump_list(obj, current_indent=''):
-    entries = [dump_obj(value, current_indent + INDENT) for value in obj]
+def dump_list(obj, current_indent='', ensure_ascii=False):
+    entries = [dump_obj(value, current_indent + INDENT, ensure_ascii=ensure_ascii) for value in obj]
 
     if len(entries) == 0:
         return '[]'
@@ -66,7 +66,7 @@ def get_keys(obj, depth):
             yield from get_keys(value, depth - 1)
 
 
-def dump_dict(obj, current_indent='', sub_width=None):
+def dump_dict(obj, current_indent='', sub_width=None, ensure_ascii=False):
     entries = []
 
     key_width = None
@@ -75,12 +75,12 @@ def dump_dict(obj, current_indent='', sub_width=None):
         if sub_width[0] == 0:
             key_width = sub_width[1]
 
-    if isinstance(obj, AllignedDict):
+    if isinstance(obj, AlignedDict):
         sub_keys = get_keys(obj, obj.depth)
         sub_width = (obj.depth, reduce(lambda acc, entry: max(acc, len(entry)), sub_keys, 0))
 
     for key, value in obj.items():        
-        entries.append((dump_scalar(str(key)), dump_obj(value, current_indent + INDENT, sub_width)))
+        entries.append((dump_scalar(str(key), ensure_ascii), dump_obj(value, current_indent + INDENT, sub_width, ensure_ascii)))
 
     if key_width is None:
         key_width = reduce(lambda acc, entry: max(acc, len(entry[0])), entries, 0)
@@ -113,10 +113,10 @@ def dump_dict(obj, current_indent='', sub_width=None):
     return output
 
 
-def dump_obj(obj, current_indent='', sub_width=None):
+def dump_obj(obj, current_indent='', sub_width=None, ensure_ascii=False):
     if is_list(obj):
-        return dump_list(obj, current_indent)
+        return dump_list(obj, current_indent, ensure_ascii)
     elif is_dict(obj):
-        return dump_dict(obj, current_indent, sub_width)
+        return dump_dict(obj, current_indent, sub_width, ensure_ascii)
     else:
-        return dump_scalar(obj)
+        return dump_scalar(obj, ensure_ascii)

@@ -243,7 +243,7 @@ class Settings:
         self.numeric_seed = self.get_numeric_seed()
 
 
-    def resolve_random_settings(self, cosmetic):
+    def resolve_random_settings(self, cosmetic, randomize_key=None):
         sorted_infos = list(setting_infos)
         sort_key = lambda info: 0 if info.dependency is None else 1
         sorted_infos.sort(key=sort_key)
@@ -256,7 +256,13 @@ class Settings:
             if self.check_dependency(info.name, check_random=True):
                 continue
 
-            if 'randomize_key' in info.gui_params and self.__dict__[info.gui_params['randomize_key']]:
+            if 'randomize_key' not in info.gui_params:
+                continue
+
+            if info.gui_params['randomize_key'] != randomize_key:
+                continue
+
+            if self.__dict__[info.gui_params['randomize_key']]:
                 choices, weights = zip(*info.gui_params['distribution'])
                 self.__dict__[info.name] = random_choices(choices, weights=weights)[0]
 
@@ -282,6 +288,10 @@ class Settings:
     def to_json(self):
         return {setting.name: self.__dict__[setting.name] for setting in setting_infos
                 if setting.shared and setting.name not in self._disabled}
+
+
+    def to_json_cosmetics(self):
+        return {setting.name: self.__dict__[setting.name] for setting in setting_infos if setting.cosmetic}
 
 
 # gets the randomizer settings, whether to open the gui, and the logger level from command line arguments

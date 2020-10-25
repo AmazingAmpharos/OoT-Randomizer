@@ -14,7 +14,9 @@
             "rom",
             "output_dir",
             "enable_distribution_file",
+            "enable_cosmetic_file",
             "distribution_file",
+            "cosmetic_file",
             "count",
             "create_spoiler",
             "create_cosmetics_log",
@@ -57,7 +59,9 @@
           "row_span": [1,1,1],
           "settings": [
             "enable_distribution_file",
+            "enable_cosmetic_file",
             "distribution_file",
+            "cosmetic_file",
             "create_spoiler",
             "web_output_type",
             "rom",
@@ -101,6 +105,8 @@
           "col_span": 4,
           "row_span": [1,1,1],
           "settings": [
+            "enable_cosmetic_file",
+            "cosmetic_file",
             "web_output_type",
             "rom",
             "web_wad_file",
@@ -381,7 +387,10 @@
           "settings": [
             "heart_color",
             "magic_color",
-            "button_colors"
+            "a_button_color",
+            "b_button_color",
+            "c_button_color",
+            "start_button_color"
           ]
         },
         {
