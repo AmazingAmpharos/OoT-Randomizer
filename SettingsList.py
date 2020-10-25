@@ -1774,26 +1774,27 @@ setting_infos = [
         choices        = {
             'open':       'Always Open',
             'vanilla':    'Vanilla Requirements',
-            'stones':	  'All Spiritual Stones',
-            'medallions': 'All Medallions',
-            'dungeons':   'All Dungeons',
+            'stones':	  'Spiritual Stones',
+            'medallions': 'Medallions',
+            'dungeons':   'Dungeons',
             'tokens':     'Gold Skulltula Tokens'
         },
         gui_tooltip    = '''\
             'Always Open': Rainbow Bridge is always present.
             'Vanilla Requirements': Spirit/Shadow Medallions and Light Arrows.
-            'All Spiritual Stones': All 3 Spiritual Stones.
-            'All Medallions': All 6 Medallions.
-            'All Dungeons': All Medallions and Spiritual Stones.
+            'Spiritual Stones': A configurable amount of Spiritual Stones.
+            'Medallions': A configurable amount of Medallions.
+            'Dungeons': A configurable amount of Dungeon Rewards.
             'Gold Skulltula Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
         disable={
-            'open':       {'settings': ['bridge_tokens']},
-            'vanilla':    {'settings': ['bridge_tokens']},
-            'stones':     {'settings': ['bridge_tokens']},
-            'medallions': {'settings': ['bridge_tokens']},
-            'dungeons':   {'settings': ['bridge_tokens']},
+            'open':       {'settings': ['bridge_medallions', 'bridge_stones', 'bridge_rewards', 'bridge_tokens']},
+            'vanilla':    {'settings': ['bridge_medallions', 'bridge_stones', 'bridge_rewards', 'bridge_tokens']},
+            'stones':     {'settings': ['bridge_medallions', 'bridge_rewards', 'bridge_tokens']},
+            'medallions': {'settings': ['bridge_stones', 'bridge_rewards', 'bridge_tokens']},
+            'dungeons':   {'settings': ['bridge_medallions', 'bridge_stones', 'bridge_tokens']},
+            'tokens':     {'settings': ['bridge_medallions', 'bridge_stones', 'bridge_rewards']},
         },
         gui_params     = {
             'randomize_key': 'randomize_settings',
@@ -1804,6 +1805,67 @@ setting_infos = [
                 ('medallions', 1),
                 ('dungeons',   1),
             ],
+        },
+    ),
+    Scale(
+        name           = 'bridge_medallions',
+        gui_text       = "Medallions Required for Bridge",
+        default        = 6,
+        min            = 1,
+        max            = 6,
+        gui_tooltip    = '''\
+            Select the amount of Medallions required to spawn the rainbow bridge.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'bridge_stones',
+        gui_text       = "Spiritual Stones Required for Bridge",
+        default        = 3,
+        min            = 1,
+        max            = 3,
+        gui_tooltip    = '''\
+            Select the amount of Spiritual Stones required to spawn the rainbow bridge.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'bridge_rewards',
+        gui_text       = "Dungeon Rewards Required for Bridge",
+        default        = 9,
+        min            = 1,
+        max            = 9,
+        gui_tooltip    = '''\
+            Select the amount of Dungeon Rewards (Medallions and Spiritual Stones)
+            required to spawn the rainbow bridge.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'bridge_tokens',
+        gui_text       = "Skulltulas Required for Bridge",
+        default        = 100,
+        min            = 1,
+        max            = 100,
+        gui_tooltip    = '''\
+            Select the amount of Gold Skulltula Tokens required to spawn the rainbow bridge.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
         },
     ),
     Checkbutton(
@@ -1846,21 +1908,6 @@ setting_infos = [
             'Scarce': 25% Extra
             'Minimal: No Extra
         ''',
-        gui_params     = {
-            "hide_when_disabled": True,
-        },
-    ),
-    Scale(
-        name           = 'bridge_tokens',
-        gui_text       = "Skulltulas Required for Bridge",
-        default        = 100,
-        min            = 1,
-        max            = 100,
-        gui_tooltip    = '''\
-            Select the amount of Gold Skulltula Tokens required to spawn the rainbow bridge.
-        ''',
-        shared         = True,
-        disabled_default = 0,
         gui_params     = {
             "hide_when_disabled": True,
         },
@@ -2678,9 +2725,10 @@ setting_infos = [
             'any_dungeon':     "Any Dungeon",
             'keysanity':       "Anywhere (Keysanity)",
             'lacs_vanilla':    "On LACS: Vanilla",
-            'lacs_medallions': "On LACS: Medallions",
             'lacs_stones':     "On LACS: Stones",
+            'lacs_medallions': "On LACS: Medallions",
             'lacs_dungeons':   "On LACS: Dungeons",
+            'lacs_tokens':     "On LACS: Tokens",
         },
         gui_tooltip    = '''\
             'Remove': Ganon's Castle Boss Key is removed
@@ -2706,11 +2754,25 @@ setting_infos = [
             of Time as adult, with differing requirements.
             
             'On LACS: Vanilla': Shadow and Spirit Medallions.
-            'On LACS: Medallions': All 6 Medallions.
-            'On LACS: Stones': All 3 Spiritual Stones.
-            'On LACS: Dungeons': All Spiritual Stones & Medallions.
+            'On LACS: Medallions': A configurable amount of Medallions.
+            'On LACS: Stones': A configurable amount of Spiritual Stones.
+            'On LACS: Dungeons': A configurable amount of Dungeon Rewards.
+            'On LACS: Tokens': A configurable amount of Gold Skulltula Tokens.
         ''',
         shared         = True,
+        disable={
+            'remove':           {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'vanilla':          {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'dungeon':          {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'overworld':        {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'any_dungeon':      {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'keysanity':        {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_vanilla':     {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_stones':      {'settings': ['lacs_medallions', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_medallions':  {'settings': ['lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            'lacs_dungeons':    {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_tokens']},
+            'lacs_tokens':      {'settings': ['lacs_medallions', 'lacs_stones', 'lacs_rewards']},
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution': [
@@ -2723,6 +2785,68 @@ setting_infos = [
                 ('lacs_stones',     1),
                 ('lacs_dungeons',   1),
             ],
+        },
+    ),
+    Scale(
+        name           = 'lacs_medallions',
+        gui_text       = "Medallions Required for LACS",
+        default        = 6,
+        min            = 1,
+        max            = 6,
+        gui_tooltip    = '''\
+            Select the amount of Medallions required to trigger the Light Arrow Cutscene.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'lacs_stones',
+        gui_text       = "Spiritual Stones Required for LACS",
+        default        = 3,
+        min            = 1,
+        max            = 3,
+        gui_tooltip    = '''\
+            Select the amount of Spiritual Stones required to trigger the Light Arrow Cutscene.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'lacs_rewards',
+        gui_text       = "Dungeon Rewards Required for LACS",
+        default        = 9,
+        min            = 1,
+        max            = 9,
+        gui_tooltip    = '''\
+            Select the amount of Dungeon Rewards (Medallions and Spiritual Stones)
+            required to trigger the Light Arrow Cutscene.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
+        },
+    ),
+    Scale(
+        name           = 'lacs_tokens',
+        gui_text       = "Gold Skulltula Tokens Required for LACS",
+        default        = 100,
+        min            = 1,
+        max            = 100,
+        gui_tooltip    = '''\
+            Select the amount of Gold Skulltula Tokens
+            required to trigger the Light Arrow Cutscene.
+        ''',
+        shared         = True,
+        disabled_default = 0,
+        gui_params     = {
+            "hide_when_disabled": True,
         },
     ),
     Checkbutton(

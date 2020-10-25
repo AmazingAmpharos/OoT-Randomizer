@@ -864,7 +864,13 @@ def buildBridgeReqsString(world):
         string += "The awakened ones will have #already created a bridge# to the castle where the evil dwells."
     else:
         item_req_string = getHint('bridge_' + world.bridge, world.clearer_hints).text
-        if world.bridge == 'tokens':
+        if world.bridge == 'medallions':
+            item_req_string = str(world.bridge_medallions) + ' ' + item_req_string
+        elif world.bridge == 'stones':
+            item_req_string = str(world.bridge_stones) + ' ' + item_req_string
+        elif world.bridge == 'dungeons':
+            item_req_string = str(world.bridge_rewards) + ' ' + item_req_string
+        elif world.bridge == 'tokens':
             item_req_string = str(world.bridge_tokens) + ' ' + item_req_string
         if '#' not in item_req_string:
             item_req_string = '#%s#' % item_req_string
@@ -879,6 +885,14 @@ def buildGanonBossKeyString(world):
     else:
         if 'lacs_' in world.shuffle_ganon_bosskey:
             item_req_string = getHint(world.shuffle_ganon_bosskey, world.clearer_hints).text
+            if world.lacs_condition == 'medallions':
+                item_req_string = str(world.lacs_medallions) + ' ' + item_req_string
+            elif world.lacs_condition == 'stones':
+                item_req_string = str(world.lacs_stones) + ' ' + item_req_string
+            elif world.lacs_condition == 'dungeons':
+                item_req_string = str(world.lacs_rewards) + ' ' + item_req_string
+            elif world.lacs_condition == 'tokens':
+                item_req_string = str(world.lacs_tokens) + ' ' + item_req_string
             if '#' not in item_req_string:
                 item_req_string = '#%s#' % item_req_string
             bk_location_string = "provided by Zelda once %s are retrieved" % item_req_string

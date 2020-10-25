@@ -147,6 +147,9 @@
             "zora_fountain",
             "gerudo_fortress",
             "bridge",
+            "bridge_medallions",
+            "bridge_stones",
+            "bridge_rewards",
             "bridge_tokens",
             "trials_random",
             "trials"
@@ -195,6 +198,10 @@
             "shuffle_fortresskeys",
             "shuffle_bosskeys",
             "shuffle_ganon_bosskey",
+            "lacs_medallions",
+            "lacs_stones",
+            "lacs_rewards",
+            "lacs_tokens",
             "enhance_map_compass"
           ]
         }

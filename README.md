@@ -124,6 +124,11 @@ player.
   * Gerudo Fortress Small Keys are configured in a separate setting.
 * New setting `Shuffle Medigoron & Carpet Salesman`
   * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
+* New options for Rainbow Bridge and Ganon's Boss Key on Light Arrows Cut Scene.
+  * Sliders allow customizing the exact number of stones/medallions/dungeons/tokens required.
+  * Ganon's BK on LACS can now be set to require Gold Skulltula Tokens.
+  * `Randomize Main Rules` won't randomize slider values.
+  * Conditional-always hints check for whether 2 or more dungeon rewards are required, as a backstop.
 * New setting `Fast Bunny Hood`
   * Allows manual toggling on/off of the 1.5x speed boost from MM.
 * New cosmetic setting `HUD Button Colors`

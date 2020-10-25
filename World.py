@@ -78,6 +78,8 @@ class World(object):
             self.lacs_condition = 'dungeons'
         elif self.shuffle_ganon_bosskey == 'lacs_stones':
             self.lacs_condition = 'stones'
+        elif self.shuffle_ganon_bosskey == 'lacs_tokens':
+            self.lacs_condition = 'tokens'
         else:
             self.lacs_condition = 'vanilla'
 
@@ -179,11 +181,13 @@ class World(object):
         }
         max_tokens = 0
         if self.bridge == 'tokens':
-            max_tokens = self.bridge_tokens
+            max_tokens = max(max_tokens, self.bridge_tokens)
+        if self.lacs_condition == 'tokens':
+            max_tokens = max(max_tokens, self.lacs_tokens)
         tokens = [50, 40, 30, 20, 10]
         for t in tokens:
-            if t > max_tokens and f'{t} Gold Skulltula Reward' not in self.disabled_locations:
-                max_tokens = t
+            if f'{t} Gold Skulltula Reward' not in self.disabled_locations:
+                max_tokens = max(max_tokens, t)
         self.max_progressions['Gold Skulltula Token'] = max_tokens
         # Additional Ruto's Letter become Bottle, so we may have to collect two.
         self.max_progressions['Rutos Letter'] = 2
