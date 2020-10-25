@@ -1,6 +1,7 @@
 gossip_hints:
-    addiu   sp, sp, -0x18
-    sw      ra, 0x0014(sp)
+    addiu   sp, sp, -0x1C
+    sw      s1, 0x0014(sp)
+    sw      ra, 0x0018(sp)
 
     li      v1, SAVE_CONTEXT
 
@@ -9,11 +10,11 @@ gossip_hints:
     andi    t8, t7, 0x00FF
     li      at, 0xFF
     bne     t8, at, @@not_grotto
-    addiu   v0, t8, 0x0400
+    addiu   s1, t8, 0x0400
 
     lbu     t8, 0x1397(v1)       ; Grotto ID
     andi    t8, t8, 0x1F
-    addiu   v0, t8, 0x0430
+    addiu   s1, t8, 0x0430
 @@not_grotto:
 
     ; If Special flag is set, always display message
@@ -52,10 +53,11 @@ gossip_hints:
 
 @@no_hint:
     ; Change message to no response message id
-    li      v0, 0x2053
+    li      s1, 0x2053
 @@return:
     ; Set the message id to play and return
-    sh      v0, 0x010E(s0)
-    lw      ra, 0x0014(sp)
+    sh      s1, 0x010E(s0)
+    lw      ra, 0x0018(sp)
+    lw      s1, 0x0014(sp)
     jr      ra
-    addiu   sp, sp, 0x18
+    addiu   sp, sp, 0x1C

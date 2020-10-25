@@ -1734,6 +1734,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         symbol = rom.sym('FREE_SCARECROW_ENABLED')
         rom.write_byte(symbol, 0x01)
 
+    # Enable MM-like Bunny Hood behavior (1.5× speed)
+    if world.fast_bunny_hood:
+        symbol = rom.sym('FAST_BUNNY_HOOD_ENABLED')
+        rom.write_byte(symbol, 0x01)
+
     if world.ocarina_songs:
         replace_songs(rom)
 

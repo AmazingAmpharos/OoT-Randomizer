@@ -195,6 +195,7 @@
           "settings": [
             "shuffle_mapcompass",
             "shuffle_smallkeys",
+            "shuffle_fortresskeys",
             "shuffle_bosskeys",
             "shuffle_ganon_bosskey",
             "lacs_medallions",
@@ -302,6 +303,7 @@
             "useful_cutscenes",
             "fast_chests",
             "free_scarecrow",
+            "fast_bunny_hood",
             "chicken_count_random",
             "chicken_count",
             "big_poe_count_random",

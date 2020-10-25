@@ -60,18 +60,37 @@ class Region(object):
 
 
     def can_fill(self, item, manual=False):
+        is_self_dungeon_restricted = False
         is_dungeon_restricted = False
+        is_overworld_restricted = False
         if item.map or item.compass:
-            is_dungeon_restricted = self.world.shuffle_mapcompass in ['dungeon', 'vanilla']
-        elif item.smallkey and item.type != 'FortressSmallKey':
-            is_dungeon_restricted = self.world.shuffle_smallkeys in ['dungeon', 'vanilla']
-        elif item.bosskey and not item.name.endswith('(Ganons Castle)'):
-            is_dungeon_restricted = self.world.shuffle_bosskeys in ['dungeon', 'vanilla']
-        elif item.bosskey and item.name.endswith('(Ganons Castle)'):
-            is_dungeon_restricted = self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']
+            is_self_dungeon_restricted = self.world.shuffle_mapcompass in ['dungeon', 'vanilla']
+            is_dungeon_restricted = self.world.shuffle_mapcompass == 'any_dungeon'
+            is_overworld_restricted = self.world.shuffle_mapcompass == 'overworld'
+        elif item.type == 'SmallKey':
+            is_self_dungeon_restricted = self.world.shuffle_smallkeys in ['dungeon', 'vanilla']
+            is_dungeon_restricted = self.world.shuffle_smallkeys == 'any_dungeon'
+            is_overworld_restricted = self.world.shuffle_smallkeys == 'overworld'
+        elif item.type == 'FortressSmallKey':
+            is_dungeon_restricted = self.world.shuffle_fortresskeys == 'any_dungeon'
+            is_overworld_restricted = self.world.shuffle_fortresskeys == 'overworld'
+        elif item.type == 'BossKey':
+            is_self_dungeon_restricted = self.world.shuffle_bosskeys in ['dungeon', 'vanilla']
+            is_dungeon_restricted = self.world.shuffle_bosskeys == 'any_dungeon'
+            is_overworld_restricted = self.world.shuffle_bosskeys == 'overworld'
+        elif item.type == 'GanonBossKey':
+            is_self_dungeon_restricted = self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']
+            is_dungeon_restricted = self.world.shuffle_ganon_bosskey == 'any_dungeon'
+            is_overworld_restricted = self.world.shuffle_ganon_bosskey == 'overworld'
+
+        if is_self_dungeon_restricted and not manual:
+            return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
 
         if is_dungeon_restricted and not manual:
-            return self.dungeon and self.dungeon.is_dungeon_item(item) and item.world.id == self.world.id
+            return self.dungeon
+
+        if is_overworld_restricted and not manual:
+            return not self.dungeon
 
         if item.name == 'Triforce Piece':
             return item.world.id == self.world.id
