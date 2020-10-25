@@ -2084,6 +2084,15 @@ setting_infos = [
         shared         = True,
     ),
     Checkbutton(
+        name           = 'fast_bunny_hood',
+        gui_text       = 'Fast Bunny Hood',
+        gui_tooltip    = '''\
+            The Bunny Hood mask behaves like it does
+            in Majora's Mask and makes you go 1.5× faster.
+        ''',
+        shared         = True,
+    ),
+    Checkbutton(
         name           = 'start_with_rupees',
         gui_text       = 'Start with Max Rupees',
         gui_tooltip    = '''\
