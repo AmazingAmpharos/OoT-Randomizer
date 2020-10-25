@@ -175,6 +175,7 @@ player.
 * Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent Gerudo guards from throwing child Link in jail.
+* Fix hints not being readable on Mask of Truth setting.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Move the Stone of Agony indicator above any small keys if both are present.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
