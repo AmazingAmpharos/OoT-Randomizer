@@ -183,6 +183,7 @@ player.
 * Tricks can be filtered in the GUI using a new dropdown.
 
 #### Bug Fixes
+* Fix message table overflow that causes a crash in the credits when shuffling 4 shop items.
 * Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
 * Avoid crashing on some systems when using child items as adult.
 * Ensure Ice Traps have valid models if they can be seen.
