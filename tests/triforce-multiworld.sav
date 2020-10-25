@@ -9,7 +9,7 @@
 "randomize_settings": false,
 "open_forest": "open",
 "open_door_of_time": true,
-"open_fountain": false,
+"zora_fountain": "closed",
 "gerudo_fortress": "fast",
 "bridge": "medallions",
 "triforce_hunt": true,
