@@ -88,8 +88,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Set starting entrance for debugging purposes
     # REMEMBER TO REMOVE THIS IDIOT
     rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x00, 0x8D])
-    rom.write_bytes(0xB06332, [0x00, 0x8D])
+    rom.write_bytes(0xB06342, [0x05, 0xEC])
+    rom.write_bytes(0xB06332, [0x05, 0xEC])
 
     # Can always return to youth
     rom.write_byte(0xCB6844, 0x35)

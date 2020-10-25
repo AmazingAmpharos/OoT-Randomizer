@@ -349,7 +349,7 @@ do that.
 * Cucco Count
   * The number of cuccos to be gathered for Anju can be reduced or randomized, and Anju will tell you in-game the target number to catch (similar to 10 Big Poes).
 * Enable Useful Cutscenes prevents some useful cutscenes from being skipped
-  * Re-enables Poes at Forest Temple, Darunia at Fire Temple, and Twinrova at Spirit Temple
+  * Re-enables Poes at Forest Temple and Darunia at Fire Temple
 
 #### Major Changes
 * Seeds generation is significantly faster

@@ -1694,15 +1694,34 @@ skip_GS_BGS_text:
 .orga 0xD69398
 @Twinrova_Update_Return:
 
-;force twinrova to move down out of the ceiling
-; Replaces: lw    s0, 0x13C(s1)
-.orga 0xD68F9C
-    jal     rova_move_down
+; ;nop various things in the init function
+.orga 0xD62100
+    jal     twinrova_set_action
+.orga 0xD62110
+    lui     at, 0x42F0
+.orga 0xD62128
+    nop
+.orga 0xD621CC
+    jal     twinrova_set_action
+.orga 0xD621DC
+    lui     at, 0x42F0
+.orga 0xD73118 ;reloc
+    nop
+.orga 0xD73128 ;reloc
+   nop
+
+;choose action func: ovl+0x13EC
+
+
+; ;force twinrova to move down out of the ceiling
+; ; Replaces: lw    s0, 0x13C(s1)
+; .orga 0xD68F9C
+;     jal     rova_move_down
 
 ;Remove the function call to set the boss music in Init
 ; Replaces: jal     0x800CAA70
-.orga 0xD62128
-    nop
+; .orga 0xD62128
+;     nop
 
 ;==================================================================================================
 ; Fix Links Angle in Fairy Fountains

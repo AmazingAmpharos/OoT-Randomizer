@@ -15,7 +15,7 @@ rova_check_pos:
     bnez    t2, @@return
     nop     
     li      t3, 0x42c80000 ;900.0f 0x44610000 0x42c80000
-    sw      t3, 0x28(a0)   ;rova y, put them in the ceiling
+    ;sw      t3, 0x28(a0)   ;rova y, put them in the ceiling
     lw      t3, 0x28(s2)   ;links height
     li      t4, 0x43700000 ;240.0f
     blt     t3, t4, @@return
@@ -90,3 +90,13 @@ rova_move_down:
     lw      s0, 0x13C(s1) ;displaced
     jr      ra
     addiu   sp, sp, 0x30
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+twinrova_set_action:
+    la     t0, twinrova_rise
+    jr     ra
+    sw     t0, 0x13C(s0)
+
+twinrova_rise:
+    jr     ra
+    nop
