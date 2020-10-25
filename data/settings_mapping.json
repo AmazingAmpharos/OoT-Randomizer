@@ -351,8 +351,8 @@
           ]
         },
         {
-          "name": "equipment_section",
-          "text": "Equipment",
+          "name": "equipment_color_section",
+          "text": "Equipment Colors",
           "is_colors": true,
           "col_span": 1,
           "row_span": [5,5,5],
@@ -362,13 +362,11 @@
             "zora_color",
             "silver_gauntlets_color",
             "golden_gauntlets_color",
-            "sword_trail_duration",
-            "sword_trail_color_inner",
-            "sword_trail_color_outer"
+            "mirror_shield_frame_color"
           ]
         },
         {
-          "name": "ui_section",
+          "name": "ui_color_section",
           "text": "UI Colors",
           "is_colors": true,
           "col_span": 1,
@@ -380,8 +378,8 @@
           ]
         },
         {
-          "name": "navi_section",
-          "text": "Navi Colors",
+          "name": "misc_color_section",
+          "text": "Misc. Colors",
           "is_colors": true,
           "col_span": 2,
           "row_span": [5,5,5],
@@ -393,7 +391,14 @@
             "navi_color_npc_inner",
             "navi_color_npc_outer",
             "navi_color_prop_inner",
-            "navi_color_prop_outer"
+            "navi_color_prop_outer",
+            "bombchu_trail_color_inner",
+            "bombchu_trail_color_outer",
+            "boomerang_trail_color_inner",
+            "boomerang_trail_color_outer",
+            "sword_trail_color_inner",
+            "sword_trail_color_outer",
+            "sword_trail_duration"
           ]
         }
       ]

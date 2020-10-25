@@ -132,6 +132,12 @@ player.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
   * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
   * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* Navi Colors section renamed "Misc. Colors"
+  * Navi and sword trails options are now in this section, along with:
+  * New "Rainbow" option in all Navi color settings.
+  * New Boomerang trail inner & outer color settings, including a "Rainbow" option.
+  * New Bombchu trail inner & outer color settings, including a "Rainbow" option.
+  * New Mirror Shield Frame color setting.
 * New tricks
   * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
   * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
