@@ -2579,7 +2579,7 @@ setting_infos = [
             for a milder Keysanity experience.
         ''',
         disable        = {
-            'dungeons': {'settings': ['one_item_per_dungeon']},
+            'any_dungeon': {'settings': ['one_item_per_dungeon']},
         },
         shared         = True,
         gui_params     = {
