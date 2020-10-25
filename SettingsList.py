@@ -1282,7 +1282,7 @@ logic_tricks = {
                     fire wall, and by defeating Armos to detonate bomb
                     flowers (among other methods). While these techniques
                     themselves are relatively simple, they're not
-                    relevant unless "Dodongo\'s Cavern MQ Light the Eyes
+                    relevant unless "Dodongo's Cavern MQ Light the Eyes
                     with Strength" is enabled, which is a trick which
                     that is particularly difficult for child to perform.
                     '''},
