@@ -38,7 +38,12 @@
                 is_adult or (here(is_adult) and has_explosives) or
                 (logic_dc_mq_child_bombs and (Kokiri_Sword or Sticks) and
                     (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))",
-            "Dodongos Cavern Boss Area": "has_explosives"
+            "Dodongos Cavern Boss Area": "
+                has_explosives or
+                (logic_dc_mq_eyes and Progressive_Strength_Upgrade and
+                    (is_adult or logic_dc_mq_child_back) and
+                    (here(can_use(Sticks)) or can_use(Dins_Fire) or
+                        (is_adult and (logic_dc_jump or Hammer or Hover_Boots or Hookshot))))"
         }
     },
     {
@@ -49,9 +54,9 @@
         },
         "exits": {
             "Dodongos Cavern Bomb Bag Area": "
-                (here(is_adult and can_use(Bow)) or Progressive_Strength_Upgrade or
+                (here(can_use(Bow)) or Progressive_Strength_Upgrade or
                  can_use(Dins_Fire) or has_explosives) and
-                (can_use(Slingshot))"
+                can_use(Slingshot)"
         }
     },
     {
@@ -60,7 +65,7 @@
         "locations": {
             "Dodongos Cavern MQ Bomb Bag Chest": "True",
             "Dodongos Cavern MQ GS Scrub Room": "
-                (here(is_adult and can_use(Bow)) or Progressive_Strength_Upgrade or
+                (here(can_use(Bow)) or Progressive_Strength_Upgrade or
                  can_use(Dins_Fire) or has_explosives) and
                 (can_use(Hookshot) or can_use(Boomerang))"
         },
@@ -75,10 +80,10 @@
             "Dodongos Cavern MQ Under Grave Chest": "True",
             "Dodongos Cavern Boss Room Chest": "True",
             "Dodongos Cavern King Dodongo Heart": "
-                (Bombs or Progressive_Strength_Upgrade) and 
+                can_blast_or_smash and (Bombs or Progressive_Strength_Upgrade) and 
                 (is_adult or Sticks or Kokiri_Sword)",
             "King Dodongo": "
-                (Bombs or Progressive_Strength_Upgrade) and 
+                can_blast_or_smash and (Bombs or Progressive_Strength_Upgrade) and 
                 (is_adult or Sticks or Kokiri_Sword)",
             "Dodongos Cavern MQ GS Back Area": "True",
             "Fairy Pot": "has_bottle"

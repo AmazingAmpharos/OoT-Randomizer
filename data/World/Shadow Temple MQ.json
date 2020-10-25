@@ -44,8 +44,12 @@
         "region_name": "Shadow Temple Upper Huge Pit",
         "dungeon": "Shadow Temple",
         "locations": {
-            "Shadow Temple MQ Invisible Blades Visible Chest": "can_play(Song_of_Time)",
-            "Shadow Temple MQ Invisible Blades Invisible Chest": "can_play(Song_of_Time)"
+            "Shadow Temple MQ Invisible Blades Visible Chest": "
+                can_play(Song_of_Time) or
+                (logic_shadow_mq_invisible_blades and damage_multiplier != 'ohko')",
+            "Shadow Temple MQ Invisible Blades Invisible Chest": "
+                can_play(Song_of_Time) or
+                (logic_shadow_mq_invisible_blades and damage_multiplier != 'ohko')"
         },
         "exits": {
             "Shadow Temple Lower Huge Pit": "has_fire_source or logic_shadow_mq_huge_pit"
@@ -97,11 +101,9 @@
         "dungeon": "Shadow Temple",
         "locations": {
             "Shadow Temple Bongo Bongo Heart": "
-                (Bow or (logic_shadow_statue and has_bombchus)) and
-                Boss_Key_Shadow_Temple",
+                (Bow or (logic_shadow_statue and has_bombchus)) and Boss_Key_Shadow_Temple",
             "Bongo Bongo": "
-                (Bow or (logic_shadow_statue and has_bombchus)) and
-                Boss_Key_Shadow_Temple",
+                (Bow or (logic_shadow_statue and has_bombchus)) and Boss_Key_Shadow_Temple",
             "Shadow Temple MQ GS After Ship": "True",
             "Shadow Temple MQ GS Near Boss": "Bow or (logic_shadow_statue and has_bombchus)"
         },
