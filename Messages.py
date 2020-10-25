@@ -7,15 +7,15 @@ TEXT_START = 0x92D000
 ENG_TEXT_SIZE_LIMIT = 0x39000
 JPN_TEXT_SIZE_LIMIT = 0x3A150
 
-JP_TABLE_START = 0xB808AC
+JPN_TABLE_START = 0xB808AC
 ENG_TABLE_START = 0xB849EC
 CREDITS_TABLE_START = 0xB88C0C
 
-JP_TABLE_SIZE = ENG_TABLE_START - JP_TABLE_START
+JPN_TABLE_SIZE = ENG_TABLE_START - JPN_TABLE_START
 ENG_TABLE_SIZE = CREDITS_TABLE_START - ENG_TABLE_START
 
-EXTENDED_TABLE_START = JP_TABLE_START # start writing entries to the jp table instead of english for more space
-EXTENDED_TABLE_SIZE = JP_TABLE_SIZE + ENG_TABLE_SIZE # 0x8360 bytes, 4,204 entries
+EXTENDED_TABLE_START = JPN_TABLE_START # start writing entries to the jp table instead of english for more space
+EXTENDED_TABLE_SIZE = JPN_TABLE_SIZE + ENG_TABLE_SIZE # 0x8360 bytes, 4,204 entries
 
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
