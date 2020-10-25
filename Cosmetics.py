@@ -321,7 +321,7 @@ def patch_sword_trails(rom, settings, log, symbols):
 def patch_bombchu_trails(rom, settings, log, symbols):
     # patch bombchu trail colors
     bombchu_trails = [
-        ('Bombchu Trail', 'bombchu_trail_color', get_bombchu_trail_colors(),
+        ('Bombchu Trail', 'bombchu_trail_color', get_bombchu_trail_colors(), bombchu_trail_colors,
             (symbols['CFG_BOMBCHU_TRAIL_INNER_COLOR'], symbols['CFG_BOMBCHU_TRAIL_OUTER_COLOR'],
              symbols['CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED'], symbols['CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED'])),
     ]
@@ -332,7 +332,7 @@ def patch_bombchu_trails(rom, settings, log, symbols):
 def patch_boomerang_trails(rom, settings, log, symbols):
     # patch boomerang trail colors
     boomerang_trails = [
-        ('Boomerang Trail', 'boomerang_trail_color', get_boomerang_trail_colors(),
+        ('Boomerang Trail', 'boomerang_trail_color', get_boomerang_trail_colors(), boomerang_trail_colors,
             (symbols['CFG_BOOM_TRAIL_INNER_COLOR'], symbols['CFG_BOOM_TRAIL_OUTER_COLOR'],
              symbols['CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED'], symbols['CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED'])),
     ]
@@ -341,7 +341,7 @@ def patch_boomerang_trails(rom, settings, log, symbols):
 
 
 def patch_trails(rom, settings, log, trails):
-    for trail_name, trail_setting, trail_color_list, trail_symbols in trails:
+    for trail_name, trail_setting, trail_color_list, trail_color_dict, trail_symbols in trails:
         color_inner_symbol, color_outer_symbol, rainbow_inner_symbol, rainbow_outer_symbol = trail_symbols
         option_inner = settings.__dict__[trail_setting+'_inner']
         option_outer = settings.__dict__[trail_setting+'_outer']
@@ -370,7 +370,7 @@ def patch_trails(rom, settings, log, trails):
                 color = hex_to_color(plando_colors[0][trail_part])
 
             # set rainbow option
-            if option_inner == 'Rainbow':
+            if option == 'Rainbow':
                 rom.write_byte(rainbow_symbol, 0x01)
                 color = [0x00, 0x00, 0x00]
             else:
@@ -389,8 +389,8 @@ def patch_trails(rom, settings, log, trails):
                     color = generate_random_color()
 
             # grab the color from the list
-            if color is None and option in bombchu_trail_colors:
-                color = list(bombchu_trail_colors[option])
+            if color is None and option in trail_color_dict:
+                color = list(trail_color_dict[option])
 
             # build color from hex code
             if color is None:
