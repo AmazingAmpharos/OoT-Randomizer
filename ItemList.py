@@ -107,7 +107,7 @@ item_table = {
     'Boss Key (Water Temple)':                         ('BossKey',  True,  0x97, None),
     'Boss Key (Spirit Temple)':                        ('BossKey',  True,  0x98, None),
     'Boss Key (Shadow Temple)':                        ('BossKey',  True,  0x99, None),
-    'Boss Key (Ganons Castle)':                        ('BossKey',  True,  0x9A, None),
+    'Boss Key (Ganons Castle)':                        ('GanonBossKey',True,0x9A,None),
     'Compass (Deku Tree)':                             ('Compass',  None,  0x9B, None),
     'Compass (Dodongos Cavern)':                       ('Compass',  None,  0x9C, None),
     'Compass (Jabu Jabus Belly)':                      ('Compass',  None,  0x9D, None),

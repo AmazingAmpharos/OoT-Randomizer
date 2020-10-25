@@ -120,9 +120,11 @@ def getItemGenericName(item):
 def isRestrictedDungeonItem(dungeon, item):
     if (item.map or item.compass) and dungeon.world.shuffle_mapcompass == 'dungeon':
         return item in dungeon.dungeon_items
-    if item.smallkey and dungeon.world.shuffle_smallkeys == 'dungeon':
+    if item.type == 'SmallKey' and dungeon.world.shuffle_smallkeys == 'dungeon':
         return item in dungeon.small_keys
-    if item.bosskey and dungeon.world.shuffle_bosskeys == 'dungeon':
+    if item.type == 'BossKey' and dungeon.world.shuffle_bosskeys == 'dungeon':
+        return item in dungeon.boss_key
+    if item.type == 'GanonBossKey' and dungeon.world.shuffle_ganon_bosskey == 'dungeon':
         return item in dungeon.boss_key
     return False
 

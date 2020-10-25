@@ -192,6 +192,7 @@
           "settings": [
             "shuffle_mapcompass",
             "shuffle_smallkeys",
+            "shuffle_fortresskeys",
             "shuffle_bosskeys",
             "shuffle_ganon_bosskey",
             "enhance_map_compass"

@@ -1759,6 +1759,9 @@ setting_infos = [
             allowing access to Gerudo Training Grounds.
         ''',
         shared         = True,
+        disable        = {
+            'open' : {'settings' : ['shuffle_fortresskeys']}
+        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
         },
@@ -2477,11 +2480,13 @@ setting_infos = [
         gui_text       = 'Maps & Compasses',
         default        = 'dungeon',
         choices        = {
-            'remove':    'Remove',
-            'startwith': 'Start With',
-            'vanilla':   'Vanilla Locations',
-            'dungeon':   'Dungeon Only',
-            'keysanity': 'Anywhere'
+            'remove':      'Remove',
+            'startwith':   'Start With',
+            'vanilla':     'Vanilla Locations',
+            'dungeon':     'Dungeon Only',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere',
         },
         gui_tooltip    = '''\
             'Remove': Maps and Compasses are removed.
@@ -2497,12 +2502,18 @@ setting_infos = [
 
             'Dungeon': Maps and Compasses can only appear
             in their respective dungeon.
+            
+            'Overworld Only': Maps and Compasses can only appear
+            outside of dungeons.
+
+            'Any Dungeon': Maps and Compasses can only appear in a
+            dungeon, but not necessarily the dungeon they are for.            
 
             'Anywhere': Maps and Compasses can appear
             anywhere in the world.
 
-            Setting 'Remove', 'Start With, or 'Anywhere' will
-            add 2 more possible locations to each Dungeons.
+            Setting 'Remove', 'Start With, 'Overworld', or 'Anywhere'
+            will add 2 more possible locations to each Dungeons.
             This makes dungeons more profitable, especially
             Ice Cavern, Water Temple, and Jabu Jabu's Belly.
         ''',
@@ -2516,10 +2527,12 @@ setting_infos = [
         gui_text       = 'Small Keys',
         default        = 'dungeon',
         choices        = {
-            'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',
-            'dungeon':   'Dungeon Only',
-            'keysanity': 'Anywhere (Keysanity)'
+            'remove':      'Remove (Keysy)',
+            'vanilla':     'Vanilla Locations',
+            'dungeon':     'Dungeon Only',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere (Keysanity)',
         },
         gui_tooltip    = '''\
             'Remove': Small Keys are removed. All locked
@@ -2534,7 +2547,18 @@ setting_infos = [
             'Dungeon': Small Keys can only appear in their
             respective dungeon. If Fire Temple is not a
             Master Quest dungeon, the door to the Boss Key
-            chest will be unlocked
+            chest will be unlocked.
+            
+            'Overworld Only': Small Keys can only appear outside
+            of dungeons. You may need to enter a dungeon multiple
+            times to gain items to access the overworld locations
+            with the keys required to finish a dungeon.
+            
+            'Any Dungeon': Small Keys can only appear inside
+            of any dungeon, but won't necessarily be in the
+            dungeon that the key is for. A difficult mode since
+            it is more likely to need to enter a dungeon
+            multiple times.
 
             'Anywhere': Small Keys can appear
             anywhere in the world. A difficult mode since
@@ -2544,6 +2568,39 @@ setting_infos = [
             Try different combination out, such as:
             'Small Keys: Dungeon' + 'Boss Keys: Anywhere'
             for a milder Keysanity experience.
+        ''',
+        disable        = {
+            'dungeons': {'settings': ['one_item_per_dungeon']},
+        },
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Combobox(
+        name           = 'shuffle_fortresskeys',
+        gui_text       = 'Gerudo Fortress Keys',
+        default        = 'vanilla',
+        disabled_default = 'remove',
+        choices        = {
+            'vanilla':     'Vanilla Locations',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere (Keysanity)',
+        },
+        gui_tooltip    = '''\
+            'Vanilla': Gerudo Fortress Keys will appear in their
+            vanilla location, dropping from fighting Gerudo guards
+            that attack when trying to free the jailed carpenters.
+            
+            'Overworld Only': Gerudo Fortress Keys can only appear
+             outside of dungeons.
+            
+            'Dungeons Only': Gerudo Fortress Keys can only appear
+             inside of dungeons.
+
+            'Anywhere': Gerudo Fortress Keys can appear anywhere
+            in the world.
         ''',
         shared         = True,
         gui_params     = {
@@ -2555,10 +2612,12 @@ setting_infos = [
         gui_text       = 'Boss Keys',
         default        = 'dungeon',
         choices        = {
-            'remove':    'Remove (Keysy)',
-            'vanilla':   'Vanilla Locations',
-            'dungeon':   'Dungeon Only',
-            'keysanity': 'Anywhere (Keysanity)',
+            'remove':      'Remove (Keysy)',
+            'vanilla':     'Vanilla Locations',
+            'dungeon':     'Dungeon Only',
+            'overworld':   'Overworld Only',
+            'any_dungeon': 'Any Dungeon',
+            'keysanity':   'Anywhere (Keysanity)',
         },
         gui_tooltip    = '''\
             'Remove': Boss Keys are removed. All locked
@@ -2570,6 +2629,17 @@ setting_infos = [
 
             'Dungeon': Boss Keys can only appear in their
             respective dungeon.
+            
+            'Overworld Only': Boss Keys can only appear outside
+            of dungeons. You may need to enter a dungeon without
+            the boss key to get items required to find the key
+            in the overworld.
+            
+            'Any Dungeon': Boss Keys can only appear inside
+            of any dungeon, but won't necessarily be in the
+            dungeon that the key is for. A difficult mode since
+            it is more likely to need to enter a dungeon
+            multiple times.
 
             'Anywhere': Boss Keys can appear
             anywhere in the world. A difficult mode since
@@ -2594,6 +2664,8 @@ setting_infos = [
             'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
             'dungeon':         "Dungeon Only",
+            'overworld':       "Overworld Only",
+            'any_dungeon':     "Any Dungeon",
             'keysanity':       "Anywhere (Keysanity)",
             'lacs_vanilla':    "On LACS: Vanilla",
             'lacs_medallions': "On LACS: Medallions",
@@ -2609,6 +2681,12 @@ setting_infos = [
 
             'Vanilla': Ganon's Castle Boss Key will appear in 
             the vanilla location.
+            
+            'Overworld Only': Ganon's Castle Boss Key can only appear
+            outside of dungeons.
+            
+            'Any Dungeon': Ganon's Castle Boss Key can only appear
+            inside of a dungeon, but not necessarily Ganon's Castle.
 
             'Anywhere': Ganon's Castle Boss Key can appear
             anywhere in the world.
