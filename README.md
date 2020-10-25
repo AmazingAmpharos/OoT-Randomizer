@@ -174,6 +174,7 @@ player.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent Gerudo guards from throwing child Link in jail.
 * Prevent an errant `@` from showing up in Triforce Hunt.
+* Move the Stone of Agony indicator above any small keys if both are present.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:
   * Closed Forest implies starting as child.
