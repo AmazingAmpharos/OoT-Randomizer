@@ -198,20 +198,19 @@ do that.
   * Twinrova waits for player to reach the top platform before starting, preventing early snipes
 
 #### Bug Fixes
-* Fix message table overflow that causes a crash in the credits when shuffling 4 shop items.
 * Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
 * Avoid crashing on some systems when using child items as adult.
 * Ensure Ice Traps have valid models if they can be seen.
 * Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
 * Prevent Gerudo guards from throwing child Link in jail.
-* Prevent Collection Delay from the Carpenter Boss when mashing through the text with an item in hand
-* Gray note songs do not play back when learning them, adding consistency and preventing suns song from causing bugs
-* Empty Bomb fix improved to work in all scenarios
-* Fast warp song hack now sets transition to white fade so that it is consistent
-* Royal Family Tomb moves out of the way instantly 
-* Fix Zelda from being frozen at the start of the final battle
-* Drop ruto before entering Big Octo room if miniboss has been defeated
 * Fix hints not being readable on Mask of Truth setting.
+* Prevent Collection Delay from the Carpenter Boss when mashing through the text with an item in hand.
+* Gray note songs do not play back when learning them, adding consistency and preventing Sun's Song from causing bugs.
+* Empty Bomb fix improved to work in all scenarios.
+* Fast warp song hack now sets transition to white fade for consistency.
+* Royal Family Tomb moves out of the way instantly.
+* Fix Zelda from being frozen at the start of the final battle.
+* Drop Ruto before entering Big Octo room if the miniboss has been defeated.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Move the Stone of Agony indicator above any small keys if both are present.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
