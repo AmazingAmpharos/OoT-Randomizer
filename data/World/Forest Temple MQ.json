@@ -9,7 +9,7 @@
             "Forest Temple MQ GS First Hallway": "can_use(Hookshot) or can_use(Boomerang)"
         },
         "exits": {
-            "Sacred Forest Meadow": "True",
+            "SFM Forest Temple Entrance Ledge": "True",
             "Forest Temple Central Area": "
                 (Small_Key_Forest_Temple, 1) and (is_adult or can_child_attack or Nuts)"
         }

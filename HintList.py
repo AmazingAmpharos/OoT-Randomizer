@@ -1022,8 +1022,8 @@ hintTable = {
     'DMT Cow Grotto Cow':                                          ("a #cow in a luxurious hole# offers", None, 'exclude'),
 
     'Desert Colossus -> Colossus Grotto':                       ("lifting a #rock in the desert# reveals", None, 'entrance'),
-    'Gerudo Valley -> GV Octorok Grotto':                       ("a rock on #a ledge in the valley# hides", None, 'entrance'),
-    'Goron City -> GC Grotto':                                  ("a #pool of lava# in Goron City blocks the way to", None, 'entrance'),
+    'GV Grotto Ledge -> GV Octorok Grotto':                     ("a rock on #a ledge in the valley# hides", None, 'entrance'),
+    'GC Grotto Platform -> GC Grotto':                          ("a #pool of lava# in Goron City blocks the way to", None, 'entrance'),
     'Gerudo Fortress -> GF Storms Grotto':                      ("a #storm within Gerudo's Fortress# reveals", None, 'entrance'),
     'Zoras Domain -> ZD Storms Grotto':                         ("a #storm within Zora's Domain# reveals", None, 'entrance'),
     'Hyrule Castle Grounds -> HC Storms Grotto':                ("a #storm near the castle# reveals", None, 'entrance'),

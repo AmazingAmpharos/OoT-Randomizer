@@ -3,7 +3,7 @@
         "region_name": "Ganons Castle Lobby",
         "dungeon": "Ganons Castle",
         "exits": {
-            "Ganons Castle Grounds": "True",
+            "Castle Grounds": "True",
             "Ganons Castle Forest Trial": "True",
             "Ganons Castle Fire Trial": "True",
             "Ganons Castle Water Trial": "True",

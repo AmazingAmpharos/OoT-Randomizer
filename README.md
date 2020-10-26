@@ -129,6 +129,16 @@ player.
   * Ganon's BK on LACS can now be set to require Gold Skulltula Tokens.
   * `Randomize Main Rules` won't randomize slider values.
   * Conditional-always hints check for whether 2 or more dungeon rewards are required, as a backstop.
+* Entrance Randomizer settings overhaul
+  * `Entrance Shuffle` setting replaced with the other independent settings here.
+  * `Shuffle Interior Entrances`: allows a choice of shuffling simple interiors, all interiors, or none.
+  * `Shuffle Grotto Entrances`: allows shuffling grotto/grave entrances.
+  * `Shuffle Dungeon Entrances`: allows shuffling dungeon entrances.
+  * `Shuffle Overworld Entrances`: allows shuffling overworld connections.
+  * `Randomize Owl Drops`: allows randomizing where the owl drops you from each owl spot.
+  * `Randomize Warp Song Destinations`: allows randomizing (to any entrance, not just warp pads!) where each warp song takes you.
+  * `Randomize Overworld Spawns`: allows randomizing (per age) where you start when loading a save in the Overworld.
+  * All these shuffles and randomizations are fixed when the seed is generated; within a seed it will always be the same each time.
 * New setting `Fast Bunny Hood`
   * Allows manual toggling on/off of the 1.5x speed boost from MM.
 * New Cosmetic Plandomizer

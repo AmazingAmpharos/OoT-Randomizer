@@ -15,7 +15,7 @@
             "Fairy Pot": "has_bottle and (Small_Key_Fire_Temple, 5)"
         },
         "exits": {
-            "Fire Temple Entrance": "True",
+            "DMC Fire Temple Entrance": "True",
             "Fire Boss Room": "
                 can_use(Goron_Tunic) and can_use(Megaton_Hammer) and Boss_Key_Fire_Temple and
                 ((has_fire_source and (logic_fire_boss_door_jump or Hover_Boots)) or at('Fire Temple Upper', True))",

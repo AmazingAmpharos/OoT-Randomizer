@@ -1663,7 +1663,9 @@ setting_infos = [
         disable        = {
             True : {
                 'sections' : ['open_section', 'shuffle_section', 'shuffle_dungeon_section'],
-                'settings' : ['starting_age', 'triforce_hunt', 'triforce_goal_per_world', 'entrance_shuffle', 'bombchus_in_logic', 'one_item_per_dungeon'],
+                'settings': ['starting_age', 'shuffle_interior_entrances', 'shuffle_grotto_entrances', 'shuffle_dungeon_entrances',
+                             'shuffle_overworld_entrances', 'owl_drops', 'warp_songs', 'spawn_positions',
+                             'triforce_hunt', 'triforce_goal_per_world', 'bombchus_in_logic', 'one_item_per_dungeon'],
             }
         },
         shared         = True,
@@ -1973,7 +1975,9 @@ setting_infos = [
             considered available. MAY BE IMPOSSIBLE TO BEAT.
         ''',
         disable        = {
-            'glitched'  : {'settings' : ['entrance_shuffle', 'mq_dungeons_random', 'mq_dungeons', 'allowed_tricks']},
+            'glitched'  : {'settings' : ['allowed_tricks', 'shuffle_interior_entrances', 'shuffle_grotto_entrances',
+                                         'shuffle_dungeon_entrances', 'shuffle_overworld_entrances', 'owl_drops',
+                                         'warp_songs', 'spawn_positions', 'mq_dungeons_random', 'mq_dungeons', ]},
             'none'      : {'tabs'     : ['detailed_tab']},
         },
         shared         = True,
@@ -2403,52 +2407,128 @@ setting_infos = [
         },
     ),
     Combobox(
-        name           = 'entrance_shuffle',
-        gui_text       = 'Entrance Shuffle',
+        name           = 'shuffle_interior_entrances',
+        gui_text       = 'Shuffle Interior Entrances',
         default        = 'off',
         choices        = {
-            'off':              'Off',
-            'dungeons':         'Dungeons Only',
-            'simple-indoors':   'Simple Indoors',
-            'all-indoors':      'All Indoors',
-            'all':              'All Indoors & Overworld',
+            'off':       'Off',
+            'simple':    'Simple Interiors',
+            'all':       'All Interiors',
         },
         gui_tooltip    = '''\
-            Shuffle entrances bidirectionally within different pools.
+            'Simple Interiors': 
+            Shuffle the pool of interior entrances which contains most Houses 
+            and all Great Fairies.
+    
+            'All Interiors':
+            Extended version of 'Simple Interiors' with some extra places:
+            Windmill, Link's House, Temple of Time and Kakariko Potion Shop.
 
-            'Dungeons Only':
-            Shuffle dungeon entrances with each other, including Bottom 
-            of the Well, Ice Cavern, and Gerudo Training Grounds. 
-            However, Ganon's Castle is not shuffled.
-            Additionally, the entrances of Deku Tree, Fire Temple and 
-            Bottom of the Well are opened for both adult and child.
-
-            'Simple Indoors':
-            Shuffle dungeon entrances along with simple Grotto and
-            Interior entrances (i.e. most Houses and Great Fairies).
-
-            'All Indoors':
-            Extended version of 'Simple Indoors' with some extra entrances:
-            Adult Potion Shop, Windmill, Link's House, Temple of Time and
-            Dampe's Grave.
- 
-            'All Indoors & Overworld':
-            Same as 'All Indoors' but with Overworld loading zones shuffled
-            in a new separate pool. Owl drop positions are also randomized.
-
-            Note: If Interior or Overworld entrances are shuffled, trade timers 
-            are disabled and trade items never revert.
+            When shuffling any interior entrances, trade quest timers are disabled 
+            and items never revert, even when dying or loading a save.
         ''',
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution':  [
-                ('off', 4),
-                ('dungeons', 1),
-                ('simple-indoors', 1),
-                ('all-indoors', 1),
+                ('off', 2),
+                ('simple', 1),
                 ('all', 1),
             ],
+        },
+    ),
+    Checkbutton(
+        name           = 'shuffle_grotto_entrances',
+        gui_text       = 'Shuffle Grotto Entrances',
+        gui_tooltip    = '''\
+            Shuffle the pool of grotto entrances, including all graves, 
+            small Fairy Fountains and the Lost Woods Stage.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'shuffle_dungeon_entrances',
+        gui_text       = 'Shuffle Dungeon Entrances',
+        gui_tooltip    = '''\
+            Shuffle the pool of dungeon entrances, including Bottom 
+            of the Well, Ice Cavern, and Gerudo Training Grounds.
+            However, Ganon's Castle is not shuffled.
+
+            Additionally, the entrances of Deku Tree, Fire Temple and 
+            Bottom of the Well are opened for both adult and child.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'shuffle_overworld_entrances',
+        gui_text       = 'Shuffle Overworld Entrances',
+        gui_tooltip    = '''\
+            Shuffle the pool of Overworld entrances, which corresponds
+            to almost all loading zones between Overworld areas.
+
+            Some entrances are kept unshuffled to avoid issues:
+            - Hyrule Castle Courtyard and Garden entrances
+            - Both Market Back Alley entrances
+            - Gerudo Valley to Lake Hylia
+
+            Just like when shuffling interior entrances, shuffling overworld 
+            entrances disables trade timers and trade items never revert, 
+            even when dying or loading a save.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'owl_drops',
+        gui_text       = 'Randomize Owl Drops',
+        gui_tooltip    = '''\
+            Randomize where Kaepora Gaebora (the Owl) drops you at 
+            when you talk to him at Lake Hylia or at the top of 
+            Death Mountain Trail.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'warp_songs',
+        gui_text       = 'Randomize Warp Song Destinations',
+        gui_tooltip    = '''\
+            Randomize where each of the 6 warp songs leads to.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+        },
+    ),
+    Checkbutton(
+        name           = 'spawn_positions',
+        gui_text       = 'Randomize Overworld Spawns',
+        gui_tooltip    = '''\
+            Randomize where you start as Child or Adult when loading
+            a save in the Overworld. This means you may not necessarily
+            spawn inside Link's House or Temple of Time.
+
+            This stays consistent after saving and loading the game again.
+        ''',
+        default        = False,
+        shared         = True,
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
         },
     ),
     Combobox(

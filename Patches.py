@@ -794,17 +794,10 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
             new_entrance = entrance.data
             replaced_entrance = entrance.replaces.data
 
-            if entrance.replaces.type == 'Grotto':
-                if entrance.replaces.primary:
-                    replaced_entrance['index'] = 0x1000 + replaced_entrance['grotto_id']
-                else:
-                    replaced_entrance['index'] = 0x7FFF
-
             exit_updates.append((new_entrance['index'], replaced_entrance['index']))
 
-            if "dynamic_address" in new_entrance:
-                # Dynamic exits are special and have to be set on a specific address
-                rom.write_int16(new_entrance["dynamic_address"], replaced_entrance['index'])
+            for address in new_entrance.get('addresses', []):
+                rom.write_int16(address, replaced_entrance['index'])
 
             if "blue_warp" in new_entrance:
                 if "blue_warp" in replaced_entrance:
@@ -822,10 +815,13 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
                 copy_entrance_record(blue_out_data + 2, new_entrance["blue_warp"] + 2, 2)
                 copy_entrance_record(replaced_entrance["index"], new_entrance["blue_warp"], 2)
 
-        
     exit_table = generate_exit_lookup_table()
+    
+    if world.entrance_shuffle:
+        # Disable the fog state entirely to avoid fog glitches
+        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
-    if world.shuffle_interior_entrances or world.shuffle_overworld_entrances:
+    if world.disable_trade_revert:
         # Disable trade quest timers and prevent trade items from ever reverting
         rom.write_byte(rom.sym('DISABLE_TIMERS'), 0x01)
         rom.write_int16s(0xB6D460, [0x0030, 0x0035, 0x0036]) # Change trade items revert table to prevent all reverts
@@ -835,9 +831,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
         # Prevent the ocarina cutscene from leading straight to hyrule field
         rom.write_byte(rom.sym('OCARINAS_SHUFFLED'), 1)
-
-        # Disable the fog state entirely to avoid fog glitches
-        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
 
         # Combine all fence hopping LLR exits to lead to the main LLR exit
         for k in [0x028A, 0x028E, 0x0292]: # Southern, Western, Eastern Gates
@@ -855,51 +848,38 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_int16(0xACAA2E, 0x0138) # 1st Impa escort
         rom.write_int16(0xD12D6E, 0x0138) # 2nd+ Impa escort
 
-        # Change hardcoded Owl Drop entrance indexes to their new indexes (cutscene hardcodes)
-        for entrance in world.get_shuffled_entrances(type='OwlDrop'):
-            rom.write_int16(entrance.data['code_address'], entrance.replaces.data['index'])
-
-        set_entrance_updates(world.get_shuffled_entrances(type='Overworld'))
-
     if world.shuffle_dungeon_entrances:
         rom.write_byte(rom.sym('DUNGEONS_SHUFFLED'), 1)
 
-        # Connect lake hylia fill exit to revisit exit (Hylia blue will then be rewired below)
+        # Connect lake hylia fill exit to revisit exit
         rom.write_int16(0xAC995A, 0x060C)
 
-        # Remove deku sprout and drop player at SFM after forest (SFM blue will then be rewired by ER below)
-        rom.write_int16(0xAC9F96, 0x0608)
-
-        #Tell the well water we are always a child.
+        # Tell the well water we are always a child.
         rom.write_int32(0xDD5BF4, 0x00000000)
 
-        #Make the Adult well blocking stone dissappear if the well has been drained by
-        #checking the well drain event flag instead of links age. This actor doesn't need a
-        #code check for links age as the stone is absent for child via the scene alternate
-        #lists. So replace the age logic with drain logic.
-        rom.write_int32(0xE2887C, rom.read_int32(0xE28870)) #relocate this to nop delay slot
+        # Make the Adult well blocking stone dissappear if the well has been drained by
+        # checking the well drain event flag instead of links age. This actor doesn't need a
+        # code check for links age as the stone is absent for child via the scene alternate
+        # lists. So replace the age logic with drain logic.
+        rom.write_int32(0xE2887C, rom.read_int32(0xE28870)) # relocate this to nop delay slot
         rom.write_int32(0xE2886C, 0x95CEB4B0) # lhu
         rom.write_int32(0xE28870, 0x31CE0080) # andi
 
         remove_entrance_blockers(rom)
 
-        #Purge temp flags on entrance to spirit from colossus through the front
-        #door.
+        # Purge temp flags on entrance to spirit from colossus through the front door.
         rom.write_byte(0x021862E3, 0xC2)
 
-        # Disable the fog state entirely to avoid fog glitches
-        rom.write_byte(rom.sym('NO_FOG_STATE'), 1)
+    if world.shuffle_overworld_entrances or world.shuffle_dungeon_entrances:
+        # Remove deku sprout and drop player at SFM after forest completion
+        rom.write_int16(0xAC9F96, 0x0608)
 
-        set_entrance_updates(world.get_shuffled_entrances(type='Dungeon'))
+    if world.spawn_positions:
+        # Fix save warping inside Link's House to not be a special case
+        rom.write_int32(0xB06318, 0x00000000)
 
-    if world.shuffle_interior_entrances:
-        # Change the Happy Mask Shop "throw out" entrance index to the new one (hardcode located in the shop actor)
-        rom.write_int16(0xC6DA5E, world.get_entrance('Market Mask Shop -> Market').replaces.data['index'])
-
-        set_entrance_updates(world.get_shuffled_entrances(type='Interior') + world.get_shuffled_entrances(type='SpecialInterior'))
-
-    if world.shuffle_grotto_entrances:
-        set_entrance_updates(world.get_shuffled_entrances(type='Grave') + world.get_shuffled_entrances(type='SpecialGrave'))
+    # Set entrances to update, except grotto entrances which are handled on their own at a later point
+    set_entrance_updates(filter(lambda entrance: entrance.type != 'Grotto', world.get_shuffled_entrances()))
 
     for k, v in [(k,v) for k, v in exit_updates if k in exit_table]:
         for addr in exit_table[k]:
@@ -1118,7 +1098,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
 
     # Add a gate-opening guard on the Wasteland side of the Gerudo gate when the card is shuffled or certain levels of ER.
     # Overrides the generic guard at the bottom of the ladder in Gerudo Fortress
-    if world.shuffle_gerudo_card or world.shuffle_overworld_entrances or world.shuffle_special_indoor_entrances:
+    if world.shuffle_gerudo_card or world.shuffle_overworld_entrances or \
+       world.shuffle_special_interior_entrances or world.spawn_positions:
         # Add a gate opening guard on the Wasteland side of the Gerudo Fortress' gate
         new_gate_opening_guard = [0x0138, 0xFAC8, 0x005D, 0xF448, 0x0000, 0x95B0, 0x0000, 0x0301]
         rom.write_int16s(0x21BD3EC, new_gate_opening_guard)  # Adult Day
@@ -1966,23 +1947,19 @@ def set_grotto_shuffle_data(rom, world):
             actor_zrot = rom.read_int16(actor + 12)
             actor_var = rom.read_int16(actor + 14)
             grotto_type = (actor_var >> 8) & 0x0F
-            grotto_id = (scene << 8) + (actor_var & 0x00FF)
+            grotto_actor_id = (scene << 8) + (actor_var & 0x00FF)
 
-            rom.write_int16(actor + 12, grotto_entrances_override[grotto_id])
+            rom.write_int16(actor + 12, grotto_entrances_override[grotto_actor_id])
             rom.write_byte(actor + 14, grotto_type + 0x20)
 
     # Build the override table based on shuffled grotto entrances
     grotto_entrances_override = {}
     for entrance in world.get_shuffled_entrances(type='Grotto'):
         if entrance.primary:
-            grotto_id = (entrance.data['scene'] << 8) + entrance.data['content']
-            if entrance.replaces.type == 'Grotto':
-                grotto_entrances_override[grotto_id] = 0x1000 + entrance.replaces.data['grotto_id']
-            else:
-                grotto_entrances_override[grotto_id] = entrance.replaces.data['index']
+            grotto_actor_id = (entrance.data['scene'] << 8) + entrance.data['content']
+            grotto_entrances_override[grotto_actor_id] = entrance.replaces.data['index']
         else:
-            exit_index = entrance.replaces.data.get('index', 0x7FFF)
-            rom.write_int16(rom.sym('GROTTO_EXIT_LIST') + 2 * entrance.data['grotto_id'], exit_index)
+            rom.write_int16(rom.sym('GROTTO_EXIT_LIST') + 2 * entrance.data['grotto_id'], entrance.replaces.data['index'])
 
     # Override grotto actors data with the new data
     get_actor_list(rom, override_grotto_data)

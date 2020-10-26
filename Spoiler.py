@@ -76,17 +76,17 @@ class Spoiler(object):
             spoiler_locations.sort(key=lambda item: sort_order.get(item.type, 1))
             self.locations[world.id] = OrderedDict([(str(location), location.item) for location in spoiler_locations])
 
-        entrance_sort_order = {"OwlDrop": 0, "Overworld": -1, "Dungeon": -2, "SpecialInterior": -3, "Interior": -3, "Grotto": -4, "Grave": -4, "SpecialGrave": -4}
+        entrance_sort_order = {"Spawn": 0, "WarpSong": 1, "OwlDrop": 2, "Overworld": 3, "Dungeon": 4, "SpecialInterior": 5, "Interior": 5, "Grotto": 6, "Grave": 6}
         for (sphere_nr, sphere) in self.entrance_playthrough.items():
             sorted_sphere = [entrance for entrance in sphere]
-            sorted_sphere.sort(key=lambda entrance: entrance_sort_order.get(entrance.type, 1))
+            sorted_sphere.sort(key=lambda entrance: entrance_sort_order.get(entrance.type, -1))
             sorted_sphere.sort(key=lambda entrance: entrance.name)
             sorted_sphere.sort(key=lambda entrance: entrance.world.id)
             self.entrance_playthrough[sphere_nr] = sorted_sphere
 
         self.entrances = {}
         for world in self.worlds:
-            spoiler_entrances = [entrance for entrance in world.get_entrances() if entrance.shuffled and entrance.primary]
+            spoiler_entrances = [entrance for entrance in world.get_shuffled_entrances() if entrance.primary or entrance.type == 'Overworld']
             spoiler_entrances.sort(key=lambda entrance: entrance.name)
-            spoiler_entrances.sort(key=lambda entrance: entrance_sort_order.get(entrance.type, 1))
+            spoiler_entrances.sort(key=lambda entrance: entrance_sort_order.get(entrance.type, -1))
             self.entrances[world.id] = spoiler_entrances
