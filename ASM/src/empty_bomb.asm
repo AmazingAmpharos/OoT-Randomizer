@@ -10,4 +10,3 @@ empty_bomb:
    li      t6, 0xFE
    jr      ra
    sb      t6, 0x142(v0)  ;Last Held Item ID
-   

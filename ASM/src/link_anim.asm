@@ -29,5 +29,3 @@ override_changelinkanimdefaultstop:
     lw      ra, 0x0024(sp)
     jr      ra          
     addiu   sp, sp, 0x28
-
-    
