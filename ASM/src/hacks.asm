@@ -1694,34 +1694,40 @@ skip_GS_BGS_text:
 .orga 0xD69398
 @Twinrova_Update_Return:
 
-; ;nop various things in the init function
+;nop various things in the init function
 .orga 0xD62100
-    jal     twinrova_set_action
+    jal     twinrova_set_action_ice
 .orga 0xD62110
-    lui     at, 0x42F0
+    lui     at, 0x4248
 .orga 0xD62128
     nop
 .orga 0xD621CC
-    jal     twinrova_set_action
+    jal     twinrova_set_action_fire
 .orga 0xD621DC
-    lui     at, 0x42F0
+    lui     at, 0x4248
+.orga 0xD6215C
+    nop
+.orga 0xD6221C
+    nop
 .orga 0xD73118 ;reloc
     nop
 .orga 0xD73128 ;reloc
-   nop
+    nop
 
-;choose action func: ovl+0x13EC
+;Update alpha of the portal
+;Replaces: lbu     t8, 0x00(v0)
+.orga 0xD69C80
+    jal     rova_portal
 
+;Update position of the ice portal
+.orga 0xD6CC18
+    jal     ice_pos
+    nop
 
-; ;force twinrova to move down out of the ceiling
-; ; Replaces: lw    s0, 0x13C(s1)
-; .orga 0xD68F9C
-;     jal     rova_move_down
-
-;Remove the function call to set the boss music in Init
-; Replaces: jal     0x800CAA70
-; .orga 0xD62128
-;     nop
+;Update position of the fire portal
+.orga 0xD6CDD4
+    jal     fire_pos
+    nop
 
 ;==================================================================================================
 ; Fix Links Angle in Fairy Fountains

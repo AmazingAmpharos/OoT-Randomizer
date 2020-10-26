@@ -194,6 +194,7 @@ SYMBOL TABLE:
 00000018 g     O .sbss	00000001 satisified_pending_frames
 00003728 g     F .text	00000068 scale_top_matrix
 00001fa8 g     F .text	00000068 pop_ice_trap
+00000000         *UND*	00000000 TWINROVA_ACTION_TIMER
 0000250c g     F .text	00000030 sprite_bytes
 00000058 g     O .sdata	00000004 c_note_r
 00000000         *UND*	00000000 CFG_C_BUTTON_COLOR
@@ -247,7 +248,6 @@ SYMBOL TABLE:
 00000000         *UND*	00000000 EXTERN_DAMAGE_MULTIPLYER
 0000004b g     O .sbss	00000001 MAX_RUPEES
 00003c48 g     F .text	000000e4 item_etcetera_draw
-00000000         *UND*	00000000 TWINROVA_MOVE_TIMER
 00000000         *UND*	00000000 SPEED_MULTIPLIER
 0000002c g     O .sbss	00000004 active_item_action_id
 0000207c g     F .text	000000c0 try_pending_item
