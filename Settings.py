@@ -259,7 +259,7 @@ class Settings:
             if 'randomize_key' not in info.gui_params:
                 continue
 
-            if info.gui_params['randomize_key'] != randomize_key:
+            if randomize_key is not None and info.gui_params['randomize_key'] != randomize_key:
                 continue
 
             if self.__dict__[info.gui_params['randomize_key']]:
