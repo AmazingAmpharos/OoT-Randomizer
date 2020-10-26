@@ -40,7 +40,7 @@ void after_game_state_update() {
 
 void after_scene_init() {
     check_ganon_entry();
-    clear_twinrova_flag();
+    clear_twinrova_vars();
     models_reset();
     extern_scene_init();
 }

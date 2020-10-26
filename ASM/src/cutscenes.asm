@@ -465,7 +465,6 @@ fountain_set_posrot:
     bnez    t3, @@return
     li      t5, 0x8000
     sh      t5, 0xB6(t2)   ;set angle
-
     sb      r0, 0x0(t1)    ;set flag to 0
 
 @@return:
@@ -631,7 +630,7 @@ heavy_block_posrot:
     lw      t2, 0x428(s0)  ;interactActor (block)
     la      t1, PLAYER_ACTOR
     lh      t3, 0xB6(t2)   ;block angle
-    addi    t3, t3, 0x8000 ; 180 deg
+    addi    t3, t3, 0x8000 ;180 deg
     jr      ra
     sh      t3, 0xB6(t1)   ;store to links angle to make him face block
 
@@ -644,7 +643,7 @@ heavy_block_set_link_action:
     sb      t1, 0x0434(t0) ;links action
 @@return:
     jr      ra
-    lwc1    f6, 0x0C(s0)   ;displaced
+lwc1    f6, 0x0C(s0)   ;displaced
     
 heavy_block_shorten_anim:
     la      t0, PLAYER_ACTOR
@@ -664,7 +663,7 @@ heavy_block_shorten_anim:
     sw      t1, 0x664(t0)
 @@return:
     jr      ra
-    addiu   a1, s0, 0x01A4      ;displaced
+    addiu   a1, s0, 0x01A4   ;displaced
     
 ;==================================================================================================    
 ; Override Demo_Effect init data for medallions

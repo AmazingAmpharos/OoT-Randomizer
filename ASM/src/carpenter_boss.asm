@@ -18,3 +18,4 @@ prevent_carpenter_boss_softlock:
     @@return:
     jr      ra
     addiu   a2, r0, 0x22     ;displaced
+    

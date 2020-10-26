@@ -7,7 +7,7 @@ TWINROVA_ACTION_TIMER:
 .align 4
 
 rova_check_pos:
-    sw      s0, 0x3C(sp) ;displaced
+    sw      s0, 0x3C(sp)   ;displaced
     addiu   sp, sp, -0x20
     sw      ra, 0x14(sp)
     la      t1, START_TWINROVA_FIGHT

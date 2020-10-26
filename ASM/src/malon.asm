@@ -116,7 +116,7 @@ return_from_the_other_function:
     li      t3,0x14             ; t3 = 0x14 which is the value if both flags are set
     lui     t6,0x8010
     or      t2,t2,t3            ; t2 = combination of the flags
-    bne     t2,t3,ev0_return    ; check that both flags are true to continue this path 
+    bne     t2,t3,ev0_return    ; check that both flags are true to continue this path
     lh      t9,0x01D8(a0)
 
 @@not_hyrule:

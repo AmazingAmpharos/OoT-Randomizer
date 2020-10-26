@@ -1,6 +1,6 @@
 #ifndef TWINROVA_H
 #define TWINROVA_H
 
-void clear_twinrova_flag();
+void clear_twinrova_vars();
 
 #endif

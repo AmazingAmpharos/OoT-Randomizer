@@ -82,6 +82,7 @@ SYMBOL TABLE:
 00003878 g     F .text	00000274 update_bombchu_trail_colors
 00001a94 g     F .text	0000007c item_overrides_init
 000032c4 g     F .text	00000018 scale_upgrade
+00005230 g     F .text	00000014 clear_twinrova_vars
 00000048 g     O .sdata	00000004 a_note_glow_max
 00000000         *UND*	00000000 CFG_HEART_COLOR
 00000000         *UND*	00000000 CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED
@@ -97,7 +98,6 @@ SYMBOL TABLE:
 00000030 g     O .sdata	00000004 c_note_font_glow_max
 0000157c g     F .text	00000290 process_extern_ctxt
 00001a30 g     F .text	0000001c override_fog_state
-00005230 g     F .text	00000014 clear_twinrova_flag
 00000034 g     O .sbss	00000004 active_override_is_outgoing
 000002fc g     F .text	0000009c get_chest_override_color
 00002fe0 g     F .text	00000024 give_double_magic

@@ -75,8 +75,8 @@ malon_show_text:
     li      a2, 0
     jal     0x800DCE14   ;show song text
     nop
-    li      a0, 0x4802    ;NA_SE_SY_CORRECT_CHIME
-    jal     0x800646F0    ;play "correct" sound
+    li      a0, 0x4802   ;NA_SE_SY_CORRECT_CHIME
+    jal     0x800646F0   ;play "correct" sound
     nop
 @@return:
     lw      a0, 0x1C(sp)
@@ -103,16 +103,16 @@ malon_reload:
     la      t3, SAVE_CONTEXT
     lb      t4, 0xEDE(t3)
     ori     t4, t4, 0x01
-    sb      t4, 0xEDE(t3) ;set flag for learned song
+    sb      t4, 0xEDE(t3)  ;set flag for learned song
     la      t1, 0x801DA2BA
     li      t0, 0x02AE
-    sh      t0, 0x0(t1)   ;malon from eponas song entrance
+    sh      t0, 0x0(t1)    ;malon from eponas song entrance
     li      t0, 0x2A
     la      t1, 0x801DA2FE
-    sb      t0, 0x0(t1)   ;transition type
+    sb      t0, 0x0(t1)    ;transition type
     li      t0, 0x14
     la      t1, 0x801DA2B5
-    sb      t0, 0x0(t1)   ;load flag
+    sb      t0, 0x0(t1)    ;load flag
 @@return:
     lw      ra, 0x14(sp)
     jr      ra

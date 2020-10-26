@@ -17,13 +17,13 @@ override_changelinkanimdefaultstop:
     lui     a3, 0x3F80
     
     li      t0, 0x040032B0
-    bne     a2, t0, @@skip  ;if next animation is heavy rock pickup, change speed
+    bne     a2, t0, @@skip   ;if next animation is heavy rock pickup, change speed
     nop
-    lui     a3, 0x4040 ;3.0f
+    lui     a3, 0x4040       ;3.0f
     @@skip:
     swc1    f6, 0x0014(sp)           
     swc1    f0, 0x0010(sp)           
-    jal     0x8008C000      ;SkelAnime_ChangeLinkAnim
+    jal     0x8008C000       ;SkelAnime_ChangeLinkAnim
     swc1    f0, 0x001C(sp)
     lw      ra, 0x0024(sp)          
     lw      ra, 0x0024(sp)

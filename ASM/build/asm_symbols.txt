@@ -784,7 +784,7 @@
 804085F0 text_flush,00000154
 80408744 set_triforce_render,00000028
 8040876C draw_triforce_count,00000534
-80408CA0 clear_twinrova_flag,00000014
+80408CA0 clear_twinrova_vars,00000014
 80408CB4 heap_init,00000014
 80408CC8 heap_alloc,0000003C
 80408D04 file_init,00000044

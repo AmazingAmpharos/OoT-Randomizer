@@ -344,7 +344,7 @@
 804079B0,code,text_flush,00000154
 80407B04,code,set_triforce_render,00000028
 80407B2C,code,draw_triforce_count,00000534
-80408060,code,clear_twinrova_flag,00000014
+80408060,code,clear_twinrova_vars,00000014
 80408074,code,heap_init,00000014
 80408088,code,heap_alloc,0000003C
 804080C4,code,file_init,00000044
