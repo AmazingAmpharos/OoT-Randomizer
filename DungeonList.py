@@ -123,6 +123,9 @@ def create_dungeons(world):
             small_keys = ItemFactory(['Small Key (%s)' % name] * dungeon_info['small_key_mq'])           
         dungeon_items = ItemFactory(['Map (%s)' % name, 
                                      'Compass (%s)' % name] * dungeon_info['dungeon_item'])
+        if world.settings.shuffle_mapcompass in ['any_dungeon', 'overworld']:
+            for item in dungeon_items:
+                item.priority = True
 
         world.dungeons.append(Dungeon(world, name, hint, boss_keys, small_keys, dungeon_items))
 

@@ -5,6 +5,8 @@ class ItemInfo(object):
     items = {}
     events = {}
     bottles = set()
+    medallions = set()
+    stones = set()
 
     def __init__(self, name='', event=False):
         if event:
@@ -23,17 +25,18 @@ class ItemInfo(object):
         self.index = itemID
         self.price = self.special.get('price')
         self.bottle = self.special.get('bottle', False)
-
-
-    @staticmethod
-    def isBottle(name):
-        return name in ItemInfo.bottles
+        self.medallion = self.special.get('medallion', False)
+        self.stone = self.special.get('stone', False)
 
 
 for item_name in item_table:
     ItemInfo.items[item_name] = ItemInfo(item_name)
     if ItemInfo.items[item_name].bottle:
         ItemInfo.bottles.add(item_name)
+    if ItemInfo.items[item_name].medallion:
+        ItemInfo.medallions.add(item_name)
+    if ItemInfo.items[item_name].stone:
+        ItemInfo.stones.add(item_name)
 
 
 class Item(object):
@@ -95,7 +98,7 @@ class Item(object):
 
     @property
     def bosskey(self):
-        return self.type == 'BossKey'
+        return self.type == 'BossKey' or self.type == 'GanonBossKey'
 
 
     @property
@@ -116,7 +119,7 @@ class Item(object):
     @property
     def majoritem(self):
         if self.type == 'Token':
-            return self.world.bridge == 'tokens'
+            return self.world.bridge == 'tokens' or self.world.lacs_condition == 'tokens'
 
         if self.type in ('Drop', 'Event', 'Shop', 'DungeonReward') or not self.advancement:
             return False
@@ -126,11 +129,13 @@ class Item(object):
 
         if self.map or self.compass:
             return False
-        if self.smallkey and self.world.shuffle_smallkeys in ['dungeon', 'vanilla']:
+        if self.type == 'SmallKey' and self.world.shuffle_smallkeys in ['dungeon', 'vanilla']:
             return False
-        if self.bosskey and not self.name.endswith('(Ganons Castle)') and self.world.shuffle_bosskeys in ['dungeon', 'vanilla']:
+        if self.type == 'FortressSmallKey' and self.world.shuffle_fortresskeys == 'vanilla':
             return False
-        if self.bosskey and self.name.endswith('(Ganons Castle)') and self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']:
+        if self.type == 'BossKey' and self.world.shuffle_bosskeys in ['dungeon', 'vanilla']:
+            return False
+        if self.type == 'GanonBossKey' and self.world.shuffle_ganon_bosskey in ['dungeon', 'vanilla']:
             return False
 
         return True

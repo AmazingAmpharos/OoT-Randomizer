@@ -14,7 +14,9 @@
             "rom",
             "output_dir",
             "enable_distribution_file",
+            "enable_cosmetic_file",
             "distribution_file",
+            "cosmetic_file",
             "count",
             "create_spoiler",
             "create_cosmetics_log",
@@ -57,7 +59,9 @@
           "row_span": [1,1,1],
           "settings": [
             "enable_distribution_file",
+            "enable_cosmetic_file",
             "distribution_file",
+            "cosmetic_file",
             "create_spoiler",
             "web_output_type",
             "rom",
@@ -101,6 +105,8 @@
           "col_span": 4,
           "row_span": [1,1,1],
           "settings": [
+            "enable_cosmetic_file",
+            "cosmetic_file",
             "web_output_type",
             "rom",
             "web_wad_file",
@@ -147,6 +153,9 @@
             "zora_fountain",
             "gerudo_fortress",
             "bridge",
+            "bridge_medallions",
+            "bridge_stones",
+            "bridge_rewards",
             "bridge_tokens",
             "trials_random",
             "trials"
@@ -158,10 +167,16 @@
           "row_span": [6,6,9],
           "settings": [
             "starting_age",
-            "entrance_shuffle",
+            "shuffle_interior_entrances",
+            "shuffle_grotto_entrances",
+            "shuffle_dungeon_entrances",
+            "shuffle_overworld_entrances",
+            "owl_drops",
+            "warp_songs",
+            "spawn_positions",
             "triforce_hunt",
             "triforce_goal_per_world",
-            "bombchus_in_logic",            
+            "bombchus_in_logic",
             "one_item_per_dungeon",
             "mq_dungeons_random",
             "mq_dungeons"
@@ -192,8 +207,13 @@
           "settings": [
             "shuffle_mapcompass",
             "shuffle_smallkeys",
+            "shuffle_fortresskeys",
             "shuffle_bosskeys",
             "shuffle_ganon_bosskey",
+            "lacs_medallions",
+            "lacs_stones",
+            "lacs_rewards",
+            "lacs_tokens",
             "enhance_map_compass"
           ]
         }
@@ -295,6 +315,7 @@
             "useful_cutscenes",
             "fast_chests",
             "free_scarecrow",
+            "fast_bunny_hood",
             "chicken_count_random",
             "chicken_count",
             "big_poe_count_random",
@@ -349,8 +370,8 @@
           ]
         },
         {
-          "name": "equipment_section",
-          "text": "Equipment",
+          "name": "equipment_color_section",
+          "text": "Equipment Colors",
           "is_colors": true,
           "col_span": 1,
           "row_span": [5,5,5],
@@ -360,13 +381,11 @@
             "zora_color",
             "silver_gauntlets_color",
             "golden_gauntlets_color",
-            "sword_trail_duration",
-            "sword_trail_color_inner",
-            "sword_trail_color_outer"
+            "mirror_shield_frame_color"
           ]
         },
         {
-          "name": "ui_section",
+          "name": "ui_color_section",
           "text": "UI Colors",
           "is_colors": true,
           "col_span": 1,
@@ -374,12 +393,15 @@
           "settings": [
             "heart_color",
             "magic_color",
-            "button_colors"
+            "a_button_color",
+            "b_button_color",
+            "c_button_color",
+            "start_button_color"
           ]
         },
         {
-          "name": "navi_section",
-          "text": "Navi Colors",
+          "name": "misc_color_section",
+          "text": "Misc. Colors",
           "is_colors": true,
           "col_span": 2,
           "row_span": [5,5,5],
@@ -391,7 +413,14 @@
             "navi_color_npc_inner",
             "navi_color_npc_outer",
             "navi_color_prop_inner",
-            "navi_color_prop_outer"
+            "navi_color_prop_outer",
+            "bombchu_trail_color_inner",
+            "bombchu_trail_color_outer",
+            "boomerang_trail_color_inner",
+            "boomerang_trail_color_outer",
+            "sword_trail_color_inner",
+            "sword_trail_color_outer",
+            "sword_trail_duration"
           ]
         }
       ]

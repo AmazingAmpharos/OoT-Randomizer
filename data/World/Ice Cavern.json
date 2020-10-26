@@ -3,7 +3,7 @@
         "region_name": "Ice Cavern Beginning",
         "dungeon": "Ice Cavern",
         "exits": {
-            "Zoras Fountain": "True",
+            "ZF Ice Ledge": "True",
             #Frezzards are weird, they are immune to KS completely. Leave sticks out as 8/10 is a lot
             "Ice Cavern": "here(is_adult or has_explosives or can_use(Dins_Fire))"
         }

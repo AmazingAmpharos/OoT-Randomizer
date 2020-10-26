@@ -48,21 +48,22 @@ class World(object):
         self.__dict__.update(settings.__dict__)
         self.distribution = settings.distribution.world_dists[id]
 
-        if self.open_forest == 'closed' and self.entrance_shuffle in ['all-indoors', 'all']:
-            self.open_forest = 'closed_deku'
-
         # rename a few attributes...
-        self.keysanity = self.shuffle_smallkeys in ['keysanity', 'remove']
+        self.keysanity = self.shuffle_smallkeys in ['keysanity', 'remove', 'any_dungeon', 'overworld']
         self.check_beatable_only = not self.all_reachable
-    
-        self.shuffle_dungeon_entrances = self.entrance_shuffle != 'off'
-        self.shuffle_grotto_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
-        self.shuffle_interior_entrances = self.entrance_shuffle in ['simple-indoors', 'all-indoors', 'all']
-        self.shuffle_special_indoor_entrances = self.entrance_shuffle in ['all-indoors', 'all']
-        self.shuffle_overworld_entrances = self.entrance_shuffle == 'all'
 
-        self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
-        self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
+        self.shuffle_special_interior_entrances = self.shuffle_interior_entrances == 'all'
+        self.shuffle_interior_entrances = self.shuffle_interior_entrances in ['simple', 'all']
+
+        self.entrance_shuffle = self.shuffle_interior_entrances or self.shuffle_grotto_entrances or self.shuffle_dungeon_entrances or \
+                                self.shuffle_overworld_entrances or self.owl_drops or self.warp_songs or self.spawn_positions
+
+        self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances or self.spawn_positions
+        self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances or self.warp_songs
+
+        if self.open_forest == 'closed' and (self.shuffle_special_interior_entrances or self.shuffle_overworld_entrances or 
+                                             self.warp_songs or self.spawn_positions):
+            self.open_forest = 'closed_deku'
 
         self.triforce_goal = self.triforce_goal_per_world * settings.world_count
 
@@ -78,6 +79,8 @@ class World(object):
             self.lacs_condition = 'dungeons'
         elif self.shuffle_ganon_bosskey == 'lacs_stones':
             self.lacs_condition = 'stones'
+        elif self.shuffle_ganon_bosskey == 'lacs_tokens':
+            self.lacs_condition = 'tokens'
         else:
             self.lacs_condition = 'vanilla'
 
@@ -179,11 +182,13 @@ class World(object):
         }
         max_tokens = 0
         if self.bridge == 'tokens':
-            max_tokens = self.bridge_tokens
+            max_tokens = max(max_tokens, self.bridge_tokens)
+        if self.lacs_condition == 'tokens':
+            max_tokens = max(max_tokens, self.lacs_tokens)
         tokens = [50, 40, 30, 20, 10]
         for t in tokens:
-            if t > max_tokens and f'{t} Gold Skulltula Reward' not in self.disabled_locations:
-                max_tokens = t
+            if f'{t} Gold Skulltula Reward' not in self.disabled_locations:
+                max_tokens = max(max_tokens, t)
         self.max_progressions['Gold Skulltula Token'] = max_tokens
         # Additional Ruto's Letter become Bottle, so we may have to collect two.
         self.max_progressions['Rutos Letter'] = 2
@@ -523,13 +528,13 @@ class World(object):
     # get a list of items that don't have to be in their proper dungeon
     def get_unrestricted_dungeon_items(self):
         itempool = []
-        if self.shuffle_mapcompass == 'keysanity':
+        if self.shuffle_mapcompass in ['any_dungeon', 'overworld', 'keysanity']:
             itempool.extend([item for dungeon in self.dungeons for item in dungeon.dungeon_items])
-        if self.shuffle_smallkeys == 'keysanity':
+        if self.shuffle_smallkeys in ['any_dungeon', 'overworld', 'keysanity']:
             itempool.extend([item for dungeon in self.dungeons for item in dungeon.small_keys])
-        if self.shuffle_bosskeys == 'keysanity':
+        if self.shuffle_bosskeys in ['any_dungeon', 'overworld', 'keysanity']:
             itempool.extend([item for dungeon in self.dungeons if dungeon.name != 'Ganons Castle' for item in dungeon.boss_key])
-        if self.shuffle_ganon_bosskey == 'keysanity':
+        if self.shuffle_ganon_bosskey in ['any_dungeon', 'overworld', 'keysanity']:
             itempool.extend([item for dungeon in self.dungeons if dungeon.name == 'Ganons Castle' for item in dungeon.boss_key])
 
         for item in itempool:
@@ -578,11 +583,15 @@ class World(object):
 
 
     def get_entrances(self):
-        return [entrance for region in self.regions for entrance in region.entrances]
+        return [exit for region in self.regions for exit in region.exits]
 
 
-    def get_shuffled_entrances(self, type=None):
-        return [entrance for entrance in self.get_entrances() if entrance.shuffled and (type == None or entrance.type == type)]
+    def get_shufflable_entrances(self, type=None, only_primary=False):
+        return [entrance for entrance in self.get_entrances() if (type == None or entrance.type == type) and (not only_primary or entrance.primary)]
+
+
+    def get_shuffled_entrances(self, type=None, only_primary=False):
+        return [entrance for entrance in self.get_shufflable_entrances(type=type, only_primary=only_primary) if entrance.shuffled]
 
 
     def has_beaten_game(self, state):
@@ -652,8 +661,8 @@ class World(object):
         if self.logic_grottos_without_agony and self.hints != 'agony':
             # Stone of Agony skippable if not used for hints or grottos
             exclude_item_list.append('Stone of Agony')
-        if not self.shuffle_special_indoor_entrances and not self.shuffle_overworld_entrances:
-            # Serenade and Prelude are never required with vanilla Links House/ToT and overworld entrances
+        if not self.shuffle_special_interior_entrances and not self.shuffle_overworld_entrances and not self.warp_songs and not self.spawn_positions:
+            # Serenade and Prelude are never required unless one of those settings is enabled
             exclude_item_list.append('Serenade of Water')
             exclude_item_list.append('Prelude of Light')
 

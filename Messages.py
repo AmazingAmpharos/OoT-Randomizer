@@ -3,13 +3,19 @@
 import random
 from TextBox import line_wrap
 
-TABLE_START = 0xB849EC
 TEXT_START = 0x92D000
-
-TABLE_SIZE_LIMIT = 0x43A8
 ENG_TEXT_SIZE_LIMIT = 0x39000
 JPN_TEXT_SIZE_LIMIT = 0x3A150
 
+JPN_TABLE_START = 0xB808AC
+ENG_TABLE_START = 0xB849EC
+CREDITS_TABLE_START = 0xB88C0C
+
+JPN_TABLE_SIZE = ENG_TABLE_START - JPN_TABLE_START
+ENG_TABLE_SIZE = CREDITS_TABLE_START - ENG_TABLE_START
+
+EXTENDED_TABLE_START = JPN_TABLE_START # start writing entries to the jp table instead of english for more space
+EXTENDED_TABLE_SIZE = JPN_TABLE_SIZE + ENG_TABLE_SIZE # 0x8360 bytes, 4204 entries
 
 # name of type, followed by number of additional bytes to read, follwed by a function that prints the code
 CONTROL_CODES = {
@@ -471,8 +477,13 @@ class Message():
             elif speed_up_text and code.code in slows_text:
                 pass
             elif speed_up_text and code.code in box_breaks:
-                if self.id == 0x605A: #special case for twinrova text
+                # some special cases for text that needs to be on a timer
+                if (self.id == 0x605A or  # twinrova transformation
+                    self.id == 0x706C or  # raru ending text
+                    self.id == 0x70DD or  # ganondorf ending text
+                    self.id == 0x7070):   # zelda ending text
                     text_codes.append(code)
+                    text_codes.append(Text_Code(0x08, 0)) # allow instant
                 else:
                     text_codes.append(Text_Code(0x04, 0)) # un-delayed break
                     text_codes.append(Text_Code(0x08, 0)) # allow instant
@@ -498,7 +509,7 @@ class Message():
         offset_bytes = int_to_bytes(offset, 3)
         entry = id_bytes + bytes([self.opts, 0x00, 0x07]) + offset_bytes
         # write it back
-        entry_offset = TABLE_START + 8 * index
+        entry_offset = EXTENDED_TABLE_START + 8 * index
         rom.write_bytes(entry_offset, entry)
 
         for code in self.text_codes:
@@ -537,7 +548,7 @@ class Message():
     @classmethod
     def from_rom(cls, rom, index):
 
-        entry_offset = TABLE_START + 8 * index
+        entry_offset = ENG_TABLE_START + 8 * index
         entry = rom.read_bytes(entry_offset, 8)
         next = rom.read_bytes(entry_offset + 8, 8)
 
@@ -790,7 +801,7 @@ def add_item_messages(messages, shop_items, world):
 
 # reads each of the game's messages into a list of Message objects
 def read_messages(rom):
-    table_offset = TABLE_START
+    table_offset = ENG_TABLE_START
     index = 0
     messages = []
     while True:
@@ -844,12 +855,12 @@ def repack_messages(rom, messages, permutation=None, always_allow_skip=True, spe
     # end the table
     table_index = len(messages)
     entry = bytes([0xFF, 0xFD, 0x00, 0x00, 0x07]) + int_to_bytes(offset, 3)
-    entry_offset = TABLE_START + 8 * table_index
+    entry_offset = EXTENDED_TABLE_START + 8 * table_index
     rom.write_bytes(entry_offset, entry)
     table_index += 1
-    entry_offset = TABLE_START + 8 * table_index
-    if 8 * (table_index + 1) > TABLE_SIZE_LIMIT:
-        raise(TypeError("Message ID table is too large: 0x" + "{:x}".format(8 * (table_index + 1)) + " written / 0x" + "{:x}".format(TABLE_SIZE_LIMIT) + " allowed."))
+    entry_offset = EXTENDED_TABLE_START + 8 * table_index
+    if 8 * (table_index + 1) > EXTENDED_TABLE_SIZE:
+        raise(TypeError("Message ID table is too large: 0x" + "{:x}".format(8 * (table_index + 1)) + " written / 0x" + "{:x}".format(EXTENDED_TABLE_SIZE) + " allowed."))
     rom.write_bytes(entry_offset, [0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
 
 # shuffles the messages in the game, making sure to keep various message types in their own group

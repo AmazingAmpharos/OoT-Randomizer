@@ -42,7 +42,7 @@ twinrova_displaced:
 ;============================================
 
 rova_portal:
-    lbu     t8, 0x00(v0) ;displaced
+    lbu     t8, 0x00(v0)  ;displaced
     addiu   sp, sp, -0x30
     sw      ra, 0x14(sp)
     sw      a0, 0x18(sp)
@@ -74,7 +74,7 @@ rova_portal:
     or      a0, s2, r0
     addiu   a0, a0, 0x4C8
     li      a1, 0x00000000 ;255.0f
-    li      a2, 0x3f800000 ;1.0f
+    li      a2, 0x3F800000 ;1.0f
     li      a3, 0x41200000 ;10.0f
     jal     0x80064280     ;Math_SmoothScaleMaxF
     nop
@@ -137,9 +137,6 @@ twinrova_rise:
     sw      a1, TWINROVA_ACTION_TIMER
 @@skip_incr:
     lw      a0, TWINROVA_ACTION_TIMER
-    slti    t0, a0, 101
-    beqz    t0, @@return ;if timer is greater than 100, return
-    nop
     li      a1, 3
     bne     a0, a1, @@no_laugh
     nop
@@ -154,16 +151,14 @@ twinrova_rise:
     nop
 
 @@no_laugh:
-    li      t0, 100
-    beq     a0, t0, @@start_fight
     slti    a1, a0, 40
     bnez    a1, @@return
     nop
     lw      a0, 0x18(sp)
     addiu   a0, a0, 0x28
     li      a1, 0x43C80000 ;400.0f
-    li      a2, 0x3f800000 ;1.0f
-    li      a3, 0x40A00000 ;5.0f
+    li      a2, 0x3F800000 ;1.0f
+    li      a3, 0x40C00000 ;6.0f
     jal     0x80064280     ;Math_SmoothScaleMaxF
     nop
     lw      a0, 0x18(sp)
@@ -173,7 +168,9 @@ twinrova_rise:
     lw      a0, 0x18(sp)
     jal     0x80022FD0     ;Audio_PlayActorSound2
     addiu   a1, r0, 0x311F ;NA_SE_EN_TWINROBA_FLY - SFX_FLAG
-    b       @@return
+    lw      a0, TWINROVA_ACTION_TIMER
+    li      t0, 97
+    bne     a0, t0, @@return
     nop
 
 @@start_fight:

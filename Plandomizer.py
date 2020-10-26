@@ -8,7 +8,7 @@ from functools import reduce
 from collections import defaultdict
 
 from Fill import FillError
-from EntranceShuffle import EntranceShuffleError, change_connections, confirm_replacement, validate_worlds
+from EntranceShuffle import EntranceShuffleError, change_connections, confirm_replacement, validate_world, check_entrances_compatibility
 from Hints import gossipLocations, GossipText
 from Item import ItemFactory, ItemIterator, IsItem
 from ItemPool import item_groups, get_junk_item
@@ -18,7 +18,7 @@ from Search import Search
 from Spoiler import HASH_ICONS
 from version import __version__
 from Utils import random_choices
-from JSONDump import dump_obj, CollapseList, CollapseDict, AllignedDict, SortedDict
+from JSONDump import dump_obj, CollapseList, CollapseDict, AlignedDict, SortedDict
 import StartingItems
 
 
@@ -169,10 +169,10 @@ class EntranceRecord(SimpleRecord({'region': None, 'origin': None})):
 
     @staticmethod
     def from_entrance(entrance):
-        if entrance.type in ['Overworld', 'OwlDrop']:
-            origin_name = entrance.replaces.parent_region.name
-        else:
+        if entrance.replaces.primary and entrance.replaces.type in ('Interior', 'SpecialInterior', 'Grotto', 'Grave'):
             origin_name = None
+        else:
+            origin_name = entrance.replaces.parent_region.name
         return EntranceRecord({
             'region': entrance.connected_region.name,
             'origin': origin_name,
@@ -492,7 +492,7 @@ class WorldDistribution(object):
                     raise RuntimeError('No entrance found to replace with %s that leads to %s in world %d' % 
                                                 (matched_entrance, target_region, self.id + 1))
 
-                if matched_entrance.type in ['Overworld', 'OwlDrop']:
+                if record.origin:
                     target_parent = record.origin
                     try:
                         matched_target = next(filter(lambda target: target.replaces.parent_region.name == target_parent, matched_targets_to_region))
@@ -507,13 +507,13 @@ class WorldDistribution(object):
                     raise RuntimeError('Entrance leading to %s from %s is already shuffled in world %d' % 
                                             (target_region, target_parent, self.id + 1))
 
-                change_connections(matched_entrance, matched_target)
-
                 try:
-                    validate_worlds(worlds, None, locations_to_ensure_reachable, itempool)
+                    check_entrances_compatibility(matched_entrance, matched_target)
+                    change_connections(matched_entrance, matched_target)
+                    validate_world(matched_entrance.world, worlds, None, locations_to_ensure_reachable, itempool)
                 except EntranceShuffleError as error:
                     raise RuntimeError('Cannot connect %s To %s in world %d (Reason: %s)' % 
-                                            (matched_entrance, matched_entrance.connected_region, self.id + 1, error))
+                                            (matched_entrance, matched_entrance.connected_region or matched_target.connected_region, self.id + 1, error))
 
                 confirm_replacement(matched_entrance, matched_target)
 
@@ -940,7 +940,7 @@ class Distribution(object):
                 self_dict.update({k: world_dist_dicts[0][k] for k in per_world_keys})
 
             if self.playthrough is not None:
-                self_dict[':playthrough'] = AllignedDict({
+                self_dict[':playthrough'] = AlignedDict({
                     sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
                     })
@@ -948,7 +948,7 @@ class Distribution(object):
                 }, depth=2)
 
             if self.entrance_playthrough is not None and len(self.entrance_playthrough) > 0:
-                self_dict[':entrance_playthrough'] = AllignedDict({
+                self_dict[':entrance_playthrough'] = AlignedDict({
                     sphere_nr: SortedDict({
                         name: record.to_json() for name, record in sphere.items()
                     })

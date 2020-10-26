@@ -1051,7 +1051,7 @@ def get_pool_core(world):
         placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
         placed_items['GF South F1 Carpenter'] = 'Recovery Heart'
         placed_items['GF South F2 Carpenter'] = 'Recovery Heart'
-    elif world.shuffle_smallkeys == 'keysanity':
+    elif world.shuffle_fortresskeys in ['any_dungeon', 'overworld', 'keysanity']:
         if world.gerudo_fortress == 'fast':
             pool.append('Small Key (Gerudo Fortress)')
             placed_items['GF North F2 Carpenter'] = 'Recovery Heart'
@@ -1083,7 +1083,7 @@ def get_pool_core(world):
     if world.shuffle_gerudo_card and world.item_pool_value == 'plentiful':
         pending_junk_pool.append('Gerudo Membership Card')
 
-    if world.item_pool_value == 'plentiful' and world.shuffle_smallkeys == 'keysanity':
+    if world.item_pool_value == 'plentiful' and world.shuffle_smallkeys in ['any_dungeon', 'overworld', 'keysanity']:
         pending_junk_pool.append('Small Key (Bottom of the Well)')
         pending_junk_pool.append('Small Key (Forest Temple)')
         pending_junk_pool.append('Small Key (Fire Temple)')
@@ -1093,14 +1093,14 @@ def get_pool_core(world):
         pending_junk_pool.append('Small Key (Gerudo Training Grounds)')
         pending_junk_pool.append('Small Key (Ganons Castle)')
 
-    if world.item_pool_value == 'plentiful' and world.shuffle_bosskeys == 'keysanity':
+    if world.item_pool_value == 'plentiful' and world.shuffle_bosskeys in ['any_dungeon', 'overworld', 'keysanity']:
         pending_junk_pool.append('Boss Key (Forest Temple)')
         pending_junk_pool.append('Boss Key (Fire Temple)')
         pending_junk_pool.append('Boss Key (Water Temple)')
         pending_junk_pool.append('Boss Key (Shadow Temple)')
         pending_junk_pool.append('Boss Key (Spirit Temple)')
 
-    if world.item_pool_value == 'plentiful' and world.shuffle_ganon_bosskey == 'keysanity':
+    if world.item_pool_value == 'plentiful' and world.shuffle_ganon_bosskey in ['any_dungeon', 'overworld', 'keysanity']:
         pending_junk_pool.append('Boss Key (Ganons Castle)')
 
     if world.shopsanity == 'off':
@@ -1298,7 +1298,7 @@ def get_pool_core(world):
         triforce_count = int((TriforceCounts[world.item_pool_value] * world.triforce_goal_per_world).to_integral_value(rounding=ROUND_HALF_UP))
         pending_junk_pool.extend(['Triforce Piece'] * triforce_count)
 
-    if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons']:
+    if world.shuffle_ganon_bosskey in ['lacs_vanilla', 'lacs_medallions', 'lacs_stones', 'lacs_dungeons', 'lacs_tokens']:
         placed_items['ToT Light Arrows Cutscene'] = 'Boss Key (Ganons Castle)'
     elif world.shuffle_ganon_bosskey == 'vanilla':
         placed_items['Ganons Tower Boss Key Chest'] = 'Boss Key (Ganons Castle)'

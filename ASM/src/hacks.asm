@@ -2079,3 +2079,21 @@ skip_GS_BGS_text:
 
 .orga 0xE1F794
 @medigoron_check_return:
+
+;==================================================================================================
+; Bombchu Ticking Color
+;==================================================================================================
+; Replaces: ctc1    t9, $31
+;           ori     t5, t4, 0x00FF
+.orga 0xD5FF94
+    jal     bombchu_back_color
+    ctc1    t9, $31
+
+;==================================================================================================
+; Repoint English Message Table to JP
+;==================================================================================================
+;To make room for more message table entries, store the jp table pointer to the english one as well.
+;The rest of this hack is implemented in Messages.py
+; Replaces: sw      t7, 0x00(a1)
+.orga 0xB575C8
+    sw      t6, 0x00(a1)

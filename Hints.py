@@ -120,9 +120,11 @@ def getItemGenericName(item):
 def isRestrictedDungeonItem(dungeon, item):
     if (item.map or item.compass) and dungeon.world.shuffle_mapcompass == 'dungeon':
         return item in dungeon.dungeon_items
-    if item.smallkey and dungeon.world.shuffle_smallkeys == 'dungeon':
+    if item.type == 'SmallKey' and dungeon.world.shuffle_smallkeys == 'dungeon':
         return item in dungeon.small_keys
-    if item.bosskey and dungeon.world.shuffle_bosskeys == 'dungeon':
+    if item.type == 'BossKey' and dungeon.world.shuffle_bosskeys == 'dungeon':
+        return item in dungeon.boss_key
+    if item.type == 'GanonBossKey' and dungeon.world.shuffle_ganon_bosskey == 'dungeon':
         return item in dungeon.boss_key
     return False
 
@@ -288,19 +290,25 @@ def colorText(gossip_text):
     return text
 
 
+# Peforms a breadth first search to find the closest hint area from a given spot (location or entrance)
+# May fail to find a hint if the given spot is only accessible from the root and not from any other region with a hint area
 def get_hint_area(spot):
-    if spot.parent_region.dungeon:
-        return spot.parent_region.dungeon.hint
-    elif spot.parent_region.hint:
-        return spot.parent_region.hint
-    # Breadth first search for connected regions with a max depth of 2
-    for entrance in spot.parent_region.entrances:
-        if entrance.parent_region.hint:
-            return entrance.parent_region.hint
-    for entrance in spot.parent_region.entrances:
-        for entrance2 in entrance.parent_region.entrances:
-            if entrance2.parent_region.hint:
-                return entrance2.parent_region.hint
+    already_checked = []
+    spot_queue = [spot]
+
+    while spot_queue:
+        current_spot = spot_queue.pop(0)
+        already_checked.append(current_spot)
+
+        parent_region = current_spot.parent_region
+    
+        if parent_region.dungeon:
+            return parent_region.dungeon.hint
+        elif parent_region.hint and (spot.parent_region.name == 'Root' or parent_region.name != 'Root'):
+            return parent_region.hint
+
+        spot_queue.extend(list(filter(lambda ent: ent not in already_checked, parent_region.entrances)))
+
     raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
@@ -475,12 +483,14 @@ def get_dungeon_hint(spoiler, world, checked):
 
 
 def get_entrance_hint(spoiler, world, checked):
-    if world.entrance_shuffle == 'off':
+    if not world.entrance_shuffle:
         return None
 
-    entrance_hints = getHintGroup('entrance', world)
-    entrance_hints = list(filter(lambda hint: hint.name not in checked, entrance_hints))
-    valid_entrance_hints = [entrance_hint for entrance_hint in entrance_hints if world.get_entrance(entrance_hint.name).shuffled]
+    entrance_hints = list(filter(lambda hint: hint.name not in checked, getHintGroup('entrance', world)))
+    shuffled_entrance_hints = list(filter(lambda entrance_hint: world.get_entrance(entrance_hint.name).shuffled, entrance_hints))
+
+    regions_with_hint = [hint.name for hint in getHintGroup('region', world)]
+    valid_entrance_hints = list(filter(lambda entrance_hint: world.get_entrance(entrance_hint.name).connected_region.name in regions_with_hint, shuffled_entrance_hints))
 
     if not valid_entrance_hints:
         return None
@@ -862,7 +872,13 @@ def buildBridgeReqsString(world):
         string += "The awakened ones will have #already created a bridge# to the castle where the evil dwells."
     else:
         item_req_string = getHint('bridge_' + world.bridge, world.clearer_hints).text
-        if world.bridge == 'tokens':
+        if world.bridge == 'medallions':
+            item_req_string = str(world.bridge_medallions) + ' ' + item_req_string
+        elif world.bridge == 'stones':
+            item_req_string = str(world.bridge_stones) + ' ' + item_req_string
+        elif world.bridge == 'dungeons':
+            item_req_string = str(world.bridge_rewards) + ' ' + item_req_string
+        elif world.bridge == 'tokens':
             item_req_string = str(world.bridge_tokens) + ' ' + item_req_string
         if '#' not in item_req_string:
             item_req_string = '#%s#' % item_req_string
@@ -877,6 +893,14 @@ def buildGanonBossKeyString(world):
     else:
         if 'lacs_' in world.shuffle_ganon_bosskey:
             item_req_string = getHint(world.shuffle_ganon_bosskey, world.clearer_hints).text
+            if world.lacs_condition == 'medallions':
+                item_req_string = str(world.lacs_medallions) + ' ' + item_req_string
+            elif world.lacs_condition == 'stones':
+                item_req_string = str(world.lacs_stones) + ' ' + item_req_string
+            elif world.lacs_condition == 'dungeons':
+                item_req_string = str(world.lacs_rewards) + ' ' + item_req_string
+            elif world.lacs_condition == 'tokens':
+                item_req_string = str(world.lacs_tokens) + ' ' + item_req_string
             if '#' not in item_req_string:
                 item_req_string = '#%s#' % item_req_string
             bk_location_string = "provided by Zelda once %s are retrieved" % item_req_string

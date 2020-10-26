@@ -215,9 +215,9 @@ def patch_and_output(settings, window, spoiler, rom, start):
             if settings.create_cosmetics_log and cosmetics_log:
                 window.update_status('Creating Cosmetics Log')
                 if settings.world_count > 1:
-                    cosmetics_log_filename = "%sP%d_Cosmetics.txt" % (outfilebase, world.id + 1)
+                    cosmetics_log_filename = "%sP%d_Cosmetics.json" % (outfilebase, world.id + 1)
                 else:
-                    cosmetics_log_filename = '%s_Cosmetics.txt' % outfilebase
+                    cosmetics_log_filename = '%s_Cosmetics.json' % outfilebase
                 cosmetics_log.to_file(os.path.join(output_dir, cosmetics_log_filename))
                 file_list.append(cosmetics_log_filename)
             cosmetics_log = None
@@ -297,9 +297,9 @@ def patch_and_output(settings, window, spoiler, rom, start):
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
         if settings.world_count > 1 and not settings.output_file:
-            filename = "%sP%d_Cosmetics.txt" % (outfilebase, settings.player_num)
+            filename = "%sP%d_Cosmetics.json" % (outfilebase, settings.player_num)
         else:
-            filename = '%s_Cosmetics.txt' % outfilebase
+            filename = '%s_Cosmetics.json' % outfilebase
         cosmetic_path = os.path.join(output_dir, filename)
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
@@ -314,7 +314,7 @@ def patch_and_output(settings, window, spoiler, rom, start):
             logger.info('Distribution file copy failed.')
 
     window.update_progress(100)
-    if cosmetics_log and cosmetics_log.error:
+    if cosmetics_log and cosmetics_log.errors:
         window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
     else:
         window.update_status('Success: Rom patched successfully')
@@ -399,15 +399,15 @@ def from_patch_file(settings, window=dummy_window()):
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
         if settings.world_count > 1 and not settings.output_file:
-            filename = "%sP%d_Cosmetics.txt" % (outfilebase, settings.player_num)
+            filename = "%sP%d_Cosmetics.json" % (outfilebase, settings.player_num)
         else:
-            filename = '%s_Cosmetics.txt' % outfilebase
+            filename = '%s_Cosmetics.json' % outfilebase
         cosmetic_path = os.path.join(output_dir, filename)
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
     window.update_progress(100)
-    if cosmetics_log and cosmetics_log.error:
+    if cosmetics_log and cosmetics_log.errors:
         window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
     else:
         window.update_status('Success: Rom patched successfully')
@@ -473,15 +473,15 @@ def cosmetic_patch(settings, window=dummy_window()):
     if settings.create_cosmetics_log and cosmetics_log:
         window.update_status('Creating Cosmetics Log')
         if settings.world_count > 1 and not settings.output_file:
-            filename = "%sP%d_Cosmetics.txt" % (outfilebase, settings.player_num)
+            filename = "%sP%d_Cosmetics.json" % (outfilebase, settings.player_num)
         else:
-            filename = '%s_Cosmetics.txt' % outfilebase
+            filename = '%s_Cosmetics.json' % outfilebase
         cosmetic_path = os.path.join(output_dir, filename)
         cosmetics_log.to_file(cosmetic_path)
         logger.info("Created cosmetic log at: %s" % cosmetic_path)
 
     window.update_progress(100)
-    if cosmetics_log and cosmetics_log.error:
+    if cosmetics_log and cosmetics_log.errors:
         window.update_status('Success: Rom patched successfully. Some cosmetics could not be applied.')
     else:
         window.update_status('Success: Rom patched successfully')
@@ -679,5 +679,5 @@ def create_playthrough(spoiler):
     # Then we can finally output our playthrough
     spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
 
-    if worlds[0].entrance_shuffle != 'off':
+    if worlds[0].entrance_shuffle:
         spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))

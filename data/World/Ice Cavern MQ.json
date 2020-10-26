@@ -6,7 +6,7 @@
             "Fairy Pot": "has_bottle"
         },
         "exits": {
-            "Zoras Fountain": "True",
+            "ZF Ice Ledge": "True",
             "Ice Cavern Map Room": "
                 is_adult or can_use(Dins_Fire) or
                 (has_explosives and (can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword))",
