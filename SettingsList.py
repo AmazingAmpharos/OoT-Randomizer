@@ -1221,16 +1221,18 @@ logic_tricks = {
                     courtyard without Hover Boots. Applies
                     to both Vanilla and Master Quest.
                     '''},
-    'Forest Temple Scarecrow Route': {
-        'name'    : 'logic_forest_scarecrow',
+    'Forest Temple East Courtyard Door Frame with Hover Boots': {
+        'name'    : 'logic_forest_door_frame',
         'tags'    : ("Forest Temple",),
         'tooltip' : '''\
-                    From on top of the door frame in the NE
-                    courtyard, you can summon Pierre. You
-                    can get there with a precise Hover Boots
-                    movement. You will take fall damage.
-                    This allows you to reach the falling
-                    ceiling room early.
+                    A precise Hover Boots movement from the upper
+                    balconies in this courtyard can be used to get on
+                    top of the door frame. Applies to both Vanilla and
+                    Master Quest. In Vanilla, from on top the door
+                    frame you can summon Pierre, allowing you to access
+                    the falling ceiling room early. In Master Quest,
+                    this allows you to obtain the GS on the door frame
+                    as adult without Hookshot or Song of Time.
                     '''},
     'Dodongo\'s Cavern MQ Early Bomb Bag Area as Child': {
         'name'    : 'logic_dc_mq_child_bombs',
