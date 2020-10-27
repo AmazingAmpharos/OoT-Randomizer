@@ -76,7 +76,7 @@
             "Forest Temple NW Outdoors": "True",
             "Forest Temple NE Outdoors": "True",
             "Forest Temple Falling Room": "
-                logic_forest_scarecrow and can_use(Hover_Boots) and can_use(Scarecrow)"
+                logic_forest_door_frame and can_use(Hover_Boots) and can_use(Scarecrow)"
         }
     },
     {

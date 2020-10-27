@@ -84,7 +84,10 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Well Chest": "can_use(Bow) or can_use(Slingshot)",
-            "Forest Temple MQ GS Raised Island Courtyard": "can_use(Hookshot) or can_use(Boomerang)",
+            "Forest Temple MQ GS Raised Island Courtyard": "
+                can_use(Hookshot) or can_use(Boomerang) or
+                (can_use(Fire_Arrows) and
+                    (can_play(Song_of_Time) or (can_use(Hover_Boots) and logic_forest_door_frame)))",
             "Forest Temple MQ GS Well": "
                 (can_use(Iron_Boots) and can_use(Hookshot)) or can_use(Bow) or can_use(Slingshot)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
