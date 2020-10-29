@@ -307,6 +307,7 @@
           "text": "Timesavers",
           "row_span": [1,1,1],
           "settings": [
+            "free_zelda",
             "no_escape_sequence",
             "no_guard_stealth",
             "no_epona_race",

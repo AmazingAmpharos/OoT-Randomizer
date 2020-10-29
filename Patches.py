@@ -991,15 +991,27 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Make the Kakariko Gate not open with the MS
     if world.open_kakariko != 'open':
         rom.write_int32(0xDD3538, 0x34190000) # li t9, 0
-    if world.open_kakariko == 'closed':
-        rom.write_byte(rom.sym('OPEN_KAKARIKO'), 0)
-    else:
+    if world.open_kakariko != 'closed':
         rom.write_byte(rom.sym('OPEN_KAKARIKO'), 1)
 
     if world.complete_mask_quest:
         rom.write_byte(rom.sym('COMPLETE_MASK_QUEST'), 1)
-    else:
-        rom.write_byte(rom.sym('COMPLETE_MASK_QUEST'), 0)
+
+    if world.free_zelda:
+        save_context.give_item('Zeldas Letter')
+        save_context.give_item(world.get_location('Song from Impa').item.name)
+        save_context.write_bits(0x0ED7, 0x04) # "Obtained Malon's Item"
+        save_context.write_bits(0x0ED7, 0x08) # "Woke Talon in castle"
+        save_context.write_bits(0x0ED7, 0x10) # "Talon has fled castle"
+        save_context.write_bits(0x0EDD, 0x01) # "Obtained Zelda's Letter"
+        save_context.write_bits(0x0EDE, 0x02) # "Learned Zelda's Lullaby"
+        save_context.write_bits(0x00D4 + 0x5F * 0x1C + 0x04 + 0x3, 0x10) # "Moved crates to access the courtyard"
+        if world.open_kakariko != 'closed':
+            save_context.write_bits(0x0F07, 0x40) # "Spoke to Gate Guard About Mask Shop"
+        if world.complete_mask_quest:
+            save_context.write_bits(0x0F07, 0x80) # "Soldier Wears Keaton Mask"
+            save_context.write_bits(0x0EF6, 0x8F) # "Sold Masks & Unlocked Masks" / "Obtained Mask of Truth"
+            save_context.write_bits(0x0EE4, 0xF0) # "Paid Back Mask Fees"
 
     if world.zora_fountain == 'open':
         save_context.write_bits(0x0EDB, 0x08) # "Moved King Zora"

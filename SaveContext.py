@@ -846,6 +846,7 @@ class SaveContext():
         "Claim Check"    : {'item_slot.adult_trade'     : 'claim_check'},
         "Weird Egg"      : {'item_slot.child_trade'     : 'weird_egg'},
         "Chicken"        : {'item_slot.child_trade'     : 'chicken'},
+        "Zeldas Letter"  : {'item_slot.child_trade'     : 'zeldas_letter'},
         "Goron Tunic"    : {'equip_items.goron_tunic'   : True},
         "Zora Tunic"     : {'equip_items.zora_tunic'    : True},
         "Iron Boots"     : {'equip_items.iron_boots'    : True},

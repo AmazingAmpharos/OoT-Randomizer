@@ -6,7 +6,8 @@
             "Links Pocket": "True"
         },
         "exits": {
-            "Root Exits": "is_starting_age or Time_Travel"
+            "Root Exits": "is_starting_age or Time_Travel",
+            "HC Garden Locations": "free_zelda"
         }
     },
     {
@@ -777,7 +778,7 @@
         },
         "exits": {
             "Castle Grounds": "True",
-            "HC Garden": "Weird_Egg or (not shuffle_weird_egg)",
+            "HC Garden": "Weird_Egg or free_zelda or (not shuffle_weird_egg)",
             "HC Great Fairy Fountain": "has_explosives",
             "HC Storms Grotto": "can_open_storm_grotto"
         }
@@ -786,12 +787,19 @@
         "region_name": "HC Garden",
         "scene": "Castle Grounds",
         "hint": "Hyrule Castle",
+        "exits": {
+            "HC Garden Locations": "True",
+            "Hyrule Castle Grounds": "True"
+        }
+    },
+    {
+        # Directly reachable from Root in "Free Zelda"
+        "region_name": "HC Garden Locations",
+        "scene": "Castle Grounds",
+        "hint": "Hyrule Castle",
         "locations": {
             "HC Zeldas Letter": "True",
             "Song from Impa": "True"
-        },
-        "exits": {
-            "Hyrule Castle Grounds": "True"
         }
     },
     {
