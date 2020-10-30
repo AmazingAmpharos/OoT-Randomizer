@@ -279,6 +279,13 @@ class TestPlandomizer(unittest.TestCase):
                 self.assertNotIn(item, actual_pool)
 
 
+class TestHints(unittest.TestCase):
+    def test_skip_zelda(self):
+        _, spoiler = generate_with_plandomizer("skip-zelda")
+        woth = spoiler[':woth_locations']
+        self.assertNotIn('Song from Impa', woth)
+
+
 class TestValidSpoilers(unittest.TestCase):
 
     # Normalizes spoiler dict for single world or multiple worlds

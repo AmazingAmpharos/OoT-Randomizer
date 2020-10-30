@@ -315,11 +315,10 @@ def get_hint_area(spot):
 def get_woth_hint(spoiler, world, checked):
     locations = spoiler.required_locations[world.id]
     locations = list(filter(lambda location:
-        location.name not in checked and \
-        not (world.woth_dungeon >= world.hint_dist_user['dungeons_woth_limit'] and \
-        location.parent_region.dungeon) and \
-        (location.name not in world.hint_type_overrides['woth']) and \
-        (location.item.name not in world.item_hint_type_overrides['woth']),
+        location.name not in checked
+        and not (world.woth_dungeon >= world.hint_dist_user['dungeons_woth_limit'] and location.parent_region.dungeon)
+        and location.name not in world.hint_type_overrides['woth']
+        and location.item.name not in world.item_hint_type_overrides['woth'],
         locations))
 
     if not locations:

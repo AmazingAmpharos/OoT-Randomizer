@@ -2076,14 +2076,18 @@ setting_infos = [
         disabled_default = 0,
     ),
     Checkbutton(
-        name           = 'free_zelda',
-        gui_text       = 'Free Zelda',
+        name           = 'skip_child_zelda',
+        gui_text       = 'Skip Child Zelda',
         gui_tooltip    = '''\
             Start having already met Zelda and obtained
             Zelda's Letter along with the song from Impa.
-            This is incompatble with songs shuffled anywhere.
+            This is incompatible with Song Shuffle: "Anywhere"
+            and with Shuffle Weird Egg.
         ''',
         shared         = True,
+        disable = {
+            True: {'settings': ['shuffle_weird_egg', 'no_guard_stealth']},
+        },
     ),
     Checkbutton(
         name           = 'no_escape_sequence',
@@ -2373,7 +2377,7 @@ setting_infos = [
             ],
         },
         disable        = {
-            'any' : {'settings' : ['free_zelda']}
+            'any' : {'settings' : ['skip_child_zelda']}
         },
         shared         = True,
     ),

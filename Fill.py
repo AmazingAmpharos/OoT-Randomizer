@@ -183,6 +183,10 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
     logger.info('Placing the rest of the items.')
     fast_fill(window, fill_locations, restitempool)
 
+    if worlds[0].skip_child_zelda:
+        for world in worlds:
+            world.get_location('Song from Impa').locked = True
+
     # Log unplaced item/location warnings
     for item in progitempool + prioitempool + restitempool:
         logger.error('Unplaced Items: %s [World %d]' % (item.name, item.world.id))

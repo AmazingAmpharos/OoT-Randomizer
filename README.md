@@ -106,16 +106,21 @@ do that.
   * Shadow Temples are split into two separate areas for these tricks.
   * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
   * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
+* Updated setting `Shuffle Songs`
+  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
+  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
+  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
 * New setting `Kakariko Gate`
   * Allows configuring how the Kakariko Gate and the Happy Mask Shop will open.
   * Default (vanilla) behavior requires showing Zelda's Letter to the guard to open the gate and the shop.
   * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
 * New setting `Complete Mask Quest`
   * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
-* Updated setting `Shuffle Songs`
-  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
-  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
-  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
+* New setting `Skip Child Zelda`
+  * Skips the Hyrule Castle visit as child, returning Malon and Talon to Lon Lon Ranch and granting Zelda's Letter and the song that Impa provides at the start of the game.
+  * Depending on the `Kakariko Gate` and `Complete Mask Quest` settings, may also start with the gate and shop open and masks available.
+  * Removes the Weird Egg (and prevents `Shuffle Weird Egg`).
+  * Presently incompatible with `Shuffle Songs` set to anywhere.
 * New options for Key and Map/Compass Shuffle settings
   * "Overworld Only" will place keys (or maps/compasses) outside of dungeons.
   * "Any Dungeon" will allow keys (or maps/compasses) to placed in any dungeon, not just the dungeon they belong to!
