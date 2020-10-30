@@ -1857,7 +1857,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(6, 1)],
         },
     ),
     Scale(
@@ -1872,7 +1874,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(3, 1)],
         },
     ),
     Scale(
@@ -1888,7 +1892,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(9, 1)],
         },
     ),
     Scale(
@@ -2933,7 +2939,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(6, 1)],
         },
     ),
     Scale(
@@ -2948,7 +2956,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(3, 1)],
         },
     ),
     Scale(
@@ -2964,7 +2974,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(9, 1)],
         },
     ),
     Scale(
