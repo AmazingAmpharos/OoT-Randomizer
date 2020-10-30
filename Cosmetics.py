@@ -675,13 +675,19 @@ def patch_sfx(rom, settings, log, symbols):
           ('sfx_hover_boots',    sfx.SoundHooks.BOOTS_HOVER),
     ]
     sound_dict = sfx.get_patch_dict()
+    sounds_keyword_label = {sound.value.keyword: sound.value.label for sound in sfx.Sounds}
+    sounds_label_keyword = {sound.value.label: sound.value.keyword for sound in sfx.Sounds}
 
     for setting, hook in sfx_config:
         selection = settings.__dict__[setting]
 
         # Handle Plando
         if log.src_dict.get('sfx', {}).get(hook.value.name, ''):
-            selection = log.src_dict['sfx'][hook.value.name]
+            selection_label = log.src_dict['sfx'][hook.value.name]
+            if selection_label == 'Default':
+                selection = 'default'
+            elif selection_label in sounds_label_keyword:
+                selection = sounds_label_keyword[selection_label]
 
         if selection == 'default':
             for loc in hook.value.locations:
@@ -697,7 +703,10 @@ def patch_sfx(rom, settings, log, symbols):
             sound_id  = sound_dict[selection]
             for loc in hook.value.locations:
                 rom.write_int16(loc, sound_id)
-        log.sfx[hook.value.name] = selection
+        if selection == 'default':
+            log.sfx[hook.value.name] = 'Default'
+        else:
+            log.sfx[hook.value.name] = sounds_keyword_label[selection]
 
 
 def patch_instrument(rom, settings, log, symbols):
@@ -711,17 +720,19 @@ def patch_instrument(rom, settings, log, symbols):
             'grind-organ':     0x05,
             'flute':           0x06,
            #'another_ocarina': 0x07,
-            }
+    }
+    ocarina_options = [setting.choices for setting in setting_infos if setting.name == 'sfx_ocarina'][0]
+    ocarina_options_inv = {v: k for k, v in ocarina_options.items()}
 
     choice = settings.sfx_ocarina
-    if log.src_dict.get('sfx', {}).get('Ocarina', ''):
-        choice = log.src_dict['sfx']['Ocarina']
+    if log.src_dict.get('sfx', {}).get('Ocarina', '') and log.src_dict['sfx']['Ocarina'] in ocarina_options_inv:
+        choice = ocarina_options_inv[log.src_dict['sfx']['Ocarina']]
     if choice == 'random-choice':
         choice = random.choice(list(instruments.keys()))
 
     rom.write_byte(0x00B53C7B, instruments[choice])
     rom.write_byte(0x00B4BF6F, instruments[choice]) # For Lost Woods Skull Kids' minigame in Lost Woods
-    log.sfx['Ocarina'] = choice
+    log.sfx['Ocarina'] = ocarina_options[choice]
 
 
 legacy_cosmetic_data_headers = [
