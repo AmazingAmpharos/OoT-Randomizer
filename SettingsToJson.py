@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from SettingsList import setting_infos, setting_map, get_setting_info, get_settings_from_section, get_settings_from_tab
 from Utils import data_path
 import sys
