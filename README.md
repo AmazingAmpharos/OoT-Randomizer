@@ -123,6 +123,7 @@ do that.
 * New options for Key and Map/Compass Shuffle settings
   * "Overworld Only" will place keys (or maps/compasses) outside of dungeons.
   * "Any Dungeon" will allow keys (or maps/compasses) to placed in any dungeon, not just the dungeon they belong to!
+  * "Dungeon Only" is renamed "Own Dungeon" for clarity.
   * Gerudo Fortress Small Keys are configured in a separate setting.
 * New setting `Shuffle Medigoron & Carpet Salesman`
   * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
@@ -237,6 +238,7 @@ do that.
 * File 3 has been removed from generated ROMs to free up some space.
 * The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
+* Cosmetic logs contain the display names of SFX instead of their internal key names.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
 * Changed some C code to support GCC 10 in development n64 compilation.

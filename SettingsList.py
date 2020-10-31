@@ -1857,7 +1857,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(6, 1)],
         },
     ),
     Scale(
@@ -1872,7 +1874,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(3, 1)],
         },
     ),
     Scale(
@@ -1888,7 +1892,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(9, 1)],
         },
     ),
     Scale(
@@ -2673,7 +2679,7 @@ setting_infos = [
             'remove':      'Remove',
             'startwith':   'Start With',
             'vanilla':     'Vanilla Locations',
-            'dungeon':     'Dungeon Only',
+            'dungeon':     'Own Dungeon',
             'overworld':   'Overworld Only',
             'any_dungeon': 'Any Dungeon',
             'keysanity':   'Anywhere',
@@ -2690,7 +2696,7 @@ setting_infos = [
             'Vanilla': Maps and Compasses will appear in
             their vanilla locations.
 
-            'Dungeon': Maps and Compasses can only appear
+            'Own Dungeon': Maps and Compasses can only appear
             in their respective dungeon.
             
             'Overworld Only': Maps and Compasses can only appear
@@ -2719,7 +2725,7 @@ setting_infos = [
         choices        = {
             'remove':      'Remove (Keysy)',
             'vanilla':     'Vanilla Locations',
-            'dungeon':     'Dungeon Only',
+            'dungeon':     'Own Dungeon',
             'overworld':   'Overworld Only',
             'any_dungeon': 'Any Dungeon',
             'keysanity':   'Anywhere (Keysanity)',
@@ -2734,7 +2740,7 @@ setting_infos = [
             Spirit Temple MQ because the vanilla key 
             layout is not beatable in logic.
 
-            'Dungeon': Small Keys can only appear in their
+            'Own Dungeon': Small Keys can only appear in their
             respective dungeon. If Fire Temple is not a
             Master Quest dungeon, the door to the Boss Key
             chest will be unlocked.
@@ -2804,7 +2810,7 @@ setting_infos = [
         choices        = {
             'remove':      'Remove (Keysy)',
             'vanilla':     'Vanilla Locations',
-            'dungeon':     'Dungeon Only',
+            'dungeon':     'Own Dungeon',
             'overworld':   'Overworld Only',
             'any_dungeon': 'Any Dungeon',
             'keysanity':   'Anywhere (Keysanity)',
@@ -2817,7 +2823,7 @@ setting_infos = [
             'Vanilla': Boss Keys will appear in their 
             vanilla locations.
 
-            'Dungeon': Boss Keys can only appear in their
+            'Own Dungeon': Boss Keys can only appear in their
             respective dungeon.
             
             'Overworld Only': Boss Keys can only appear outside
@@ -2853,7 +2859,7 @@ setting_infos = [
         choices        = {
             'remove':          "Remove (Keysy)",
             'vanilla':         "Vanilla Location",
-            'dungeon':         "Dungeon Only",
+            'dungeon':         "Own Dungeon",
             'overworld':       "Overworld Only",
             'any_dungeon':     "Any Dungeon",
             'keysanity':       "Anywhere (Keysanity)",
@@ -2867,7 +2873,7 @@ setting_infos = [
             'Remove': Ganon's Castle Boss Key is removed
             and the boss door in Ganon's Tower starts unlocked.
 
-            'Dungeon': Ganon's Castle Boss Key can only appear
+            'Own Dungeon': Ganon's Castle Boss Key can only appear
             inside Ganon's Castle.
 
             'Vanilla': Ganon's Castle Boss Key will appear in 
@@ -2932,7 +2938,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(6, 1)],
         },
     ),
     Scale(
@@ -2947,7 +2955,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(3, 1)],
         },
     ),
     Scale(
@@ -2963,7 +2973,9 @@ setting_infos = [
         shared         = True,
         disabled_default = 0,
         gui_params     = {
+            "randomize_key": "randomize_settings",
             "hide_when_disabled": True,
+            'distribution': [(9, 1)],
         },
     ),
     Scale(

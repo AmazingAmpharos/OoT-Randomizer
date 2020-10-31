@@ -239,6 +239,16 @@ class World(object):
             self.randomized_list.extend(setting_info.disable[True]['settings'])
             for section in setting_info.disable[True]['sections']:
                 self.randomized_list.extend(get_settings_from_section(section))
+            for setting in list(self.randomized_list):
+                if (setting == 'bridge_medallions' and self.bridge != 'medallions') \
+                        or (setting == 'bridge_stones' and self.bridge != 'stones') \
+                        or (setting == 'bridge_rewards' and self.bridge != 'dungeons') \
+                        or (setting == 'bridge_tokens' and self.bridge != 'tokens') \
+                        or (setting == 'lacs_medallions' and self.lacs_condition != 'medallions') \
+                        or (setting == 'lacs_stones' and self.lacs_condition != 'stones') \
+                        or (setting == 'lacs_rewards' and self.lacs_condition != 'dungeons') \
+                        or (setting == 'lacs_tokens' and self.lacs_condition != 'tokens'):
+                    self.randomized_list.remove(setting)
         if self.big_poe_count_random:
             self.big_poe_count = random.randint(1, 10)
             self.randomized_list.append('big_poe_count')
