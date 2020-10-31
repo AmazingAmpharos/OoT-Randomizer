@@ -2081,11 +2081,13 @@ setting_infos = [
         gui_tooltip    = '''\
             Start having already met Zelda and obtained
             Zelda's Letter along with the song from Impa.
-            This is incompatible with Shuffle Weird Egg.
+            Supersedes "Skip Child Stealth" since the whole
+            sequence is skipped. Similarly, this is
+            incompatible with Shuffle Weird Egg.
         ''',
         shared         = True,
         disable = {
-            True: {'settings': ['shuffle_weird_egg', 'no_guard_stealth']},
+            True: {'settings': ['shuffle_weird_egg']},
         },
     ),
     Checkbutton(
@@ -2367,7 +2369,6 @@ setting_infos = [
             - Gerudo Training Ground's Ice Arrow Location
 
             'Anywhere': Songs can appear in any location.
-            This is incompatible with "Free Zelda".
         ''',
         gui_params     = {
             'randomize_key': 'randomize_settings',
