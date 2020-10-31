@@ -1657,7 +1657,15 @@ setting_infos = [
         name           = 'randomize_settings',
         gui_text       = 'Randomize Main Rule Settings',
         gui_tooltip    = '''\
-                         Randomizes most Main Rules.
+                         Randomizes all settings on the 'Main Rules' tab, except:
+
+                         - Logic Rules
+                         - (Random) Number of MQ Dungeons
+                         - Rainbow Bridge Requirement: Gold Skulltula Tokens
+                         - Ganon's Boss Key On LACS: Gold Skulltula Tokens
+                         - Variable numbers of Spiritual Stones, Medallions, or Dungeons
+                         for Rainbow Bridge and Ganon's Boss Key on LACS 
+                         (you will always be required to obtain all the relevant rewards)
                          ''',
         default        = False,
         disable        = {
