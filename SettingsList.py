@@ -2320,7 +2320,9 @@ setting_infos = [
             The Weird Egg is also required for Zelda's Letter to open 
             the Kakariko Gate as child which can lock some progression.
         ''',
-        default        = True,
+        disable        = {
+            True : {'settings' : ['skip_child_zelda']}
+        },
         shared         = True,
         gui_params     = {
             'randomize_key': 'randomize_settings',

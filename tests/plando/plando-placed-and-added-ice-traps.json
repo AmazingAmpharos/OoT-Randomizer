@@ -1,6 +1,7 @@
 {
   "settings": {
     "shopsanity": 4,
+    "shuffle_weird_egg": true,
     "junk_ice_traps": "on"
   },
   "starting_items": {
