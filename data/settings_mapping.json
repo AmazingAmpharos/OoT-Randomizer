@@ -328,7 +328,6 @@
           "text": "Misc",
           "row_span": [1,1,1],
           "settings": [
-			"no_collectible_hearts",
             "ocarina_songs",
             "correct_chest_sizes",
             "clearer_hints",
@@ -337,6 +336,7 @@
             "bingosync_url",
             "text_shuffle",
             "damage_multiplier",
+			"no_collectible_hearts",
             "starting_tod"
           ]
         },

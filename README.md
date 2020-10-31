@@ -144,6 +144,8 @@ do that.
   * All these shuffles and randomizations are fixed when the seed is generated; within a seed it will always be the same each time.
 * New setting `Fast Bunny Hood`
   * Allows manual toggling on/off of the 1.5x speed boost from MM.
+* New setting `Hero Mode`
+  * Allows playing without heart drops from enemies or objects. Good luck!!
 * New Cosmetic Plandomizer
   * Use a JSON file to set your cosmetics and sound settings.
   * We've added lots of new color options to pick from as well!

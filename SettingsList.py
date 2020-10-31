@@ -3230,10 +3230,12 @@ setting_infos = [
     ),
     Checkbutton(
         name           = 'no_collectible_hearts',
-        gui_text       = 'No Dropped Recovery Hearts',
+        gui_text       = 'Hero Mode',
         gui_tooltip    = '''\
             No recovery hearts will drop from 
             enemies or objects.
+            (You might still find some freestanding
+            or in chests depending on other settings.)
         ''',
         default        = False,
         shared         = True,
