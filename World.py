@@ -142,6 +142,9 @@ class World(object):
         
         self.added_hint_types = {}
         self.item_added_hint_types = {}
+        self.hint_exclusions = set()
+        if self.skip_child_zelda or settings.skip_child_zelda:
+            self.hint_exclusions.add('Song from Impa')
         self.hint_type_overrides = {}
         self.item_hint_type_overrides = {}
         for dist in hint_dist_keys:
@@ -619,6 +622,7 @@ class World(object):
             # So barren hints do not include these dungeon rewards.
             if location_hint in excluded_areas or \
                location.locked or \
+               location.name in self.hint_exclusions or \
                location.item is None or \
                location.item.type in ('Event', 'DungeonReward'):
                 continue

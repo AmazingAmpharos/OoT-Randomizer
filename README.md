@@ -120,7 +120,6 @@ do that.
   * Skips the Hyrule Castle visit as child, returning Malon and Talon to Lon Lon Ranch and granting Zelda's Letter and the song that Impa provides at the start of the game.
   * Depending on the `Kakariko Gate` and `Complete Mask Quest` settings, may also start with the gate and shop open and masks available.
   * Removes the Weird Egg (and prevents `Shuffle Weird Egg`).
-  * Presently incompatible with `Shuffle Songs` set to anywhere.
 * New options for Key and Map/Compass Shuffle settings
   * "Overworld Only" will place keys (or maps/compasses) outside of dungeons.
   * "Any Dungeon" will allow keys (or maps/compasses) to placed in any dungeon, not just the dungeon they belong to!

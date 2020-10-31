@@ -281,9 +281,11 @@ class TestPlandomizer(unittest.TestCase):
 
 class TestHints(unittest.TestCase):
     def test_skip_zelda(self):
+        # Song from Impa would be WotH, but instead of relying on random chance to get HC WotH,
+        # just exclude all other locations to see if HC is barren.
         _, spoiler = generate_with_plandomizer("skip-zelda")
-        woth = spoiler[':woth_locations']
-        self.assertNotIn('Song from Impa', woth)
+        woth = spoiler[':barren_regions']
+        self.assertIn('Hyrule Castle', woth)
 
 
 class TestValidSpoilers(unittest.TestCase):

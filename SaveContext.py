@@ -1,3 +1,5 @@
+from itertools import chain
+
 class Address():
     prev_address = None
 
@@ -217,6 +219,14 @@ class SaveContext():
         self.addresses['health_capacity'].value       = int(health) * 0x10
         self.addresses['health'].value                = int(health) * 0x10
         self.addresses['quest']['heart_pieces'].value = int((health % 1) * 4)
+
+
+    def give_raw_item(self, item):
+        if item.endswith(')'):
+            item_base, count = item[:-1].split(' (', 1)
+            if count.isdigit():
+                return self.give_item(item_base, count=int(count))
+        return self.give_item(item)
 
 
     def give_item(self, item, count=1):
@@ -905,6 +915,7 @@ class SaveContext():
             'magic_level'           : None,
             'double_magic'          : [False, True],
         },
+        "Rupee"                     : {'rupees' : None},
         "Rupees"                    : {'rupees' : None},
         "Magic Bean Pack" : {
             'item_slot.beans'       : 'beans',
@@ -912,6 +923,9 @@ class SaveContext():
         },
         "Triforce Piece"            : {'triforce_pieces': None},
     }
+
+    giveable_items = set(chain(save_writes_table.keys(), bottle_types.keys(),
+        ["Piece of Heart", "Piece of Heart (Treasure Chest Game)", "Heart Container", "Rupee (1)"]))
 
 
     equipable_items = {
