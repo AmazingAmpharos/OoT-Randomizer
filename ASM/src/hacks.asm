@@ -2019,9 +2019,9 @@ skip_GS_BGS_text:
 ; Use Sticks and Masks as Adult
 ;==================================================================================================
 ; Deku Stick
-; Replaces: lui     t2, 0x0600
-;           addiu   t2, t2, 0x6CC0
-.orga 0xAF180C
+; Replaces: addiu   t8, v1, 0x0008
+;           sw      t8, 0x02C0(t7)
+.orga 0xAF1814
     jal     stick_as_adult
     nop
 
