@@ -1697,10 +1697,18 @@ setting_infos = [
             Deku Tree, requiring Kokiri Sword and Deku Shield to access
             the Deku Tree.
 
-            'Closed Forest': The Kokiri Sword and Slingshot are always
-            available somewhere in the forest. This is incompatible with
-            Start as Adult and shuffling "All Indoors" and/or "Overworld"
-            entrances will force this to Closed Deku if selected.
+            'Closed Forest': The Kokiri boy blocks the path out of the
+            forest, and Mido blocks the path to the Deku Tree. The items
+            needed to clear the Deku Tree (including the Kokiri Sword and
+            access to a Deku Shield) will be available within the forest
+            (Kokiri Forest, Lost Woods, Sacred Forest Meadow, or Deku Tree).
+            A Slingshot will also be available unless the "Deku Tree Basement
+            without Slingshot" trick is enabled. This setting is incompatible
+            with a Starting Age of Adult, and so Starting Age will be forced
+            to Child. If shuffling "All Indoors" and/or "Overworld" entrances,
+            Closed Forest will instead be treated as Closed Deku with
+            Starting Age of Child and WILL NOT guarantee that these items
+            are available in the forest.
         ''',
         shared         = True,
         disable        = {
