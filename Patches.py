@@ -77,6 +77,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Add it to the extended object table
     add_to_extended_object_table(rom, 0x194, dd_obj_file)
 
+    # Create an option so that recovery hearts no longer drop by changing the code which checks Link's health when an item is spawned.
+    if world.no_collectible_hearts:
+        rom.write_byte(0xA895B7, 0x2E) # 
+        
+        
     # Force language to be English in the event a Japanese rom was submitted
     rom.write_byte(0x3E, 0x45)
     rom.force_patch.append(0x3E)
