@@ -62,7 +62,9 @@ def main(settings, window=dummy_window()):
             else:
                 logger.info('Retrying...\n\n')
             settings.reset_distribution()
-    return patch_and_output(settings, window, spoiler, rom, start)
+    patch_and_output(settings, window, spoiler, rom)
+    logger.debug('Total Time: %s', time.process_time() - start)
+    return spoiler
 
 
 def resolve_settings(settings, window=dummy_window()):
@@ -83,7 +85,7 @@ def resolve_settings(settings, window=dummy_window()):
     if settings.compress_rom == 'None' and not settings.create_spoiler:
         raise Exception('`No Output` must have spoiler enabled to produce anything.')
 
-    if settings.compress_rom != 'None':
+    if settings.compress_rom not in ['None', 'Temp']:
         window.update_status('Loading ROM')
         rom = Rom(settings.rom)
     else:
@@ -98,7 +100,7 @@ def resolve_settings(settings, window=dummy_window()):
     if settings.player_num < 1:
         raise Exception(f'Invalid player num: {settings.player_num}; must be between (1, {settings.world_count})')
     if settings.player_num > settings.world_count:
-        if settings.compress_rom not in ['None', 'Patch']:
+        if settings.compress_rom not in ['None', 'Patch', 'Temp']:
             raise Exception(f'Player Num is {settings.player_num}; must be between (1, {settings.world_count})')
         settings.player_num = settings.world_count
 
@@ -192,7 +194,7 @@ def make_spoiler(settings, worlds, window=dummy_window()):
     return spoiler
 
 
-def patch_and_output(settings, window, spoiler, rom, start):
+def patch_and_output(settings, window, spoiler, rom):
     logger = logging.getLogger('')
     logger.info('Patching ROM.')
     worlds = spoiler.worlds
@@ -256,7 +258,7 @@ def patch_and_output(settings, window, spoiler, rom, start):
         logger.info("Created patchfile at: %s" % output_path)
         window.update_progress(95)
 
-    elif settings.compress_rom != 'None':
+    elif settings.compress_rom not in ['None', 'Temp']:
         window.update_status('Patching ROM')
         patch_rom(spoiler, worlds[settings.player_num - 1], rom)
         cosmetics_log = patch_cosmetics(settings, rom)
@@ -341,9 +343,6 @@ def patch_and_output(settings, window, spoiler, rom, start):
     else:
         window.update_status('Success: Rom patched successfully')
     logger.info('Done. Enjoy.')
-    logger.debug('Total Time: %s', time.process_time() - start)
-
-    return worlds[settings.player_num - 1]
 
 
 def from_patch_file(settings, window=dummy_window()):
@@ -351,7 +350,7 @@ def from_patch_file(settings, window=dummy_window()):
     logger = logging.getLogger('')
 
     # we load the rom before creating the seed so that error get caught early
-    if settings.compress_rom == 'None' or settings.compress_rom == 'Patch':
+    if settings.compress_rom in ['None', 'Patch', 'Temp']:
         raise Exception('Output Type must be a ROM when patching from a patch file.')
     window.update_status('Loading ROM')
     rom = Rom(settings.rom)
