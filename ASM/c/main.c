@@ -37,7 +37,7 @@ void before_game_state_update() {
 void after_game_state_update() {
     draw_dungeon_info(&(z64_ctxt.gfx->overlay));
     draw_triforce_count(&(z64_ctxt.gfx->overlay));
-    waitForResetCombo();
+    wait_for_reset_combo();
 }
 
 void after_scene_init() {
