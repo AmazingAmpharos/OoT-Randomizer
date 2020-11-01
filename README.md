@@ -214,6 +214,8 @@ do that.
 * Tournament hint distribution changes <!-- keep updated if there are changes later -->
   * Temple of Time stones all provide the same hint.
   * Grotto stones are disabled and only provide junk hints.
+  * Zelda's Lullaby is never considered for Way of the Hero hints.
+  * Deku Theater Skull Mask is an "always" hint.
   * Only "always" and "WotH" hints have duplicates now.
   * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 0 barren, 4(remainder) sometimes.
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).

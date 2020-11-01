@@ -906,7 +906,7 @@ logic_tricks = {
                     and use the Hookshot targets. This trick
                     supersedes both "Fire Temple MQ Lower to Upper
                     Lizalfos Maze with Hover Boots" and "Fire Temple
-                    MQ Lizalfos Maze Side Room without Box."
+                    MQ Lizalfos Maze Side Room without Box".
                     '''},
     'Light Trial MQ without Hookshot': {
         'name'    : 'logic_light_trial_mq',
@@ -949,10 +949,10 @@ logic_tricks = {
                     Note that jumping to the carpet merchant as child
                     typically requires a fairly precise jump slash.
                     The equivalent trick for going forward through the
-                    Wasteland is "Lensless Wasteland."
+                    Wasteland is "Lensless Wasteland".
                     To cross the river of sand with no additional items,
                     be sure to also enable "Wasteland Crossing without
-                    Hover Boots or Longshot."
+                    Hover Boots or Longshot".
                     Unless all overworld entrances are randomized, child
                     Link will not be expected to do anything at Gerudo's
                     Fortress.
@@ -1057,7 +1057,7 @@ logic_tricks = {
                     that unbars the door to the final chest of GTG can be hit
                     without a projectile, using a precise jump slash.
                     This trick supersedes "Gerudo Training Grounds MQ Left Side
-                    Silver Rupees with Hookshot."
+                    Silver Rupees with Hookshot".
                     '''},
     'Reach Gerudo Training Grounds Fake Wall Ledge with Hover Boots': {
         'name'    : 'logic_gtg_fake_wall',
@@ -1078,7 +1078,7 @@ logic_tricks = {
                     get you to the cracked wall without needing the
                     Hover Boots or to raise the water to the middle
                     level. This trick supersedes "Water Temple
-                    Cracked Wall with Hover Boots."
+                    Cracked Wall with Hover Boots".
                     '''},
     'Water Temple North Basement Ledge with Precise Jump': {
         'name'    : 'logic_water_north_basement_ledge_jump',
@@ -1262,7 +1262,7 @@ logic_tricks = {
                     platforms while the flame circles are there.
                     When enabling this trick, it's recommended that
                     you also enable the Adult variant: "Dodongo's
-                    Cavern Spike Trap Room Jump without Hover Boots."
+                    Cavern Spike Trap Room Jump without Hover Boots".
                     '''},
     'Dodongo\'s Cavern MQ Light the Eyes with Strength': {
         'name'    : 'logic_dc_mq_eyes',
@@ -1351,7 +1351,7 @@ logic_tricks = {
                     be used to obtain the token without needing the Hookshot.
                     Applies to both Vanilla and Master Quest. For obtaining
                     the chests in this room with just Hover Boots, be sure to
-                    enable "Shadow Temple Stone Umbrella Skip."
+                    enable "Shadow Temple Stone Umbrella Skip".
                     '''},
     'Water Temple Central Bow Target without Longshot or Hover Boots': {
         'name'    : 'logic_water_central_bow',
@@ -1368,7 +1368,7 @@ logic_tricks = {
         'name'    : 'logic_fire_scarecrow',
         'tags'    : ("Fire Temple",),
         'tooltip' : '''\
-                    Also known as "Pixelshot."
+                    Also known as "Pixelshot".
                     The Longshot can reach the target on the elevator
                     itself, allowing you to skip needing to spawn the
                     scarecrow.
@@ -1400,7 +1400,7 @@ logic_tricks = {
                     Wasteland without using the Lens of Truth to see
                     the Poe.
                     The equivalent trick for going in reverse through
-                    the Wasteland is "Reverse Wasteland."
+                    the Wasteland is "Reverse Wasteland".
                     '''},
     'Bottom of the Well without Lens of Truth': {
         'name'    : 'logic_lens_botw',
@@ -2600,9 +2600,9 @@ setting_infos = [
         name           = 'shuffle_cows',
         gui_text       = 'Shuffle Cows',
         gui_tooltip    = '''\
-            Enabling this causes playing Epona's song infront
-            of cows to give an item. There are 9 cows, and an
-            extra in MQ Jabu.
+            Enabling this will let cows give you items
+            upon performing Epona's song in front of them.
+            There are 9 cows, and an extra in MQ Jabu.
         ''',
         default        = False,
         shared         = True,
@@ -3783,7 +3783,7 @@ setting_infos = [
         shared         = False,
         cosmetic       = True,
         gui_tooltip    = '''\
-            Ingame models for items such as Heart Containers have 
+            In-game models for items such as Heart Containers have
             colors matching the colors chosen for cosmetic settings.
             Heart and magic drop icons also have matching colors.
 
