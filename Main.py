@@ -166,6 +166,9 @@ def generate(settings, window):
         update_required_items(spoiler)
         buildGossipHints(spoiler, worlds)
         window.update_progress(55)
+    else:
+        # Ganon may still provide the Light Arrows hint
+        find_light_arrows(spoiler)
     spoiler.build_file_hash()
     return spoiler
 
@@ -515,6 +518,19 @@ def copy_worlds(worlds):
     return worlds
 
 
+def maybe_set_light_arrows(location):
+    if not location.item.world.light_arrow_location and location.item and location.item.name == 'Light Arrows':
+        location.item.world.light_arrow_location = location
+        logging.getLogger('').debug(f'Light Arrows [{location.item.world.id}] set to [{location.name}]')
+
+
+def find_light_arrows(spoiler):
+    search = Search([world.state for world in spoiler.worlds])
+    for location in search.iter_reachable_locations(search.progression_locations()):
+        search.collect(location.item)
+        maybe_set_light_arrows(location)
+
+
 def update_required_items(spoiler):
     worlds = spoiler.worlds
 
@@ -533,10 +549,12 @@ def update_required_items(spoiler):
         translate = lambda loc: worlds[loc.world.id].get_location(loc.name)
         spoiler_locations = set(map(translate, itertools.chain.from_iterable(spoiler.playthrough.values())))
         item_locations &= spoiler_locations
+        maybe_set_light_arrows = lambda l: None
 
     required_locations = []
 
     search = Search([world.state for world in worlds])
+
     for location in search.iter_reachable_locations(all_locations):
         # Try to remove items one at a time and see if the game is still beatable
         if location in item_locations:
@@ -547,6 +565,7 @@ def update_required_items(spoiler):
             if not search.can_beat_game():
                 required_locations.append(location)
             location.item = old_item
+            maybe_set_light_arrows(location)
         search.state_list[location.item.world.id].collect(location.item)
 
     # Filter the required location to only include location in the world
@@ -596,6 +615,7 @@ def create_playthrough(spoiler):
         for location in collected:
             # Collect the item for the state world it is for
             search.state_list[location.item.world.id].collect(location.item)
+            maybe_set_light_arrows(location)
     logger.info('Collected %d spheres', len(collection_spheres))
 
     # Reduce each sphere in reverse order, by checking if the game is beatable
