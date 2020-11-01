@@ -244,6 +244,7 @@ do that.
 * Drop Ruto before entering Big Octo room if the miniboss has been defeated.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Move the Stone of Agony indicator above any small keys if both are present.
+* Ensure Ganondorf always hints one of the first reachable Light Arrows.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:
   * Closed Forest implies starting as child.

@@ -10,7 +10,7 @@ import unittest
 from ItemList import item_table
 from ItemPool import remove_junk_items, item_groups
 from LocationList import location_groups, location_is_viewable
-from Main import main
+from Main import main, resolve_settings, build_world_graphs
 from Settings import Settings
 
 test_dir = os.path.join(os.path.dirname(__file__), 'tests')
@@ -81,7 +81,7 @@ def load_spoiler(json_file):
         return json.load(f)
 
 
-def generate_with_plandomizer(filename):
+def generate_with_plandomizer(filename, live_copy=False):
     distribution_file = load_spoiler(os.path.join(test_dir, 'plando', filename + '.json'))
     try:
         settings = load_settings(distribution_file['settings'], seed='TESTTESTTEST', filename=filename)
@@ -95,8 +95,9 @@ def generate_with_plandomizer(filename):
             'output_file': os.path.join(test_dir, 'Output', filename),
             'seed': 'TESTTESTTEST'
         })
-    main(settings)
-    spoiler = load_spoiler('%s_Spoiler.json' % settings.output_file)
+    spoiler = main(settings)
+    if not live_copy:
+        spoiler = load_spoiler('%s_Spoiler.json' % settings.output_file)
     return distribution_file, spoiler
 
 
@@ -286,6 +287,19 @@ class TestHints(unittest.TestCase):
         _, spoiler = generate_with_plandomizer("skip-zelda")
         woth = spoiler[':barren_regions']
         self.assertIn('Hyrule Castle', woth)
+
+    def test_ganondorf(self):
+        filenames = [
+            "light-arrows-1",
+            "light-arrows-2",
+            "light-arrows-3",
+        ]
+        # Ganondorf should never hint LAs locked behind LAs
+        for filename in filenames:
+            with self.subTest(filename):
+                _, spoiler = generate_with_plandomizer(filename, live_copy=True)
+                self.assertIsNotNone(spoiler.worlds[0].light_arrow_location)
+                self.assertNotEqual('Ganons Tower Boss Key Chest', spoiler.worlds[0].light_arrow_location.name)
 
 
 class TestValidSpoilers(unittest.TestCase):

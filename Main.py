@@ -567,7 +567,10 @@ def update_required_items(spoiler):
         translate = lambda loc: worlds[loc.world.id].get_location(loc.name)
         spoiler_locations = set(map(translate, itertools.chain.from_iterable(spoiler.playthrough.values())))
         item_locations &= spoiler_locations
-        maybe_set_light_arrows = lambda l: None
+        # Skip even the checks
+        _maybe_set_light_arrows = lambda _: None
+    else:
+        _maybe_set_light_arrows = maybe_set_light_arrows
 
     required_locations = []
 
@@ -583,7 +586,7 @@ def update_required_items(spoiler):
             if not search.can_beat_game():
                 required_locations.append(location)
             location.item = old_item
-            maybe_set_light_arrows(location)
+            _maybe_set_light_arrows(location)
         search.state_list[location.item.world.id].collect(location.item)
 
     # Filter the required location to only include location in the world
@@ -716,6 +719,9 @@ def create_playthrough(spoiler):
 
     # Then we can finally output our playthrough
     spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
+    # Copy our light arrows, since we set them in the world copy
+    for w, sw in zip(worlds, spoiler.worlds):
+        sw.light_arrow_location = w.light_arrow_location
 
     if worlds[0].entrance_shuffle:
         spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))

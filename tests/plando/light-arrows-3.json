@@ -1,0 +1,13 @@
+{
+"settings": {
+    "create_spoiler": false,
+    "compress_rom": "Temp",
+    "hints": "none"
+},
+"item_pool": {
+    "Light Arrows": 3
+},
+"locations": {
+    "Ganons Tower Boss Key Chest": "Light Arrows"
+}
+}
