@@ -19,24 +19,22 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Wolfos Chest": "
-                    (can_play(Song_of_Time) or is_child) and
-                    (is_adult or can_use(Dins_Fire) or
-                     can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword)",
+                (can_play(Song_of_Time) or is_child) and
+                (is_adult or can_use(Dins_Fire) or
+                    can_use(Sticks) or can_use(Slingshot) or Kokiri_Sword)",
             "Forest Temple MQ GS Block Push Room": "is_adult or Kokiri_Sword",
             "Fairy Pot": "has_bottle and (can_play(Song_of_Time) or is_child)"
         },
         "exits": {
             "Forest Temple NW Outdoors": "can_use(Bow) or can_use(Slingshot)",
             "Forest Temple NE Outdoors": "can_use(Bow) or can_use(Slingshot)",
-            #End of the road for child
+            # End of the road for child
             "Forest Temple After Block Puzzle": "
-                (is_adult and Progressive_Strength_Upgrade) or
-                (has_bombchus and logic_forest_mq_block_puzzle and can_use(Hookshot))",
+                is_adult and (Progressive_Strength_Upgrade or
+                    (logic_forest_mq_block_puzzle and has_bombchus and can_use(Hookshot)))",
             "Forest Temple Outdoor Ledge": "
-                can_use(Hover_Boots) or
-                (can_use(Hookshot) and 
-                 (Progressive_Strength_Upgrade or logic_forest_mq_hallway_switch or
-                  (has_bombchus and logic_forest_mq_block_puzzle)))",
+                (logic_forest_mq_hallway_switch_jumpslash and can_use(Hover_Boots)) or
+                (logic_forest_mq_hallway_switch_hookshot and can_use(Hookshot))",
             "Forest Temple Boss Region": "
                 Forest_Temple_Jo_and_Beth and Forest_Temple_Amy_and_Meg"
         }
@@ -49,7 +47,13 @@
         },
         "exits": {
             "Forest Temple Bow Region": "(Small_Key_Forest_Temple, 4)",
-            "Forest Temple Outdoor Ledge": "(Small_Key_Forest_Temple, 3)"
+            "Forest Temple Outdoor Ledge": "
+                (Small_Key_Forest_Temple, 3) or
+                (logic_forest_mq_hallway_switch_jumpslash and
+                    (can_use(Hookshot) or logic_forest_outside_backdoor))",
+            "Forest Temple NW Outdoors": "(Small_Key_Forest_Temple, 2)"
+            # Only 2 keys because you must have had access to falling ceiling room to have wasted a key there
+            # and access to falling ceiling room means you must also have had to access to the lower area of this courtyard
         }
     },
     {
@@ -80,7 +84,10 @@
         "dungeon": "Forest Temple",
         "locations": {
             "Forest Temple MQ Well Chest": "can_use(Bow) or can_use(Slingshot)",
-            "Forest Temple MQ GS Raised Island Courtyard": "can_use(Hookshot) or can_use(Boomerang)",
+            "Forest Temple MQ GS Raised Island Courtyard": "
+                can_use(Hookshot) or can_use(Boomerang) or
+                (can_use(Fire_Arrows) and
+                    (can_play(Song_of_Time) or (can_use(Hover_Boots) and logic_forest_door_frame)))",
             "Forest Temple MQ GS Well": "
                 (can_use(Iron_Boots) and can_use(Hookshot)) or can_use(Bow) or can_use(Slingshot)",
             "Deku Baba Sticks": "is_adult or Kokiri_Sword or Boomerang",
@@ -92,7 +99,7 @@
             "Forest Temple Outdoors Top Ledges": "
                 can_use(Hookshot) and 
                 (can_use(Longshot) or can_use(Hover_Boots) or can_play(Song_of_Time) or 
-                 logic_forest_vines)",
+                    logic_forest_vines)",
             "Forest Temple NE Outdoors Ledge": "can_use(Longshot)"
         }
     },
@@ -131,8 +138,8 @@
         },
         "exits": {
             "Forest Temple Falling Room": "
-                (Small_Key_Forest_Temple, 5) and 
-                (can_use(Bow) or can_use(Dins_Fire))" # Only 5 keys because the door you could waste your key on is the door you're trying to use keys to get to.
+                (Small_Key_Forest_Temple, 5) and (can_use(Bow) or can_use(Dins_Fire))"
+            # Only 5 keys because you must have had access to falling ceiling room to have wasted a key there
         }
     },
     {

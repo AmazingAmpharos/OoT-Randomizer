@@ -21,7 +21,7 @@
             "Ice Cavern MQ Map Chest": "
                 Blue_Fire and
                 (is_adult or can_use(Sticks) or Kokiri_Sword or can_use_projectile)",
-            "Blue Fire": "is_adult and has_bottle"
+            "Blue Fire": "has_bottle"
         }
     },
     {
@@ -42,7 +42,7 @@
         "locations": {
             "Ice Cavern MQ Compass Chest": "True",
             "Ice Cavern MQ Freestanding PoH": "has_explosives",
-            "Ice Cavern MQ GS Red Ice": "can_play(Song_of_Time)"
+            "Ice Cavern MQ GS Red Ice": "can_play(Song_of_Time) or logic_ice_mq_red_ice_gs"
         }
     }
 ]

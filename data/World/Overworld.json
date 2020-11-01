@@ -987,7 +987,8 @@
                 is_child and (Slingshot or has_bombchus or 
                     (logic_kakariko_tower_gs and (Sticks or Kokiri_Sword) and
                     (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))) and at_night",
-            "Kak GS Above Impas House": "can_use(Hookshot) and at_night",
+            "Kak GS Above Impas House": "
+                (can_use(Hookshot) or (logic_kakariko_rooftop_gs and can_use(Hover_Boots))) and at_night",
             "Bug Rock": "has_bottle"
         },
         "exits": {
@@ -1303,7 +1304,9 @@
             "DMT GS Near Kak": "can_blast_or_smash",
             "DMT GS Above Dodongos Cavern": "
                 is_adult and at_night and
-                (can_use(Megaton_Hammer) or (logic_trail_gs_lower_hookshot and can_use(Hookshot)) or
+                (can_use(Megaton_Hammer) or
+                    (logic_trail_gs_lower_hookshot and can_use(Hookshot)) or
+                    (logic_trail_gs_lower_hovers and can_use(Hover_Boots)) or
                     (logic_trail_gs_lower_bean and here(can_plant_bean and (has_explosives or Progressive_Strength_Upgrade))))",
             "Bean Plant Fairy": "
                 can_plant_bean and can_play(Song_of_Storms) and has_bottle and

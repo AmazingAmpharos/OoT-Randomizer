@@ -169,17 +169,39 @@ do that.
   * `Zora's Domain GS with No Additional Items` - use only a jumpslash.
   * `Ice Cavern Block Room GS with Hover Boots` - reach the GS with the Hover Boots to jumpslash it.
   * `Hyrule Castle Storms Grotto GS with Just Boomerang` - make a precise throw with the Boomerang to send it behind the wall.
+  * `Water Temple Central Pillar GS with Farore's Wind` - cast inside the pillar before raising the water level. *Previously assumed in logic!*
   * `Water Temple Central Pillar GS with Iron Boots` - unlock the door on the middle level before raising the water.
   * `Water Temple Dragon Statue Switch from Above the Water as Adult` - trigger the switch from dry land, then use Iron Boots, any Scale, or a jump dive coming from the river.
   * `Water Temple Dragon Statue Switch from Above the Water as Child` - same but for child. The Scale dive is very precise.
   * `Goron City Grotto with Hookshot While Taking Damage` - brave the heat, but be quick.
   * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
   * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
+  * `Deku Tree MQ Roll Under the Spiked Log` - roll at the right time to shrink your hintbox. *Previously assumed in logic!*
+  * `Bottom of the Well MQ Jump Over the Pits` - Use a sidehop or backflip to jump over the pits. *Previously assuming in logic!*
+  * `Water Temple MQ Central Pillar with Fire Arrows` - Angled torches have hard-to-hit hitboxes. *Previously assumed in logic!*
+  * `Forest Temple MQ Twisted Hallway Switch with Jump Slash` - Hit the switch from above with a jump slash, after getting in place with Hover Boots or some glass blocks. *Previously assumed in logic!*
+  * `Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots` - Hover Boots can get you up from a crate.
+  * `Fire Temple MQ Lower to Upper Lizalfos Maze with Precise Jump` - You can even jump up from a crate without the Hover Boots!
+  * `Fire Temple MQ Above Flame Wall Maze GS from Below with Longshot` - Point the Longshot at the right pointin the ceiling to obtain the token.
+  * `Shadow Temple MQ Invisible Blades Silver Rupees without Song of Time` - Get a boost from a Like Like into a silver rupee, but don't die in the process.
+  * `Deku Tree MQ Compass Room GS Boulders with Just Hammer` - Jump slash from the top of the vines.
+  * `Spirit Temple MQ Sun Block Room as Child without Song of Time` - Throw a crate onto the switch to unbar the door briefly.
+  * `Water Temple MQ North Basement GS without Small Key` - There's an invisible Hookshot target you can use.
+  * `Death Mountain Trail Lower Red Rock GS with Hover Boots` - Kill the Skulltula, get on the fence, and then backflip onto the the rock.
+  * `Ice Cavern MQ Red Ice GS without Song of Time` - Side-hop into the right place and you have a brief amount of time to use Blue Fire.
+  * `Kakariko Rooftop GS with Hover Boots` - Some tricky movements with the Hover Boots can get you up onto Impa's House.
+  * `Dodongo's Cavern MQ Light the Eyes with Strength` - You have to move very quickly to light the eyes with a Bomb Flower.
+  * `Dodongo's Cavern MQ Back Areas as Child without Explosives` - Use pots, Armos, etc to progress through the room. Not relevant without "Light the Eyes with Strength" above, which is much harder for child.
+  * `Fire Trial MQ with Hookshot` - Hit the target from a precise position with precise aim.
 * Removed tricks
   * `Water Temple Boss Key Chest with Iron Boots`
   * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
 * Changed Tricks
   * Burning the two vertical webs in the Deku Tree basement with bow is now default logic. The relevant trick has been renamed to `Deku Tree Basement Web to Gohma with Bow` to reflect that it now only applies to the web immediately before Gohma.
+  * `Reach Forest Temple MQ Twisted Hallway Switch with Hookshot` - renamed `Forest Temple MQ Twisted Hallway Switch with Hookshot`.
+  * `Fire Temple MQ Boulder Maze Side Room without Box` - renamed `Fire Temple MQ Lizalfos Maze Side Room without Box`.
+  * `Fire Temple MQ Big Lava Room Blocked Door without Hookshot` - can be done without damage, so it's now allowed in OHKO.
+  * `Forest Temple Scarecrow Route` - renamed `Forest Temple East Courtyard Door Frame with Hover Boots` and can be done in Vanilla or MQ.
 * Updated altar text in the Temple of Time
   * Now provides rainbow bridge requirements and the shuffle mode of Ganon's Castle Boss Key (info otherwise available in the seed settings). These are always available at the altar regardless of Maps/Compass settings.
   * Removed misleading vanilla text from the child altar.
