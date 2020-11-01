@@ -1,3 +1,3 @@
 #include "z64.h"
 
-void readControler();
+void waitForResetCombo();
