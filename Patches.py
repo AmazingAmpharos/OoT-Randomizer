@@ -93,11 +93,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_byte(0xCB6844, 0x35)
     rom.write_byte(0x253C0E2, 0x03) # Moves sheik from pedestal
 
-    #REMOVE
-    rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x00, 0x28])
-    rom.write_bytes(0xB06332, [0x00, 0x28])
-
     # Fix Ice Cavern Alcove Camera
     if not world.dungeon_mq['Ice Cavern']:
         rom.write_byte(0x2BECA25,0x01);
@@ -913,9 +908,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     rom.write_int32(rom.sym('cfg_file_select_hash'), hash_icons)
 
     save_context = SaveContext()
-
-    #REMOVE 
-    save_context.write_bits(0x0F21, 0x80)
 
     # Initial Save Data
     if not world.useful_cutscenes:
