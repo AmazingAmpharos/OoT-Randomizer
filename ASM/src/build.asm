@@ -85,6 +85,7 @@ RANDO_CONTEXT:
 .include "king_zora.asm"
 .include "carpenter_boss.asm"
 .include "twinrova_wait.asm"
+.include "boomerang.asm"
 .include "file_select.asm"
 .include "zelda.asm"
 .include "link_anim.asm"
