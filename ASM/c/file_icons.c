@@ -189,10 +189,10 @@ typedef enum {
 } counter_slot_t;
 
 tile_position counter_positions[NUM_COUNTER] = {
-    {0x00, 0x00}, // Hearts
-    {0x14, 0x00}, // Rupees
-    {0x28, 0x00}, // Skulltulas
-    {0x3C, 0x00}, // Triforce/Boss Key
+    {0x05, 0x00}, // Hearts
+    {0x18, 0x00}, // Rupees
+    {0x2C, 0x00}, // Skulltulas
+    {0x40, 0x00}, // Triforce/Boss Key
     {0xAE, 0xEE}, // Deaths
 };
 
