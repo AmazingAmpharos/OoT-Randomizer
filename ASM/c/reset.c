@@ -1,7 +1,7 @@
 #include "reset.h"
 
-typedef void(*title_init_setup)(z64_ctxt_t* ctxt);
-#define title_init_setup  ((title_init_setup) 0x800A0748)
+typedef void(*TitleSetup_Init)();
+#define TitleSetup_Init_Func ((TitleSetup_Init) 0x800A0748)
 typedef void (*set_bgm)(unsigned int ID);
 #define SET_BGM ((set_bgm) 0x800CAA70)
 #define BGM_STOP 0x100000FF
@@ -15,8 +15,10 @@ void wait_for_reset_combo(){
 			s_reset_delay--;
 		}
 		else {
+			z64_game.common.state_continue = 0;
+			z64_game.common.next_ctor = (void*)TitleSetup_Init_Func;
+			z64_game.common.next_size = sizeof(z64_ctxt_t);
 			SET_BGM(BGM_STOP);
-			title_init_setup(&z64_game.common);
 		}
 	}
 	else {
