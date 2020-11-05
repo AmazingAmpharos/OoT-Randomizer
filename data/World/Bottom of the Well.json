@@ -41,8 +41,8 @@
                 Boomerang and (logic_lens_botw or can_use(Lens_of_Truth)) and 
                 (Small_Key_Bottom_of_the_Well, 3)",
             "Bottom of the Well GS Like Like Cage": "
-                (Small_Key_Bottom_of_the_Well, 3) and (logic_lens_botw or can_use(Lens_of_Truth)) and
-                (Boomerang or (logic_botw_cage_gs and can_child_attack))",
+                Boomerang and (logic_lens_botw or can_use(Lens_of_Truth)) and
+                (Small_Key_Bottom_of_the_Well, 3)",
             "Stick Pot": "True",
             "Nut Pot": "True"
         },
