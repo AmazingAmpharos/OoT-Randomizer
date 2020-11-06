@@ -123,18 +123,18 @@ const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD
     {-1, 0,                         {0xFF, 0xFF}}, // 5:7
     { 0, Z64_ITEM_BOTTLE,           {0x9C, 0x00}}, // 6:0
     { 0, Z64_ITEM_LETTER,           {0x54, 0x36}}, // 6:1
-    { 1, 6 /* Emerald (top) */,     {0x07, 0x1C}}, // 6:2
-    { 1, 7 /* Ruby (left) */,       {0x00, 0x28}}, // 6:3
-    { 1, 8 /* Sapphire (right) */,  {0x0E, 0x28}}, // 6:4
+    { 1, 6 /* Emerald (top) */,     {0x1A, 0x31}}, // 6:2
+    { 1, 7 /* Ruby (left) */,       {0x28, 0x31}}, // 6:3
+    { 1, 8 /* Sapphire (right) */,  {0x36, 0x31}}, // 6:4
     { 1, 9 /* Stone of Agony */,    {0x6C, 0x36}}, // 6:5
     { 1, 10 /* Gerudo's Card */,    {0x60, 0x36}}, // 6:6
     {-1, 0,                         {0xFF, 0xFF}}, // 6:7
-    { 1, 0 /* Forest Med. (UR) */,  {0x36, 0x1D}}, // 7:0
-    { 1, 1 /* Fire Med. (LR) */,    {0x36, 0x2B}}, // 7:1
-    { 1, 2 /* Water Med. (btm) */,  {0x2A, 0x32}}, // 7:2
-    { 1, 3 /* Spirit Med. (LL) */,  {0x1E, 0x2B}}, // 7:3
-    { 1, 4 /* Shadow Med. (UL) */,  {0x1E, 0x1D}}, // 7:4
-    { 1, 5 /* Light Med. (top) */,  {0x2A, 0x16}}, // 7:5
+    { 1, 0 /* Forest Med. (UR) */,  {0x36, 0x0A}}, // 7:0
+    { 1, 1 /* Fire Med. (LR) */,    {0x36, 0x1A}}, // 7:1
+    { 1, 2 /* Water Med. (btm) */,  {0x28, 0x22}}, // 7:2
+    { 1, 3 /* Spirit Med. (LL) */,  {0x1A, 0x1A}}, // 7:3
+    { 1, 4 /* Shadow Med. (UL) */,  {0x1A, 0x0A}}, // 7:4
+    { 1, 5 /* Light Med. (top) */,  {0x28, 0x02}}, // 7:5
     {-1, 0,                         {0xFF, 0xFF}}, // 7:6
     {-1, 0,                         {0xFF, 0xFF}}, // 7:7
 };
@@ -190,9 +190,9 @@ typedef enum {
 
 tile_position counter_positions[NUM_COUNTER] = {
     {0x05, 0x00}, // Hearts
-    {0x18, 0x00}, // Rupees
-    {0x2C, 0x00}, // Skulltulas
-    {0x40, 0x00}, // Triforce/Boss Key
+    {0x05, 0x15}, // Rupees
+    {0x05, 0x2A}, // Skulltulas
+    {0x26, 0x1D}, // Triforce/Boss Key
     {0xAE, 0xEE}, // Deaths
 };
 
@@ -534,7 +534,7 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);        
     sprite_load(db, &item_digit_sprite, 0, 10);
     for (int i = 0; i < NUM_COUNTER; ++i) {
-        draw_digits(db, info->digits[i], pos[i], 16);
+        draw_digits(db, info->digits[i], pos[i], 13);
     }
 }
 
