@@ -965,6 +965,10 @@ export class GUIGlobal {
         return;
       }
 
+      //Hack: fromPatchFile forces generation count to 1 to avoid wrong percentage calculation
+      if (fromPatchFile)
+        settingsMap["count"] = 1;
+
       post.send(window, 'generateSeed', { settingsFile: settingsMap, staticSeed: useStaticSeed }).then(event => {
 
         var listenerProgress = post.on('generateSeedProgress', function (event) {

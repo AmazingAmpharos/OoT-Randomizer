@@ -167,8 +167,24 @@ export class GeneratorComponent implements OnInit {
       if (!this.global.generator_settingsMap["count"] || this.global.generator_settingsMap["count"] < 1)
         this.global.generator_settingsMap["count"] = 1;
 
+      //Error if no patch file was entered in fromPatchFile mode
+      if (fromPatchFile && !this.global.generator_settingsMap['patch_file']) {
+        this.dialogService.open(DialogWindow, {
+          autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: "You didn't enter a patch file!" }
+        });
+
+        this.generateSeedButtonEnabled = true;
+        this.cd.markForCheck();
+        this.cd.detectChanges();
+
+        return;
+      }
+
+      //Hack: fromPatchFile forces generation count to 1 to avoid wrong count on progress window
+      let generationCount = fromPatchFile ? 1 : this.global.generator_settingsMap["count"];
+
       let dialogRef = this.dialogService.open(ProgressWindow, {
-        autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this, totalGenerationCount: this.global.generator_settingsMap["count"] }
+        autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dashboardRef: this, totalGenerationCount: generationCount }
       });
 
       this.global.generateSeedElectron(dialogRef && dialogRef.componentRef && dialogRef.componentRef.instance ? dialogRef.componentRef.instance : null, fromPatchFile, fromPatchFile == false && this.seedString.length > 0 ? this.seedString : "").then(res => {
