@@ -123,18 +123,18 @@ const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD
     {-1, 0,                         {0xFF, 0xFF}}, // 5:7
     { 0, Z64_ITEM_BOTTLE,           {0x9C, 0x00}}, // 6:0
     { 0, Z64_ITEM_LETTER,           {0x54, 0x36}}, // 6:1
-    { 1, 6 /* Emerald (top) */,     {0x1A, 0x31}}, // 6:2
-    { 1, 7 /* Ruby (left) */,       {0x28, 0x31}}, // 6:3
-    { 1, 8 /* Sapphire (right) */,  {0x36, 0x31}}, // 6:4
-    { 1, 9 /* Stone of Agony */,    {0x6C, 0x36}}, // 6:5
-    { 1, 10 /* Gerudo's Card */,    {0x60, 0x36}}, // 6:6
+    { 1, 6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
+    { 1, 7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
+    { 1, 8 /* Sapphire (right) */,  {0x37, 0x31}}, // 6:4
+    { 1, 9 /* Stone of Agony */,    {0x6D, 0x36}}, // 6:5
+    { 1, 10 /* Gerudo's Card */,    {0x61, 0x36}}, // 6:6
     {-1, 0,                         {0xFF, 0xFF}}, // 6:7
-    { 1, 0 /* Forest Med. (UR) */,  {0x36, 0x0A}}, // 7:0
-    { 1, 1 /* Fire Med. (LR) */,    {0x36, 0x1A}}, // 7:1
-    { 1, 2 /* Water Med. (btm) */,  {0x28, 0x22}}, // 7:2
-    { 1, 3 /* Spirit Med. (LL) */,  {0x1A, 0x1A}}, // 7:3
-    { 1, 4 /* Shadow Med. (UL) */,  {0x1A, 0x0A}}, // 7:4
-    { 1, 5 /* Light Med. (top) */,  {0x28, 0x02}}, // 7:5
+    { 1, 0 /* Forest Med. (UR) */,  {0x37, 0x0A}}, // 7:0
+    { 1, 1 /* Fire Med. (LR) */,    {0x37, 0x1A}}, // 7:1
+    { 1, 2 /* Water Med. (btm) */,  {0x29, 0x22}}, // 7:2
+    { 1, 3 /* Spirit Med. (LL) */,  {0x1B, 0x1A}}, // 7:3
+    { 1, 4 /* Shadow Med. (UL) */,  {0x1B, 0x0A}}, // 7:4
+    { 1, 5 /* Light Med. (top) */,  {0x29, 0x02}}, // 7:5
     {-1, 0,                         {0xFF, 0xFF}}, // 7:6
     {-1, 0,                         {0xFF, 0xFF}}, // 7:7
 };
@@ -185,15 +185,20 @@ typedef enum {
     SLOT_RUPEES,
     SLOT_SKULLTULLAS,
     SLOT_TRIFORCE,
-    SLOT_DEATHS
+    SLOT_DEATHS,
 } counter_slot_t;
 
-tile_position counter_positions[NUM_COUNTER] = {
-    {0x05, 0x00}, // Hearts
-    {0x05, 0x15}, // Rupees
-    {0x05, 0x2A}, // Skulltulas
-    {0x26, 0x1D}, // Triforce/Boss Key
-    {0xAE, 0xEE}, // Deaths
+typedef struct {
+	tile_position pos;
+	int8_t counter_offset;
+} counter_tile_data_t;
+
+counter_tile_data_t counter_positions[NUM_COUNTER] = {
+    {{0x05, 0x00}, 13}, // Hearts
+	{{0x05, 0x15}, 13}, // Rupees
+	{{0x05, 0x2A}, 13}, // Skulltulas
+	{{0x27, 0x0F}, 11}, // Triforce/Bosskey
+	{{0xAE, 0xEE}, 13}, // Deaths
 };
 
 
@@ -228,7 +233,7 @@ typedef uint8_t digits_t[3];
 
 typedef struct {
     uint8_t draw_triforce;
-    uint8_t enable_bosskey;
+    uint8_t draw_bosskey;
     uint8_t enable_skulltula;
     uint8_t wallet;
     uint8_t double_defense;
@@ -344,10 +349,11 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     make_digits(counts->digits[SLOT_SKULLTULLAS], counts->enable_skulltula ? file->gs_tokens : -1);
     
     // Triforce or Boss Key
-    counts->enable_bosskey = file->dungeon_items[10].boss_key;
-    counts->draw_triforce = triforce_hunt_enabled;
-    if (!counts->enable_bosskey && counts->draw_triforce) {
-        make_digits(counts->digits[SLOT_TRIFORCE], (int16_t)file->scene_flags[0x48].unk_00_);
+    counts->draw_bosskey = file->dungeon_items[10].boss_key;
+	int16_t num_triforce_pieces = (int16_t)file->scene_flags[0x48].unk_00_;
+    counts->draw_triforce = triforce_hunt_enabled && num_triforce_pieces > 0;
+    if (!counts->draw_bosskey && counts->draw_triforce) {
+        make_digits(counts->digits[SLOT_TRIFORCE], num_triforce_pieces);
     }
     else {
         make_digits(counts->digits[SLOT_TRIFORCE], -1);
@@ -466,75 +472,83 @@ static void draw_songs(z64_disp_buf_t* db, const music_tile_info_t* songs, uint8
 // Draw counter numbers
 // note: must load item_digit_sprite before calling this function
 static void draw_digits(z64_disp_buf_t* db, const uint8_t* digits, tile_position pos, int voffset) {
-    int left = get_left(pos) - 1;
+    int digit_left[4] = {0, 0, 0, 0}; // last element is total width
+	
+	for (int i = 0; i < 3; ++i) {
+		int digit_width = 6;
+		if (digits[i] == 1) {
+			--digit_left[i];
+			digit_width = 5; // "1" sprite is narrower
+		}
+		else if (digits[i] > 9) {
+			digit_width = 0; // empty
+		}
+		digit_left[i+1] = digit_left[i] + digit_width;
+	}
+	
+	int left = get_left(pos) + (COUNTER_ICON_SIZE - digit_left[3]) / 2;
     int top = get_top(pos) + voffset;
     
     for (int i = 0; i < 3; ++i) {
         if (digits[i] <= 9) {
-            if (digits[i] == 1 && i > 0) --left; // adjust for narrow "1" sprite
-            sprite_draw(db, &item_digit_sprite, digits[i], left, top, 8, 8);
-            if (digits[i] == 1) --left; // adjust for narrow "1" sprite
-            left += 6;
-        }
-        else {
-            left += 3;
-        }
+            sprite_draw(db, &item_digit_sprite, digits[i], left + digit_left[i], top, 8, 8);
+		}
     }
 }
 
 
 // Draw counter tiles
 static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uint8_t alpha) {
-    const tile_position* const pos = counter_positions;
+    const counter_tile_data_t* const data = counter_positions;
 
     // Heart
     gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);        
     sprite_load(db, &quest_items_sprite, 12, 1);
     if (!info->double_defense) {
-        sprite_draw(db, &quest_items_sprite, 0, get_left(pos[SLOT_HEARTS]), get_top(pos[SLOT_HEARTS]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+        sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos), get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
     else {
-        sprite_draw(db, &quest_items_sprite, 0, get_left(pos[SLOT_HEARTS])-2, get_top(pos[SLOT_HEARTS]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
-        sprite_draw(db, &quest_items_sprite, 0, get_left(pos[SLOT_HEARTS])+2, get_top(pos[SLOT_HEARTS]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+        sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos)-2, get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+        sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos)+2, get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
 
     // Rupee
     colorRGB8_t rupee_color = rupee_colors[info->wallet];
     gDPSetPrimColor(db->p++, 0, 0, rupee_color.r, rupee_color.g, rupee_color.b, alpha);        
     sprite_load(db, &key_rupee_clock_sprite, 1, 1);
-    sprite_draw(db, &key_rupee_clock_sprite, 0, get_left(pos[SLOT_RUPEES]), get_top(pos[SLOT_RUPEES]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+    sprite_draw(db, &key_rupee_clock_sprite, 0, get_left(data[SLOT_RUPEES].pos), get_top(data[SLOT_RUPEES].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     
     // Skulltula
     colorRGB8_t token_color = info->enable_skulltula ? WHITE : DIM;
     gDPSetPrimColor(db->p++, 0, 0, token_color.r, token_color.g, token_color.b, alpha);        
     sprite_load(db, &quest_items_sprite, 11, 1);
-    sprite_draw(db, &quest_items_sprite, 0, get_left(pos[SLOT_SKULLTULLAS]), get_top(pos[SLOT_SKULLTULLAS]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+    sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     
     // Triforce/Boss Key
-    if (info->draw_triforce) {
+    if (info->draw_bosskey) {
+        gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);
+        sprite_load(db, &quest_items_sprite, 14, 1);
+        sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_TRIFORCE].pos) + 1, get_top(data[SLOT_TRIFORCE].pos) + 1, COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+    }
+	else if (info->draw_triforce) {
         static uint8_t frame_counter = 0;
         gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, alpha);        
         sprite_load(db, &triforce_sprite, (frame_counter++ >> 2) % 16, 1);
-        sprite_draw(db, &triforce_sprite, 0, get_left(pos[SLOT_TRIFORCE]), get_top(pos[SLOT_TRIFORCE]) + 2, COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
-    }
-    else {
-        colorRGB8_t key_color = info->enable_bosskey ? WHITE : DIM;
-        gDPSetPrimColor(db->p++, 0, 0, key_color.r, key_color.g, key_color.b, alpha);
-        sprite_load(db, &quest_items_sprite, 14, 1);
-        sprite_draw(db, &quest_items_sprite, 0, get_left(pos[SLOT_TRIFORCE]), get_top(pos[SLOT_TRIFORCE]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+        sprite_draw(db, &triforce_sprite, 0, get_left(data[SLOT_TRIFORCE].pos), get_top(data[SLOT_TRIFORCE].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
     
     // Deaths
     if (info->show_deaths) {
         gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);        
         sprite_load(db, &linkhead_skull_sprite, 1, 1);
-        sprite_draw(db, &linkhead_skull_sprite, 0, get_left(pos[SLOT_DEATHS]), get_top(pos[SLOT_DEATHS]), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+        sprite_draw(db, &linkhead_skull_sprite, 0, get_left(data[SLOT_DEATHS].pos), get_top(data[SLOT_DEATHS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
     
+	// Draw digits
     gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);        
     sprite_load(db, &item_digit_sprite, 0, 10);
     for (int i = 0; i < NUM_COUNTER; ++i) {
-        draw_digits(db, info->digits[i], pos[i], 13);
+        draw_digits(db, info->digits[i], data[i].pos, data[i].counter_offset);
     }
 }
 
