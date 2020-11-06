@@ -72,71 +72,71 @@ typedef struct {
 #define FIXED_BITS_PER_WORD 32
 #define NUM_FIXED_WORDS 2
 const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD] = {
-    { 0, Z64_ITEM_STICK,          {0x54, 0x00}}, // 0:0
-    { 0, Z64_ITEM_NUT,            {0x60, 0x00}}, // 0:1
-    { 0, Z64_ITEM_BOMB,           {0x6C, 0x00}}, // 0:2
-    { 0, Z64_ITEM_BOW,            {0x78, 0x00}}, // 0:3
-    { 0, Z64_ITEM_FIRE_ARROW,     {0x84, 0x00}}, // 0:4
-    { 0, Z64_ITEM_DINS_FIRE,      {0x90, 0x00}}, // 0:5
-    { 0, Z64_ITEM_SLINGSHOT,      {0x54, 0x0C}}, // 0:6
-    {-1, Z64_ITEM_FAIRY_OCARINA,  {0x60, 0x0C}}, // 0:7
-    { 0, Z64_ITEM_BOMBCHU,        {0x6C, 0x0C}}, // 1:0
-    {-1, Z64_ITEM_HOOKSHOT,       {0x78, 0x0C}}, // 1:1
-    { 0, Z64_ITEM_ICE_ARROW,      {0x84, 0x0C}}, // 1:2
-    { 0, Z64_ITEM_FARORES_WIND,   {0x90, 0x0C}}, // 1:3
-    { 0, Z64_ITEM_BOOMERANG,      {0x54, 0x18}}, // 1:4
-    { 0, Z64_ITEM_LENS,           {0x60, 0x18}}, // 1:5
-    { 0, Z64_ITEM_BEANS,          {0x6C, 0x18}}, // 1:6
-    { 0, Z64_ITEM_HAMMER,         {0x78, 0x18}}, // 1:7
-    { 0, Z64_ITEM_LIGHT_ARROW,    {0x84, 0x18}}, // 2:0
-    { 0, Z64_ITEM_NAYRUS_LOVE,    {0x90, 0x18}}, // 2:1
-    {-1, 0,                       {0xFF, 0xFF}}, // 2:2
-    {-1, 0,                       {0xFF, 0xFF}}, // 2:3
-    {-1, 0,                       {0xFF, 0xFF}}, // 2:4
-    {-1, 0,                       {0xFF, 0xFF}}, // 2:5
-    {-1, 0,                       {0xFF, 0xFF}}, // 2:6
-    {-1, 0,                       {0xFF, 0xFF}}, // 2:7
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:0
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:1
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:2
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:3
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:4
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:5
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:6
-    {-1, 0,                       {0xFF, 0xFF}}, // 3:7
+    { 0, Z64_ITEM_STICK,            {0x54, 0x00}}, // 0:0
+    { 0, Z64_ITEM_NUT,              {0x60, 0x00}}, // 0:1
+    { 0, Z64_ITEM_BOMB,             {0x6C, 0x00}}, // 0:2
+    { 0, Z64_ITEM_BOW,              {0x78, 0x00}}, // 0:3
+    { 0, Z64_ITEM_FIRE_ARROW,       {0x84, 0x00}}, // 0:4
+    { 0, Z64_ITEM_DINS_FIRE,        {0x90, 0x00}}, // 0:5
+    { 0, Z64_ITEM_SLINGSHOT,        {0x54, 0x0C}}, // 0:6
+    {-1, Z64_ITEM_FAIRY_OCARINA,    {0x60, 0x0C}}, // 0:7
+    { 0, Z64_ITEM_BOMBCHU,          {0x6C, 0x0C}}, // 1:0
+    {-1, Z64_ITEM_HOOKSHOT,         {0x78, 0x0C}}, // 1:1
+    { 0, Z64_ITEM_ICE_ARROW,        {0x84, 0x0C}}, // 1:2
+    { 0, Z64_ITEM_FARORES_WIND,     {0x90, 0x0C}}, // 1:3
+    { 0, Z64_ITEM_BOOMERANG,        {0x54, 0x18}}, // 1:4
+    { 0, Z64_ITEM_LENS,             {0x60, 0x18}}, // 1:5
+    { 0, Z64_ITEM_BEANS,            {0x6C, 0x18}}, // 1:6
+    { 0, Z64_ITEM_HAMMER,           {0x78, 0x18}}, // 1:7
+    { 0, Z64_ITEM_LIGHT_ARROW,      {0x84, 0x18}}, // 2:0
+    { 0, Z64_ITEM_NAYRUS_LOVE,      {0x90, 0x18}}, // 2:1
+    {-1, 0,                         {0xFF, 0xFF}}, // 2:2
+    {-1, 0,                         {0xFF, 0xFF}}, // 2:3
+    {-1, 0,                         {0xFF, 0xFF}}, // 2:4
+    {-1, 0,                         {0xFF, 0xFF}}, // 2:5
+    {-1, 0,                         {0xFF, 0xFF}}, // 2:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 2:7
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:0
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:1
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:2
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:3
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:4
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:5
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 3:7
     
-    { 0, Z64_ITEM_KOKIRI_SWORD,   {0x84, 0x2A}}, // 4:0
-    { 0, Z64_ITEM_MASTER_SWORD,   {0x90, 0x2A}}, // 4:1
-    { 0, Z64_ITEM_BIGGORON_SWORD, {0x9C, 0x2A}}, // 4:2
-    {-1, 0,                       {0xFF, 0xFF}}, // 4:3
-    { 0, Z64_ITEM_DEKU_SHIELD,    {0x84, 0x36}}, // 4:4
-    { 0, Z64_ITEM_HYLIAN_SHIELD,  {0x90, 0x36}}, // 4:5
-    { 0, Z64_ITEM_MIRROR_SHIELD,  {0x9C, 0x36}}, // 4:6
-    {-1, 0,                       {0xFF, 0xFF}}, // 4:7
-    { 0, Z64_ITEM_KOKIRI_TUNIC,   {0x84, 0x42}}, // 5:0
-    { 0, Z64_ITEM_GORON_TUNIC,    {0x90, 0x42}}, // 5:1
-    { 0, Z64_ITEM_ZORA_TUNIC,     {0x9C, 0x42}}, // 5:2
-    {-1, 0,                       {0xFF, 0xFF}}, // 5:3
-    { 0, Z64_ITEM_KOKIRI_BOOTS,   {0x84, 0x4E}}, // 5:4
-    { 0, Z64_ITEM_IRON_BOOTS,     {0x90, 0x4E}}, // 5:5
-    { 0, Z64_ITEM_HOVER_BOOTS,    {0x9C, 0x4E}}, // 5:6
-    {-1, 0,                       {0xFF, 0xFF}}, // 5:7
-    { 0, Z64_ITEM_BOTTLE,         {0x9C, 0x00}}, // 6:0
-    { 0, Z64_ITEM_LETTER,         {0x54, 0x36}}, // 6:1
-    { 1, 6 /* Emerald */,         {0x12, 0x24}}, // 6:2
-    { 1, 7 /* Ruby */,            {0x1E, 0x24}}, // 6:3
-    { 1, 8 /* Sapphire */,        {0x2A, 0x24}}, // 6:4
-    { 1, 9 /* Stone of Agony */,  {0x6C, 0x36}}, // 6:5
-    { 1, 10 /* Gerudo's Card */,  {0x60, 0x36}}, // 6:6
-    {-1, 0,                       {0xFF, 0xFF}}, // 6:7
-    { 1, 0 /* Forest Med. */,     {0x00, 0x30}}, // 7:0
-    { 1, 1 /* Fire Med. */,       {0x0C, 0x30}}, // 7:1
-    { 1, 2 /* Water Med. */,      {0x18, 0x30}}, // 7:2
-    { 1, 3 /* Spirit Med. */,     {0x24, 0x30}}, // 7:3
-    { 1, 4 /* Shadow Med. */,     {0x30, 0x30}}, // 7:4
-    { 1, 5 /* Light Med. */,      {0x3C, 0x30}}, // 7:5
-    {-1, 0,                       {0xFF, 0xFF}}, // 7:6
-    {-1, 0,                       {0xFF, 0xFF}}, // 7:7
+    { 0, Z64_ITEM_KOKIRI_SWORD,     {0x84, 0x2A}}, // 4:0
+    { 0, Z64_ITEM_MASTER_SWORD,     {0x90, 0x2A}}, // 4:1
+    { 0, Z64_ITEM_BIGGORON_SWORD,   {0x9C, 0x2A}}, // 4:2
+    {-1, 0,                         {0xFF, 0xFF}}, // 4:3
+    { 0, Z64_ITEM_DEKU_SHIELD,      {0x84, 0x36}}, // 4:4
+    { 0, Z64_ITEM_HYLIAN_SHIELD,    {0x90, 0x36}}, // 4:5
+    { 0, Z64_ITEM_MIRROR_SHIELD,    {0x9C, 0x36}}, // 4:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 4:7
+    { 0, Z64_ITEM_KOKIRI_TUNIC,     {0x84, 0x42}}, // 5:0
+    { 0, Z64_ITEM_GORON_TUNIC,      {0x90, 0x42}}, // 5:1
+    { 0, Z64_ITEM_ZORA_TUNIC,       {0x9C, 0x42}}, // 5:2
+    {-1, 0,                         {0xFF, 0xFF}}, // 5:3
+    { 0, Z64_ITEM_KOKIRI_BOOTS,     {0x84, 0x4E}}, // 5:4
+    { 0, Z64_ITEM_IRON_BOOTS,       {0x90, 0x4E}}, // 5:5
+    { 0, Z64_ITEM_HOVER_BOOTS,      {0x9C, 0x4E}}, // 5:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 5:7
+    { 0, Z64_ITEM_BOTTLE,           {0x9C, 0x00}}, // 6:0
+    { 0, Z64_ITEM_LETTER,           {0x54, 0x36}}, // 6:1
+    { 1, 6 /* Emerald (top) */,     {0x07, 0x1C}}, // 6:2
+    { 1, 7 /* Ruby (left) */,       {0x00, 0x28}}, // 6:3
+    { 1, 8 /* Sapphire (right) */,  {0x0E, 0x28}}, // 6:4
+    { 1, 9 /* Stone of Agony */,    {0x6C, 0x36}}, // 6:5
+    { 1, 10 /* Gerudo's Card */,    {0x60, 0x36}}, // 6:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 6:7
+    { 1, 0 /* Forest Med. (UR) */,  {0x36, 0x1D}}, // 7:0
+    { 1, 1 /* Fire Med. (LR) */,    {0x36, 0x2B}}, // 7:1
+    { 1, 2 /* Water Med. (btm) */,  {0x2A, 0x32}}, // 7:2
+    { 1, 3 /* Spirit Med. (LL) */,  {0x1E, 0x2B}}, // 7:3
+    { 1, 4 /* Shadow Med. (UL) */,  {0x1E, 0x1D}}, // 7:4
+    { 1, 5 /* Light Med. (top) */,  {0x2A, 0x16}}, // 7:5
+    {-1, 0,                         {0xFF, 0xFF}}, // 7:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 7:7
 };
 
 typedef struct {
