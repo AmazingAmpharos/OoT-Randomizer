@@ -14,7 +14,7 @@ sprite_t* const icon_sprites[NUM_ICON_SPRITES] = {
 };
 
 
-#define LEFT_OFFSET (int)0x38
+#define LEFT_OFFSET (int)0x37
 #define TOP_OFFSET  (int)0x5C
 typedef struct {
     uint8_t left;
@@ -122,12 +122,12 @@ const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD
     { 0, Z64_ITEM_HOVER_BOOTS,      {0x9C, 0x4E}}, // 5:6
     {-1, 0,                         {0xFF, 0xFF}}, // 5:7
     { 0, Z64_ITEM_BOTTLE,           {0x9C, 0x00}}, // 6:0
-    { 0, Z64_ITEM_LETTER,           {0x54, 0x36}}, // 6:1
+    {-1, 0,                         {0xFF, 0xFF}}, // 6:1
     { 1, 6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
     { 1, 7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
     { 1, 8 /* Sapphire (right) */,  {0x37, 0x31}}, // 6:4
-    { 1, 9 /* Stone of Agony */,    {0x6D, 0x36}}, // 6:5
-    { 1, 10 /* Gerudo's Card */,    {0x61, 0x36}}, // 6:6
+    { 1, 9 /* Stone of Agony */,    {0x67, 0x2A}}, // 6:5
+    { 1, 10 /* Gerudo's Card */,    {0x5B, 0x2A}}, // 6:6
     {-1, 0,                         {0xFF, 0xFF}}, // 6:7
     { 1, 0 /* Forest Med. (UR) */,  {0x37, 0x0A}}, // 7:0
     { 1, 1 /* Fire Med. (LR) */,    {0x37, 0x1A}}, // 7:1
@@ -150,9 +150,9 @@ const variable_tile_data_t variable_tile_positions[NUM_VARIABLE] = {
     {0, {0x78, 0x0C}}, // Hookshot
     {0, {0x9C, 0x0C}}, // Child Trade
     {0, {0x9C, 0x18}}, // Adult Trade
-    {1, {0x54, 0x2A}}, // Magic
-    {0, {0x60, 0x2A}}, // Strength
-    {0, {0x6C, 0x2A}}, // Scale
+    {1, {0x54, 0x36}}, // Magic
+    {0, {0x60, 0x36}}, // Strength
+    {0, {0x6C, 0x36}}, // Scale
 };
 
 typedef struct {
@@ -294,14 +294,6 @@ static void populate_fixed(const z64_file_t* file, fixed_tile_info_t* info) {
             // bottle
             other |= (0x01 << 0);
         }
-        else if (item == Z64_ITEM_LETTER) {
-            // letter
-            other |= (0x01 << 1);
-        }
-    }
-    if (file->event_chk_inf[3] & 0x0008) {
-        // letter (king zora moved)
-        other |= (0x01 << 1);
     }
     info->other_bits = other;
 }
