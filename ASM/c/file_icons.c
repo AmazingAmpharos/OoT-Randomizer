@@ -197,7 +197,7 @@ counter_tile_data_t counter_positions[NUM_COUNTER] = {
     {{0x05, 0x00}, 13}, // Hearts
 	{{0x05, 0x15}, 13}, // Rupees
 	{{0x05, 0x2A}, 13}, // Skulltulas
-	{{0x27, 0x0F}, 11}, // Triforce/Bosskey
+	{{0x27, 0x0F}, 11}, // Triforce Pieces
 	{{0xAE, 0xEE}, 13}, // Deaths
 };
 
@@ -233,7 +233,6 @@ typedef uint8_t digits_t[3];
 
 typedef struct {
     uint8_t draw_triforce;
-    uint8_t draw_bosskey;
     uint8_t wallet;
     uint8_t double_defense;
     uint8_t show_deaths;
@@ -339,15 +338,9 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     make_digits(counts->digits[SLOT_SKULLTULLAS], file->gold_skulltula ? file->gs_tokens : 0);
     
     // Triforce or Boss Key
-    counts->draw_bosskey = file->dungeon_items[10].boss_key;
 	int16_t num_triforce_pieces = (int16_t)file->scene_flags[0x48].unk_00_;
     counts->draw_triforce = triforce_hunt_enabled && num_triforce_pieces > 0;
-    if (!counts->draw_bosskey && counts->draw_triforce) {
-        make_digits(counts->digits[SLOT_TRIFORCE], num_triforce_pieces);
-    }
-    else {
-        make_digits(counts->digits[SLOT_TRIFORCE], -1);
-    }
+	make_digits(counts->digits[SLOT_TRIFORCE], counts->draw_triforce ? num_triforce_pieces : -1);
     
     // Hearts
     counts->double_defense = (uint8_t)file->double_defense;
@@ -355,12 +348,7 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     
     // Deaths
     counts->show_deaths = (file->deaths > 0);
-    if (counts->show_deaths) {
-        make_digits(counts->digits[SLOT_DEATHS], file->deaths);
-    }
-    else {
-        make_digits(counts->digits[SLOT_DEATHS], -1);
-    }
+    make_digits(counts->digits[SLOT_DEATHS], counts->show_deaths ? file->deaths : -1);
 }
 
 
@@ -497,7 +485,7 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     sprite_load(db, &key_rupee_clock_sprite, 1, 1);
     sprite_draw(db, &key_rupee_clock_sprite, 0, get_left(data[SLOT_RUPEES].pos), get_top(data[SLOT_RUPEES].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
 
-	// Heart, Skulltula, Deaths, Boss key use WHITE
+	// Heart, Skulltula, and Deaths use WHITE
     gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);        
 
     // Heart
@@ -520,12 +508,8 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
         sprite_draw(db, &linkhead_skull_sprite, 0, get_left(data[SLOT_DEATHS].pos), get_top(data[SLOT_DEATHS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
 
-    // Triforce/Boss Key
-    if (info->draw_bosskey) {
-        sprite_load(db, &quest_items_sprite, 14, 1);
-        sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_TRIFORCE].pos) + 1, get_top(data[SLOT_TRIFORCE].pos) + 1, COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
-    }
-	else if (info->draw_triforce) {
+    // Triforce
+	if (info->draw_triforce) {
         static uint8_t frame_counter = 0;
         gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, alpha);        
         sprite_load(db, &triforce_sprite, (frame_counter++ >> 2) % 16, 1);
