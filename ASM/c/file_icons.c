@@ -234,7 +234,6 @@ typedef uint8_t digits_t[3];
 typedef struct {
     uint8_t draw_triforce;
     uint8_t draw_bosskey;
-    uint8_t enable_skulltula;
     uint8_t wallet;
     uint8_t double_defense;
     uint8_t show_deaths;
@@ -345,8 +344,7 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     make_digits(counts->digits[SLOT_RUPEES], (int16_t)file->rupees);
     
     // Skulltulas
-    counts->enable_skulltula = file->gold_skulltula;
-    make_digits(counts->digits[SLOT_SKULLTULLAS], counts->enable_skulltula ? file->gs_tokens : -1);
+    make_digits(counts->digits[SLOT_SKULLTULLAS], file->gold_skulltula ? file->gs_tokens : 0);
     
     // Triforce or Boss Key
     counts->draw_bosskey = file->dungeon_items[10].boss_key;
@@ -501,8 +499,16 @@ static void draw_digits(z64_disp_buf_t* db, const uint8_t* digits, tile_position
 static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uint8_t alpha) {
     const counter_tile_data_t* const data = counter_positions;
 
-    // Heart
+    // Rupee
+    colorRGB8_t rupee_color = rupee_colors[info->wallet];
+    gDPSetPrimColor(db->p++, 0, 0, rupee_color.r, rupee_color.g, rupee_color.b, alpha);
+    sprite_load(db, &key_rupee_clock_sprite, 1, 1);
+    sprite_draw(db, &key_rupee_clock_sprite, 0, get_left(data[SLOT_RUPEES].pos), get_top(data[SLOT_RUPEES].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+
+	// Heart, Skulltula, Deaths, Boss key use WHITE
     gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);        
+
+    // Heart
     sprite_load(db, &quest_items_sprite, 12, 1);
     if (!info->double_defense) {
         sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos), get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
@@ -511,22 +517,19 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
         sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos)-2, get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
         sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos)+2, get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
-
-    // Rupee
-    colorRGB8_t rupee_color = rupee_colors[info->wallet];
-    gDPSetPrimColor(db->p++, 0, 0, rupee_color.r, rupee_color.g, rupee_color.b, alpha);        
-    sprite_load(db, &key_rupee_clock_sprite, 1, 1);
-    sprite_draw(db, &key_rupee_clock_sprite, 0, get_left(data[SLOT_RUPEES].pos), get_top(data[SLOT_RUPEES].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     
     // Skulltula
-    colorRGB8_t token_color = info->enable_skulltula ? WHITE : DIM;
-    gDPSetPrimColor(db->p++, 0, 0, token_color.r, token_color.g, token_color.b, alpha);        
     sprite_load(db, &quest_items_sprite, 11, 1);
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     
+    // Deaths
+    if (info->show_deaths) {
+        sprite_load(db, &linkhead_skull_sprite, 1, 1);
+        sprite_draw(db, &linkhead_skull_sprite, 0, get_left(data[SLOT_DEATHS].pos), get_top(data[SLOT_DEATHS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+    }
+
     // Triforce/Boss Key
     if (info->draw_bosskey) {
-        gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);
         sprite_load(db, &quest_items_sprite, 14, 1);
         sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_TRIFORCE].pos) + 1, get_top(data[SLOT_TRIFORCE].pos) + 1, COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
@@ -535,13 +538,6 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
         gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, alpha);        
         sprite_load(db, &triforce_sprite, (frame_counter++ >> 2) % 16, 1);
         sprite_draw(db, &triforce_sprite, 0, get_left(data[SLOT_TRIFORCE].pos), get_top(data[SLOT_TRIFORCE].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
-    }
-    
-    // Deaths
-    if (info->show_deaths) {
-        gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);        
-        sprite_load(db, &linkhead_skull_sprite, 1, 1);
-        sprite_draw(db, &linkhead_skull_sprite, 0, get_left(data[SLOT_DEATHS].pos), get_top(data[SLOT_DEATHS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
     
 	// Draw digits
