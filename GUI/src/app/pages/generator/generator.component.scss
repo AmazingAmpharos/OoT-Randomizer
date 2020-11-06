@@ -547,6 +547,20 @@ nb-card-body {
   }
 }
 
+.webLayout { //Use slightly bigger padding to accommodate mobile better
+  .footerGenerateButton {
+    bottom: 5px;
+  }
+
+  .footerGenerateButtonNormalSmall {
+    bottom: 5px;
+  }
+
+  .footerGenerateButtonRaceSmall {
+    bottom: 5px;
+  }
+}
+
 .tabsetPadding {
   height: 30px;
 }
