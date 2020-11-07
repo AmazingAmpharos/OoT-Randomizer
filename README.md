@@ -196,6 +196,7 @@ do that.
 * Removed tricks
   * `Water Temple Boss Key Chest with Iron Boots`
   * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
+  * `Bottom of the Well Like Like GS without Boomerang` - the Like Like can be permanently killed, so this isn't logically valid.
 * Changed Tricks
   * Burning the two vertical webs in the Deku Tree basement with bow is now default logic. The relevant trick has been renamed to `Deku Tree Basement Web to Gohma with Bow` to reflect that it now only applies to the web immediately before Gohma.
   * `Reach Forest Temple MQ Twisted Hallway Switch with Hookshot` - renamed `Forest Temple MQ Twisted Hallway Switch with Hookshot`.
