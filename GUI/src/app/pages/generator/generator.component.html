@@ -58,7 +58,7 @@
                           <span *ngIf="!setting.size || setting.size == 'small' || setting.size == 'medium'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}:</span>
                           <p *ngIf="setting.size == 'full'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
                           <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max.length" fieldSize="small"
-                                 (ngModelChange)="numberInputChange($event, setting)" [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
+                                (focus)="inputFocusIn(setting.name)" (focusout)="numberInputFocusOut(setting, true)" [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                           <mat-slider class="scale" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" [min]="setting.min" [max]="setting.max" step="1" [(ngModel)]="global.generator_settingsMap[setting.name]"
                                       (ngModelChange)="afterSettingChange()" tickInterval="1" thumbLabel [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise"></mat-slider>
                         </ng-container>
@@ -66,15 +66,15 @@
                         <ng-container *ngSwitchCase="'Textinput'">
                           <span *ngIf="!setting.size || setting.size == 'small' || setting.size == 'medium'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}:</span>
                           <p *ngIf="setting.size == 'full'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
-                          <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max_length ? setting.max_length : 260" fieldSize="small" (ngModelChange)="afterSettingChange()"
-                                 [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
+                          <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max_length ? setting.max_length : 260" fieldSize="small"
+                                 (focus)="inputFocusIn(setting.name)" (focusout)="inputFocusOut(setting.name, false)" [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                         </ng-container>
                         <!--Number-->
                         <ng-container *ngSwitchCase="'Numberinput'">
                           <span *ngIf="!setting.size || setting.size == 'small' || setting.size == 'medium'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}:</span>
                           <p *ngIf="setting.size == 'full'" class="numberTextInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
-                          <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max ? setting.max.length : 6" fieldSize="small" (ngModelChange)="numberInputChange($event, setting)"
-                                 [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
+                          <input class="numberTextInput" [ngClass]="{numberTextInputSmall: setting.size == 'small', numberTextInputMedium: setting.size == 'medium', numberTextInputFull: setting.size == 'full'}" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" [maxlength]="setting.max ? setting.max.length : 6" fieldSize="small"
+                                 (focus)="inputFocusIn(setting.name)" (focusout)="numberInputFocusOut(setting, true)" [(ngModel)]="global.generator_settingsMap[setting.name]" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="right" nbPopoverAdjustment="counterclockwise">
                         </ng-container>
                         <!--Button-->
                         <ng-container *ngSwitchCase="'Button'">
@@ -85,8 +85,9 @@
                           <p class="ioInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
                           <!--Electron-->
                           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
-                            <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name]"
-                                   (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+                            <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" fieldSize="small"
+                                   (focus)="inputFocusIn(setting.name)" (focusout)="inputFocusOut(setting.name, false)" [(ngModel)]="global.generator_settingsMap[setting.name]"
+                                   [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                             <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="browseForFile(setting)">Browse</button>
                           </ng-container>
                           <!--Web-->
@@ -107,8 +108,9 @@
                         </ng-container>
                         <ng-container *ngSwitchCase="'Directoryinput'">
                           <p class="ioInputLabel" [ngClass]="{'disabled': !global.generator_settingsVisibilityMap[setting.name]}">{{setting.text}}</p>
-                          <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" fieldSize="small" [(ngModel)]="global.generator_settingsMap[setting.name]"
-                                 (ngModelChange)="afterSettingChange()" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+                          <input class="ioInput" nbInput [disabled]="!global.generator_settingsVisibilityMap[setting.name]" type="text" maxlength="260" fieldSize="small"
+                                 (focus)="inputFocusIn(setting.name)" (focusout)="inputFocusOut(setting.name, false)" [(ngModel)]="global.generator_settingsMap[setting.name]"
+                                 [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: setting.tooltip}" [nbPopoverTrigger]="setting.tooltip && setting.tooltip.length > 0 ? 'hint' : 'noop'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
                           <button class="ioInputBrowseButton" [disabled]="!global.generator_settingsVisibilityMap[setting.name]" nbButton status="info" size="small" (click)="browseForDirectory(setting)">Browse</button>
                         </ng-container>
                         <ng-container *ngSwitchCase="'Presetinput'">
@@ -144,7 +146,7 @@
           <p class="footerInputLabel">Settings String</p>
           <!--Electron-->
           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
-            <input class="footerInput" nbInput type="text" maxlength="1000" fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
+            <input class="footerInput" nbInput type="text" maxlength="1000" fieldSize="small" (focus)="inputFocusIn('settings_string')" (focusout)="inputFocusOut('settings_string', true)" [(ngModel)]="global.generator_settingsMap['settings_string']">
             <button class="footerButton" nbButton status="info" size="small" (click)="copySettingsString()">Copy</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="importSettingsString()">Import</button>
             <!--Padding-->
@@ -157,7 +159,7 @@
           </ng-container>
           <!--Web-->
           <ng-container *ngIf="!global.getGlobalVar('electronAvailable')">
-            <input class="footerInputShort" nbInput type="text" maxlength="1000" fieldSize="small" [(ngModel)]="global.generator_settingsMap['settings_string']" (ngModelChange)="afterSettingChange(true)">
+            <input class="footerInputShort" nbInput type="text" maxlength="1000" fieldSize="small" (focus)="inputFocusIn('settings_string')" (focusout)="inputFocusOut('settings_string', true)" [(ngModel)]="global.generator_settingsMap['settings_string']">
             <button class="footerButton" nbButton status="info" size="small" (click)="copySettingsString()">Copy</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="settingsBusy = true; getSettingsString()">Get</button>
             <button class="footerButton" nbButton status="info" size="small" (click)="importSettingsString()">Import</button>
@@ -182,7 +184,7 @@
           <!--Electron-->
           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
             <p class="footerInputLabel">Patch File</p>
-            <input class="footerInput" nbInput type="text" maxlength="260" fieldSize="small" [(ngModel)]="global.generator_settingsMap['patch_file']" (ngModelChange)="afterSettingChange(true)">
+            <input class="footerInput" nbInput type="text" maxlength="260" fieldSize="small" (focus)="inputFocusIn('patch_file')" (focusout)="inputFocusOut('patch_file', true)" [(ngModel)]="global.generator_settingsMap['patch_file']">
             <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" (click)="browseForPatchFile()">Select File</button>
             <!--Padding-->
             <div class="settingPadding"></div>

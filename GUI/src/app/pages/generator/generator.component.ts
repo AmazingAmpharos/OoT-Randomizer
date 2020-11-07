@@ -41,6 +41,7 @@ export class GeneratorComponent implements OnInit {
   //Local (non persistent) Variables
   seedString: string = "";
   generateSeedButtonEnabled: boolean = true;
+  inputOldValue: any = null; //Used to manage input field backup/restore
 
   constructor(private overlayContainer: OverlayContainer, private cd: ChangeDetectorRef, public global: GUIGlobal, private dialogService: NbDialogService) {
   }
@@ -1049,29 +1050,56 @@ export class GeneratorComponent implements OnInit {
     })));
   }
 
-  revertToPriorValue(settingName: string, forceChangeDetection: boolean) {
+  revertToPriorValue(settingName: string, forceChangeDetection: boolean, forcePriorValue: any = null) {
 
-    let oldValue = this.global.generator_settingsMap[settingName];
+    let priorValue = forcePriorValue != null ? forcePriorValue : this.global.generator_settingsMap[settingName];
 
     setTimeout(() => {
-      this.global.generator_settingsMap[settingName] = oldValue;
+      this.global.generator_settingsMap[settingName] = priorValue;
 
       if (forceChangeDetection)
         this.cd.markForCheck();
     }, 0);
   }
 
-  numberInputChange(newValue: any, setting: object) {
+  inputFocusIn(settingName: string) {
+    //Save current value on entering any input field
+    this.inputOldValue = this.global.generator_settingsMap[settingName];
+  }
+
+  inputFocusOut(settingName: string, saveOnly: boolean, forceNewValue: any = null) {
+
+    let newValue = forceNewValue != null ? forceNewValue : this.global.generator_settingsMap[settingName];
+
+    //Only update if the value actually changed
+    if (newValue != this.inputOldValue) {
+      setTimeout(() => {
+        this.global.generator_settingsMap[settingName] = newValue;
+        this.afterSettingChange(saveOnly);
+      }, 0);
+    }
+  }
+
+  numberInputFocusOut(setting: object, forceAdjust: boolean) {
+   
+    let newValue = this.global.generator_settingsMap[setting["name"]];
+    let settingName = setting["name"];
 
     //Existence check
     if (!newValue || newValue.length == 0) {
-      this.revertToPriorValue(setting["name"], false);
+
+      if (forceAdjust)
+        this.revertToPriorValue(settingName, true, this.inputOldValue);
+
       return;
-    }     
+    }
 
     //Number check
     if (Number(parseInt(newValue)) != newValue) {
-      this.revertToPriorValue(setting["name"], true);
+
+      if (forceAdjust)
+        this.revertToPriorValue(settingName, true, this.inputOldValue);
+
       return;
     }
 
@@ -1080,24 +1108,25 @@ export class GeneratorComponent implements OnInit {
     let settingMax: number = setting["max"];
 
     if (("min" in setting) && newValue < settingMin) {
-      setTimeout(() => {
-        this.global.generator_settingsMap[setting["name"]] = settingMin;
-        this.cd.markForCheck();
-        this.afterSettingChange();
-      }, 0);
+      if (forceAdjust) {
+        setTimeout(() => {
+          this.global.generator_settingsMap[setting["name"]] = settingMin;
+          this.cd.markForCheck();
+          this.afterSettingChange();
+        }, 0);
+      }
     }
     else if (("max" in setting) && newValue > settingMax) {
-      setTimeout(() => {
-        this.global.generator_settingsMap[setting["name"]] = settingMax;
-        this.cd.markForCheck();
-        this.afterSettingChange();
-      }, 0);
+      if (forceAdjust) {
+        setTimeout(() => {
+          this.global.generator_settingsMap[setting["name"]] = settingMax;
+          this.cd.markForCheck();
+          this.afterSettingChange();
+        }, 0);
+      }
     }
-    else {
-      setTimeout(() => {
-        this.global.generator_settingsMap[setting["name"]] = parseInt(newValue);
-        this.afterSettingChange();
-      }, 0);
+    else { //Update setting with new number value
+      this.inputFocusOut(settingName, false, parseInt(newValue));
     }
   }
 
