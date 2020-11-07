@@ -36,6 +36,11 @@ static int get_top(tile_position pos) {
 static const colorRGB8_t WHITE = {0xFF, 0xFF, 0xFF};
 static const colorRGB8_t DIM   = {DIM_LEVEL, DIM_LEVEL, DIM_LEVEL};
 
+static void draw_square_sprite(z64_disp_buf_t* db, sprite_t* sprite, int tile_index, tile_position pos, int size) {
+    sprite_load(db, sprite, tile_index, 1);
+    sprite_draw(db, sprite, 0, get_left(pos), get_top(pos), size, size);
+}
+
 
 /*=============================================================================
 There are four types of tiles on the icon panel:
@@ -71,7 +76,7 @@ typedef struct {
 
 #define FIXED_BITS_PER_WORD 32
 #define NUM_FIXED_WORDS 2
-const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD] = {
+static const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD] = {
     { 0, Z64_ITEM_STICK,            {0x54, 0x00}}, // 0:0
     { 0, Z64_ITEM_NUT,              {0x60, 0x00}}, // 0:1
     { 0, Z64_ITEM_BOMB,             {0x6C, 0x00}}, // 0:2
@@ -104,7 +109,7 @@ const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD
     {-1, 0,                         {0xFF, 0xFF}}, // 3:5
     {-1, 0,                         {0xFF, 0xFF}}, // 3:6
     {-1, 0,                         {0xFF, 0xFF}}, // 3:7
-    
+
     { 0, Z64_ITEM_KOKIRI_SWORD,     {0x84, 0x2A}}, // 4:0
     { 0, Z64_ITEM_MASTER_SWORD,     {0x90, 0x2A}}, // 4:1
     { 0, Z64_ITEM_BIGGORON_SWORD,   {0x9C, 0x2A}}, // 4:2
@@ -126,8 +131,8 @@ const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD
     { 1, 6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
     { 1, 7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
     { 1, 8 /* Sapphire (right) */,  {0x37, 0x31}}, // 6:4
-    { 1, 9 /* Stone of Agony */,    {0x67, 0x2A}}, // 6:5
-    { 1, 10 /* Gerudo's Card */,    {0x5B, 0x2A}}, // 6:6
+    {-1, 0,                         {0xFF, 0xFF}}, // 6:5
+    { 1, 10 /* Gerudo's Card */,    {0x72, 0x2A}}, // 6:6
     {-1, 0,                         {0xFF, 0xFF}}, // 6:7
     { 1, 0 /* Forest Med. (UR) */,  {0x37, 0x0A}}, // 7:0
     { 1, 1 /* Fire Med. (LR) */,    {0x37, 0x1A}}, // 7:1
@@ -145,14 +150,14 @@ typedef struct {
 } variable_tile_data_t;
 
 #define NUM_VARIABLE 7
-const variable_tile_data_t variable_tile_positions[NUM_VARIABLE] = {
+static const variable_tile_data_t variable_tile_positions[NUM_VARIABLE] = {
     {0, {0x60, 0x0C}}, // Fairy Ocarina
     {0, {0x78, 0x0C}}, // Hookshot
     {0, {0x9C, 0x0C}}, // Child Trade
     {0, {0x9C, 0x18}}, // Adult Trade
-    {1, {0x54, 0x36}}, // Magic
-    {0, {0x60, 0x36}}, // Strength
-    {0, {0x6C, 0x36}}, // Scale
+    {1, {0x4E, 0x2A}}, // Magic
+    {0, {0x5A, 0x2A}}, // Strength
+    {0, {0x66, 0x2A}}, // Scale
 };
 
 typedef struct {
@@ -162,19 +167,19 @@ typedef struct {
 
 #define NUM_SONGS 12
 #define SONG_SHIFT 6
-music_tile_data_t song_note_data[NUM_SONGS] = {
-    {{0x97, 0xFF, 0x63}, {0x4E, 0x54}}, // Minuet of forest
-    {{0xFF, 0x50, 0x28}, {0x56, 0x54}}, // Bolero of fire
-    {{0x63, 0x97, 0xFF}, {0x5E, 0x54}}, // Serenade of water
-    {{0xFF, 0x9F, 0x00}, {0x66, 0x54}}, // Requiem of spirit
-    {{0xFF, 0x63, 0xFF}, {0x6E, 0x54}}, // Nocturne of shadow
-    {{0xFF, 0xF0, 0x63}, {0x76, 0x54}}, // Prelude of light
-    {{0xFF, 0xFF, 0xFF}, {0x4E, 0x48}}, // Zelda's lullaby
-    {{0xFF, 0xFF, 0xFF}, {0x56, 0x48}}, // Epona's song
-    {{0xFF, 0xFF, 0xFF}, {0x5E, 0x48}}, // Saria's song
-    {{0xFF, 0xFF, 0xFF}, {0x66, 0x48}}, // Sun's song
-    {{0xFF, 0xFF, 0xFF}, {0x6E, 0x48}}, // Song of time
-    {{0xFF, 0xFF, 0xFF}, {0x76, 0x48}}  // Song of storms
+static const music_tile_data_t song_note_data[NUM_SONGS] = {
+    {{0x97, 0xFF, 0x63}, {0x4E, 0x48}}, // Minuet of forest
+    {{0xFF, 0x50, 0x28}, {0x56, 0x48}}, // Bolero of fire
+    {{0x63, 0x97, 0xFF}, {0x5E, 0x48}}, // Serenade of water
+    {{0xFF, 0x9F, 0x00}, {0x66, 0x48}}, // Requiem of spirit
+    {{0xFF, 0x63, 0xFF}, {0x6E, 0x48}}, // Nocturne of shadow
+    {{0xFF, 0xF0, 0x63}, {0x76, 0x48}}, // Prelude of light
+    {{0xFF, 0xFF, 0xFF}, {0x4E, 0x3C}}, // Zelda's lullaby
+    {{0xFF, 0xFF, 0xFF}, {0x56, 0x3C}}, // Epona's song
+    {{0xFF, 0xFF, 0xFF}, {0x5E, 0x3C}}, // Saria's song
+    {{0xFF, 0xFF, 0xFF}, {0x66, 0x3C}}, // Sun's song
+    {{0xFF, 0xFF, 0xFF}, {0x6E, 0x3C}}, // Song of time
+    {{0xFF, 0xFF, 0xFF}, {0x76, 0x3C}}  // Song of storms
 };
 
 #define NUM_COUNTER 5
@@ -189,16 +194,18 @@ typedef enum {
 } counter_slot_t;
 
 typedef struct {
-	tile_position pos;
-	int8_t counter_offset;
+    tile_position pos;
+    int8_t counter_hoffset;
+    int8_t counter_voffset;
+    uint8_t align_center;
 } counter_tile_data_t;
 
-counter_tile_data_t counter_positions[NUM_COUNTER] = {
-    {{0x05, 0x00}, 13}, // Hearts
-	{{0x05, 0x15}, 13}, // Rupees
-	{{0x05, 0x2A}, 13}, // Skulltulas
-	{{0x27, 0x0F}, 11}, // Triforce Pieces
-	{{0xAE, 0xEE}, 13}, // Deaths
+static const counter_tile_data_t counter_positions[NUM_COUNTER] = {
+    {{0x05, 0x00}, COUNTER_ICON_SIZE/2, 13, 1}, // Hearts
+    {{0x05, 0x15}, COUNTER_ICON_SIZE/2, 13, 1}, // Rupees
+    {{0x05, 0x2A}, COUNTER_ICON_SIZE/2, 13, 1}, // Skulltulas
+    {{0x27, 0x0F}, COUNTER_ICON_SIZE/2, 11, 1}, // Triforce Pieces
+    {{0x4D, 0x58}, 11,                   2, 0}, // Deaths
 };
 
 
@@ -232,10 +239,8 @@ typedef struct {
 typedef uint8_t digits_t[3];
 
 typedef struct {
-    uint8_t draw_triforce;
     uint8_t wallet;
     uint8_t double_defense;
-    uint8_t show_deaths;
     digits_t digits[NUM_COUNTER];
 } counter_tile_info_t;
 
@@ -270,20 +275,20 @@ static void populate_fixed(const z64_file_t* file, fixed_tile_info_t* info) {
         mask <<= 1;
     }
     info->inventory_bits = inv;
-    
+
     // medallions
     info->medallion_bits = (uint8_t)(file->quest_items & 0x0000003F);
 
     // equipment
     uint16_t equipment = file->equipment;
-    
+
     // special handling of Biggoron Sword (need to check flag)
     equipment &= 0xFFFB;
     if (file->bgs_flag) {
         equipment |= 0x0004;
     }
     info->equipment_bits = equipment;
-    
+
     // other
     uint8_t other = (uint8_t)((file->quest_items & 0x007C0000) >> 16);
 
@@ -308,7 +313,7 @@ static void populate_upgrade_equip(const z64_file_t* file, variable_tile_t* tile
 
 static void populate_variable(const z64_file_t* file, variable_tile_info_t* info) {
     variable_tile_t* tile = info->tiles;
-    
+
     populate_upgrade_item( file, tile++, Z64_SLOT_OCARINA, Z64_ITEM_FAIRY_OCARINA);
     populate_upgrade_item( file, tile++, Z64_SLOT_HOOKSHOT, Z64_ITEM_HOOKSHOT);
     populate_child_trade(  file, tile++);
@@ -331,24 +336,22 @@ static void make_digits(uint8_t* digits, int16_t value);
 static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts) {
 
     // Rupees
-    counts->wallet = file->wallet;    
+    counts->wallet = file->wallet;
     make_digits(counts->digits[SLOT_RUPEES], (int16_t)file->rupees);
-    
+
     // Skulltulas
     make_digits(counts->digits[SLOT_SKULLTULLAS], file->gold_skulltula ? file->gs_tokens : 0);
-    
+
     // Triforce or Boss Key
-	int16_t num_triforce_pieces = (int16_t)file->scene_flags[0x48].unk_00_;
-    counts->draw_triforce = triforce_hunt_enabled && num_triforce_pieces > 0;
-	make_digits(counts->digits[SLOT_TRIFORCE], counts->draw_triforce ? num_triforce_pieces : -1);
-    
+    int16_t num_triforce_pieces = (int16_t)file->scene_flags[0x48].unk_00_;
+    make_digits(counts->digits[SLOT_TRIFORCE], num_triforce_pieces > 0 ? num_triforce_pieces : -1);
+
     // Hearts
     counts->double_defense = (uint8_t)file->double_defense;
     make_digits(counts->digits[SLOT_HEARTS], file->energy_capacity / 0x10);
-    
+
     // Deaths
-    counts->show_deaths = (file->deaths > 0);
-    make_digits(counts->digits[SLOT_DEATHS], counts->show_deaths ? file->deaths : -1);
+    make_digits(counts->digits[SLOT_DEATHS], file->deaths > 0 ? file->deaths : -1);
 }
 
 
@@ -368,27 +371,26 @@ Drawing functions
 // Draw fixed tiles
 static void draw_fixed(z64_disp_buf_t* db, const fixed_tile_info_t* info, uint8_t alpha) {
     colorRGB8_t color = DIM;
-    
+
     // Draw all dimmed first, then all bright
     for (uint8_t enabled = 0; enabled <= 1; ++enabled) {
         gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
 
         const fixed_tile_data_t* data = fixed_tile_positions;
-        
+
         // Read one bit at a time, from least significant to most significant
         for (int i = 0; i < NUM_FIXED_WORDS; ++i) {
             uint32_t word = info->bits[i];
             for (int j = 0; j < FIXED_BITS_PER_WORD; ++j) {
                 if (data->sprite >= 0 && (word & 0x1) == enabled) {
                     sprite_t* sprite = icon_sprites[data->sprite];
-                    sprite_load(db, sprite, data->tile_index, 1);
-                    sprite_draw(db, sprite, 0, get_left(data->pos), get_top(data->pos), ICON_SIZE, ICON_SIZE);                
+                    draw_square_sprite(db, icon_sprites[data->sprite], data->tile_index, data->pos, ICON_SIZE);
                 }
                 word >>= 1;
                 ++data;
             }
         }
-        
+
         color = WHITE;
     }
 }
@@ -407,13 +409,12 @@ static void draw_variable(z64_disp_buf_t* db, const variable_tile_info_t* info, 
         while (data != variable_tile_positions + NUM_VARIABLE) {
             if (tile->enabled == enabled) {
                 sprite_t* sprite = icon_sprites[data->sprite];
-                sprite_load(db, sprite, tile->tile_index, 1);
-                sprite_draw(db, sprite, 0, get_left(data->pos), get_top(data->pos), ICON_SIZE, ICON_SIZE);                
+                draw_square_sprite(db, icon_sprites[data->sprite], tile->tile_index, data->pos, ICON_SIZE);
             }
             ++tile;
             ++data;
         }
-        
+
         color = WHITE;
     }
 }
@@ -439,7 +440,7 @@ static void draw_songs(z64_disp_buf_t* db, const music_tile_info_t* songs, uint8
             gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
         }
         sprite_draw(db, &song_note_sprite, 0, get_left(data->pos), get_top(data->pos), (ICON_SIZE * 2 / 3), ICON_SIZE);
-        
+
         bits >>= 1;
         ++data;
         last_color = color;
@@ -449,28 +450,31 @@ static void draw_songs(z64_disp_buf_t* db, const music_tile_info_t* songs, uint8
 
 // Draw counter numbers
 // note: must load item_digit_sprite before calling this function
-static void draw_digits(z64_disp_buf_t* db, const uint8_t* digits, tile_position pos, int voffset) {
+static void draw_digits(z64_disp_buf_t* db, const uint8_t* digits, const counter_tile_data_t* data) {
     int digit_left[4] = {0, 0, 0, 0}; // last element is total width
-	
-	for (int i = 0; i < 3; ++i) {
-		int digit_width = 6;
-		if (digits[i] == 1) {
-			--digit_left[i];
-			digit_width = 5; // "1" sprite is narrower
-		}
-		else if (digits[i] > 9) {
-			digit_width = 0; // empty
-		}
-		digit_left[i+1] = digit_left[i] + digit_width;
-	}
-	
-	int left = get_left(pos) + (COUNTER_ICON_SIZE - digit_left[3]) / 2;
-    int top = get_top(pos) + voffset;
-    
+
+    for (int i = 0; i < 3; ++i) {
+        int digit_width = 6;
+        if (digits[i] == 1) {
+            --digit_left[i];
+            digit_width = 5; // "1" sprite is narrower
+        }
+        else if (digits[i] > 9) {
+            digit_width = 0; // empty
+        }
+        digit_left[i+1] = digit_left[i] + digit_width;
+    }
+
+    int left = get_left(data->pos) + data->counter_hoffset;
+    if (data->align_center) {
+        left -= digit_left[3] / 2;
+    }
+    int top = get_top(data->pos) + data->counter_voffset;
+
     for (int i = 0; i < 3; ++i) {
         if (digits[i] <= 9) {
             sprite_draw(db, &item_digit_sprite, digits[i], left + digit_left[i], top, 8, 8);
-		}
+        }
     }
 }
 
@@ -482,11 +486,10 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     // Rupee
     colorRGB8_t rupee_color = rupee_colors[info->wallet];
     gDPSetPrimColor(db->p++, 0, 0, rupee_color.r, rupee_color.g, rupee_color.b, alpha);
-    sprite_load(db, &key_rupee_clock_sprite, 1, 1);
-    sprite_draw(db, &key_rupee_clock_sprite, 0, get_left(data[SLOT_RUPEES].pos), get_top(data[SLOT_RUPEES].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+    draw_square_sprite(db, &key_rupee_clock_sprite, 1, data[SLOT_RUPEES].pos, COUNTER_ICON_SIZE);
 
-	// Heart, Skulltula, and Deaths use WHITE
-    gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);        
+    // Heart, Skulltula, and Deaths use WHITE
+    gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, alpha);
 
     // Heart
     sprite_load(db, &quest_items_sprite, 12, 1);
@@ -497,30 +500,28 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
         sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos)-2, get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
         sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_HEARTS].pos)+2, get_top(data[SLOT_HEARTS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
     }
-    
+
     // Skulltula
     sprite_load(db, &quest_items_sprite, 11, 1);
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
-    
+
     // Deaths
-    if (info->show_deaths) {
-        sprite_load(db, &linkhead_skull_sprite, 1, 1);
-        sprite_draw(db, &linkhead_skull_sprite, 0, get_left(data[SLOT_DEATHS].pos), get_top(data[SLOT_DEATHS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
-    }
+	if (info->digits[SLOT_DEATHS][2] <= 9) {
+		draw_square_sprite(db, &linkhead_skull_sprite, 1, data[SLOT_DEATHS].pos, 10);
+	}
 
     // Triforce
-	if (info->draw_triforce) {
+    if (info->digits[SLOT_TRIFORCE][2] <= 9) {
         static uint8_t frame_counter = 0;
-        gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, alpha);        
-        sprite_load(db, &triforce_sprite, (frame_counter++ >> 2) % 16, 1);
-        sprite_draw(db, &triforce_sprite, 0, get_left(data[SLOT_TRIFORCE].pos), get_top(data[SLOT_TRIFORCE].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
+        gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, alpha);
+        draw_square_sprite(db, &triforce_sprite, (frame_counter++ >> 2) % 16, data[SLOT_TRIFORCE].pos, COUNTER_ICON_SIZE);
     }
-    
-	// Draw digits
-    gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);        
+
+    // Draw digits
+    gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
     sprite_load(db, &item_digit_sprite, 0, 10);
     for (int i = 0; i < NUM_COUNTER; ++i) {
-        draw_digits(db, info->digits[i], data[i].pos, data[i].counter_offset);
+        draw_digits(db, info->digits[i], &data[i]);
     }
 }
 
@@ -558,7 +559,7 @@ void draw_file_icons(z64_disp_buf_t* db, z64_menudata_t* menu_data) {
         uint8_t icon_alpha = get_alpha(menu_data->menu_transition, menu_data->transition_frame);
 
         if (icon_alpha) {
-            
+
             gDPPipeSync(db->p++);
             gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -621,7 +622,7 @@ static const uint8_t MASK_LOOKUP[16] = {
     Z64_ITEM_BUNNY_HOOD,
     Z64_ITEM_BUNNY_HOOD,
     Z64_ITEM_BUNNY_HOOD,
-    Z64_ITEM_BUNNY_HOOD   
+    Z64_ITEM_BUNNY_HOOD
 };
 
 
