@@ -280,6 +280,21 @@ export class GeneratorComponent implements OnInit {
             }
           });
         }
+        else if (err.hasOwnProperty('error_spoiler_log_disabled')) {
+
+          this.dialogService.open(ConfirmationWindow, {
+            autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Spoiler Log Warning", dialogMessage: err.error_spoiler_log_disabled }
+          }).onClose.subscribe(confirmed => {
+
+            //Enable spoiler log if user accepts and save changed setting
+            if (confirmed) {
+              this.global.generator_settingsMap["create_spoiler"] = true;
+              this.afterSettingChange();
+            }
+
+            this.generateSeed(fromPatchFile, webRaceSeed);
+          });
+        }
         else {
           this.dialogService.open(DialogWindow, {
             autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: err.error && typeof (err.error) == "string" ? err.error : err.message }
