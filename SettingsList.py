@@ -1795,6 +1795,7 @@ setting_infos = [
         gui_text       = 'Create Spoiler Log',
         gui_tooltip    = '''\
                          Enabling this will change the seed.
+                         Warning: Only disable this if you don't want any help in solving this seed!
                          ''',
         default        = True,
         gui_params     = {

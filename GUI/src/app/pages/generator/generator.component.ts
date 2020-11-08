@@ -46,7 +46,10 @@ export class GeneratorComponent implements OnInit {
   //Static settings
   generateFromSeedTabTitle: string = "Generate New Seed";
   generateFromFileTabTitle: string = "Generate From Patch File";
+
   repatchCosmeticsCheckboxText: string = "Override Original Cosmetics";
+  repatchCosmeticsCheckboxTooltipPatch: string = "Replaces the cosmetic and sound settings generated in the patch file<br>with those selected on this page.";
+  repatchCosmeticsCheckboxTooltipSeedPageWeb: string = "Replaces the cosmetic and sound settings generated in the seed<br>with those selected on this page.";
 
   constructor(private overlayContainer: OverlayContainer, private cd: ChangeDetectorRef, public global: GUIGlobal, private dialogService: NbDialogService) {
   }
