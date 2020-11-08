@@ -551,6 +551,26 @@ export class GUIGlobal {
     }
   }
 
+  findSettingByName(settingName: string) {
+
+    for (let tabIndex = 0; tabIndex < this.getGlobalVar('generatorSettingsArray').length; tabIndex++) {
+      let tab = this.getGlobalVar('generatorSettingsArray')[tabIndex];
+
+      for (let sectionIndex = 0; sectionIndex < tab.sections.length; sectionIndex++) {
+        let section = tab.sections[sectionIndex];
+
+        for (let settingIndex = 0; settingIndex < section.settings.length; settingIndex++) {
+          let setting = section.settings[settingIndex];
+
+          if (setting.name == settingName)
+            return setting;
+        }
+      }
+    }
+
+    return false;
+  }
+
   verifyNumericSetting(settingsFile: any, setting: any, syncToGlobalMap: boolean = false) {
 
     let settingValue: any = settingsFile[setting.name];
@@ -1167,8 +1187,10 @@ export class GUIGlobal {
         throw { error: "Plandomizer for seed creation is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
       }
 
+      let setting = this.findSettingByName("distribution_file");
+
       try {
-        plandoFileSeed = await this.readPlandoFileIntoMemoryWeb("distribution_file", "Plandomizer File");
+        plandoFileSeed = await this.readPlandoFileIntoMemoryWeb("distribution_file", setting.text);
       }
       catch (ex) {
         switch (ex.error) {
@@ -1187,8 +1209,10 @@ export class GUIGlobal {
     let plandoFileCosmetics = null;
     if (this.generator_settingsMap["enable_cosmetic_file"]) {
 
+      let setting = this.findSettingByName("cosmetic_file");
+
       try {
-        plandoFileCosmetics = await this.readPlandoFileIntoMemoryWeb("cosmetic_file", "Cosmetic Plandomizer File");
+        plandoFileCosmetics = await this.readPlandoFileIntoMemoryWeb("cosmetic_file", setting.text);
       }
       catch (ex) {
         switch (ex.error) {

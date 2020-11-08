@@ -43,6 +43,11 @@ export class GeneratorComponent implements OnInit {
   generateSeedButtonEnabled: boolean = true;
   inputOldValue: any = null; //Used to manage input field backup/restore
 
+  //Static settings
+  generateFromSeedTabTitle: string = "Generate New Seed";
+  generateFromFileTabTitle: string = "Generate From Patch File";
+  repatchCosmeticsCheckboxText: string = "Override Original Cosmetics";
+
   constructor(private overlayContainer: OverlayContainer, private cd: ChangeDetectorRef, public global: GUIGlobal, private dialogService: NbDialogService) {
   }
 
@@ -78,11 +83,11 @@ export class GeneratorComponent implements OnInit {
 
     //Set active footer tab on boot
     if (this.global.getGlobalVar('appType') == 'generator') {
-      this.activeFooterTab = "Generate From Seed";
+      this.activeFooterTab = this.generateFromSeedTabTitle;
       this.global.generator_settingsMap["generate_from_file"] = false;
     }
     else {
-      this.activeFooterTab = "Generate From File";
+      this.activeFooterTab = this.generateFromFileTabTitle;
       this.global.generator_settingsMap["generate_from_file"] = true;
     }
 
@@ -655,18 +660,18 @@ export class GeneratorComponent implements OnInit {
       title = this.activeFooterTab;
     }
 
-    if (title === "Generate From File") {
+    if (title === this.generateFromFileTabTitle) {
       value = true;
     }
 
     this.global.generator_settingsMap['generate_from_file'] = value;
 
-    let setting = this.findSettingByName("generate_from_file");
+    let setting = this.global.findSettingByName("generate_from_file");
     this.checkVisibility(value, setting, this.findOption(setting.options, value));
   }
 
   updateCosmeticsCheckboxChange(value) {
-    let setting = this.findSettingByName("repatch_cosmetics");
+    let setting = this.global.findSettingByName("repatch_cosmetics");
     this.checkVisibility(value, setting, this.findOption(setting.options, value));
   }
 
@@ -814,26 +819,6 @@ export class GeneratorComponent implements OnInit {
     }
 
     return section.row_span[spanIndex];
-  }
-
-  findSettingByName(settingName: string) {
-
-    for (let tabIndex = 0; tabIndex < this.global.getGlobalVar('generatorSettingsArray').length; tabIndex++) {
-      let tab = this.global.getGlobalVar('generatorSettingsArray')[tabIndex];
-
-      for (let sectionIndex = 0; sectionIndex < tab.sections.length; sectionIndex++) {
-        let section = tab.sections[sectionIndex];
-
-        for (let settingIndex = 0; settingIndex < section.settings.length; settingIndex++) {
-          let setting = section.settings[settingIndex];
-
-          if (setting.name == settingName)
-            return setting;     
-        }
-      }
-    }
-
-    return false;
   }
 
   findOption(options: any, optionName: any) {
@@ -1029,7 +1014,7 @@ export class GeneratorComponent implements OnInit {
         let enabledChildren = false;
 
         if (targetValue == false && this.global.generator_settingsVisibilityMap[setting] == true) {
-          enabledChildren = this.clearDeactivationsOfSetting(this.findSettingByName(setting));
+          enabledChildren = this.clearDeactivationsOfSetting(this.global.findSettingByName(setting));
         }
 
         if ((targetValue == true && this.global.generator_settingsVisibilityMap[setting] == false) || (enabledChildren)) //Only trigger change if a (sub) setting gets re-enabled

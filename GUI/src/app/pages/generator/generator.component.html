@@ -141,8 +141,8 @@
       </nb-tabset>
       <div class="tabsetPadding"></div>
       <!--Static Footer Tabset-->
-      <nb-tabset #refTabFooter class="footerTabset" (changeTab)="changeFooterTabSelection($event)" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: '\'Generate New Seed\': Generate a fresh seed with your provided settings.<br><br>\'Generate From Patch File\': Use your pre-existing patch file to generate your ROM.'}" [nbPopoverTrigger]="global.getGlobalVar('electronAvailable') || global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only' ? 'noop' : 'hint'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
-        <nb-tab *ngIf="global.getGlobalVar('appType') == 'generator'" tabTitle="Generate New Seed" active>
+      <nb-tabset #refTabFooter class="footerTabset" (changeTab)="changeFooterTabSelection($event)" [nbPopover]="tooltipComponent" [nbPopoverContext]="{tooltip: '\'' + generateFromSeedTabTitle + '\': Generate a fresh seed with your provided settings.<br><br>\'' + generateFromFileTabTitle + '\': Use your pre-existing patch file to generate your ROM.'}" [nbPopoverTrigger]="global.getGlobalVar('electronAvailable') || global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only' ? 'noop' : 'hint'" nbPopoverPlacement="top" nbPopoverAdjustment="clockwise">
+        <nb-tab *ngIf="global.getGlobalVar('appType') == 'generator'" [tabTitle]="generateFromSeedTabTitle" active>
           <p class="footerInputLabel">Settings String</p>
           <!--Electron-->
           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
@@ -180,7 +180,7 @@
             </ng-container>
           </ng-container>
         </nb-tab>
-        <nb-tab tabTitle="Generate From Patch File" [active]="global.getGlobalVar('appType') != 'generator'">
+        <nb-tab [tabTitle]="generateFromFileTabTitle" [active]="global.getGlobalVar('appType') != 'generator'">
           <!--Electron-->
           <ng-container *ngIf="global.getGlobalVar('electronAvailable')">
             <p class="footerInputLabel">Patch File</p>
@@ -188,7 +188,7 @@
             <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" (click)="browseForPatchFile()">Select File</button>
             <!--Padding-->
             <div class="settingPadding"></div>
-            <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Override Original Cosmetics</mat-slide-toggle>
+            <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">{{repatchCosmeticsCheckboxText}}</mat-slide-toggle>
             <!--Padding-->
             <div class="tabsetPadding"></div>
             <button class="footerGenerateButton" nbButton fullWidth status="success" [disabled]="!generateSeedButtonEnabled" (click)="generateSeed(true)">Generate!</button>
@@ -203,7 +203,7 @@
               <button class="footerButtonPatchFileBrowse" nbButton status="info" size="small" (click)="global.generator_settingsMap['patch_file'] = ''">Clear</button>
               <!--Padding-->
               <div class="settingPadding"></div>
-              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Override Original Cosmetics</mat-slide-toggle>
+              <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">{{repatchCosmeticsCheckboxText}}</mat-slide-toggle>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>
@@ -211,7 +211,7 @@
             </ng-container>
             <!--Patcher-->
             <ng-container *ngIf="global.getGlobalVar('appType') == 'patcher' || global.getGlobalVar('appType') == 'patcher_only'">
-              <mat-slide-toggle *ngIf="global.getGlobalVar('appType') == 'patcher'" labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">Override Original Cosmetics</mat-slide-toggle>
+              <mat-slide-toggle *ngIf="global.getGlobalVar('appType') == 'patcher'" labelPosition="after" [(ngModel)]="global.generator_settingsMap['repatch_cosmetics']" (ngModelChange)="updateCosmeticsCheckboxChange($event)">{{repatchCosmeticsCheckboxText}}</mat-slide-toggle>
               <mat-slide-toggle labelPosition="after" [(ngModel)]="global.generator_settingsMap['web_persist_in_cache']" (ngModelChange)="afterSettingChange(true)">Persist Files in Cache</mat-slide-toggle>
               <!--Padding-->
               <div class="tabsetPadding"></div>

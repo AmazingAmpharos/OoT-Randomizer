@@ -1617,7 +1617,7 @@ setting_infos = [
     Checkbutton('output_settings', None),
     Checkbutton(
         name           = 'generate_from_file',
-        gui_text       = 'Generate From File',
+        gui_text       = 'Generate From Patch File',
         default        = False,
         disable        = {
             True : {
@@ -1780,7 +1780,7 @@ setting_infos = [
     ),
     Checkbutton(
         name           = 'repatch_cosmetics',
-        gui_text       = 'Update Cosmetics',
+        gui_text       = 'Override Original Cosmetics',
         default        = True,
         disable        = {
             False : {
