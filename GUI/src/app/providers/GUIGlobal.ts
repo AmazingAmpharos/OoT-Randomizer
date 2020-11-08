@@ -1269,11 +1269,17 @@ export class GUIGlobal {
     }
 
     //If spoiler log creation was intentionally disabled, warn user one time about the consequences
-    let spoilerLogWarningSeen = localStorage.getItem("spoilerLogWarningSeen");
+    try {
+      let spoilerLogWarningSeen = localStorage.getItem("spoilerLogWarningSeen");
 
-    if ((!spoilerLogWarningSeen || spoilerLogWarningSeen == "false") && settingsFile["create_spoiler"] == false) {
-      localStorage.setItem("spoilerLogWarningSeen", JSON.stringify(true));
-      throw { error_spoiler_log_disabled: "Generating a seed without a spoiler log means you won't be able to receive any help in case you get stuck! Would you rather generate a seed WITH a spoiler log?" };
+      if ((!spoilerLogWarningSeen || spoilerLogWarningSeen == "false") && settingsFile["create_spoiler"] == false) {
+        localStorage.setItem("spoilerLogWarningSeen", JSON.stringify(true));
+        throw { error_spoiler_log_disabled: "Generating a seed without a spoiler log means you won't be able to receive any help in case you get stuck! Would you rather generate a seed WITH a spoiler log?" };
+      }
+    }
+    catch (err) { //Bubble through in case the warning should be displayed, ignore if local storage is not available
+      if (err.hasOwnProperty('error_spoiler_log_disabled'))
+        throw err;
     }
 
     console.log(settingsFile);
