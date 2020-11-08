@@ -1044,6 +1044,15 @@ export class GUIGlobal {
     }
   }
 
+  hasRomExtension(fileName: string) {
+    fileName = fileName.toLowerCase();
+    return fileName.endsWith(".z64") || fileName.endsWith(".n64") || fileName.endsWith(".v64");
+  }
+
+  isValidFileObjectWeb(file: any) { //Web only
+    return file && typeof (file) == "object" && file.name && file.name.length > 0;
+  }
+
   readFileIntoMemoryWeb(fileObject: any, useArrayBuffer: boolean) { //Web only
 
     return new Promise<any>(function (resolve, reject) {
@@ -1070,61 +1079,127 @@ export class GUIGlobal {
     });
   }
 
+  async readJsonFileIntoMemoryWeb(file: any, sizeLimit: number) { //Web only
+
+    let fileJSON;
+
+    if (this.hasRomExtension(file.name)) { //Not a ROM check...
+      throw { error: "file_extension_was_rom" };
+    }
+
+    try {
+      fileJSON = await this.readFileIntoMemoryWeb(file, false);
+    }
+    catch (ex) {
+      throw { error: "file_read_error" };
+    }
+
+    if (!fileJSON || fileJSON.length < 1) {
+      throw { error: "file_not_valid" };
+    }
+
+    if (fileJSON.length > sizeLimit) { //Impose size limit to avoid server overload
+      throw { error: "file_too_big" };
+    }
+
+    //Test JSON parse it
+    try {
+      let jsonFileParsed = JSON.parse(fileJSON);
+
+      if (!jsonFileParsed || Object.keys(jsonFileParsed).length < 1) {
+        throw { error: "file_not_valid_json_empty" };
+      }
+    }
+    catch (err) {
+      console.error(err);
+      throw { error: "file_not_valid_json_syntax", message: err.message };
+    }
+
+    return fileJSON;
+  }
+
+  async readPlandoFileIntoMemoryWeb(settingName: string, settingText: string) { //Web only
+
+    let plandoFile = this.generator_settingsMap[settingName];
+
+    if (!this.isValidFileObjectWeb(plandoFile))
+      return null;
+
+    //Try to resolve the plando file by reading it into memory
+    console.log("Read Plando JSON file: " + plandoFile.name);
+
+    try {
+      let plandoFileText = await this.readJsonFileIntoMemoryWeb(plandoFile, 500000); //Will return the JSON file contents as text
+      return plandoFileText;
+    }
+    catch (ex) {
+      switch (ex.error) {       
+        case "file_read_error": {
+          throw { error: `An error occurred during the loading of the ${settingText}! Please try to enter it again.` };
+        }
+        case "file_not_valid": {
+          throw { error: `The ${settingText} specified is not valid!` };
+        }
+        case "file_too_big": {
+          throw { error: `The ${settingText} specified is too big! The maximum file size allowed is 500 KB.` };
+        }
+        case "file_not_valid_json_empty": {
+          throw { error: `The ${settingText} specified is not valid JSON! Please verify the syntax.` };
+        }
+        case "file_not_valid_json_syntax": {
+          throw { error: `The ${settingText} specified is not valid JSON! Please verify the syntax. Detail: ${ex.message}` };
+        }
+        default: {
+          //Bubble error upwards
+          throw ex;
+        }
+      }
+    }
+  }
+
   async generateSeedWeb(raceSeed: boolean = false, useStaticSeed: string = "") { //Web only
 
-    //Plando Logic
-    let plandoFile = null;
+    //Plando Seed Logic
+    let plandoFileSeed = null;
     if (this.generator_settingsMap["enable_distribution_file"]) {
 
-      plandoFile = this.generator_settingsMap["distribution_file"];
+      if (raceSeed) { //No support for race seeds
+        throw { error: "Plandomizer for seed creation is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
+      }
 
-      if (plandoFile && typeof (plandoFile) == "object" && plandoFile.name && plandoFile.name.length > 0) {
-
-        if (plandoFile.name.toLowerCase().endsWith(".z64") || plandoFile.name.toLowerCase().endsWith(".n64") || plandoFile.name.toLowerCase().endsWith(".v64")) { //Not a ROM check...
-          throw { error_rom_in_plando: "Your Ocarina of Time ROM doesn't belong in the plandomizer setting. This entirely optional setting is used to plan out seeds before generation by manipulating spoiler log files. If you want to generate a normal seed instead, please click YES!" };
-        }
-
-        if (raceSeed) { //No support for race seeds
-          throw { error: "Plandomizer is currently not supported for race seeds due security concerns. Please use a normal seed instead!" };
-        }
-
-        //Try to resolve the distribution file by reading it into memory
-        console.log("Read Plando JSON file: " + plandoFile.name);
-
-        let plandoFileJSON;
-
-        try {
-          plandoFileJSON = await this.readFileIntoMemoryWeb(plandoFile, false);
-        }
-        catch (ex) {
-          throw { error: "An error occurred during the loading of the plandomizer file! Please try to enter it again." };
-        }
-
-        if (!plandoFileJSON || plandoFileJSON.length < 1) {
-          throw { error: "The plandomizer file specified is not valid!" };
-        }
-
-        if (plandoFileJSON.length > 500000) { //Impose size limit to avoid server overload
-          throw { error: "The plandomizer file specified is too big! The maximum file size allowed is 500 KB." };
-        }
-
-        //Test JSON parse it
-        try {
-          let plandoFileParsed = JSON.parse(plandoFileJSON);
-
-          if (!plandoFileParsed || Object.keys(plandoFileParsed).length < 1) {
-            throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax." };
+      try {
+        plandoFileSeed = await this.readPlandoFileIntoMemoryWeb("distribution_file", "Plandomizer File");
+      }
+      catch (ex) {
+        switch (ex.error) {
+          case "file_extension_was_rom": {
+            throw { error_rom_in_plando: "Your Ocarina of Time ROM doesn't belong in a plandomizer setting. This entirely optional setting is used to plan out seeds before generation by manipulating spoiler log files. If you want to generate a normal seed instead, please click YES!", type: "distribution_file" };
+          }
+          default: {
+            //Bubble error upwards
+            throw ex;
           }
         }
-        catch (err) {
-          console.error(err);
-          throw { error: "The plandomizer file specified is not valid JSON! Please verify the syntax. Detail: " + err.message };
-        }
-
-        plandoFile = plandoFileJSON;
       }
-      else {
-        plandoFile = null;
+    }
+
+    //Plando Cosmetics Logic
+    let plandoFileCosmetics = null;
+    if (this.generator_settingsMap["enable_cosmetic_file"]) {
+
+      try {
+        plandoFileCosmetics = await this.readPlandoFileIntoMemoryWeb("cosmetic_file", "Cosmetic Plandomizer File");
+      }
+      catch (ex) {
+        switch (ex.error) {
+          case "file_extension_was_rom": {
+            throw { error_rom_in_plando: "Your Ocarina of Time ROM doesn't belong in a plandomizer setting. This entirely optional setting is used to give you more control over your cosmetic and sound settings. If you want to generate a normal seed with regular cosmetics instead, please click YES!", type: "cosmetic_file" };
+          }
+          default: {
+            //Bubble error upwards
+            throw ex;
+          }
+        }
       }
     }
 
@@ -1135,12 +1210,21 @@ export class GUIGlobal {
     }
 
     //Add distribution file back into map as string if available, else clear it
-    if (plandoFile) {
-      settingsFile["distribution_file"] = plandoFile;
+    if (plandoFileSeed) {
+      settingsFile["distribution_file"] = plandoFileSeed;
     }
     else {
       settingsFile["enable_distribution_file"] = false;
       settingsFile["distribution_file"] = "";
+    }
+
+    //Add cosmetics plando file back into map as string if available, else clear it
+    if (plandoFileCosmetics) {
+      settingsFile["cosmetic_file"] = plandoFileCosmetics;
+    }
+    else {
+      settingsFile["enable_cosmetic_file"] = false;
+      settingsFile["cosmetic_file"] = "";
     }
 
     if (raceSeed) {
@@ -1185,17 +1269,52 @@ export class GUIGlobal {
     }
   }
 
-  patchROMWeb() { //Web only
- 
+  async patchROMWeb() { //Web only
+
+    //Plando Cosmetics Logic
+    let plandoFileCosmetics = null;
+    if (this.generator_settingsMap["enable_cosmetic_file"]) {
+
+      try {
+        plandoFileCosmetics = await this.readPlandoFileIntoMemoryWeb("cosmetic_file", "Cosmetic Plandomizer File");
+      }
+      catch (ex) {
+        switch (ex.error) {
+          case "file_extension_was_rom": {
+            throw { error_rom_in_plando: "Your Ocarina of Time ROM doesn't belong in a plandomizer setting. This entirely optional setting is used to give you more control over your cosmetic and sound settings. If you want to patch your ROM with regular cosmetics instead, please click YES!", type: "cosmetic_file" };
+          }
+          default: {
+            //Bubble error upwards
+            throw ex;
+          }
+        }
+      }
+    }
+
     let settingsFile = this.createSettingsFileObject(true, false, false, true);
 
     if (!settingsFile) {
-      return;
+      throw { error: "The patching was aborted due to previous errors!" };
     }
 
-    if (typeof (<any>window).patchROM === "function") //Try to call patchROM function on the DOM
-      (<any>window).patchROM(5, settingsFile); //Patch Version 5
-    else
+    //Add cosmetics plando file back into map as string if available, else clear it
+    if (plandoFileCosmetics) {
+      settingsFile["cosmetic_file"] = plandoFileCosmetics;
+    }
+    else {
+      settingsFile["enable_cosmetic_file"] = false;
+      settingsFile["cosmetic_file"] = "";
+    }
+
+    if (typeof (<any>window).patchROM === "function") { //Try to call patchROM function on the DOM
+      //Delay this so the async function can return early with "success"
+      setTimeout(() => {
+        (<any>window).patchROM(5, settingsFile); //Patch Version 5
+      }, 0);
+    }
+    else {
       console.error("[patchROMWeb] Patcher not available!");
+      throw { error: "Patcher not available!" };
+    }
   }
 }

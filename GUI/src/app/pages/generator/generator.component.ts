@@ -261,7 +261,7 @@ export class GeneratorComponent implements OnInit {
         }, 250);
 
       }).catch((err) => {
-        console.log('[Web] Gen Error');
+        console.log('[Web] Gen Error:', err);
 
         if (err.status == 403) { //Rate Limited
           this.dialogService.open(DialogWindow, {
@@ -274,8 +274,16 @@ export class GeneratorComponent implements OnInit {
             autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Your ROM doesn't belong here!", dialogMessage: err.error_rom_in_plando }
           }).onClose.subscribe(confirmed => {
             if (confirmed) {
-              this.global.generator_settingsMap["enable_distribution_file"] = false;
-              this.global.generator_settingsMap["distribution_file"] = "";
+
+              if (err.type == "distribution_file") {
+                this.global.generator_settingsMap["enable_distribution_file"] = false;
+                this.global.generator_settingsMap["distribution_file"] = "";
+              }
+              else if (err.type == "cosmetic_file") {
+                this.global.generator_settingsMap["enable_cosmetic_file"] = false;
+                this.global.generator_settingsMap["cosmetic_file"] = "";
+              }
+
               this.generateSeed(fromPatchFile, webRaceSeed);
             }
           });
@@ -318,14 +326,44 @@ export class GeneratorComponent implements OnInit {
 
     console.log("Patch ROM");
 
-    this.global.patchROMWeb();
+    this.global.patchROMWeb().then(() => {
 
-    //No callback, just deactivate button for 1 second
-    setTimeout(() => {
+      //No actual callback, just deactivate button for 1 second
+      setTimeout(() => {
+        this.generateSeedButtonEnabled = true;
+        this.cd.markForCheck();
+        this.cd.detectChanges();
+      }, 1000);
+
+    }).catch ((err) => {
+      console.log('[Web] Patching Error:', err);
+
+      if (err.hasOwnProperty('error_rom_in_plando')) {
+
+        this.dialogService.open(ConfirmationWindow, {
+          autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Your ROM doesn't belong here!", dialogMessage: err.error_rom_in_plando }
+        }).onClose.subscribe(confirmed => {
+          if (confirmed) {
+
+            if (err.type == "cosmetic_file") {
+              this.global.generator_settingsMap["enable_cosmetic_file"] = false;
+              this.global.generator_settingsMap["cosmetic_file"] = "";
+            }
+
+            this.patchROM();
+          }
+        });
+      }
+      else {
+        this.dialogService.open(DialogWindow, {
+          autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: err.error && typeof (err.error) == "string" ? err.error : err.message }
+        });
+      }
+
       this.generateSeedButtonEnabled = true;
       this.cd.markForCheck();
       this.cd.detectChanges();
-    }, 1000);
+    });
   }
 
   copySettingsString() {
