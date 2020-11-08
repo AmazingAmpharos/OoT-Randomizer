@@ -77,24 +77,24 @@ typedef struct {
 #define FIXED_BITS_PER_WORD 32
 #define NUM_FIXED_WORDS 2
 static const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD] = {
-    { 0, Z64_ITEM_STICK,            {0x54, 0x00}}, // 0:0
-    { 0, Z64_ITEM_NUT,              {0x60, 0x00}}, // 0:1
-    { 0, Z64_ITEM_BOMB,             {0x6C, 0x00}}, // 0:2
-    { 0, Z64_ITEM_BOW,              {0x78, 0x00}}, // 0:3
-    { 0, Z64_ITEM_FIRE_ARROW,       {0x84, 0x00}}, // 0:4
-    { 0, Z64_ITEM_DINS_FIRE,        {0x90, 0x00}}, // 0:5
-    { 0, Z64_ITEM_SLINGSHOT,        {0x54, 0x0C}}, // 0:6
-    {-1, Z64_ITEM_FAIRY_OCARINA,    {0x60, 0x0C}}, // 0:7
-    { 0, Z64_ITEM_BOMBCHU,          {0x6C, 0x0C}}, // 1:0
-    {-1, Z64_ITEM_HOOKSHOT,         {0x78, 0x0C}}, // 1:1
-    { 0, Z64_ITEM_ICE_ARROW,        {0x84, 0x0C}}, // 1:2
-    { 0, Z64_ITEM_FARORES_WIND,     {0x90, 0x0C}}, // 1:3
-    { 0, Z64_ITEM_BOOMERANG,        {0x54, 0x18}}, // 1:4
-    { 0, Z64_ITEM_LENS,             {0x60, 0x18}}, // 1:5
-    { 0, Z64_ITEM_BEANS,            {0x6C, 0x18}}, // 1:6
-    { 0, Z64_ITEM_HAMMER,           {0x78, 0x18}}, // 1:7
-    { 0, Z64_ITEM_LIGHT_ARROW,      {0x84, 0x18}}, // 2:0
-    { 0, Z64_ITEM_NAYRUS_LOVE,      {0x90, 0x18}}, // 2:1
+    { 0, Z64_ITEM_STICK,            {0x4E, 0x00}}, // 0:0
+    { 0, Z64_ITEM_NUT,              {0x5A, 0x00}}, // 0:1
+    { 0, Z64_ITEM_BOMB,             {0x66, 0x00}}, // 0:2
+    { 0, Z64_ITEM_BOW,              {0x72, 0x00}}, // 0:3
+    { 0, Z64_ITEM_FIRE_ARROW,       {0x7E, 0x00}}, // 0:4
+    { 0, Z64_ITEM_DINS_FIRE,        {0x8A, 0x00}}, // 0:5
+    { 0, Z64_ITEM_SLINGSHOT,        {0x4E, 0x0C}}, // 0:6
+    {-1, Z64_ITEM_FAIRY_OCARINA,    {0x5A, 0x0C}}, // 0:7
+    { 0, Z64_ITEM_BOMBCHU,          {0x66, 0x0C}}, // 1:0
+    {-1, Z64_ITEM_HOOKSHOT,         {0x72, 0x0C}}, // 1:1
+    { 0, Z64_ITEM_ICE_ARROW,        {0x7E, 0x0C}}, // 1:2
+    { 0, Z64_ITEM_FARORES_WIND,     {0x8A, 0x0C}}, // 1:3
+    { 0, Z64_ITEM_BOOMERANG,        {0x4E, 0x18}}, // 1:4
+    { 0, Z64_ITEM_LENS,             {0x5A, 0x18}}, // 1:5
+    { 0, Z64_ITEM_BEANS,            {0x66, 0x18}}, // 1:6
+    { 0, Z64_ITEM_HAMMER,           {0x72, 0x18}}, // 1:7
+    { 0, Z64_ITEM_LIGHT_ARROW,      {0x7E, 0x18}}, // 2:0
+    { 0, Z64_ITEM_NAYRUS_LOVE,      {0x8A, 0x18}}, // 2:1
     {-1, 0,                         {0xFF, 0xFF}}, // 2:2
     {-1, 0,                         {0xFF, 0xFF}}, // 2:3
     {-1, 0,                         {0xFF, 0xFF}}, // 2:4
@@ -110,23 +110,23 @@ static const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_P
     {-1, 0,                         {0xFF, 0xFF}}, // 3:6
     {-1, 0,                         {0xFF, 0xFF}}, // 3:7
 
-    { 0, Z64_ITEM_KOKIRI_SWORD,     {0x84, 0x2A}}, // 4:0
-    { 0, Z64_ITEM_MASTER_SWORD,     {0x90, 0x2A}}, // 4:1
-    { 0, Z64_ITEM_BIGGORON_SWORD,   {0x9C, 0x2A}}, // 4:2
+    { 0, Z64_ITEM_KOKIRI_SWORD,     {0x7E, 0x2A}}, // 4:0
+    { 0, Z64_ITEM_MASTER_SWORD,     {0x8A, 0x2A}}, // 4:1
+    { 0, Z64_ITEM_BIGGORON_SWORD,   {0x96, 0x2A}}, // 4:2
     {-1, 0,                         {0xFF, 0xFF}}, // 4:3
-    { 0, Z64_ITEM_DEKU_SHIELD,      {0x84, 0x36}}, // 4:4
-    { 0, Z64_ITEM_HYLIAN_SHIELD,    {0x90, 0x36}}, // 4:5
-    { 0, Z64_ITEM_MIRROR_SHIELD,    {0x9C, 0x36}}, // 4:6
+    { 0, Z64_ITEM_DEKU_SHIELD,      {0x7E, 0x36}}, // 4:4
+    { 0, Z64_ITEM_HYLIAN_SHIELD,    {0x8A, 0x36}}, // 4:5
+    { 0, Z64_ITEM_MIRROR_SHIELD,    {0x96, 0x36}}, // 4:6
     {-1, 0,                         {0xFF, 0xFF}}, // 4:7
-    { 0, Z64_ITEM_KOKIRI_TUNIC,     {0x84, 0x42}}, // 5:0
-    { 0, Z64_ITEM_GORON_TUNIC,      {0x90, 0x42}}, // 5:1
-    { 0, Z64_ITEM_ZORA_TUNIC,       {0x9C, 0x42}}, // 5:2
+    { 0, Z64_ITEM_KOKIRI_TUNIC,     {0x7E, 0x42}}, // 5:0
+    { 0, Z64_ITEM_GORON_TUNIC,      {0x8A, 0x42}}, // 5:1
+    { 0, Z64_ITEM_ZORA_TUNIC,       {0x96, 0x42}}, // 5:2
     {-1, 0,                         {0xFF, 0xFF}}, // 5:3
-    { 0, Z64_ITEM_KOKIRI_BOOTS,     {0x84, 0x4E}}, // 5:4
-    { 0, Z64_ITEM_IRON_BOOTS,       {0x90, 0x4E}}, // 5:5
-    { 0, Z64_ITEM_HOVER_BOOTS,      {0x9C, 0x4E}}, // 5:6
+    { 0, Z64_ITEM_KOKIRI_BOOTS,     {0x7E, 0x4F}}, // 5:4
+    { 0, Z64_ITEM_IRON_BOOTS,       {0x8A, 0x4F}}, // 5:5
+    { 0, Z64_ITEM_HOVER_BOOTS,      {0x96, 0x4F}}, // 5:6
     {-1, 0,                         {0xFF, 0xFF}}, // 5:7
-    { 0, Z64_ITEM_BOTTLE,           {0x9C, 0x00}}, // 6:0
+    { 0, Z64_ITEM_BOTTLE,           {0x96, 0x00}}, // 6:0
     {-1, 0,                         {0xFF, 0xFF}}, // 6:1
     { 1, 6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
     { 1, 7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
@@ -151,10 +151,10 @@ typedef struct {
 
 #define NUM_VARIABLE 7
 static const variable_tile_data_t variable_tile_positions[NUM_VARIABLE] = {
-    {0, {0x60, 0x0C}}, // Fairy Ocarina
-    {0, {0x78, 0x0C}}, // Hookshot
-    {0, {0x9C, 0x0C}}, // Child Trade
-    {0, {0x9C, 0x18}}, // Adult Trade
+    {0, {0x5A, 0x0C}}, // Fairy Ocarina
+    {0, {0x72, 0x0C}}, // Hookshot
+    {0, {0x96, 0x0C}}, // Child Trade
+    {0, {0x96, 0x18}}, // Adult Trade
     {1, {0x4E, 0x2A}}, // Magic
     {0, {0x5A, 0x2A}}, // Strength
     {0, {0x66, 0x2A}}, // Scale
@@ -168,18 +168,18 @@ typedef struct {
 #define NUM_SONGS 12
 #define SONG_SHIFT 6
 static const music_tile_data_t song_note_data[NUM_SONGS] = {
-    {{0x97, 0xFF, 0x63}, {0x4E, 0x48}}, // Minuet of forest
-    {{0xFF, 0x50, 0x28}, {0x56, 0x48}}, // Bolero of fire
-    {{0x63, 0x97, 0xFF}, {0x5E, 0x48}}, // Serenade of water
-    {{0xFF, 0x9F, 0x00}, {0x66, 0x48}}, // Requiem of spirit
-    {{0xFF, 0x63, 0xFF}, {0x6E, 0x48}}, // Nocturne of shadow
-    {{0xFF, 0xF0, 0x63}, {0x76, 0x48}}, // Prelude of light
-    {{0xFF, 0xFF, 0xFF}, {0x4E, 0x3C}}, // Zelda's lullaby
-    {{0xFF, 0xFF, 0xFF}, {0x56, 0x3C}}, // Epona's song
-    {{0xFF, 0xFF, 0xFF}, {0x5E, 0x3C}}, // Saria's song
-    {{0xFF, 0xFF, 0xFF}, {0x66, 0x3C}}, // Sun's song
-    {{0xFF, 0xFF, 0xFF}, {0x6E, 0x3C}}, // Song of time
-    {{0xFF, 0xFF, 0xFF}, {0x76, 0x3C}}  // Song of storms
+    {{0x97, 0xFF, 0x63}, {0x4E, 0x44}}, // Minuet of forest
+    {{0xFF, 0x50, 0x28}, {0x56, 0x44}}, // Bolero of fire
+    {{0x63, 0x97, 0xFF}, {0x5E, 0x44}}, // Serenade of water
+    {{0xFF, 0x9F, 0x00}, {0x66, 0x44}}, // Requiem of spirit
+    {{0xFF, 0x63, 0xFF}, {0x6E, 0x44}}, // Nocturne of shadow
+    {{0xFF, 0xF0, 0x63}, {0x76, 0x44}}, // Prelude of light
+    {{0xFF, 0xFF, 0xFF}, {0x4E, 0x38}}, // Zelda's lullaby
+    {{0xFF, 0xFF, 0xFF}, {0x56, 0x38}}, // Epona's song
+    {{0xFF, 0xFF, 0xFF}, {0x5E, 0x38}}, // Saria's song
+    {{0xFF, 0xFF, 0xFF}, {0x66, 0x38}}, // Sun's song
+    {{0xFF, 0xFF, 0xFF}, {0x6E, 0x38}}, // Song of time
+    {{0xFF, 0xFF, 0xFF}, {0x76, 0x38}}  // Song of storms
 };
 
 #define NUM_COUNTER 5
@@ -205,7 +205,7 @@ static const counter_tile_data_t counter_positions[NUM_COUNTER] = {
     {{0x05, 0x15}, COUNTER_ICON_SIZE/2, 13, 1}, // Rupees
     {{0x05, 0x2A}, COUNTER_ICON_SIZE/2, 13, 1}, // Skulltulas
     {{0x27, 0x0F}, COUNTER_ICON_SIZE/2, 11, 1}, // Triforce Pieces
-    {{0x4D, 0x58}, 11,                   2, 0}, // Deaths
+    {{0x4E, 0x4F}, 11,                   2, 0}, // Deaths
 };
 
 
@@ -351,7 +351,7 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     make_digits(counts->digits[SLOT_HEARTS], file->energy_capacity / 0x10);
 
     // Deaths
-    make_digits(counts->digits[SLOT_DEATHS], file->deaths > 0 ? file->deaths : -1);
+    make_digits(counts->digits[SLOT_DEATHS], file->deaths);
 }
 
 
@@ -439,7 +439,7 @@ static void draw_songs(z64_disp_buf_t* db, const music_tile_info_t* songs, uint8
         if (last_color.r != color.r || last_color.g != color.g || last_color.b != color.b) {
             gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
         }
-        sprite_draw(db, &song_note_sprite, 0, get_left(data->pos), get_top(data->pos), (ICON_SIZE * 2 / 3), ICON_SIZE);
+        sprite_draw(db, &song_note_sprite, 0, get_left(data->pos), get_top(data->pos), 0x6, 0xA);
 
         bits >>= 1;
         ++data;
