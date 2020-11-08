@@ -2185,7 +2185,7 @@ setting_infos = [
             'glitched'  : {'settings' : ['allowed_tricks', 'shuffle_interior_entrances', 'shuffle_grotto_entrances',
                                          'shuffle_dungeon_entrances', 'shuffle_overworld_entrances', 'owl_drops',
                                          'warp_songs', 'spawn_positions', 'mq_dungeons_random', 'mq_dungeons', ]},
-            'none'      : {'tabs'     : ['detailed_tab']},
+            'none'      : {'settings' : ['allowed_tricks', 'logic_no_night_tokens_without_suns_song', 'all_reachable']},
         },
         shared         = True,
     ),
@@ -2201,6 +2201,9 @@ setting_infos = [
             to beat the game will be guaranteed reachable.
         ''',
         default        = True,
+        gui_params={
+            "hide_when_disabled": True,
+        },
         shared         = True
     ),
     Checkbutton(
@@ -2381,6 +2384,9 @@ setting_infos = [
             Song to collect them. This prevents needing
             to wait until night for some locations.
         ''',
+        gui_params={
+            "hide_when_disabled": True,
+        },
         shared         = True,
     ),
     Checkbutton(
@@ -3287,7 +3293,8 @@ setting_infos = [
         default        = [],
         gui_params     = {
             'choice_tooltip': {choice['name']: choice['tooltip'] for choice in logic_tricks.values()},
-            'filterdata': {val['name']: val['tags'] for _, val in logic_tricks.items()}
+            'filterdata': {val['name']: val['tags'] for _, val in logic_tricks.items()},
+            "hide_when_disabled": True,
         },
         gui_tooltip='''
             Tricks moved to the right column are in-logic
