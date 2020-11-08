@@ -283,10 +283,16 @@ export class GeneratorComponent implements OnInit {
               if (err.type == "distribution_file") {
                 this.global.generator_settingsMap["enable_distribution_file"] = false;
                 this.global.generator_settingsMap["distribution_file"] = "";
+
+                let setting = this.global.findSettingByName("enable_distribution_file");
+                this.checkVisibility(false, setting, this.findOption(setting.options, false));
               }
               else if (err.type == "cosmetic_file") {
                 this.global.generator_settingsMap["enable_cosmetic_file"] = false;
                 this.global.generator_settingsMap["cosmetic_file"] = "";
+
+                let setting = this.global.findSettingByName("enable_cosmetic_file");
+                this.checkVisibility(false, setting, this.findOption(setting.options, false));
               }
 
               this.generateSeed(fromPatchFile, webRaceSeed);
@@ -353,6 +359,9 @@ export class GeneratorComponent implements OnInit {
             if (err.type == "cosmetic_file") {
               this.global.generator_settingsMap["enable_cosmetic_file"] = false;
               this.global.generator_settingsMap["cosmetic_file"] = "";
+
+              let setting = this.global.findSettingByName("enable_cosmetic_file");
+              this.checkVisibility(false, setting, this.findOption(setting.options, false));
             }
 
             this.patchROM();
