@@ -4,7 +4,9 @@
 #include "hud_colors.h"
 #include "triforce.h"
 
-#define ICON_SIZE 0x0C
+#define ICON_SIZE    0x0C
+#define MUSIC_WIDTH  0x06
+#define MUSIC_HEIGHT 0x0A
 
 #define NUM_ICON_SPRITES 3
 sprite_t* const icon_sprites[NUM_ICON_SPRITES] = {
@@ -155,9 +157,9 @@ static const variable_tile_data_t variable_tile_positions[NUM_VARIABLE] = {
     {0, {0x72, 0x0C}}, // Hookshot
     {0, {0x96, 0x0C}}, // Child Trade
     {0, {0x96, 0x18}}, // Adult Trade
-    {1, {0x4E, 0x2A}}, // Magic
-    {0, {0x5A, 0x2A}}, // Strength
-    {0, {0x66, 0x2A}}, // Scale
+    {1, {0x65, 0x2A}}, // Magic
+    {0, {0x4E, 0x2A}}, // Strength
+    {0, {0x5A, 0x2A}}, // Scale
 };
 
 typedef struct {
@@ -168,18 +170,18 @@ typedef struct {
 #define NUM_SONGS 12
 #define SONG_SHIFT 6
 static const music_tile_data_t song_note_data[NUM_SONGS] = {
-    {{0x97, 0xFF, 0x63}, {0x4E, 0x44}}, // Minuet of forest
-    {{0xFF, 0x50, 0x28}, {0x56, 0x44}}, // Bolero of fire
-    {{0x63, 0x97, 0xFF}, {0x5E, 0x44}}, // Serenade of water
-    {{0xFF, 0x9F, 0x00}, {0x66, 0x44}}, // Requiem of spirit
-    {{0xFF, 0x63, 0xFF}, {0x6E, 0x44}}, // Nocturne of shadow
-    {{0xFF, 0xF0, 0x63}, {0x76, 0x44}}, // Prelude of light
-    {{0xFF, 0xFF, 0xFF}, {0x4E, 0x38}}, // Zelda's lullaby
-    {{0xFF, 0xFF, 0xFF}, {0x56, 0x38}}, // Epona's song
-    {{0xFF, 0xFF, 0xFF}, {0x5E, 0x38}}, // Saria's song
-    {{0xFF, 0xFF, 0xFF}, {0x66, 0x38}}, // Sun's song
-    {{0xFF, 0xFF, 0xFF}, {0x6E, 0x38}}, // Song of time
-    {{0xFF, 0xFF, 0xFF}, {0x76, 0x38}}  // Song of storms
+    {{0x97, 0xFF, 0x63}, {0x4E, 0x45}}, // Minuet of forest
+    {{0xFF, 0x50, 0x28}, {0x55, 0x45}}, // Bolero of fire
+    {{0x63, 0x97, 0xFF}, {0x5C, 0x45}}, // Serenade of water
+    {{0xFF, 0x9F, 0x00}, {0x63, 0x45}}, // Requiem of spirit
+    {{0xFF, 0x63, 0xFF}, {0x6A, 0x45}}, // Nocturne of shadow
+    {{0xFF, 0xF0, 0x63}, {0x71, 0x45}}, // Prelude of light
+    {{0xFF, 0xFF, 0xFF}, {0x4E, 0x3A}}, // Zelda's lullaby
+    {{0xFF, 0xFF, 0xFF}, {0x55, 0x3A}}, // Epona's song
+    {{0xFF, 0xFF, 0xFF}, {0x5C, 0x3A}}, // Saria's song
+    {{0xFF, 0xFF, 0xFF}, {0x63, 0x3A}}, // Sun's song
+    {{0xFF, 0xFF, 0xFF}, {0x6A, 0x3A}}, // Song of time
+    {{0xFF, 0xFF, 0xFF}, {0x71, 0x3A}}  // Song of storms
 };
 
 #define NUM_COUNTER 5
@@ -205,7 +207,7 @@ static const counter_tile_data_t counter_positions[NUM_COUNTER] = {
     {{0x05, 0x15}, COUNTER_ICON_SIZE/2, 13, 1}, // Rupees
     {{0x05, 0x2A}, COUNTER_ICON_SIZE/2, 13, 1}, // Skulltulas
     {{0x27, 0x0F}, COUNTER_ICON_SIZE/2, 11, 1}, // Triforce Pieces
-    {{0x4E, 0x4F}, 11,                   2, 0}, // Deaths
+    {{0x4D, 0x51}, 11,                   2, 0}, // Deaths
 };
 
 
@@ -439,7 +441,7 @@ static void draw_songs(z64_disp_buf_t* db, const music_tile_info_t* songs, uint8
         if (last_color.r != color.r || last_color.g != color.g || last_color.b != color.b) {
             gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
         }
-        sprite_draw(db, &song_note_sprite, 0, get_left(data->pos), get_top(data->pos), 0x6, 0xA);
+        sprite_draw(db, &song_note_sprite, 0, get_left(data->pos), get_top(data->pos), MUSIC_WIDTH, MUSIC_HEIGHT);
 
         bits >>= 1;
         ++data;
