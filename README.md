@@ -196,6 +196,7 @@ do that.
 * Removed tricks
   * `Water Temple Boss Key Chest with Iron Boots`
   * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
+  * `Bottom of the Well Like Like GS without Boomerang` - the Like Like can be permanently killed, so this isn't logically valid.
 * Changed Tricks
   * Burning the two vertical webs in the Deku Tree basement with bow is now default logic. The relevant trick has been renamed to `Deku Tree Basement Web to Gohma with Bow` to reflect that it now only applies to the web immediately before Gohma.
   * `Reach Forest Temple MQ Twisted Hallway Switch with Hookshot` - renamed `Forest Temple MQ Twisted Hallway Switch with Hookshot`.
@@ -244,6 +245,7 @@ do that.
 * Drop Ruto before entering Big Octo room if the miniboss has been defeated.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Move the Stone of Agony indicator above any small keys if both are present.
+* Fix model/icon colors in `Item Model Colors Match Cosmetics` not returning to default with a cosmetic patch setting them to defaults.
 * Ensure Ganondorf always hints one of the first reachable Light Arrows.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:

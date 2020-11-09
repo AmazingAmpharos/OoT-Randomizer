@@ -98,7 +98,13 @@ def rgbToRGB5a1(rgbValues):
 
 # Patch overworld icons
 def patch_overworld_icon(rom, color, address, fileName = None):
-    rgbBytes = rgb5a1ToRGB(rom.read_bytes(address, 0x800))
+    original = rom.original.read_bytes(address, 0x800)
+
+    if color is None:
+        rom.write_bytes(address, original)
+        return
+
+    rgbBytes = rgb5a1ToRGB(original)
     greyscaled = greyscaleRGB(rgbBytes)
     rgbBytes = addHueToRGB(greyscaled, color)
     if fileName != None:

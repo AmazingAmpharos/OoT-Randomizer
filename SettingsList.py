@@ -456,16 +456,6 @@ logic_tricks = {
                     Allow the Boomerang to return to you through
                     the Song of Time block to grab the token.
                     '''},
-    'Bottom of the Well Like Like GS without Boomerang': {
-        'name'    : 'logic_botw_cage_gs',
-        'tags'    : ("Bottom of the Well", "Skulltulas",),
-        'tooltip' : '''\
-                    After killing the Skulltula, the Like Like
-                    can be used to boost you into the token.
-                    It is possible to do this in such a way
-                    that you collect the token prior to taking
-                    damage from the Like Like.
-                    '''},
     'Bottom of the Well MQ Dead Hand Freestanding Key with Boomerang': {
         'name'    : 'logic_botw_mq_dead_hand_key',
         'tags'    : ("Bottom of the Well",),
@@ -1627,7 +1617,7 @@ setting_infos = [
     Checkbutton('output_settings', None),
     Checkbutton(
         name           = 'generate_from_file',
-        gui_text       = 'Generate From File',
+        gui_text       = 'Generate From Patch File',
         default        = False,
         disable        = {
             True : {
@@ -1790,7 +1780,7 @@ setting_infos = [
     ),
     Checkbutton(
         name           = 'repatch_cosmetics',
-        gui_text       = 'Update Cosmetics',
+        gui_text       = 'Override Original Cosmetics',
         default        = True,
         disable        = {
             False : {
@@ -1805,6 +1795,7 @@ setting_infos = [
         gui_text       = 'Create Spoiler Log',
         gui_tooltip    = '''\
                          Enabling this will change the seed.
+                         Warning: Only disable this if you don't want any help in solving this seed!
                          ''',
         default        = True,
         gui_params     = {

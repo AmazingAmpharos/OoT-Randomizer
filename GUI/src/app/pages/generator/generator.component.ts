@@ -41,6 +41,15 @@ export class GeneratorComponent implements OnInit {
   //Local (non persistent) Variables
   seedString: string = "";
   generateSeedButtonEnabled: boolean = true;
+  inputOldValue: any = null; //Used to manage input field backup/restore
+
+  //Static settings
+  generateFromSeedTabTitle: string = "Generate New Seed";
+  generateFromFileTabTitle: string = "Generate From Patch File";
+
+  repatchCosmeticsCheckboxText: string = "Override Original Cosmetics";
+  repatchCosmeticsCheckboxTooltipPatch: string = "Replaces the cosmetic and sound settings generated in the patch file<br>with those selected on this page.";
+  repatchCosmeticsCheckboxTooltipSeedPageWeb: string = "Replaces the cosmetic and sound settings generated in the seed<br>with those selected on this page.";
 
   constructor(private overlayContainer: OverlayContainer, private cd: ChangeDetectorRef, public global: GUIGlobal, private dialogService: NbDialogService) {
   }
@@ -77,11 +86,11 @@ export class GeneratorComponent implements OnInit {
 
     //Set active footer tab on boot
     if (this.global.getGlobalVar('appType') == 'generator') {
-      this.activeFooterTab = "Generate From Seed";
+      this.activeFooterTab = this.generateFromSeedTabTitle;
       this.global.generator_settingsMap["generate_from_file"] = false;
     }
     else {
-      this.activeFooterTab = "Generate From File";
+      this.activeFooterTab = this.generateFromFileTabTitle;
       this.global.generator_settingsMap["generate_from_file"] = true;
     }
 
@@ -260,7 +269,7 @@ export class GeneratorComponent implements OnInit {
         }, 250);
 
       }).catch((err) => {
-        console.log('[Web] Gen Error');
+        console.log('[Web] Gen Error:', err);
 
         if (err.status == 403) { //Rate Limited
           this.dialogService.open(DialogWindow, {
@@ -273,10 +282,39 @@ export class GeneratorComponent implements OnInit {
             autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Your ROM doesn't belong here!", dialogMessage: err.error_rom_in_plando }
           }).onClose.subscribe(confirmed => {
             if (confirmed) {
-              this.global.generator_settingsMap["enable_distribution_file"] = false;
-              this.global.generator_settingsMap["distribution_file"] = "";
+
+              if (err.type == "distribution_file") {
+                this.global.generator_settingsMap["enable_distribution_file"] = false;
+                this.global.generator_settingsMap["distribution_file"] = "";
+
+                let setting = this.global.findSettingByName("enable_distribution_file");
+                this.checkVisibility(false, setting, this.findOption(setting.options, false));
+              }
+              else if (err.type == "cosmetic_file") {
+                this.global.generator_settingsMap["enable_cosmetic_file"] = false;
+                this.global.generator_settingsMap["cosmetic_file"] = "";
+
+                let setting = this.global.findSettingByName("enable_cosmetic_file");
+                this.checkVisibility(false, setting, this.findOption(setting.options, false));
+              }
+
               this.generateSeed(fromPatchFile, webRaceSeed);
             }
+          });
+        }
+        else if (err.hasOwnProperty('error_spoiler_log_disabled')) {
+
+          this.dialogService.open(ConfirmationWindow, {
+            autoFocus: true, closeOnBackdropClick: false, closeOnEsc: false, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Spoiler Log Warning", dialogMessage: err.error_spoiler_log_disabled }
+          }).onClose.subscribe(confirmed => {
+
+            //Enable spoiler log if user accepts and save changed setting
+            if (confirmed) {
+              this.global.generator_settingsMap["create_spoiler"] = true;
+              this.afterSettingChange();
+            }
+
+            this.generateSeed(fromPatchFile, webRaceSeed);
           });
         }
         else {
@@ -302,14 +340,47 @@ export class GeneratorComponent implements OnInit {
 
     console.log("Patch ROM");
 
-    this.global.patchROMWeb();
+    this.global.patchROMWeb().then(() => {
 
-    //No callback, just deactivate button for 1 second
-    setTimeout(() => {
+      //No actual callback, just deactivate button for 1 second
+      setTimeout(() => {
+        this.generateSeedButtonEnabled = true;
+        this.cd.markForCheck();
+        this.cd.detectChanges();
+      }, 1000);
+
+    }).catch ((err) => {
+      console.log('[Web] Patching Error:', err);
+
+      if (err.hasOwnProperty('error_rom_in_plando')) {
+
+        this.dialogService.open(ConfirmationWindow, {
+          autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Your ROM doesn't belong here!", dialogMessage: err.error_rom_in_plando }
+        }).onClose.subscribe(confirmed => {
+          if (confirmed) {
+
+            if (err.type == "cosmetic_file") {
+              this.global.generator_settingsMap["enable_cosmetic_file"] = false;
+              this.global.generator_settingsMap["cosmetic_file"] = "";
+
+              let setting = this.global.findSettingByName("enable_cosmetic_file");
+              this.checkVisibility(false, setting, this.findOption(setting.options, false));
+            }
+
+            this.patchROM();
+          }
+        });
+      }
+      else {
+        this.dialogService.open(DialogWindow, {
+          autoFocus: true, closeOnBackdropClick: true, closeOnEsc: true, hasBackdrop: true, hasScroll: false, context: { dialogHeader: "Error", dialogMessage: err.error && typeof (err.error) == "string" ? err.error : err.message }
+        });
+      }
+
       this.generateSeedButtonEnabled = true;
       this.cd.markForCheck();
       this.cd.detectChanges();
-    }, 1000);
+    });
   }
 
   copySettingsString() {
@@ -601,18 +672,18 @@ export class GeneratorComponent implements OnInit {
       title = this.activeFooterTab;
     }
 
-    if (title === "Generate From File") {
+    if (title === this.generateFromFileTabTitle) {
       value = true;
     }
 
     this.global.generator_settingsMap['generate_from_file'] = value;
 
-    let setting = this.findSettingByName("generate_from_file");
+    let setting = this.global.findSettingByName("generate_from_file");
     this.checkVisibility(value, setting, this.findOption(setting.options, value));
   }
 
   updateCosmeticsCheckboxChange(value) {
-    let setting = this.findSettingByName("repatch_cosmetics");
+    let setting = this.global.findSettingByName("repatch_cosmetics");
     this.checkVisibility(value, setting, this.findOption(setting.options, value));
   }
 
@@ -760,26 +831,6 @@ export class GeneratorComponent implements OnInit {
     }
 
     return section.row_span[spanIndex];
-  }
-
-  findSettingByName(settingName: string) {
-
-    for (let tabIndex = 0; tabIndex < this.global.getGlobalVar('generatorSettingsArray').length; tabIndex++) {
-      let tab = this.global.getGlobalVar('generatorSettingsArray')[tabIndex];
-
-      for (let sectionIndex = 0; sectionIndex < tab.sections.length; sectionIndex++) {
-        let section = tab.sections[sectionIndex];
-
-        for (let settingIndex = 0; settingIndex < section.settings.length; settingIndex++) {
-          let setting = section.settings[settingIndex];
-
-          if (setting.name == settingName)
-            return setting;     
-        }
-      }
-    }
-
-    return false;
   }
 
   findOption(options: any, optionName: any) {
@@ -975,7 +1026,7 @@ export class GeneratorComponent implements OnInit {
         let enabledChildren = false;
 
         if (targetValue == false && this.global.generator_settingsVisibilityMap[setting] == true) {
-          enabledChildren = this.clearDeactivationsOfSetting(this.findSettingByName(setting));
+          enabledChildren = this.clearDeactivationsOfSetting(this.global.findSettingByName(setting));
         }
 
         if ((targetValue == true && this.global.generator_settingsVisibilityMap[setting] == false) || (enabledChildren)) //Only trigger change if a (sub) setting gets re-enabled
@@ -1049,29 +1100,56 @@ export class GeneratorComponent implements OnInit {
     })));
   }
 
-  revertToPriorValue(settingName: string, forceChangeDetection: boolean) {
+  revertToPriorValue(settingName: string, forceChangeDetection: boolean, forcePriorValue: any = null) {
 
-    let oldValue = this.global.generator_settingsMap[settingName];
+    let priorValue = forcePriorValue != null ? forcePriorValue : this.global.generator_settingsMap[settingName];
 
     setTimeout(() => {
-      this.global.generator_settingsMap[settingName] = oldValue;
+      this.global.generator_settingsMap[settingName] = priorValue;
 
       if (forceChangeDetection)
         this.cd.markForCheck();
     }, 0);
   }
 
-  numberInputChange(newValue: any, setting: object) {
+  inputFocusIn(settingName: string) {
+    //Save current value on entering any input field
+    this.inputOldValue = this.global.generator_settingsMap[settingName];
+  }
+
+  inputFocusOut(settingName: string, saveOnly: boolean, forceNewValue: any = null) {
+
+    let newValue = forceNewValue != null ? forceNewValue : this.global.generator_settingsMap[settingName];
+
+    //Only update if the value actually changed
+    if (newValue != this.inputOldValue) {
+      setTimeout(() => {
+        this.global.generator_settingsMap[settingName] = newValue;
+        this.afterSettingChange(saveOnly);
+      }, 0);
+    }
+  }
+
+  numberInputFocusOut(setting: object, forceAdjust: boolean) {
+   
+    let newValue = this.global.generator_settingsMap[setting["name"]];
+    let settingName = setting["name"];
 
     //Existence check
     if (!newValue || newValue.length == 0) {
-      this.revertToPriorValue(setting["name"], false);
+
+      if (forceAdjust)
+        this.revertToPriorValue(settingName, true, this.inputOldValue);
+
       return;
-    }     
+    }
 
     //Number check
     if (Number(parseInt(newValue)) != newValue) {
-      this.revertToPriorValue(setting["name"], true);
+
+      if (forceAdjust)
+        this.revertToPriorValue(settingName, true, this.inputOldValue);
+
       return;
     }
 
@@ -1080,24 +1158,25 @@ export class GeneratorComponent implements OnInit {
     let settingMax: number = setting["max"];
 
     if (("min" in setting) && newValue < settingMin) {
-      setTimeout(() => {
-        this.global.generator_settingsMap[setting["name"]] = settingMin;
-        this.cd.markForCheck();
-        this.afterSettingChange();
-      }, 0);
+      if (forceAdjust) {
+        setTimeout(() => {
+          this.global.generator_settingsMap[setting["name"]] = settingMin;
+          this.cd.markForCheck();
+          this.afterSettingChange();
+        }, 0);
+      }
     }
     else if (("max" in setting) && newValue > settingMax) {
-      setTimeout(() => {
-        this.global.generator_settingsMap[setting["name"]] = settingMax;
-        this.cd.markForCheck();
-        this.afterSettingChange();
-      }, 0);
+      if (forceAdjust) {
+        setTimeout(() => {
+          this.global.generator_settingsMap[setting["name"]] = settingMax;
+          this.cd.markForCheck();
+          this.afterSettingChange();
+        }, 0);
+      }
     }
-    else {
-      setTimeout(() => {
-        this.global.generator_settingsMap[setting["name"]] = parseInt(newValue);
-        this.afterSettingChange();
-      }, 0);
+    else { //Update setting with new number value
+      this.inputFocusOut(settingName, false, parseInt(newValue));
     }
   }
 

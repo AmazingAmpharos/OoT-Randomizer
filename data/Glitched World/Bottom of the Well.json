@@ -11,8 +11,7 @@
         "dungeon": "Bottom of the Well",
         "locations": {
             "Bottom of the Well Front Left Fake Wall Chest": "True",
-            "Bottom of the Well Front Center Bombable Chest": "has_explosives or (Ocarina and can_hover) or
-                ((Small_Key_Bottom_of_the_Well,3) and (Kokiri_Sword or Sticks))",
+            "Bottom of the Well Front Center Bombable Chest": "has_explosives",
             "Bottom of the Well Right Bottom Fake Wall Chest": "True",
             "Bottom of the Well Compass Chest": "True",
             "Bottom of the Well Center Skulltula Chest": "True",
@@ -40,7 +39,8 @@
                 (Boomerang or can_isg) and 
                 (Small_Key_Bottom_of_the_Well, 3)",
             "Bottom of the Well GS Like Like Cage": "
-                (Small_Key_Bottom_of_the_Well, 3)", #// stick pot makes this default to true
+                (Boomerang or can_isg) and 
+                (Small_Key_Bottom_of_the_Well, 3)",
             "Stick Pot": "True"
         },
         "exits": {

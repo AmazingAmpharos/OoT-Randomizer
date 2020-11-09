@@ -2129,3 +2129,12 @@ skip_GS_BGS_text:
 ; Replaces: sw      t7, 0x00(a1)
 .orga 0xB575C8
     sw      t6, 0x00(a1)
+
+;==================================================================================================
+; Null Boomerang Pointer in Links Instance
+;==================================================================================================
+;Clear the boomerang pointer in Links instance when the boomerangs destroy function runs.
+;This fixes an issue where the boomerang trail color hack checks this pointer to write data.
+; Replaces: sw      a0, 0x18(sp)
+.orga 0xC5A9F0
+    jal     clear_boomerang_pointer
