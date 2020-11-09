@@ -34,7 +34,6 @@ static int get_top(tile_position pos) {
 }
 
 
-#define DIM_LEVEL 0x2C
 static const colorRGBA8_t WHITE = {0xFF, 0xFF, 0xFF, 0xFF};
 static const colorRGBA8_t DIM   = {0x40, 0x40, 0x40, 0x90};
 
