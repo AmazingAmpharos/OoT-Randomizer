@@ -35,8 +35,15 @@ static int get_top(tile_position pos) {
 
 
 #define DIM_LEVEL 0x2C
-static const colorRGB8_t WHITE = {0xFF, 0xFF, 0xFF};
-static const colorRGB8_t DIM   = {DIM_LEVEL, DIM_LEVEL, DIM_LEVEL};
+static const colorRGBA8_t WHITE = {0xFF, 0xFF, 0xFF, 0xFF};
+static const colorRGBA8_t DIM   = {0x40, 0x40, 0x40, 0x90};
+
+// Approximate product of two colors. Result is within 1 of true product.
+static uint8_t color_product(uint8_t c1, uint8_t c2) {
+    uint16_t prod = (uint16_t)c1 * (uint16_t)c2;
+    uint16_t div255 = (prod + 1 + (prod >> 8)) >> 8;
+    return (uint8_t)div255;
+}
 
 static void draw_square_sprite(z64_disp_buf_t* db, sprite_t* sprite, int tile_index, tile_position pos, int size) {
     sprite_load(db, sprite, tile_index, 1);
@@ -372,11 +379,12 @@ Drawing functions
 
 // Draw fixed tiles
 static void draw_fixed(z64_disp_buf_t* db, const fixed_tile_info_t* info, uint8_t alpha) {
-    colorRGB8_t color = DIM;
+    colorRGBA8_t color = DIM;
+    color.a = color_product(color.a, alpha);
 
     // Draw all dimmed first, then all bright
     for (uint8_t enabled = 0; enabled <= 1; ++enabled) {
-        gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
+        gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, color.a);
 
         const fixed_tile_data_t* data = fixed_tile_positions;
 
@@ -394,17 +402,19 @@ static void draw_fixed(z64_disp_buf_t* db, const fixed_tile_info_t* info, uint8_
         }
 
         color = WHITE;
+        color.a = color_product(color.a, alpha);
     }
 }
 
 
 // Draw variable tiles
 static void draw_variable(z64_disp_buf_t* db, const variable_tile_info_t* info, uint8_t alpha) {
-    colorRGB8_t color = DIM;
+    colorRGBA8_t color = DIM;
+    color.a = color_product(color.a, alpha);
 
     // Draw all dimmed first, then all bright
     for (uint8_t enabled = 0; enabled <= 1; ++enabled) {
-        gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
+        gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, color.a);
 
         const variable_tile_t* tile = info->tiles;
         const variable_tile_data_t* data = variable_tile_positions;
@@ -418,6 +428,7 @@ static void draw_variable(z64_disp_buf_t* db, const variable_tile_info_t* info, 
         }
 
         color = WHITE;
+        color.a = color_product(color.a, alpha);
     }
 }
 
@@ -428,18 +439,24 @@ static void draw_songs(z64_disp_buf_t* db, const music_tile_info_t* songs, uint8
     const music_tile_data_t* data = song_note_data;
     sprite_load(db, &song_note_sprite, 0, 1);
 
-    colorRGB8_t last_color = {0x00, 0x00, 0x00};
+    uint8_t bright_alpha = color_product(WHITE.a, alpha);
+    uint8_t dim_alpha = color_product(DIM.a, alpha);
+
+    colorRGBA8_t last_color = {0x00, 0x00, 0x00, 0x00};
     while (data != song_note_data + NUM_SONGS) {
-        colorRGB8_t color = data->color;
+        colorRGBA8_t color;
+        color.color = data->color;
+        color.a = bright_alpha;
         if ((bits & 0x1) == 0) {
             // Dim color
-            color.r = (uint8_t)((color.r * (uint16_t)DIM_LEVEL) >> 8);
-            color.g = (uint8_t)((color.g * (uint16_t)DIM_LEVEL) >> 8);
-            color.b = (uint8_t)((color.b * (uint16_t)DIM_LEVEL) >> 8);
+            color.r = color_product(color.r, DIM.r);
+            color.g = color_product(color.g, DIM.g);
+            color.b = color_product(color.b, DIM.b);
+            color.a = dim_alpha;
         }
 
-        if (last_color.r != color.r || last_color.g != color.g || last_color.b != color.b) {
-            gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, alpha);
+        if (last_color.r != color.r || last_color.g != color.g || last_color.b != color.b || last_color.a != color.a) {
+            gDPSetPrimColor(db->p++, 0, 0, color.r, color.g, color.b, color.a);
         }
         sprite_draw(db, &song_note_sprite, 0, get_left(data->pos), get_top(data->pos), MUSIC_WIDTH, MUSIC_HEIGHT);
 
@@ -508,9 +525,9 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
 
     // Deaths
-	if (info->digits[SLOT_DEATHS][2] <= 9) {
-		draw_square_sprite(db, &linkhead_skull_sprite, 1, data[SLOT_DEATHS].pos, 10);
-	}
+    if (info->digits[SLOT_DEATHS][2] <= 9) {
+        draw_square_sprite(db, &linkhead_skull_sprite, 1, data[SLOT_DEATHS].pos, 10);
+    }
 
     // Triforce
     if (info->digits[SLOT_TRIFORCE][2] <= 9) {
