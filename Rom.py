@@ -148,7 +148,7 @@ class Rom(BigStream):
 
     def update_header(self):
         crc = calculate_crc(self)
-        self.write_int32s(0x10, [crc[0], crc[1]])
+        self.write_bytes(0x10, crc)
 
 
     def read_rom(self, file):
