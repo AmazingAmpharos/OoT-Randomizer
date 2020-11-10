@@ -568,7 +568,11 @@ hint_dist_keys = {
 
 def buildBingoHintList(boardURL):
     try:
+        if len(boardURL) > 256:
+            raise URLError(f"URL too large {len(boardURL)}")
         with urllib.request.urlopen(boardURL + "/board") as board:
+            if board.length and 0 < board.length < 4096:
+                raise HTTPError(f"Board of invalid size {board.length}")
             goalList = board.read()
     except (URLError, HTTPError) as e:
         logger = logging.getLogger('')
@@ -673,7 +677,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     # If not (or if the URL is invalid), use generic bingo hints
     if world.hint_dist == "bingo":
         bingoDefaults = read_json(data_path('Bingo/generic_bingo_hints.json'))
-        if world.bingosync_url is not None and "https://bingosync.com" in world.bingosync_url: # Verify that user actually entered a bingosync URL
+        if world.bingosync_url is not None and world.bingosync_url.startswith("https://bingosync.com/"): # Verify that user actually entered a bingosync URL
             logger = logging.getLogger('')
             logger.info("Got Bingosync URL. Building board-specific goals.")
             world.item_hints = buildBingoHintList(world.bingosync_url)
