@@ -86,71 +86,71 @@ typedef struct {
 #define FIXED_BITS_PER_WORD 32
 #define NUM_FIXED_WORDS 2
 static const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_PER_WORD] = {
-    {0, ICON_SIZE, Z64_ITEM_STICK,            {0x4E, 0x00}}, // 0:0
-    {0, ICON_SIZE, Z64_ITEM_NUT,              {0x5A, 0x00}}, // 0:1
-    {0, ICON_SIZE, Z64_ITEM_BOMB,             {0x66, 0x00}}, // 0:2
-    {0, ICON_SIZE, Z64_ITEM_BOW,              {0x72, 0x00}}, // 0:3
-    {0, ICON_SIZE, Z64_ITEM_FIRE_ARROW,       {0x7E, 0x00}}, // 0:4
-    {0, ICON_SIZE, Z64_ITEM_DINS_FIRE,        {0x8A, 0x00}}, // 0:5
-    {0, ICON_SIZE, Z64_ITEM_SLINGSHOT,        {0x4E, 0x0C}}, // 0:6
-    {0, 0,         Z64_ITEM_FAIRY_OCARINA,    {0x5A, 0x0C}}, // 0:7
-    {0, ICON_SIZE, Z64_ITEM_BOMBCHU,          {0x66, 0x0C}}, // 1:0
-    {0, 0,         Z64_ITEM_HOOKSHOT,         {0x72, 0x0C}}, // 1:1
-    {0, ICON_SIZE, Z64_ITEM_ICE_ARROW,        {0x7E, 0x0C}}, // 1:2
-    {0, ICON_SIZE, Z64_ITEM_FARORES_WIND,     {0x8A, 0x0C}}, // 1:3
-    {0, ICON_SIZE, Z64_ITEM_BOOMERANG,        {0x4E, 0x18}}, // 1:4
-    {0, ICON_SIZE, Z64_ITEM_LENS,             {0x5A, 0x18}}, // 1:5
-    {0, ICON_SIZE, Z64_ITEM_BEANS,            {0x66, 0x18}}, // 1:6
-    {0, ICON_SIZE, Z64_ITEM_HAMMER,           {0x72, 0x18}}, // 1:7
-    {0, ICON_SIZE, Z64_ITEM_LIGHT_ARROW,      {0x7E, 0x18}}, // 2:0
-    {0, ICON_SIZE, Z64_ITEM_NAYRUS_LOVE,      {0x8A, 0x18}}, // 2:1
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 2:2
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 2:3
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 2:4
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 2:5
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 2:6
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 2:7
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:0
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:1
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:2
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:3
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:4
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:5
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:6
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 3:7
+    {0, ICON_SIZE,   Z64_ITEM_STICK,            {0x4E, 0x00}}, // 0:0
+    {0, ICON_SIZE,   Z64_ITEM_NUT,              {0x5A, 0x00}}, // 0:1
+    {0, ICON_SIZE,   Z64_ITEM_BOMB,             {0x66, 0x00}}, // 0:2
+    {0, ICON_SIZE,   Z64_ITEM_BOW,              {0x72, 0x00}}, // 0:3
+    {0, ICON_SIZE,   Z64_ITEM_FIRE_ARROW,       {0x7E, 0x00}}, // 0:4
+    {0, ICON_SIZE,   Z64_ITEM_DINS_FIRE,        {0x8A, 0x00}}, // 0:5
+    {0, ICON_SIZE,   Z64_ITEM_SLINGSHOT,        {0x4E, 0x0C}}, // 0:6
+    {0, 0,           Z64_ITEM_FAIRY_OCARINA,    {0x5A, 0x0C}}, // 0:7
+    {0, ICON_SIZE,   Z64_ITEM_BOMBCHU,          {0x66, 0x0C}}, // 1:0
+    {0, 0,           Z64_ITEM_HOOKSHOT,         {0x72, 0x0C}}, // 1:1
+    {0, ICON_SIZE,   Z64_ITEM_ICE_ARROW,        {0x7E, 0x0C}}, // 1:2
+    {0, ICON_SIZE,   Z64_ITEM_FARORES_WIND,     {0x8A, 0x0C}}, // 1:3
+    {0, ICON_SIZE,   Z64_ITEM_BOOMERANG,        {0x4E, 0x18}}, // 1:4
+    {0, ICON_SIZE,   Z64_ITEM_LENS,             {0x5A, 0x18}}, // 1:5
+    {0, ICON_SIZE,   Z64_ITEM_BEANS,            {0x66, 0x18}}, // 1:6
+    {0, ICON_SIZE,   Z64_ITEM_HAMMER,           {0x72, 0x18}}, // 1:7
+    {0, ICON_SIZE,   Z64_ITEM_LIGHT_ARROW,      {0x7E, 0x18}}, // 2:0
+    {0, ICON_SIZE,   Z64_ITEM_NAYRUS_LOVE,      {0x8A, 0x18}}, // 2:1
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 2:2
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 2:3
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 2:4
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 2:5
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 2:6
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 2:7
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:0
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:1
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:2
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:3
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:4
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:5
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:6
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 3:7
 
-    {0, ICON_SIZE, Z64_ITEM_KOKIRI_SWORD,     {0x7E, 0x2A}}, // 4:0
-    {0, ICON_SIZE, Z64_ITEM_MASTER_SWORD,     {0x8A, 0x2A}}, // 4:1
-    {0, ICON_SIZE, Z64_ITEM_BIGGORON_SWORD,   {0x96, 0x2A}}, // 4:2
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 4:3
-    {0, ICON_SIZE, Z64_ITEM_DEKU_SHIELD,      {0x7E, 0x36}}, // 4:4
-    {0, ICON_SIZE, Z64_ITEM_HYLIAN_SHIELD,    {0x8A, 0x36}}, // 4:5
-    {0, ICON_SIZE, Z64_ITEM_MIRROR_SHIELD,    {0x96, 0x36}}, // 4:6
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 4:7
-    {0, ICON_SIZE, Z64_ITEM_KOKIRI_TUNIC,     {0x7E, 0x42}}, // 5:0
-    {0, ICON_SIZE, Z64_ITEM_GORON_TUNIC,      {0x8A, 0x42}}, // 5:1
-    {0, ICON_SIZE, Z64_ITEM_ZORA_TUNIC,       {0x96, 0x42}}, // 5:2
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 5:3
-    {0, ICON_SIZE, Z64_ITEM_KOKIRI_BOOTS,     {0x7E, 0x4F}}, // 5:4
-    {0, ICON_SIZE, Z64_ITEM_IRON_BOOTS,       {0x8A, 0x4F}}, // 5:5
-    {0, ICON_SIZE, Z64_ITEM_HOVER_BOOTS,      {0x96, 0x4F}}, // 5:6
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 5:7
-    {0, ICON_SIZE, Z64_ITEM_BOTTLE,           {0x96, 0x00}}, // 6:0
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 6:1
-    {1, ICON_SIZE, 6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
-    {1, ICON_SIZE, 7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
-    {1, ICON_SIZE, 8 /* Sapphire (right) */,  {0x37, 0x31}}, // 6:4
-    {1, 0x08,      9 /* Stone of Agony */,    {0x6A, 0x53}}, // 6:5
-    {1, 0x08,     10 /* Gerudo's Card */,     {0x72, 0x53}}, // 6:6
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 6:7
-    {1, ICON_SIZE, 0 /* Forest Med. (UR) */,  {0x37, 0x0A}}, // 7:0
-    {1, ICON_SIZE, 1 /* Fire Med. (LR) */,    {0x37, 0x1A}}, // 7:1
-    {1, ICON_SIZE, 2 /* Water Med. (btm) */,  {0x29, 0x22}}, // 7:2
-    {1, ICON_SIZE, 3 /* Spirit Med. (LL) */,  {0x1B, 0x1A}}, // 7:3
-    {1, ICON_SIZE, 4 /* Shadow Med. (UL) */,  {0x1B, 0x0A}}, // 7:4
-    {1, ICON_SIZE, 5 /* Light Med. (top) */,  {0x29, 0x02}}, // 7:5
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 7:6
-    {0, 0,         0,                         {0xFF, 0xFF}}, // 7:7
+    {0, ICON_SIZE,   Z64_ITEM_KOKIRI_SWORD,     {0x7E, 0x2A}}, // 4:0
+    {0, ICON_SIZE,   Z64_ITEM_MASTER_SWORD,     {0x8A, 0x2A}}, // 4:1
+    {0, ICON_SIZE,   Z64_ITEM_BIGGORON_SWORD,   {0x96, 0x2A}}, // 4:2
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 4:3
+    {0, ICON_SIZE,   Z64_ITEM_DEKU_SHIELD,      {0x7E, 0x36}}, // 4:4
+    {0, ICON_SIZE-1, Z64_ITEM_HYLIAN_SHIELD,    {0x8B, 0x37}}, // 4:5
+    {0, ICON_SIZE-1, Z64_ITEM_MIRROR_SHIELD,    {0x97, 0x37}}, // 4:6
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 4:7
+    {0, ICON_SIZE,   Z64_ITEM_KOKIRI_TUNIC,     {0x7E, 0x42}}, // 5:0
+    {0, ICON_SIZE,   Z64_ITEM_GORON_TUNIC,      {0x8A, 0x42}}, // 5:1
+    {0, ICON_SIZE,   Z64_ITEM_ZORA_TUNIC,       {0x96, 0x42}}, // 5:2
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 5:3
+    {0, ICON_SIZE,   Z64_ITEM_KOKIRI_BOOTS,     {0x7E, 0x4F}}, // 5:4
+    {0, ICON_SIZE,   Z64_ITEM_IRON_BOOTS,       {0x8A, 0x4F}}, // 5:5
+    {0, ICON_SIZE,   Z64_ITEM_HOVER_BOOTS,      {0x96, 0x4F}}, // 5:6
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 5:7
+    {0, ICON_SIZE,   Z64_ITEM_BOTTLE,           {0x96, 0x00}}, // 6:0
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 6:1
+    {1, ICON_SIZE,   6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
+    {1, ICON_SIZE,   7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
+    {1, ICON_SIZE,   8 /* Sapphire (right) */,  {0x37, 0x31}}, // 6:4
+    {1, 0x08,        9 /* Stone of Agony */,    {0x6A, 0x53}}, // 6:5
+    {1, 0x08,       10 /* Gerudo's Card */,     {0x72, 0x53}}, // 6:6
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 6:7
+    {1, ICON_SIZE,   0 /* Forest Med. (UR) */,  {0x37, 0x0A}}, // 7:0
+    {1, ICON_SIZE,   1 /* Fire Med. (LR) */,    {0x37, 0x1A}}, // 7:1
+    {1, ICON_SIZE,   2 /* Water Med. (btm) */,  {0x29, 0x22}}, // 7:2
+    {1, ICON_SIZE,   3 /* Spirit Med. (LL) */,  {0x1B, 0x1A}}, // 7:3
+    {1, ICON_SIZE,   4 /* Shadow Med. (UL) */,  {0x1B, 0x0A}}, // 7:4
+    {1, ICON_SIZE,   5 /* Light Med. (top) */,  {0x29, 0x02}}, // 7:5
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 7:6
+    {0, 0,           0,                         {0xFF, 0xFF}}, // 7:7
 };
 
 typedef struct {
