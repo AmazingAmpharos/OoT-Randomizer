@@ -8,6 +8,7 @@ from collections import OrderedDict
 import urllib.request
 from urllib.error import URLError, HTTPError
 import json
+from enum import Enum
 
 from HintList import getHint, getHintGroup, Hint, hintExclusions
 from Item import MakeEventItem
@@ -22,6 +23,12 @@ bingoBottlesForHints = (
     "Bottle with Fairy", "Bottle with Fish", "Bottle with Blue Fire", "Bottle with Bugs",
     "Bottle with Big Poe", "Bottle with Poe",
 )
+
+
+class RegionRestriction(Enum):
+    NONE = 0,
+    DUNGEON = 1,
+    OVERWORLD = 2,
 
 
 class GossipStone():
@@ -312,10 +319,23 @@ def get_hint_area(spot):
     raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
-def get_woth_hint(spoiler, world, checked):
+def get_woth_hint_dungeon(spoiler, world, checked):
+    hint = get_woth_hint(spoiler, world, checked, region_restriction=RegionRestriction.DUNGEON)
+    if hint is None:
+        hint = get_woth_hint(spoiler, world, checked)
+    return hint
+
+
+def get_woth_hint_overworld(spoiler, world, checked):
+    return get_woth_hint(spoiler, world, checked, region_restriction=RegionRestriction.OVERWORLD)
+
+
+def get_woth_hint(spoiler, world, checked, region_restriction=RegionRestriction.NONE):
     locations = spoiler.required_locations[world.id]
     locations = list(filter(lambda location:
         location.name not in checked
+        and (region_restriction != RegionRestriction.DUNGEON or location.parent_region.dungeon)
+        and (region_restriction != RegionRestriction.OVERWORLD or not location.parent_region.dungeon)
         and not (world.woth_dungeon >= world.hint_dist_user['dungeons_woth_limit'] and location.parent_region.dungeon)
         and location.name not in world.hint_exclusions
         and location.name not in world.hint_type_overrides['woth']
@@ -340,11 +360,23 @@ def get_woth_hint(spoiler, world, checked):
         return (GossipText('#%s# is on the way of the hero.' % location_text, ['Light Blue']), location)
 
 
-def get_barren_hint(spoiler, world, checked):
+def get_barren_hint_dungeon(spoiler, world, checked):
+    hint = get_barren_hint(spoiler, world, checked, region_restriction=RegionRestriction.DUNGEON)
+    if hint is None:
+        hint = get_barren_hint(spoiler, world, checked)
+    return hint
+
+
+def get_barren_hint_overworld(spoiler, world, checked):
+    return get_barren_hint(spoiler, world, checked, region_restriction=RegionRestriction.OVERWORLD)
+
+
+def get_barren_hint(spoiler, world, checked, region_restriction=RegionRestriction.NONE):
     areas = list(filter(lambda area:
-        area not in checked and \
-        not (world.barren_dungeon >= world.hint_dist_user['dungeons_barren_limit'] and \
-        world.empty_areas[area]['dungeon']),
+        area not in checked
+        and (region_restriction != RegionRestriction.DUNGEON or world.empty_areas[area]['dungeon'])
+        and (region_restriction != RegionRestriction.OVERWORLD or not world.empty_areas[area]['dungeon'])
+        and not (world.barren_dungeon >= world.hint_dist_user['dungeons_barren_limit'] and world.empty_areas[area]['dungeon']),
         world.empty_areas.keys()))
 
     if not areas:
@@ -536,17 +568,21 @@ def get_junk_hint(spoiler, world, checked):
 hint_func = {
     'trial':      lambda spoiler, world, checked: None,
     'always':     lambda spoiler, world, checked: None,
-    'woth':       get_woth_hint,
-    'barren':     get_barren_hint,
-    'item':       get_good_item_hint,
-    'sometimes':  get_sometimes_hint,
-    'song':       get_song_hint,
-    'overworld':  get_overworld_hint,
-    'dungeon':    get_dungeon_hint,
-    'entrance':   get_entrance_hint,
-    'random':     get_random_location_hint,
-    'junk':       get_junk_hint,
-    'named-item': get_specific_item_hint
+    'woth':             get_woth_hint,
+    'woth_dungeon':     get_woth_hint_dungeon,
+    'woth_overworld':   get_woth_hint_overworld,
+    'barren':           get_barren_hint,
+    'barren_dungeon':   get_barren_hint_dungeon,
+    'barren_overworld': get_barren_hint_overworld,
+    'item':             get_good_item_hint,
+    'sometimes':        get_sometimes_hint,
+    'song':             get_song_hint,
+    'overworld':        get_overworld_hint,
+    'dungeon':          get_dungeon_hint,
+    'entrance':         get_entrance_hint,
+    'random':           get_random_location_hint,
+    'junk':             get_junk_hint,
+    'named-item':       get_specific_item_hint
 }
 
 hint_dist_keys = {
