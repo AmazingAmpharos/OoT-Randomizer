@@ -216,13 +216,13 @@ do that.
   * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
   * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
 * Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
-* Tournament hint distribution changes <!-- keep updated if there are changes later -->
-  * Temple of Time stones all provide the same hint.
+* Tournament hint distribution changes
   * Grotto stones are disabled and only provide junk hints.
   * Zelda's Lullaby is never considered for Way of the Hero hints.
-  * Deku Theater Skull Mask is an "always" hint.
-  * Only "always" and "WotH" hints have duplicates now.
-  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 0 barren, 4(remainder) sometimes.
+  * Only "always", "Barren", and "WotH" hints have duplicates now.
+  * One "Barren" hint will point to a dungeon if the seed has barren dungeons.
+  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 2 barren, 5(remainder) sometimes.
+* The previous Tournament hint distribution has been renamed "Scrubs Tournament"
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
 * Tricks can be filtered in the GUI using a new dropdown.
 * Various Quality of Life improvements
