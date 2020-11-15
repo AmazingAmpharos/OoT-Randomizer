@@ -140,8 +140,8 @@ static const fixed_tile_data_t fixed_tile_positions[NUM_FIXED_WORDS*FIXED_BITS_P
     {1, ICON_SIZE,   6 /* Emerald (top) */,     {0x1B, 0x31}}, // 6:2
     {1, ICON_SIZE,   7 /* Ruby (left) */,       {0x29, 0x31}}, // 6:3
     {1, ICON_SIZE,   8 /* Sapphire (right) */,  {0x37, 0x31}}, // 6:4
-    {1, 0x08,        9 /* Stone of Agony */,    {0x6A, 0x53}}, // 6:5
-    {1, 0x08,       10 /* Gerudo's Card */,     {0x72, 0x53}}, // 6:6
+    {1, 0x0A,        9 /* Stone of Agony */,    {0x6F, 0x51}}, // 6:5
+    {1, ICON_SIZE,  10 /* Gerudo's Card */,     {0x72, 0x2A}}, // 6:6
     {0, 0,           0,                         {0xFF, 0xFF}}, // 6:7
     {1, ICON_SIZE,   0 /* Forest Med. (UR) */,  {0x37, 0x0A}}, // 7:0
     {1, ICON_SIZE,   1 /* Fire Med. (LR) */,    {0x37, 0x1A}}, // 7:1
