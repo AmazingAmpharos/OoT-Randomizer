@@ -8,7 +8,8 @@ from Colors import get_tunic_color_options, get_navi_color_options, get_sword_tr
     get_b_button_color_options, get_c_button_color_options, get_start_button_color_options
 from Location import LocationIterator
 import Sounds as sfx
-from Utils import data_path
+import os
+from Utils import data_path, read_json
 from itertools import chain
 import StartingItems
 from Hints import HintDistList, HintDistTips
@@ -3467,12 +3468,11 @@ setting_infos = [
         choices        = HintDistList(),
         gui_tooltip    = HintDistTips(),
         shared         = True,
-        disable        = {
-            'balanced'     : {'settings' : ['bingosync_url']},
-            'strong'       : {'settings' : ['bingosync_url']},
-            'tournament'   : {'settings' : ['bingosync_url']},
-            'useless'      : {'settings' : ['bingosync_url']},
-            'very_strong'  : {'settings' : ['bingosync_url']}
+        disable={
+            #Very inelegant, but dynamically build the list of non-bingo hint distributions instead of hardcoding it
+             read_json(os.path.join(data_path('Hints/'), dist_json))['name']: {'settings' : ['bingosync_url']} \
+                                    for dist_json in os.listdir(data_path('Hints/')) \
+                                    if read_json(os.path.join(data_path('Hints/'), dist_json))['name']!='bingo'
         },
     ),
     Setting_Info(
