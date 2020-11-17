@@ -360,8 +360,8 @@ def get_barren_hint(spoiler, world, checked):
         return None
 
     # Randomly choose between overworld or dungeon
-    dungeon_areas = list(filter(lambda area: world.empty_areas[area]['dungeon'], world.empty_areas.keys()))
-    overworld_areas = list(filter(lambda area: not world.empty_areas[area]['dungeon'], world.empty_areas.keys()))
+    dungeon_areas = list(filter(lambda area: world.empty_areas[area]['dungeon'], areas))
+    overworld_areas = list(filter(lambda area: not world.empty_areas[area]['dungeon'], areas))
     if not dungeon_areas:
         # no dungeons left, default to overworld
         world.get_barren_hint_prev = RegionRestriction.OVERWORLD
@@ -380,10 +380,10 @@ def get_barren_hint(spoiler, world, checked):
             world.get_barren_hint_prev = random.choices([RegionRestriction.DUNGEON, RegionRestriction.OVERWORLD], [0.75, 0.25])[0]
 
     if world.get_barren_hint_prev == RegionRestriction.DUNGEON:
-        locations = dungeon_areas
+        areas = dungeon_areas
     else:
-        locations = overworld_areas
-    if not locations:
+        areas = overworld_areas
+    if not areas:
         return None
 
     area_weights = [world.empty_areas[area]['weight'] for area in areas]
