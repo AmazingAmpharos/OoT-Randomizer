@@ -220,7 +220,7 @@ do that.
   * Grotto stones are disabled and only provide junk hints.
   * Zelda's Lullaby is never considered for Way of the Hero hints.
   * Only "always", "Barren", and "WotH" hints have duplicates now.
-  * One "Barren" hint will point to a dungeon if the seed has barren dungeons.
+  * "Barren" hint will typically be split evenly between dungeon and overworld areas.
   * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 2 barren, 5(remainder) sometimes.
 * The previous Tournament hint distribution has been renamed "Scrubs Tournament"
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
