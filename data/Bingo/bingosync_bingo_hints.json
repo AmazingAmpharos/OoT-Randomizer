@@ -2,8 +2,5 @@
   "settings": {
     "bingosyncURL": "",
     "item_hints": []
-  },
-  "item_pool": {
-      "Bottle": 3
   }
 }
