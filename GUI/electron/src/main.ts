@@ -180,7 +180,7 @@ app.on('web-contents-created', (event, contents) => {
         return;
       }
     }
-        
+
     event.preventDefault();
     shell.openExternal(navigationUrl);
   });
@@ -243,20 +243,32 @@ ipcMain.on('getGeneratorGUISettings', (event, arg) => {
   };
 
   //Load built in presets
-  let builtInPresetsPath = path.normalize(pythonRootPath + "data/presets_default.json");
+  let presetPaths: string[] = [path.normalize(pythonRootPath + "data/presets_default.json")];
+  let extraPresetsPath = path.normalize(pythonRootPath + "data/Presets");
+  let adjustedBuiltInPresets = {};
 
-  if (fs.existsSync(builtInPresetsPath)) {
-    let builtInPresets = JSON.parse(fs.readFileSync(builtInPresetsPath, 'utf8'));
-    let adjustedBuiltInPresets = {};
-
-    //Tag built in presets appropiately
-    Object.keys(builtInPresets).forEach(presetName => {
-      if (!(presetName in guiSettings.presets))
-        adjustedBuiltInPresets[presetName] = { isProtectedPreset: true, settings: builtInPresets[presetName] };
-    });
-
-    Object.assign(guiSettings.presets, adjustedBuiltInPresets);
+  if (fs.existsSync(extraPresetsPath)) {
+    fs.readdirSync(extraPresetsPath)
+      .sort((a, b) => a.localeCompare(b, 'en', { numeric: true }))
+      .filter(file => file.substr(-5) === '.json')
+      .forEach(file => {
+        presetPaths.push(extraPresetsPath + "/" + file);
+      });
   }
+
+  presetPaths.forEach(file => {
+    if (fs.existsSync(file)) {
+      let presets = JSON.parse(fs.readFileSync(file, 'utf8'));
+      //Tag built in presets appropriately
+      Object.keys(presets).forEach(presetName => {
+        if (!(presetName in guiSettings.presets))
+          adjustedBuiltInPresets[presetName] = {isProtectedPreset: true, settings: presets[presetName]};
+      });
+    }
+  });
+
+  Object.assign(guiSettings.presets, adjustedBuiltInPresets);
+
 
   //Load user presets
   let userPresetPath = path.normalize(pythonRootPath + "presets.sav");
