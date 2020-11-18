@@ -503,14 +503,16 @@ static void draw_digits(z64_disp_buf_t* db, const uint8_t* digits, const counter
 // Draw counter tiles
 static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uint8_t alpha) {
     const counter_tile_data_t* const data = counter_positions;
+    
+    uint8_t bright_alpha = color_product(WHITE.a, alpha);
 
     // Rupee
     colorRGB8_t rupee_color = rupee_colors[info->wallet];
-    gDPSetPrimColor(db->p++, 0, 0, rupee_color.r, rupee_color.g, rupee_color.b, alpha);
+    gDPSetPrimColor(db->p++, 0, 0, rupee_color.r, rupee_color.g, rupee_color.b, bright_alpha);
     draw_square_sprite(db, &key_rupee_clock_sprite, 1, data[SLOT_RUPEES].pos, COUNTER_ICON_SIZE);
 
     // Heart, Skulltula, and Deaths use WHITE
-    gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, color_product(WHITE.a, alpha));
+    gDPSetPrimColor(db->p++, 0, 0, WHITE.r, WHITE.g, WHITE.b, bright_alpha);
 
     // Heart
     sprite_load(db, &quest_items_sprite, 12, 1);
@@ -529,7 +531,7 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
 
     // Skulltula
     if (!info->draw_tullas) {
-        gDPSetPrimColor(db->p++, 0, 0, DIM.r, DIM.g, DIM.b, color_product(DIM.a, alpha));
+        gDPSetPrimColor(db->p++, 0, 0, DIM.r, DIM.g, DIM.b, bright_alpha);
     }
     sprite_load(db, &quest_items_sprite, 11, 1);
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
@@ -537,12 +539,12 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     // Triforce
     if (info->digits[SLOT_TRIFORCE][2] <= 9) {
         static uint8_t frame_counter = 0;
-        gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, color_product(WHITE.a, alpha));
+        gDPSetPrimColor(db->p++, 0, 0, 0xF4, 0xEC, 0x30, bright_alpha);
         draw_square_sprite(db, &triforce_sprite, (frame_counter++ >> 2) % 16, data[SLOT_TRIFORCE].pos, COUNTER_ICON_SIZE);
     }
 
     // Draw digits
-    gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, color_product(WHITE.a, alpha));
+    gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, bright_alpha);
     sprite_load(db, &item_digit_sprite, 0, 10);
     for (int i = 0; i < NUM_COUNTER; ++i) {
         draw_digits(db, info->digits[i], &data[i]);
