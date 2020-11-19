@@ -271,6 +271,7 @@ do that.
 * File 3 has been removed from generated ROMs to free up some space.
 * The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
 * The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
+* "No Logic" seeds can now disable locations.
 * Cosmetic logs contain the display names of SFX instead of their internal key names.
 * Performance improvements to seed generation.
 * Updated development n64 compilation process to use latest available toolchain.
