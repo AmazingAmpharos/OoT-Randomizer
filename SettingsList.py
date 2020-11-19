@@ -3719,7 +3719,8 @@ setting_infos = [
             'randomize_key': 'randomize_all_sfx',
             'distribution': [
                 ('random', 1),
-            ]
+            ],
+            'web:option_remove': ['random_custom_only'],
         },
     ),
     Combobox(
@@ -3747,7 +3748,8 @@ setting_infos = [
             'randomize_key': 'randomize_all_sfx',
             'distribution': [
                 ('random', 1),
-            ]
+            ],
+            'web:option_remove': ['random_custom_only'],
         },
     ),
     Checkbutton(
