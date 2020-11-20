@@ -721,7 +721,8 @@ def create_playthrough(spoiler):
     spoiler.playthrough = OrderedDict((str(i + 1), {location: location.item for location in sphere}) for i, sphere in enumerate(collection_spheres))
     # Copy our light arrows, since we set them in the world copy
     for w, sw in zip(worlds, spoiler.worlds):
-        sw.light_arrow_location = w.light_arrow_location
+        if w.light_arrow_location:
+            sw.light_arrow_location = sw.get_location(w.light_arrow_location.name)
 
     if worlds[0].entrance_shuffle:
         spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))
