@@ -607,15 +607,21 @@ logic_tricks = {
         'name'    : 'logic_biggoron_bolero',
         'tags'    : ("Death Mountain Trail",),
         'tooltip' : '''\
-                    If you do not wear the Goron Tunic, the heat timer
-                    inside the crater will override the trade item's timer.
-                    When you exit to Death Mountain Trail you will have
-                    one second to deliver the Eye Drops before the timer
-                    expires. It works best if you play Bolero as quickly as
-                    possible upon receiving the Eye Drops. If you have few
-                    hearts, there is enough time to dip Goron City to
-                    refresh the heat timer as long as you've already
-                    pulled the block.
+                    Playing a warp song normally causes a trade item to
+                    spoil immediately, however, it is possible use Bolero
+                    to reach Biggoron and still deliver the Eye Drops
+                    before they spoil. If you do not wear the Goron Tunic,
+                    the heat timer inside the crater will override the trade
+                    item's timer. When you exit to Death Mountain Trail you
+                    will have one second to show the Eye Drops before they
+                    expire. You can get extra time to show the Eye Drops if
+                    you warp immediately upon receiving them. If you don't
+                    have many hearts, you may have to reset the heat timer
+                    by quickly dipping in and out of Darunia's chamber.
+                    This trick does not apply if "Randomize Warp Song
+                    Destinations" is enabled, or if the settings are such
+                    that trade items do not need to be delivered within a
+                    time limit.
                     '''},
     'Wasteland Crossing without Hover Boots or Longshot': {
         'name'    : 'logic_wasteland_crossing',
