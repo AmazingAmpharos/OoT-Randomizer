@@ -595,7 +595,7 @@ logic_tricks = {
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
-                    so that Link will grab the ledge from farther away than
+                    that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
     'Lake Hylia Lab Dive without Gold Scale': {
@@ -1120,7 +1120,7 @@ logic_tricks = {
         'name'    : 'logic_water_bk_jump_dive',
         'tags'    : ("Water Temple",),
         'tooltip' : '''\
-                    Stand on the very edge of raised corridor leading from the
+                    Stand on the very edge of the raised corridor leading from the
                     push block room to the rolling boulder corridor. Face the
                     gold skulltula on the waterfall and jump over the boulder
                     corridor floor into the pool of water, swimming right once
@@ -1149,7 +1149,7 @@ logic_tricks = {
                     Hookshot, or Bow, it is possible to skip one or both of
                     those requirements. After the gate has been opened, besides 
                     just using the Iron Boots, a well-timed dive with at least
-                    the Silver Scale could be used swim through the tunnel. If
+                    the Silver Scale could be used to swim through the tunnel. If
                     coming from the serpent river, a jump dive can also be used
                     to get into the tunnel.
                     '''},
