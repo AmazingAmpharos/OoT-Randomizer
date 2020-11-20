@@ -2245,10 +2245,18 @@ setting_infos = [
             of the dungeon. Spirit Temple has TWO items 
             to match vanilla distribution.
 
+            Boss Keys and Fortress Keys only count as 
+            major items if they are shuffled Anywhere 
+            (Keysanity) or in Any Dungeon, and Small 
             Keys only count as major items if they are 
-            shuffled everywhere (ie. in keysanity).
+            shuffled Anywhere (Keysanity). This setting 
+            is disabled if Small Keys are shuffled in 
+            Any Dungeon.
+
             GS Tokens only count as major items if the 
-            bridge requirement is set to "GS Tokens".
+            bridge or LACS requirements are set to 
+            "GS Tokens".
+
             Bombchus only count as major items if they
             are considered in logic.
         ''',
