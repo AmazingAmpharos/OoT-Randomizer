@@ -722,7 +722,8 @@ def create_playthrough(spoiler):
     # Copy our light arrows, since we set them in the world copy
     for w, sw in zip(worlds, spoiler.worlds):
         if w.light_arrow_location:
-            sw.light_arrow_location = sw.get_location(w.light_arrow_location.name)
+            # But the actual location saved here may be in a different world
+            sw.light_arrow_location = spoiler.worlds[w.light_arrow_location.world.id].get_location(w.light_arrow_location.name)
 
     if worlds[0].entrance_shuffle:
         spoiler.entrance_playthrough = OrderedDict((str(i + 1), list(sphere)) for i, sphere in enumerate(entrance_spheres))
