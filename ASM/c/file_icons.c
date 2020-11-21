@@ -531,7 +531,7 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
 
     // Skulltula
     if (!info->draw_tullas) {
-        gDPSetPrimColor(db->p++, 0, 0, DIM.r, DIM.g, DIM.b, bright_alpha);
+        gDPSetPrimColor(db->p++, 0, 0, DIM.r, DIM.g, DIM.b, color_product(DIM.a, alpha));
     }
     sprite_load(db, &quest_items_sprite, 11, 1);
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
