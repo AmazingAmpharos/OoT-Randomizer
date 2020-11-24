@@ -24,7 +24,7 @@ def shop_address(shop_id, shelf_id):
 #       ZF      Zora's Fountain
 #       ZR      Zora's River
 
-# The order of this table is reflected in the spoiler's list of locations (except GossipStones aren't included).
+# The order of this table is reflected in the spoiler's list of locations (except Hints aren't included).
 # Within a section, the order of types is: gifts/freestanding/chests, Deku Scrubs, Cows, Gold Skulltulas, Shops.
 
 # NPC Scrubs are on the overworld, while GrottoNPC is a special handler for Grottos
@@ -837,50 +837,51 @@ location_table = OrderedDict([
     ("Big Poe Kill",                                    ("Drop",        None,  None, None,                     None)),
 
     ## Hints
-    # These are not actual locations, but are filler spots used for hint reachability
-    ("DMC Gossip Stone",                                ("GossipStone", None,  None, None,                     None)),
-    ("DMT Gossip Stone",                                ("GossipStone", None,  None, None,                     None)),
-    ("Colossus Gossip Stone",                           ("GossipStone", None,  None, None,                     None)),
-    ("Dodongos Cavern Gossip Stone",                    ("GossipStone", None,  None, None,                     None)),
-    ("GV Gossip Stone",                                 ("GossipStone", None,  None, None,                     None)),
-    ("GC Maze Gossip Stone",                            ("GossipStone", None,  None, None,                     None)),
-    ("GC Medigoron Gossip Stone",                       ("GossipStone", None,  None, None,                     None)),
-    ("Graveyard Gossip Stone",                          ("GossipStone", None,  None, None,                     None)),
-    ("HC Malon Gossip Stone",                           ("GossipStone", None,  None, None,                     None)),
-    ("HC Rock Wall Gossip Stone",                       ("GossipStone", None,  None, None,                     None)),
-    ("HC Storms Grotto Gossip Stone",                   ("GossipStone", None,  None, None,                     None)),
-    ("HF Cow Grotto Gossip Stone",                      ("GossipStone", None,  None, None,                     None)),
-    ("KF Deku Tree Gossip Stone (Left)",                ("GossipStone", None,  None, None,                     None)),
-    ("KF Deku Tree Gossip Stone (Right)",               ("GossipStone", None,  None, None,                     None)),
-    ("KF Gossip Stone",                                 ("GossipStone", None,  None, None,                     None)),
-    ("LH Lab Gossip Stone",                             ("GossipStone", None,  None, None,                     None)),
-    ("LH Gossip Stone (Southeast)",                     ("GossipStone", None,  None, None,                     None)),
-    ("LH Gossip Stone (Southwest)",                     ("GossipStone", None,  None, None,                     None)),
-    ("LW Gossip Stone",                                 ("GossipStone", None,  None, None,                     None)),
-    ("SFM Maze Gossip Stone (Lower)",                   ("GossipStone", None,  None, None,                     None)),
-    ("SFM Maze Gossip Stone (Upper)",                   ("GossipStone", None,  None, None,                     None)),
-    ("SFM Saria Gossip Stone",                          ("GossipStone", None,  None, None,                     None)),
-    ("ToT Gossip Stone (Left)",                         ("GossipStone", None,  None, None,                     None)),
-    ("ToT Gossip Stone (Left-Center)",                  ("GossipStone", None,  None, None,                     None)),
-    ("ToT Gossip Stone (Right)",                        ("GossipStone", None,  None, None,                     None)),
-    ("ToT Gossip Stone (Right-Center)",                 ("GossipStone", None,  None, None,                     None)),
-    ("ZD Gossip Stone",                                 ("GossipStone", None,  None, None,                     None)),
-    ("ZF Fairy Gossip Stone",                           ("GossipStone", None,  None, None,                     None)),
-    ("ZF Jabu Gossip Stone",                            ("GossipStone", None,  None, None,                     None)),
-    ("ZR Near Grottos Gossip Stone",                    ("GossipStone", None,  None, None,                     None)),
-    ("ZR Near Domain Gossip Stone",                     ("GossipStone", None,  None, None,                     None)),
+    # These are not actual locations, but are filler spots used for hint reachability.
+    # Hint location types must start with 'Hint'.
+    ("DMC Gossip Stone",                                ("HintStone",   None,  None, None,                     None)),
+    ("DMT Gossip Stone",                                ("HintStone",   None,  None, None,                     None)),
+    ("Colossus Gossip Stone",                           ("HintStone",   None,  None, None,                     None)),
+    ("Dodongos Cavern Gossip Stone",                    ("HintStone",   None,  None, None,                     None)),
+    ("GV Gossip Stone",                                 ("HintStone",   None,  None, None,                     None)),
+    ("GC Maze Gossip Stone",                            ("HintStone",   None,  None, None,                     None)),
+    ("GC Medigoron Gossip Stone",                       ("HintStone",   None,  None, None,                     None)),
+    ("Graveyard Gossip Stone",                          ("HintStone",   None,  None, None,                     None)),
+    ("HC Malon Gossip Stone",                           ("HintStone",   None,  None, None,                     None)),
+    ("HC Rock Wall Gossip Stone",                       ("HintStone",   None,  None, None,                     None)),
+    ("HC Storms Grotto Gossip Stone",                   ("HintStone",   None,  None, None,                     None)),
+    ("HF Cow Grotto Gossip Stone",                      ("HintStone",   None,  None, None,                     None)),
+    ("KF Deku Tree Gossip Stone (Left)",                ("HintStone",   None,  None, None,                     None)),
+    ("KF Deku Tree Gossip Stone (Right)",               ("HintStone",   None,  None, None,                     None)),
+    ("KF Gossip Stone",                                 ("HintStone",   None,  None, None,                     None)),
+    ("LH Lab Gossip Stone",                             ("HintStone",   None,  None, None,                     None)),
+    ("LH Gossip Stone (Southeast)",                     ("HintStone",   None,  None, None,                     None)),
+    ("LH Gossip Stone (Southwest)",                     ("HintStone",   None,  None, None,                     None)),
+    ("LW Gossip Stone",                                 ("HintStone",   None,  None, None,                     None)),
+    ("SFM Maze Gossip Stone (Lower)",                   ("HintStone",   None,  None, None,                     None)),
+    ("SFM Maze Gossip Stone (Upper)",                   ("HintStone",   None,  None, None,                     None)),
+    ("SFM Saria Gossip Stone",                          ("HintStone",   None,  None, None,                     None)),
+    ("ToT Gossip Stone (Left)",                         ("HintStone",   None,  None, None,                     None)),
+    ("ToT Gossip Stone (Left-Center)",                  ("HintStone",   None,  None, None,                     None)),
+    ("ToT Gossip Stone (Right)",                        ("HintStone",   None,  None, None,                     None)),
+    ("ToT Gossip Stone (Right-Center)",                 ("HintStone",   None,  None, None,                     None)),
+    ("ZD Gossip Stone",                                 ("HintStone",   None,  None, None,                     None)),
+    ("ZF Fairy Gossip Stone",                           ("HintStone",   None,  None, None,                     None)),
+    ("ZF Jabu Gossip Stone",                            ("HintStone",   None,  None, None,                     None)),
+    ("ZR Near Grottos Gossip Stone",                    ("HintStone",   None,  None, None,                     None)),
+    ("ZR Near Domain Gossip Stone",                     ("HintStone",   None,  None, None,                     None)),
 
-    ("HF Near Market Grotto Gossip Stone",              ("GossipStone", None,  None, None,                     None)),
-    ("HF Southeast Grotto Gossip Stone",                ("GossipStone", None,  None, None,                     None)),
-    ("HF Open Grotto Gossip Stone",                     ("GossipStone", None,  None, None,                     None)),
-    ("Kak Open Grotto Gossip Stone",                    ("GossipStone", None,  None, None,                     None)),
-    ("ZR Open Grotto Gossip Stone",                     ("GossipStone", None,  None, None,                     None)),
-    ("KF Storms Grotto Gossip Stone",                   ("GossipStone", None,  None, None,                     None)),
-    ("LW Near Shortcuts Grotto Gossip Stone",           ("GossipStone", None,  None, None,                     None)),
-    ("DMT Storms Grotto Gossip Stone",                  ("GossipStone", None,  None, None,                     None)),
-    ("DMC Upper Grotto Gossip Stone",                   ("GossipStone", None,  None, None,                     None)),
+    ("HF Near Market Grotto Gossip Stone",              ("HintStone",   None,  None, None,                     None)),
+    ("HF Southeast Grotto Gossip Stone",                ("HintStone",   None,  None, None,                     None)),
+    ("HF Open Grotto Gossip Stone",                     ("HintStone",   None,  None, None,                     None)),
+    ("Kak Open Grotto Gossip Stone",                    ("HintStone",   None,  None, None,                     None)),
+    ("ZR Open Grotto Gossip Stone",                     ("HintStone",   None,  None, None,                     None)),
+    ("KF Storms Grotto Gossip Stone",                   ("HintStone",   None,  None, None,                     None)),
+    ("LW Near Shortcuts Grotto Gossip Stone",           ("HintStone",   None,  None, None,                     None)),
+    ("DMT Storms Grotto Gossip Stone",                  ("HintStone",   None,  None, None,                     None)),
+    ("DMC Upper Grotto Gossip Stone",                   ("HintStone",   None,  None, None,                     None)),
 
-    ("Ganondorf Hint",                                  ("GossipStone", None,  None, None,                     None)),
+    ("Ganondorf Hint",                                  ("Hint",        None,  None, None,                     None)),
 ])
 
 location_sort_order = {

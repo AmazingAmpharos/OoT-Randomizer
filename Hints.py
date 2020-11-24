@@ -154,7 +154,7 @@ def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_re
             if any(map(lambda id: gossipLocations[id].reachable, group)):
                 stone_names = [gossipLocations[id].location for id in group]
                 stone_locations = [world.get_location(stone_name) for stone_name in stone_names]
-                if not first or any(map(lambda stone_location: can_reach_stone(spoiler.worlds, stone_location, location), stone_locations)):
+                if not first or any(map(lambda stone_location: can_reach_hint(spoiler.worlds, stone_location, location), stone_locations)):
                     if first and location:
                         # just name the event item after the gossip stone directly
                         event_item = None
@@ -217,7 +217,7 @@ def add_hint(spoiler, world, groups, gossip_text, count, location=None, force_re
     return success
 
 
-def can_reach_stone(worlds, stone_location, location):
+def can_reach_hint(worlds, hint_location, location):
     if location == None:
         return True
 
@@ -226,8 +226,8 @@ def can_reach_stone(worlds, stone_location, location):
     search = Search.max_explore([world.state for world in worlds])
     location.item = old_item
 
-    return (search.spot_access(stone_location)
-            and search.state_list[location.world.id].guarantee_hint())
+    return (search.spot_access(hint_location)
+            and (hint_location.type != 'HintStone' or search.state_list[location.world.id].guarantee_hint()))
 
 
 def writeGossipStoneHints(spoiler, world, messages):
@@ -647,8 +647,7 @@ def buildGossipHints(spoiler, worlds):
         location = world.light_arrow_location
         if location is None:
             continue
-        # Didn't you know that Ganondorf is a gossip stone?
-        if can_reach_stone(worlds, world.get_location("Ganondorf Hint"), location):
+        if can_reach_hint(worlds, world.get_location("Ganondorf Hint"), location):
             light_arrow_world = location.world
             if light_arrow_world.id not in checkedLocations:
                 checkedLocations[light_arrow_world.id] = set()

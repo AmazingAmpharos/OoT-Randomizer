@@ -251,6 +251,7 @@ do that.
 * Move the Stone of Agony indicator above any small keys if both are present.
 * Fix model/icon colors in `Item Model Colors Match Cosmetics` not returning to default with a cosmetic patch setting them to defaults.
 * Ensure Ganondorf always hints one of the first reachable Light Arrows.
+* Don't require that child can reach Ganondorf in order for Light Arrows not to be hinted WotH.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:
   * Closed Forest implies starting as child.
