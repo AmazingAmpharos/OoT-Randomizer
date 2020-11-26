@@ -1275,13 +1275,12 @@ def hintExclusions(world, clear_cache=False):
     return hintExclusions.exclusions
 
 def nameIsLocation(name, hint_type, world):
-    location_check = False
-    if isinstance(hint_type, list):
+    if isinstance(hint_type, (list, tuple)):
         for htype in hint_type:
-            if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and (name not in hintExclusions(world)):
-                location_check = True
-    elif hint_type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and (name not in hintExclusions(world)):
-        location_check = True
-    return location_check
+            if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and name not in hintExclusions(world):
+                return True
+    elif hint_type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and name not in hintExclusions(world):
+        return True
+    return False
 
 hintExclusions.exclusions = None

@@ -799,7 +799,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     # Raise error if hint copies is zero
     if len(world.item_hints) > 0 and world.hint_dist_user['named_items_required']:
         if hint_dist['named-item'][1] == 0:
-            raise Exception('User-provided item hints were requested, but gossip stones per named-item hint is zero')
+            raise Exception('User-provided item hints were requested, but copies per named-item hint is zero')
         else:
             for i in range(0, len(world.item_hints)):
                 hint = get_specific_item_hint(spoiler, world, checkedLocations)
