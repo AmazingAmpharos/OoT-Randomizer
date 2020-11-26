@@ -769,6 +769,12 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
         for hint in alwaysLocations:
             location = world.get_location(hint.name)
             checkedLocations.add(hint.name)
+            if location.item.name in bingoBottlesForHints and world.hint_dist == 'bingo':
+                always_item = 'Bottle'
+            else:
+                always_item = location.item.name
+            if always_item in world.item_hints:
+                world.item_hints.remove(always_item)
 
             if location.name in world.hint_text_overrides:
                 location_text = world.hint_text_overrides[location.name]
