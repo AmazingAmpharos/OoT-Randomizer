@@ -595,7 +595,7 @@ logic_tricks = {
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
-                    so that Link will grab the ledge from farther away than
+                    that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
     'Lake Hylia Lab Dive without Gold Scale': {
@@ -1126,7 +1126,7 @@ logic_tricks = {
         'name'    : 'logic_water_bk_jump_dive',
         'tags'    : ("Water Temple",),
         'tooltip' : '''\
-                    Stand on the very edge of raised corridor leading from the
+                    Stand on the very edge of the raised corridor leading from the
                     push block room to the rolling boulder corridor. Face the
                     gold skulltula on the waterfall and jump over the boulder
                     corridor floor into the pool of water, swimming right once
@@ -1155,7 +1155,7 @@ logic_tricks = {
                     Hookshot, or Bow, it is possible to skip one or both of
                     those requirements. After the gate has been opened, besides 
                     just using the Iron Boots, a well-timed dive with at least
-                    the Silver Scale could be used swim through the tunnel. If
+                    the Silver Scale could be used to swim through the tunnel. If
                     coming from the serpent river, a jump dive can also be used
                     to get into the tunnel.
                     '''},
@@ -1898,10 +1898,11 @@ setting_infos = [
             required to access the Deku Tree. Items needed for this will be
             guaranteed inside the forest area. This setting is incompatible
             with starting as adult, and so Starting Age will be locked to Child.
-            With "Shuffle Interior Entrances" set to "All" and/or
-            "Shuffle Overworld Entrances" on, Closed Forest will instead be treated
-            as Closed Deku with starting age Child and WILL NOT guarantee that these
-            items are available in the forest area.
+            With either "Shuffle Interior Entrances" set to "All", "Shuffle 
+            Overworld Entrances" on, "Randomize Warp Song Destinations" on 
+            or "Randomize Overworld Spawns" on, Closed Forest will instead 
+            be treated as Closed Deku with starting age Child and WILL NOT 
+            guarantee that these items are available in the forest area.
         ''',
         shared         = True,
         disable        = {
@@ -2250,10 +2251,18 @@ setting_infos = [
             of the dungeon. Spirit Temple has TWO items 
             to match vanilla distribution.
 
+            Boss Keys and Fortress Keys only count as 
+            major items if they are shuffled Anywhere 
+            (Keysanity) or in Any Dungeon, and Small 
             Keys only count as major items if they are 
-            shuffled everywhere (ie. in keysanity).
+            shuffled Anywhere (Keysanity). This setting 
+            is disabled if Small Keys are shuffled in 
+            Any Dungeon.
+
             GS Tokens only count as major items if the 
-            bridge requirement is set to "GS Tokens".
+            bridge or LACS requirements are set to 
+            "GS Tokens".
+
             Bombchus only count as major items if they
             are considered in logic.
         ''',
