@@ -1141,7 +1141,8 @@ typedef struct
   uint16_t          selected_item;            /* 0x1CA2A */
   uint16_t          selected_sub_item;        /* 0x1CA2C */
   uint16_t          menu_depth;               /* 0x1CA2E */
-  char              unk_03_[0x0006];          /* 0x1CA30 */
+  uint16_t          alt_transition;           /* 0x1CA30 */
+  char              unk_03_[0x0004];          /* 0x1CA32 */
   uint16_t          menu_transition;          /* 0x1CA36 */
   uint16_t          selected_file;            /* 0x1CA38 */
   char              unk_04_[0x0008];          /* 0x1CA3A */
