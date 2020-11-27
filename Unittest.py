@@ -446,7 +446,7 @@ class TestValidSpoilers(unittest.TestCase):
             settings_file = '%s_%s_Settings.json' % (settings.output_file, settings.seed)
             with self.subTest(out=output_file, settings=settings_file):
                 try:
-                    main(settings)
+                    main(settings, max_attempts=2)
                     spoiler = load_spoiler(output_file)
                     self.verify_woth(spoiler)
                     self.verify_playthrough(spoiler)
