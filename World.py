@@ -59,7 +59,7 @@ class World(object):
                                 self.shuffle_overworld_entrances or self.owl_drops or self.warp_songs or self.spawn_positions
 
         self.ensure_tod_access = self.shuffle_interior_entrances or self.shuffle_overworld_entrances or self.spawn_positions
-        self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances or self.warp_songs
+        self.disable_trade_revert = self.shuffle_interior_entrances or self.shuffle_overworld_entrances
 
         if self.open_forest == 'closed' and (self.shuffle_special_interior_entrances or self.shuffle_overworld_entrances or 
                                              self.warp_songs or self.spawn_positions):
