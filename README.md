@@ -279,6 +279,7 @@ do that.
 * "No Logic" seeds can now disable locations.
 * Cosmetic logs contain the display names of SFX instead of their internal key names.
 * Performance improvements to seed generation.
+* Generator GUI updated to use node-sass 4.14.1.
 * Updated development n64 compilation process to use latest available toolchain.
 * Changed some C code to support GCC 10 in development n64 compilation.
 * Added decompressor source and updated Decompress binaries.
