@@ -246,6 +246,7 @@ do that.
 * Fast warp song hack now sets transition to white fade for consistency.
 * Royal Family Tomb moves out of the way instantly.
 * Fix Zelda from being frozen at the start of the final battle.
+* Fix (hopefully) any remaining issues fishing on BizHawk.
 * Drop Ruto before entering Big Octo room if the miniboss has been defeated.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Move the Stone of Agony indicator above any small keys if both are present.
