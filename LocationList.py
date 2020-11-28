@@ -468,7 +468,7 @@ location_table = OrderedDict([
     ("Bottom of the Well Freestanding Key",                 ("Collectable", 0x08,  0x01, None,                 ("Bottom of the Well",))),
     ("Bottom of the Well Compass Chest",                    ("Chest",       0x08,  0x01, None,                 ("Bottom of the Well",))),
     ("Bottom of the Well Center Skulltula Chest",           ("Chest",       0x08,  0x0E, None,                 ("Bottom of the Well",))),
-    ("Bottom of the Well Right Bottom Fake Wall Chest",("     Chest",       0x08,  0x05, None,                 ("Bottom of the Well",))),
+    ("Bottom of the Well Right Bottom Fake Wall Chest",     ("Chest",       0x08,  0x05, None,                 ("Bottom of the Well",))),
     ("Bottom of the Well Fire Keese Chest",                 ("Chest",       0x08,  0x0A, None,                 ("Bottom of the Well",))),
     ("Bottom of the Well Like Like Chest",                  ("Chest",       0x08,  0x0C, None,                 ("Bottom of the Well",))),
     ("Bottom of the Well Map Chest",                        ("Chest",       0x08,  0x07, None,                 ("Bottom of the Well",))),
