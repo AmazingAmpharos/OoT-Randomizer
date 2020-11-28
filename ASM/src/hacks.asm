@@ -1702,6 +1702,11 @@ skip_GS_BGS_text:
     jal     move_file_3
     or      a0, s0, r0
 
+; Ignore File 3 when checking for available copy slot
+; Replaces: lbu     t6, 0x001C(v0)
+.orga 0xBAA3AC ; In memory: 0x803AE1AC
+    or      t6, a1, r0
+
 ;==================================================================================================
 ; Make Twinrova Wait For Link
 ;==================================================================================================
