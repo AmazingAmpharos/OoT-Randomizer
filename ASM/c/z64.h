@@ -1154,7 +1154,7 @@ typedef struct
     int16_t         options;                  /* 0x1CA4E */
   }                 button_offsets;
   int16_t           unk_05_;                  /* 0x1CA50 */
-  int16_t           disable_copy_erase;       /* 0x1CA52 */
+  int16_t           file_message;             /* 0x1CA52 */
   int16_t           unk_06_;                  /* 0x1CA54 */
   int16_t           message_id[2];            /* 0x1CA56 */
   colorRGB16_t      panel_color;              /* 0x1CA5A */
