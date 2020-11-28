@@ -554,9 +554,9 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
 
 // Get alpha level based on menu transition frame
 static uint8_t get_alpha(const z64_menudata_t* menu_data) {
-    unsigned int value = menu_data->menu_transition;
+    uint8_t value = (uint8_t)menu_data->menu_transition;
     if (value == 0x00) {
-        value = 0x80 | menu_data->alt_transition;
+        value = 0x80 | (uint8_t)menu_data->alt_transition;
     }
     switch (value) {
         case 0x03:
@@ -568,11 +568,13 @@ static uint8_t get_alpha(const z64_menudata_t* menu_data) {
         case 0x02:
         case 0x86:
         case 0x97:
+        case 0x8D:
             return (uint8_t)(((8 - menu_data->transition_frame) * 0xC8) / 8);
             break;
         case 0x04:
         case 0x88:
         case 0x99:
+        case 0x8A:
             return (uint8_t)((menu_data->transition_frame * 0xC8) / 8);
             break;
         default:
