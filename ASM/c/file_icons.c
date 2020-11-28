@@ -250,7 +250,6 @@ typedef uint8_t digits_t[3];
 typedef struct {
     uint8_t wallet;
     uint8_t double_defense;
-    uint8_t draw_tullas;
     digits_t digits[NUM_COUNTER];
 } counter_tile_info_t;
 
@@ -350,8 +349,8 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     make_digits(counts->digits[SLOT_RUPEES], (int16_t)file->rupees);
 
     // Skulltulas
-    counts->draw_tullas = file->gold_skulltula != 0;
-    make_digits(counts->digits[SLOT_SKULLTULLAS], counts->draw_tullas ? file->gs_tokens : 0);
+    uint8_t draw_tullas = file->gold_skulltula != 0;
+    make_digits(counts->digits[SLOT_SKULLTULLAS], draw_tullas ? file->gs_tokens : 0);
 
     // Triforce or Boss Key
     int16_t num_triforce_pieces = (int16_t)file->scene_flags[0x48].unk_00_;
@@ -530,9 +529,6 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     }
 
     // Skulltula
-    if (!info->draw_tullas) {
-        gDPSetPrimColor(db->p++, 0, 0, DIM.r, DIM.g, DIM.b, bright_alpha);
-    }
     sprite_load(db, &quest_items_sprite, 11, 1);
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
 

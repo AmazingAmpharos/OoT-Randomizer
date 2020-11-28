@@ -57,17 +57,10 @@ def getHintGroup(group, world):
             hint.type = 'always'
 
         # Hint inclusion override from distribution
-        if group in world.added_hint_types:
+        if group in world.added_hint_types or group in world.item_added_hint_types:
             if hint.name in world.added_hint_types[group]:
                 hint.type = group
-            location_check = False
-            if isinstance(hint.type, list):
-                for htype in hint.type:
-                    if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and (name not in hintExclusions(world)):
-                        location_check = True
-            elif hint.type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and (name not in hintExclusions(world)):
-                location_check = True
-            if location_check:
+            if nameIsLocation(name, hint.type, world):
                 location = world.get_location(name)
                 for i in world.item_added_hint_types[group]:
                     if i == location.item.name:
@@ -79,6 +72,11 @@ def getHintGroup(group, world):
         if group in world.hint_type_overrides:
             if name in world.hint_type_overrides[group]:
                 type_override = True
+        if group in world.item_hint_type_overrides:
+            if nameIsLocation(name, hint.type, world):
+                location = world.get_location(name)
+                if location.item.name in world.item_hint_type_overrides[group]:
+                    type_override = True
 
         if group in hint.type and (name not in hintExclusions(world)) and not type_override:
             ret.append(hint)
@@ -1276,5 +1274,13 @@ def hintExclusions(world, clear_cache=False):
 
     return hintExclusions.exclusions
 
+def nameIsLocation(name, hint_type, world):
+    if isinstance(hint_type, (list, tuple)):
+        for htype in hint_type:
+            if htype in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and name not in hintExclusions(world):
+                return True
+    elif hint_type in ['sometimes', 'song', 'overworld', 'dungeon', 'always'] and name not in hintExclusions(world):
+        return True
+    return False
 
 hintExclusions.exclusions = None

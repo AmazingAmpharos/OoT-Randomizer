@@ -224,6 +224,7 @@ do that.
   * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 2 barren, 5(remainder) sometimes.
 * The previous Tournament hint distribution has been renamed "Scrubs Tournament"
 * Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
+* Custom settings presets (must be json) can be placed in `data/Presets` to be automatically loaded in the GUI.
 * Tricks can be filtered in the GUI using a new dropdown.
 * Various Quality of Life improvements
   * Speed up boulder lifting
@@ -246,11 +247,13 @@ do that.
 * Fast warp song hack now sets transition to white fade for consistency.
 * Royal Family Tomb moves out of the way instantly.
 * Fix Zelda from being frozen at the start of the final battle.
+* Fix (hopefully) any remaining issues fishing on BizHawk.
 * Drop Ruto before entering Big Octo room if the miniboss has been defeated.
 * Prevent an errant `@` from showing up in Triforce Hunt.
 * Move the Stone of Agony indicator above any small keys if both are present.
 * Fix model/icon colors in `Item Model Colors Match Cosmetics` not returning to default with a cosmetic patch setting them to defaults.
 * Ensure Ganondorf always hints one of the first reachable Light Arrows.
+* Don't require that child can reach Ganondorf in order for Light Arrows not to be hinted WotH.
 * Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
 * Fix some issues with `Randomize Main Rules`:
   * Closed Forest implies starting as child.
@@ -268,6 +271,7 @@ do that.
 #### Other Changes
 * Most locations and a few items have been renamed to improve spoiler output and standardize.
   * This will break settings and distribution files from previous versions that reference these locations and items.
+* Reordered locations more naturally in the locations part of the spoiler.
 * Default for `Shuffle Weird Egg` is now off.
 * In-game hints overhaul.
 * File 3 has been removed from generated ROMs to free up some space.
@@ -276,6 +280,7 @@ do that.
 * "No Logic" seeds can now disable locations.
 * Cosmetic logs contain the display names of SFX instead of their internal key names.
 * Performance improvements to seed generation.
+* Generator GUI updated to use node-sass 4.14.1.
 * Updated development n64 compilation process to use latest available toolchain.
 * Changed some C code to support GCC 10 in development n64 compilation.
 * Added decompressor source and updated Decompress binaries.

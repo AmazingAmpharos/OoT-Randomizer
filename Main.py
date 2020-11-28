@@ -44,13 +44,13 @@ class dummy_window():
         pass
 
 
-def main(settings, window=dummy_window()):
+def main(settings, window=dummy_window(), max_attempts=10):
     logger = logging.getLogger('')
     start = time.process_time()
 
     rom = resolve_settings(settings, window=window)
 
-    max_attempts = 10
+    max_attempts = max(max_attempts, 1)
     for attempt in range(1, max_attempts + 1):
         try:
             spoiler = generate(settings, window=window)
