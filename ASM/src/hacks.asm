@@ -322,7 +322,7 @@
     nop ; was: sh r0, 0x4A6C (v1)
 
 ; prevent increasing alpha when transitioning away from file
-.orga 0xBAE864; In memory: 0x803B2664
+.orga 0xBAE864 ; In memory: 0x803B2664
     nop ; was: sh t5, 0x4A6C (v1)
 
 ;==================================================================================================
