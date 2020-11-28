@@ -346,6 +346,16 @@
 .orga 0xBA18C4 ; In memory: 0x803A56C4
     ori     t4, r0, 0x00C8 ; was: ori t4, t4, 0x00C8
 
+; keep file tag alpha at 0xC8 in erase menu
+.orga 0xBA34DC ; In memory: 0x803A72DC
+    ori     t8, r0, 0x00C8 ; was: addiu t8, t7, 0xFFE7
+
+.orga 0xBA3654
+    nop ; was: sh r0, 0x4A6C (t6)
+
+.orga 0xBA39D0
+    ori     t5, r0, 0x00C8 ; was: addiu t5, t4, 0x0019
+
 ;==================================================================================================
 ; Special item sources
 ;==================================================================================================
