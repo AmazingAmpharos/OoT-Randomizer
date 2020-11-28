@@ -610,8 +610,9 @@ def buildBingoHintList(boardURL):
             raise URLError(f"URL too large {len(boardURL)}")
         with urllib.request.urlopen(boardURL + "/board") as board:
             if board.length and 0 < board.length < 4096:
+                goalList = board.read()
+            else:
                 raise HTTPError(f"Board of invalid size {board.length}")
-            goalList = board.read()
     except (URLError, HTTPError) as e:
         logger = logging.getLogger('')
         logger.info(f"Could not retrieve board info. Using default bingo hints instead: {e}")
