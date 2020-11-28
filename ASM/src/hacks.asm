@@ -330,6 +330,22 @@
     .word 0x0000FFC0
     .word 0xFFB0FFB0
 
+; keep file tag alpha at 0xC8 in copy menu
+.orga 0xBA18C4 ; In memory: 0x803A56C4
+    ori     t4, r0, 0x00C8 ; was: addiu t4, t9, 0xFFE7
+
+.orga 0xBA1980 ; In memory: 0x803A5780
+    ori     t0, r0, 0x00C8 ; was: addiu t0, t9, 0xFFE7
+    
+.orga 0xBA19DC ; In memory: 0x803A57DC
+    nop ; was: sh r0, 0x4A6C (t2)
+    
+.orga 0xBA1E20 ; In memory: 0x803A5C20
+    ori     t5, r0, 0x00C8 ; was: addiu t5, t4, 0x0019
+
+.orga 0xBA18C4 ; In memory: 0x803A56C4
+    ori     t4, r0, 0x00C8 ; was: ori t4, t4, 0x00C8
+
 ;==================================================================================================
 ; Special item sources
 ;==================================================================================================
