@@ -325,6 +325,11 @@
 .orga 0xBAE864 ; In memory: 0x803B2664
     nop ; was: sh t5, 0x4A6C (v1)
 
+; change file positions in copy menu
+.orga 0xBB05FC ; In memory: 0x803B43FC
+    .word 0x0000FFC0
+    .word 0xFFB0FFB0
+
 ;==================================================================================================
 ; Special item sources
 ;==================================================================================================
