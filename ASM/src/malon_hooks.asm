@@ -86,11 +86,38 @@ malon_show_text:
     addiu   sp, sp, 0x20
 
 ;=============================================
+MALON_GAVE_ICETRAP:
+.byte 0x00
+.align 4
+
 ;after item is given and text is closed, reload the scene
 malon_reload:
     addiu   sp, sp, -0x20
     sw      ra, 0x14(sp)
     sw      a0, 0x18(sp)
+    lb      t5, MALON_GAVE_ICETRAP
+    bnez    t5, @@malon_gave_ice_trap
+    nop
+    la      t0, PLAYER_ACTOR
+    lw      t1, 0x670(t0)    ;stateFlags2
+    li      t2, 0x4000
+    and     t3, t1, t2       ;stateFlags2 & 0x4000
+    beqz    t3, @@check_text ;dont set flag if player is not frozen
+    nop
+    li      t0, 1
+    sb      t0, MALON_GAVE_ICETRAP
+    b       @@return
+
+@@malon_gave_ice_trap:
+    la      t0, PLAYER_ACTOR
+    lw      t1, 0x670(t0)    ;stateFlags2
+    li      t2, 0x4000
+    and     t3, t1, t2       ;stateFlags2 & 0x4000
+    beqz    t3, @@reload     ;reload if freeze is finished
+    nop
+    b       @@return
+
+@@check_text:
     addiu   a0, a1, 0x20D8 ;msgCtx
     jal     0x800DD464     ;returns dialog state
     nop
@@ -100,6 +127,7 @@ malon_reload:
     la      t0, 0x801D8966 ;globalCtx->msgCtx.unk_E3EE 
     li      t1, 0x0004
     sh      t1, 0x00(t0)
+@@reload:
     la      t3, SAVE_CONTEXT
     lb      t4, 0xEDE(t3)
     ori     t4, t4, 0x01

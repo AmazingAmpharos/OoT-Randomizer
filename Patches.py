@@ -98,6 +98,12 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_byte(0x2BECA25,0x01);
         rom.write_byte(0x2BECA2D,0x01);
 
+    # Set starting entrance for debugging purposes
+    # REMEMBER TO REMOVE THIS IDIOT
+    rom.write_int32(0xB06318, 0x00000000)
+    rom.write_bytes(0xB06342, [0x02, 0xAE])
+    rom.write_bytes(0xB06332, [0x02, 0xAE])
+
     # Fix GS rewards to be static
     rom.write_int32(0xEA3934, 0)
     rom.write_bytes(0xEA3940, [0x10, 0x00])

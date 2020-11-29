@@ -438,9 +438,6 @@ GET_ITEM_TRIGGERED:
 fountain_set_posrot:
     or      a1, s1, r0     ;displaced
 
-    la      t7, INCOMING_ITEM
-    lh      t8, 0x00(t7)
-    bnez    t8, @@return   ;skip everything if recieving an item from another player
     la      t1, GET_ITEM_TRIGGERED
     la      t2, PLAYER_ACTOR
     lb      t3, 0x424(t2)  ;Get Item ID

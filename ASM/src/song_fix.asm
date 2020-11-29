@@ -27,29 +27,6 @@ suns_song_fix_event:
     jr      ra
     nop
     
-suns_song_fix:
-    lw      t5, 0x8AA0(t5)
-    li      v0, 0x8000
-    beq     v0, t5, @@check_suns_status
-    nop
-    b       @@return
-    
-@@check_suns_status:
-    li      t7, 0x801D84A0
-    lb      v0, 0x1CBF(t7)
-    andi    v0, 0x0001
-    beqz    v0, @@disable_suns
-    nop
-    b       @@return
-    
-@@disable_suns:
-    li      v0, 0x0001
-    sb      v0, 0x1CBF(t7)
-
-@@return:
-    jr      ra
-    nop
-    
 ;================================================================================================== 
 warp_song_fix:
     addu    at, at, s3
