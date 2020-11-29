@@ -865,17 +865,23 @@ class Distribution(object):
         world_names = ['World %d' % (i + 1) for i in range(len(self.world_dists))]
 
         for k in per_world_keys:
-            if k in self.src_dict:
-                # For each entry here of the form 'World %d', apply that entry to that world.
-                # If there are any entries that aren't of this form,
-                # apply them all to each world.
-                for world_id, world_name in enumerate(world_names):
-                    if world_name in self.src_dict[k]:
-                        self.world_dists[world_id].update({k: self.src_dict[k][world_name]})
-                src_all = {key: val for key, val in self.src_dict[k].items() if key not in world_names}
-                if src_all:
+            # Anything starting with ':' is output-only and we ignore it in world.update anyway.
+            if k in self.src_dict and k[0] != ':':
+                if isinstance(self.src_dict[k], dict):
+                    # For each entry here of the form 'World %d', apply that entry to that world.
+                    # If there are any entries that aren't of this form,
+                    # apply them all to each world.
+                    for world_id, world_name in enumerate(world_names):
+                        if world_name in self.src_dict[k]:
+                            self.world_dists[world_id].update({k: self.src_dict[k][world_name]})
+                    src_all = {key: val for key, val in self.src_dict[k].items() if key not in world_names}
+                    if src_all:
+                        for world in self.world_dists:
+                            world.update({k: src_all})
+                else:
+                    # Since it's not by world, apply to all worlds.
                     for world in self.world_dists:
-                        world.update({k: src_all})
+                        world.update({k: self.src_dict[k]})
 
 
     def populate_starting_items_from_settings(self):
