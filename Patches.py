@@ -98,12 +98,6 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_byte(0x2BECA25,0x01);
         rom.write_byte(0x2BECA2D,0x01);
 
-    # Set starting entrance for debugging purposes
-    # REMEMBER TO REMOVE THIS IDIOT
-    rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x03, 0x15])
-    rom.write_bytes(0xB06332, [0x03, 0x15])
-
     # Fix GS rewards to be static
     rom.write_int32(0xEA3934, 0)
     rom.write_bytes(0xEA3940, [0x10, 0x00])
@@ -369,7 +363,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     if songs_as_items:
         rom.write_int32(0x0252FD24, 0xFFFFFFFF) # Header: frame_count
     else:
-        rom.write_int32(0x0252FD24, 0x0000003C) # Header: frame_count
+        rom.write_int32(0x0252FD24, 0x0000004A) # Header: frame_count
 
     rom.write_int32s(0x02531320, [0x00000013, 0x0000000E]) # Textbox, Count
     rom.write_int16s(None, [0x0014, 0x0000, 0x0010, 0x0002, 0x088B, 0xFFFF]) # ID, start, end, type, alt1, alt2

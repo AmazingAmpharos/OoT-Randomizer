@@ -562,6 +562,9 @@ sos_handle_item:
     li      a1, 0x65       ;sos Item ID
     jal     0x8006FDCC     ;Item_Give
     nop
+    li      a0, 0x32
+    jal     0x8006D8E0     ;Interface_ChangeAlpha, bring hud back
+    nop
     b       @@common
     nop
 

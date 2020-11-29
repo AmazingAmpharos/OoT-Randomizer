@@ -243,6 +243,7 @@ do that.
 * Fix hints not being readable on Mask of Truth setting.
 * Prevent Collection Delay from the Carpenter Boss when mashing through the text with an item in hand.
 * Gray note songs do not play back when learning them, adding consistency and preventing Sun's Song from causing bugs.
+  With this set of changes to song learning, Sun's Song can now be played right after you learn it and it will function properly.
 * Empty Bomb fix improved to work in all scenarios.
 * Fast warp song hack now sets transition to white fade for consistency.
 * Royal Family Tomb moves out of the way instantly.
