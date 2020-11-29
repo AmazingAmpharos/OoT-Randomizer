@@ -8,7 +8,7 @@ import copy
 
 tab_keys     = ['text', 'app_type', 'footer']
 section_keys = ['text', 'is_colors', 'is_sfx', 'col_span', 'row_span', 'subheader']
-setting_keys = ['hide_when_disabled', 'min', 'max', 'size', 'max_length', 'file_types', 'no_line_break', 'function']
+setting_keys = ['hide_when_disabled', 'min', 'max', 'size', 'max_length', 'file_types', 'no_line_break', 'function', 'option_remove']
 types_with_options = ['Checkbutton', 'Radiobutton', 'Combobox', 'SearchBox']
 
 
@@ -118,6 +118,9 @@ def GetSettingJson(setting, web_version, as_array=False):
         tags_list = []
 
         for option_name in setting_info.choice_list:
+            if option_name in settingJson.get('option_remove', []):
+                continue
+
             if as_array:
                 optionJson = {
                     'name':     option_name,

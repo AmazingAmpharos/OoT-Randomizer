@@ -8,6 +8,8 @@
 00B17BD4 .byt:0004
 00B529A0 skip_GS_BGS_text
 00BAF754 .byt:0044
+00BB05FC .dbl:0004
+00BB0600 .dbl:0004
 00BDA354 @@after_chest_speed_check
 00C6FF64 .byt:0018
 00CC453C .dbl:0004
@@ -18,7 +20,7 @@
 00D7E194 return_from_the_other_function
 00D7E3A4 @@hyrule_check
 00D7E3C0 @@lon_lon_check
-00D7E3DC @@return_false
+00D7E3E8 @@return_false
 00D7E7A4 @@set_ev0
 00D7E7B8 set_ev1
 00D7E8A8 @@unsafe

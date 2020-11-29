@@ -322,8 +322,39 @@
     nop ; was: sh r0, 0x4A6C (v1)
 
 ; prevent increasing alpha when transitioning away from file
-.orga 0xBAE864; In memory: 0x803B2664
+.orga 0xBAE864 ; In memory: 0x803B2664
     nop ; was: sh t5, 0x4A6C (v1)
+
+; change file positions in copy menu
+.orga 0xBB05FC ; In memory: 0x803B43FC
+    .word 0x0000FFC0
+    .word 0xFFB0FFB0
+
+; keep file tag alpha at 0xC8 in copy menu
+.orga 0xBA18C4 ; In memory: 0x803A56C4
+    ori     t4, r0, 0x00C8 ; was: addiu t4, t9, 0xFFE7
+
+.orga 0xBA1980 ; In memory: 0x803A5780
+    ori     t0, r0, 0x00C8 ; was: addiu t0, t9, 0xFFE7
+    
+.orga 0xBA19DC ; In memory: 0x803A57DC
+    nop ; was: sh r0, 0x4A6C (t2)
+    
+.orga 0xBA1E20 ; In memory: 0x803A5C20
+    ori     t5, r0, 0x00C8 ; was: addiu t5, t4, 0x0019
+
+.orga 0xBA18C4 ; In memory: 0x803A56C4
+    ori     t4, r0, 0x00C8 ; was: ori t4, t4, 0x00C8
+
+; keep file tag alpha at 0xC8 in erase menu
+.orga 0xBA34DC ; In memory: 0x803A72DC
+    ori     t8, r0, 0x00C8 ; was: addiu t8, t7, 0xFFE7
+
+.orga 0xBA3654
+    nop ; was: sh r0, 0x4A6C (t6)
+
+.orga 0xBA39D0
+    ori     t5, r0, 0x00C8 ; was: addiu t5, t4, 0x0019
 
 ;==================================================================================================
 ; Special item sources
@@ -921,6 +952,13 @@ skip_GS_BGS_text:
 ; Replaces: addiu   at, zero, 0x0002
 .orga 0xDC8828
     move    at, t5
+
+;==================================================================================================
+; Disable fishing anti-piracy checks
+;==================================================================================================
+; Replaces: sltiu   v0, v0, 1
+.orga 0xDBEC80
+    li      v0, 0
 
 ;==================================================================================================
 ; Bombchus In Logic Hooks
@@ -1690,6 +1728,11 @@ skip_GS_BGS_text:
 .orga 0xBAF4F4
     jal     move_file_3
     or      a0, s0, r0
+
+; Ignore File 3 when checking for available copy slot
+; Replaces: lbu     t6, 0x001C(v0)
+.orga 0xBAA3AC ; In memory: 0x803AE1AC
+    or      t6, a1, r0
 
 ;==================================================================================================
 ; Make Twinrova Wait For Link

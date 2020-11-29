@@ -595,7 +595,7 @@ logic_tricks = {
         'tooltip' : '''\
                     The Fire Temple Boss Door can be reached with a precise
                     jump. You must be touching the side wall of the room so
-                    so that Link will grab the ledge from farther away than
+                    that Link will grab the ledge from farther away than
                     is normally possible.
                     '''},
     'Lake Hylia Lab Dive without Gold Scale': {
@@ -609,15 +609,21 @@ logic_tricks = {
         'name'    : 'logic_biggoron_bolero',
         'tags'    : ("Death Mountain Trail",),
         'tooltip' : '''\
-                    If you do not wear the Goron Tunic, the heat timer
-                    inside the crater will override the trade item's timer.
-                    When you exit to Death Mountain Trail you will have
-                    one second to deliver the Eye Drops before the timer
-                    expires. It works best if you play Bolero as quickly as
-                    possible upon receiving the Eye Drops. If you have few
-                    hearts, there is enough time to dip Goron City to
-                    refresh the heat timer as long as you've already
-                    pulled the block.
+                    Playing a warp song normally causes a trade item to
+                    spoil immediately, however, it is possible use Bolero
+                    to reach Biggoron and still deliver the Eye Drops
+                    before they spoil. If you do not wear the Goron Tunic,
+                    the heat timer inside the crater will override the trade
+                    item's timer. When you exit to Death Mountain Trail you
+                    will have one second to show the Eye Drops before they
+                    expire. You can get extra time to show the Eye Drops if
+                    you warp immediately upon receiving them. If you don't
+                    have many hearts, you may have to reset the heat timer
+                    by quickly dipping in and out of Darunia's chamber.
+                    This trick does not apply if "Randomize Warp Song
+                    Destinations" is enabled, or if the settings are such
+                    that trade items do not need to be delivered within a
+                    time limit.
                     '''},
     'Wasteland Crossing without Hover Boots or Longshot': {
         'name'    : 'logic_wasteland_crossing',
@@ -1120,7 +1126,7 @@ logic_tricks = {
         'name'    : 'logic_water_bk_jump_dive',
         'tags'    : ("Water Temple",),
         'tooltip' : '''\
-                    Stand on the very edge of raised corridor leading from the
+                    Stand on the very edge of the raised corridor leading from the
                     push block room to the rolling boulder corridor. Face the
                     gold skulltula on the waterfall and jump over the boulder
                     corridor floor into the pool of water, swimming right once
@@ -1149,7 +1155,7 @@ logic_tricks = {
                     Hookshot, or Bow, it is possible to skip one or both of
                     those requirements. After the gate has been opened, besides 
                     just using the Iron Boots, a well-timed dive with at least
-                    the Silver Scale could be used swim through the tunnel. If
+                    the Silver Scale could be used to swim through the tunnel. If
                     coming from the serpent river, a jump dive can also be used
                     to get into the tunnel.
                     '''},
@@ -1892,10 +1898,11 @@ setting_infos = [
             required to access the Deku Tree. Items needed for this will be
             guaranteed inside the forest area. This setting is incompatible
             with starting as adult, and so Starting Age will be locked to Child.
-            With "Shuffle Interior Entrances" set to "All" and/or
-            "Shuffle Overworld Entrances" on, Closed Forest will instead be treated
-            as Closed Deku with starting age Child and WILL NOT guarantee that these
-            items are available in the forest area.
+            With either "Shuffle Interior Entrances" set to "All", "Shuffle 
+            Overworld Entrances" on, "Randomize Warp Song Destinations" on 
+            or "Randomize Overworld Spawns" on, Closed Forest will instead 
+            be treated as Closed Deku with starting age Child and WILL NOT 
+            guarantee that these items are available in the forest area.
         ''',
         shared         = True,
         disable        = {
@@ -2130,7 +2137,7 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
         disable        = {
-            True  : {'settings' : ['shuffle_ganon_bosskey']},
+            True  : {'settings' : ['shuffle_ganon_bosskey', 'lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
             False : {'settings' : ['triforce_goal_per_world']}
         },
     ),
@@ -2244,10 +2251,18 @@ setting_infos = [
             of the dungeon. Spirit Temple has TWO items 
             to match vanilla distribution.
 
+            Boss Keys and Fortress Keys only count as 
+            major items if they are shuffled Anywhere 
+            (Keysanity) or in Any Dungeon, and Small 
             Keys only count as major items if they are 
-            shuffled everywhere (ie. in keysanity).
+            shuffled Anywhere (Keysanity). This setting 
+            is disabled if Small Keys are shuffled in 
+            Any Dungeon.
+
             GS Tokens only count as major items if the 
-            bridge requirement is set to "GS Tokens".
+            bridge or LACS requirements are set to 
+            "GS Tokens".
+
             Bombchus only count as major items if they
             are considered in logic.
         ''',
@@ -3704,7 +3719,8 @@ setting_infos = [
             'randomize_key': 'randomize_all_sfx',
             'distribution': [
                 ('random', 1),
-            ]
+            ],
+            'web:option_remove': ['random_custom_only'],
         },
     ),
     Combobox(
@@ -3732,7 +3748,8 @@ setting_infos = [
             'randomize_key': 'randomize_all_sfx',
             'distribution': [
                 ('random', 1),
-            ]
+            ],
+            'web:option_remove': ['random_custom_only'],
         },
     ),
     Checkbutton(

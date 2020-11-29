@@ -1506,7 +1506,7 @@
             "DMC Central Nearby": "
                 can_use(Goron_Tunic) and can_use(Longshot) and 
                 ((damage_multiplier != 'ohko' and damage_multiplier != 'quadruple') or 
-                    (Fairy and not shuffle_dungeon_entrances) or can_use(Nayrus_Love))"
+                    (Fairy and not entrance_shuffle) or can_use(Nayrus_Love))"
         }
     },
     {

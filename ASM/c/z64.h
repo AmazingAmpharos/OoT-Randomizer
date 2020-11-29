@@ -1141,7 +1141,8 @@ typedef struct
   uint16_t          selected_item;            /* 0x1CA2A */
   uint16_t          selected_sub_item;        /* 0x1CA2C */
   uint16_t          menu_depth;               /* 0x1CA2E */
-  char              unk_03_[0x0006];          /* 0x1CA30 */
+  uint16_t          alt_transition;           /* 0x1CA30 */
+  char              unk_03_[0x0004];          /* 0x1CA32 */
   uint16_t          menu_transition;          /* 0x1CA36 */
   uint16_t          selected_file;            /* 0x1CA38 */
   char              unk_04_[0x0008];          /* 0x1CA3A */
@@ -1153,7 +1154,7 @@ typedef struct
     int16_t         options;                  /* 0x1CA4E */
   }                 button_offsets;
   int16_t           unk_05_;                  /* 0x1CA50 */
-  int16_t           disable_copy_erase;       /* 0x1CA52 */
+  int16_t           file_message;             /* 0x1CA52 */
   int16_t           unk_06_;                  /* 0x1CA54 */
   int16_t           message_id[2];            /* 0x1CA56 */
   colorRGB16_t      panel_color;              /* 0x1CA5A */

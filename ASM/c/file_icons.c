@@ -250,7 +250,6 @@ typedef uint8_t digits_t[3];
 typedef struct {
     uint8_t wallet;
     uint8_t double_defense;
-    uint8_t draw_tullas;
     digits_t digits[NUM_COUNTER];
 } counter_tile_info_t;
 
@@ -350,8 +349,8 @@ static void populate_counts(const z64_file_t* file, counter_tile_info_t* counts)
     make_digits(counts->digits[SLOT_RUPEES], (int16_t)file->rupees);
 
     // Skulltulas
-    counts->draw_tullas = file->gold_skulltula != 0;
-    make_digits(counts->digits[SLOT_SKULLTULLAS], counts->draw_tullas ? file->gs_tokens : 0);
+    uint8_t draw_tullas = file->gold_skulltula != 0;
+    make_digits(counts->digits[SLOT_SKULLTULLAS], draw_tullas ? file->gs_tokens : 0);
 
     // Triforce or Boss Key
     int16_t num_triforce_pieces = (int16_t)file->scene_flags[0x48].unk_00_;
@@ -530,9 +529,6 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
     }
 
     // Skulltula
-    if (!info->draw_tullas) {
-        gDPSetPrimColor(db->p++, 0, 0, DIM.r, DIM.g, DIM.b, bright_alpha);
-    }
     sprite_load(db, &quest_items_sprite, 11, 1);
     sprite_draw(db, &quest_items_sprite, 0, get_left(data[SLOT_SKULLTULLAS].pos), get_top(data[SLOT_SKULLTULLAS].pos), COUNTER_ICON_SIZE, COUNTER_ICON_SIZE);
 
@@ -553,17 +549,29 @@ static void draw_counts(z64_disp_buf_t* db, const counter_tile_info_t* info, uin
 
 
 // Get alpha level based on menu transition frame
-static uint8_t get_alpha(uint32_t transition, uint32_t transition_frame) {
-    switch (transition) {
+static uint8_t get_alpha(const z64_menudata_t* menu_data) {
+    uint8_t value = (uint8_t)menu_data->menu_transition;
+    if (value == 0x00) {
+        value = 0x80 | (uint8_t)menu_data->alt_transition;
+    }
+    switch (value) {
         case 0x03:
         case 0x06:
+        case 0x87:
+        case 0x98:
             return 0xC8;
             break;
         case 0x02:
-            return (uint8_t)(((8 - transition_frame) * 0xC8) / 8);
+        case 0x86:
+        case 0x97:
+        case 0x8D:
+            return (uint8_t)(((8 - menu_data->transition_frame) * 0xC8) / 8);
             break;
         case 0x04:
-            return (uint8_t)((transition_frame * 0xC8) / 8);
+        case 0x88:
+        case 0x99:
+        case 0x8A:
+            return (uint8_t)((menu_data->transition_frame * 0xC8) / 8);
             break;
         default:
             return 0x00;
@@ -576,24 +584,26 @@ Entry point
 =============================================================================*/
 
 
-void draw_file_icons(z64_disp_buf_t* db, z64_menudata_t* menu_data) {
-    if (menu_data->menu_depth == 0x02) {
-        if (menu_data->menu_transition == 0x00 && menu_data->transition_frame == 8) {
+void draw_file_icons(z64_disp_buf_t* db, const z64_menudata_t* menu_data) {
+    if (menu_data->transition_frame == 8) {
+        if ((menu_data->menu_transition == 0x00 && menu_data->menu_depth == 0x02)
+                || menu_data->alt_transition == 0x05
+                || menu_data->alt_transition == 0x16) {
             read_file_data(&menu_data->sram_buffer->primary_saves[menu_data->selected_file]);
             return;
         }
-        uint8_t icon_alpha = get_alpha(menu_data->menu_transition, menu_data->transition_frame);
+    }
+    uint8_t icon_alpha = get_alpha(menu_data);
 
-        if (icon_alpha) {
+    if (icon_alpha) {
 
-            gDPPipeSync(db->p++);
-            gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+        gDPPipeSync(db->p++);
+        gDPSetCombineMode(db->p++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
-            draw_fixed(db, &draw_data.fixed, icon_alpha);
-            draw_variable(db, &draw_data.variable, icon_alpha);
-            draw_songs(db, &draw_data.songs, icon_alpha);
-            draw_counts(db, &draw_data.counters, icon_alpha);
-        }
+        draw_fixed(db, &draw_data.fixed, icon_alpha);
+        draw_variable(db, &draw_data.variable, icon_alpha);
+        draw_songs(db, &draw_data.songs, icon_alpha);
+        draw_counts(db, &draw_data.counters, icon_alpha);
     }
 }
 
