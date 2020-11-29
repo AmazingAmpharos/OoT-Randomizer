@@ -101,8 +101,8 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     # Set starting entrance for debugging purposes
     # REMEMBER TO REMOVE THIS IDIOT
     rom.write_int32(0xB06318, 0x00000000)
-    rom.write_bytes(0xB06342, [0x02, 0xAE])
-    rom.write_bytes(0xB06332, [0x02, 0xAE])
+    rom.write_bytes(0xB06342, [0x03, 0x15])
+    rom.write_bytes(0xB06332, [0x03, 0x15])
 
     # Fix GS rewards to be static
     rom.write_int32(0xEA3934, 0)

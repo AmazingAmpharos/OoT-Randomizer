@@ -437,9 +437,28 @@ GET_ITEM_TRIGGERED:
 
 fountain_set_posrot:
     or      a1, s1, r0     ;displaced
-
-    la      t1, GET_ITEM_TRIGGERED
     la      t2, PLAYER_ACTOR
+    lwc1    f4, 0x2C(t2)   ;player z pos
+    li      t3, 0xC43B8000 ;-750.0f
+    mtc1    t3, f6
+    c.lt.s  f4, f6         ;z < 750
+    nop
+    bc1f   @@return        ;return if z > -750
+    nop
+    lwc1    f4, 0x24(t2)   ;player x pos
+    li      t3, 0xC28A0000 ;-69.0f
+    mtc1    t3, f6
+    c.lt.s  f4, f6         ;x < -69
+    nop
+    bc1t   @@return        ;return if x < -69
+    nop
+    li      t3, 0x41C80000 ;25.0f
+    mtc1    t3, f6
+    c.lt.s  f4, f6         ;x < 25
+    nop
+    bc1f   @@return        ;return if x > 25
+    nop
+    la      t1, GET_ITEM_TRIGGERED
     lb      t3, 0x424(t2)  ;Get Item ID
     beqz    t3, @@skip     ;dont set flag if get item is 0
     lb      t6, 0x0(t1)
