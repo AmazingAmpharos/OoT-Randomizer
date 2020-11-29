@@ -97,45 +97,34 @@ do that.
 ### Dev
 
 #### New Features
+
+##### Gameplay
 * New save file screen
-  * Relevant items are shown before hitting 'Yes' to load, instead of just the hearts, magic, dungeon rewards, and deaths, solid if the save has the item or faded if not.
+  * Relevant items are shown before hitting 'Yes' to load, instead of just the hearts, magic, dungeon rewards, and deaths. Icons are solid if the save has the item or faded if not.
   * Triforce pieces aren't shown unless the save has at least 1.
   * The death counter is now placed at the bottom next to a skull.
-* New setting `Skip Some Minigame Phases`
-  * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
-  * Replaces the `Skip First Dampé Race` setting.
-* `Lens of Truth` setting has been removed and replaced with several independent tricks.
-  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
-  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
-  * Shadow Temples are split into two separate areas for these tricks.
-  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
-  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
-* Updated setting `Shuffle Songs`
-  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
-  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
-  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
+* Updated altar text in the Temple of Time
+  * Now provides rainbow bridge requirements and the shuffle mode of Ganon's Castle Boss Key (info otherwise available in the seed settings). These are always available at the altar regardless of Maps/Compass settings.
+  * Removed misleading vanilla text from the child altar.
+* Various Quality of Life improvements
+  * Speed up boulder lifting
+  * Speed up Gold Gauntlet boulder lifting
+  * Speed up learning Windmill song 
+  * Speed up learning Malon's song
+  * Speed up Kakariko gate opening and closing
+  * Twinrova waits for player to reach the top platform before starting, preventing early snipes
+
+##### 'ROM Options' settings
+* New Cosmetic Plandomizer
+  * Use a JSON file to set your cosmetics and sound settings.
+  * We've added lots of new color options to pick from as well!
+* Custom settings presets (must be json) can be placed in `data/Presets` to be automatically loaded in the GUI.
+
+##### New 'Main Rules' settings and options
 * New setting `Kakariko Gate`
   * Allows configuring how the Kakariko Gate and the Happy Mask Shop will open.
   * Default (vanilla) behavior requires showing Zelda's Letter to the guard to open the gate and the shop.
   * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
-* New setting `Complete Mask Quest`
-  * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
-* New setting `Skip Child Zelda`
-  * Skips the Hyrule Castle visit as child, returning Malon and Talon to Lon Lon Ranch and granting Zelda's Letter and the song that Impa provides at the start of the game.
-  * Depending on the `Kakariko Gate` and `Complete Mask Quest` settings, may also start with the gate and shop open and masks available.
-  * Removes the Weird Egg (and prevents `Shuffle Weird Egg`).
-* New options for Key and Map/Compass Shuffle settings
-  * "Overworld Only" will place keys (or maps/compasses) outside of dungeons.
-  * "Any Dungeon" will allow keys (or maps/compasses) to placed in any dungeon, not just the dungeon they belong to!
-  * "Dungeon Only" is renamed "Own Dungeon" for clarity.
-  * Gerudo Fortress Small Keys are configured in a separate setting.
-* New setting `Shuffle Medigoron & Carpet Salesman`
-  * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
-* New options for Rainbow Bridge and Ganon's Boss Key on Light Arrows Cut Scene.
-  * Sliders allow customizing the exact number of stones/medallions/dungeons/tokens required.
-  * Ganon's BK on LACS can now be set to require Gold Skulltula Tokens.
-  * `Randomize Main Rules` won't randomize slider values.
-  * Conditional-always hints check for whether 2 or more dungeon rewards are required, as a backstop.
 * Entrance Randomizer settings overhaul
   * `Entrance Shuffle` setting replaced with the other independent settings here.
   * `Shuffle Interior Entrances`: allows a choice of shuffling simple interiors, all interiors, or none.
@@ -146,13 +135,52 @@ do that.
   * `Randomize Warp Song Destinations`: allows randomizing (to any entrance, not just warp pads!) where each warp song takes you.
   * `Randomize Overworld Spawns`: allows randomizing (per age) where you start when loading a save in the Overworld.
   * All these shuffles and randomizations are fixed when the seed is generated; within a seed it will always be the same each time.
+* New options for `Shuffle Songs`
+  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
+  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
+  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
+* New setting `Shuffle Medigoron & Carpet Salesman`
+  * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
+* New options for Key and Map/Compass Shuffle settings
+  * "Overworld Only" will place keys (or maps/compasses) outside of dungeons.
+  * "Any Dungeon" will allow keys (or maps/compasses) to placed in any dungeon, not just the dungeon they belong to!
+  * "Dungeon Only" is renamed "Own Dungeon" for clarity.
+  * Gerudo Fortress Small Keys are configured in a separate setting.
+* New options for `Rainbow Bridge` and `Ganon's Boss Key on Light Arrows Cut Scene`.
+  * Sliders allow customizing the exact number of stones/medallions/dungeons/tokens required.
+  * Ganon's BK on LACS can now be set to require Gold Skulltula Tokens.
+  * `Randomize Main Rules` won't randomize slider values.
+  * Conditional-always hints check for whether 2 or more dungeon rewards are required, as a backstop.
+
+##### 'Other' settings
+* New setting `Skip Child Zelda`
+  * Skips the Hyrule Castle visit as child, returning Malon and Talon to Lon Lon Ranch and granting Zelda's Letter and the song that Impa provides at the start of the game.
+  * Depending on the `Kakariko Gate` and `Complete Mask Quest` settings, may also start with the gate and shop open and masks available.
+  * Removes the Weird Egg (and prevents `Shuffle Weird Egg`).
+* New setting `Skip Some Minigame Phases`
+  * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
+  * Replaces the `Skip First Dampé Race` setting.
+* New setting `Complete Mask Quest`
+  * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
 * New setting `Fast Bunny Hood`
   * Allows manual toggling on/off of the 1.5x speed boost from MM.
+* New "Hint Distribution" customization options
+  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
+  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
+  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
+  * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
+* Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
+* Tournament hint distribution changes
+  * Grotto stones are disabled and only provide junk hints.
+  * Zelda's Lullaby is never considered for Way of the Hero hints.
+  * Only "always", "Barren", and "WotH" hints have duplicates now.
+  * "Barren" hints will typically be split evenly between dungeon and overworld areas.
+  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 2 barren, 5(remainder) sometimes.
+  * The previous Tournament hint distribution has been renamed "Scrubs Tournament".
 * New setting `Hero Mode`
   * Allows playing without heart drops from enemies or objects. Good luck!!
-* New Cosmetic Plandomizer
-  * Use a JSON file to set your cosmetics and sound settings.
-  * We've added lots of new color options to pick from as well!
+
+##### Cosmetics/SFX
 * New cosmetic settings for HUD button colors
   * These can all be set independently, defaulting to the N64 colors.
 * New cosmetic setting `Item Model Colors Match Cosmetics`
@@ -164,6 +192,15 @@ do that.
   * New Boomerang trail inner & outer color settings, including a "Rainbow" option.
   * New Bombchu trail inner & outer color settings, including a "Rainbow" option.
   * New Mirror Shield Frame color setting.
+* Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
+  
+#### Updated Settings/Tricks
+* `Lens of Truth` setting has been removed and replaced with several independent tricks.
+  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
+  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
+  * Shadow Temples are split into two separate areas for these tricks.
+  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
+  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
 * New tricks
   * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
   * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
@@ -181,7 +218,7 @@ do that.
   * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
   * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
   * `Deku Tree MQ Roll Under the Spiked Log` - roll at the right time to shrink your hintbox. *Previously assumed in logic!*
-  * `Bottom of the Well MQ Jump Over the Pits` - Use a sidehop or backflip to jump over the pits. *Previously assuming in logic!*
+  * `Bottom of the Well MQ Jump Over the Pits` - Use a sidehop or backflip to jump over the pits. *Previously assumed in logic!*
   * `Water Temple MQ Central Pillar with Fire Arrows` - Angled torches have hard-to-hit hitboxes. *Previously assumed in logic!*
   * `Forest Temple MQ Twisted Hallway Switch with Jump Slash` - Hit the switch from above with a jump slash, after getting in place with Hover Boots or some glass blocks. *Previously assumed in logic!*
   * `Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots` - Hover Boots can get you up from a crate.
@@ -207,32 +244,7 @@ do that.
   * `Fire Temple MQ Boulder Maze Side Room without Box` - renamed `Fire Temple MQ Lizalfos Maze Side Room without Box`.
   * `Fire Temple MQ Big Lava Room Blocked Door without Hookshot` - can be done without damage, so it's now allowed in OHKO.
   * `Forest Temple Scarecrow Route` - renamed `Forest Temple East Courtyard Door Frame with Hover Boots` and can be done in Vanilla or MQ.
-* Updated altar text in the Temple of Time
-  * Now provides rainbow bridge requirements and the shuffle mode of Ganon's Castle Boss Key (info otherwise available in the seed settings). These are always available at the altar regardless of Maps/Compass settings.
-  * Removed misleading vanilla text from the child altar.
-* New "Hint Distribution" customization options
-  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
-  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
-  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
-  * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
-* Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
-* Tournament hint distribution changes
-  * Grotto stones are disabled and only provide junk hints.
-  * Zelda's Lullaby is never considered for Way of the Hero hints.
-  * Only "always", "Barren", and "WotH" hints have duplicates now.
-  * "Barren" hints will typically be split evenly between dungeon and overworld areas.
-  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 2 barren, 5(remainder) sometimes.
-* The previous Tournament hint distribution has been renamed "Scrubs Tournament"
-* Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
-* Custom settings presets (must be json) can be placed in `data/Presets` to be automatically loaded in the GUI.
 * Tricks can be filtered in the GUI using a new dropdown.
-* Various Quality of Life improvements
-  * Speed up boulder lifting
-  * Speed up Gold Gauntlet boulder lifting
-  * Speed up learning Windmill song 
-  * Speed up learning Malons song
-  * Speed up Kakariko gate opening and closing
-  * Twinrova waits for player to reach the top platform before starting, preventing early snipes
 
 #### Bug Fixes
 * Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
