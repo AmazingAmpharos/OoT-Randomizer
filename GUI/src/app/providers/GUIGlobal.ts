@@ -521,23 +521,8 @@ export class GUIGlobal {
         console.log("Remote:", remoteVersion);
         result.latestVersion = remoteVersion;
 
-        let currentSplit = res.replace('v', '').replace(' ', '.').split('.');
-        let remoteSplit = remoteVersion.replace('v', '').replace(' ', '.').split('.');
-
         //Compare versions
-        if (Number(remoteSplit[0]) > Number(currentSplit[0])) {
-          result.hasUpdate = true;
-        }
-        else if (Number(remoteSplit[0]) == Number(currentSplit[0])) {
-          if (Number(remoteSplit[1]) > Number(currentSplit[1])) {
-            result.hasUpdate = true;
-          }
-          else if (Number(remoteSplit[1]) == Number(currentSplit[1])) {
-            if (Number(remoteSplit[2]) > Number(currentSplit[2])) {
-              result.hasUpdate = true;
-            }
-          }
-        }
+        result.hasUpdate = this.isVersionNewer(remoteVersion, res);
 
         return result;  
       }
@@ -549,6 +534,28 @@ export class GUIGlobal {
       console.error(err);
       throw Error(err);
     }
+  }
+
+  isVersionNewer(newVersion: string, oldVersion: string) {
+
+    let oldSplit = oldVersion.replace('v', '').replace(' ', '.').split('.');
+    let newSplit = newVersion.replace('v', '').replace(' ', '.').split('.');
+
+    if (Number(newSplit[0]) > Number(oldSplit[0])) {
+      return true;
+    }
+    else if (Number(newSplit[0]) == Number(oldSplit[0])) {
+      if (Number(newSplit[1]) > Number(oldSplit[1])) {
+        return true;
+      }
+      else if (Number(newSplit[1]) == Number(oldSplit[1])) {
+        if (Number(newSplit[2]) > Number(oldSplit[2])) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   findSettingByName(settingName: string) {

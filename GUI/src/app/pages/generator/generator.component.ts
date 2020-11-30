@@ -103,6 +103,8 @@ export class GeneratorComponent implements OnInit {
     //Electron only: Ensure settings string is up-to-date on app launch
     if (this.global.getGlobalVar('electronAvailable'))
       this.getSettingsString();
+    else //Web only: Check if we should auto import settings/presets from a prior version
+      this.checkImportSettings();
   }
 
   runEventListeners() {
@@ -1234,6 +1236,84 @@ export class GeneratorComponent implements OnInit {
         this.cd.markForCheck();
         this.cd.detectChanges();
       }, 0);
+    }
+  }
+
+  checkImportSettings() { //Web only
+
+    let userSettings = null;
+    let isGenerator = this.global.getGlobalVar("appType") == "generator";
+    let storageSettingsKey = isGenerator ? "generatorSettings_" : "patcherSettings_";
+    let currentVersion = this.global.getGlobalVar("webSourceVersion");
+
+    try {
+      userSettings = localStorage.getItem(storageSettingsKey + currentVersion);
+    } catch (err) {
+      console.error("Local storage not available");
+      return;
+    }
+
+    if (!userSettings) {
+
+      //Check if we have a prior version settings map and find the closest one
+      if (localStorage.length) {
+
+        let closestFoundVersion = "";
+
+        for (let i = 0; i < localStorage.length; i++) {
+          let key = localStorage.key(i);
+
+          if (key && key.startsWith(storageSettingsKey)) {
+            let version = key.replace(storageSettingsKey, "");
+
+            if (this.global.isVersionNewer(version, currentVersion) == false)
+              if (!closestFoundVersion || this.global.isVersionNewer(version, closestFoundVersion))
+                closestFoundVersion = version;
+          }
+        }
+
+        if (closestFoundVersion) {
+
+          //Import and reload settings
+          let importedSettings = JSON.parse(localStorage.getItem(storageSettingsKey + closestFoundVersion));
+
+          this.global.applySettingsObject(importedSettings);
+          this.global.saveCurrentSettingsToFile();
+
+          this.recheckAllSettings("", false, true);
+
+          console.log("Imported settings from prior version:", closestFoundVersion, importedSettings);
+
+          //Import presets from the found version in generator mode (if present and current version has none)
+          if (isGenerator) {
+
+            let userPresets = localStorage.getItem("generatorPresets_" + currentVersion);
+
+            if (!userPresets) {
+
+              let importedPresets = localStorage.getItem("generatorPresets_" + closestFoundVersion);
+
+              if (importedPresets && importedPresets.length > 0) {
+
+                importedPresets = JSON.parse(importedPresets);
+
+                //Only import user presets that don't exist yet globally
+                Object.keys(importedPresets).forEach(presetName => {
+                  if (!(presetName in this.global.generator_presets))
+                    this.global.generator_presets[presetName] = { settings: importedPresets[presetName] };
+                });
+
+                this.global.saveCurrentPresetsToFile();
+
+                console.log("Imported presets from prior version:", closestFoundVersion, importedPresets);
+              }
+            }
+          }
+
+          this.cd.markForCheck();
+          this.cd.detectChanges();
+        }
+      }
     }
   }
 }
