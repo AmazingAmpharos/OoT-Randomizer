@@ -987,8 +987,6 @@
                 is_child and (Slingshot or has_bombchus or 
                     (logic_kakariko_tower_gs and (Sticks or Kokiri_Sword) and
                     (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))) and at_night",
-            "Kak GS Above Impas House": "
-                (can_use(Hookshot) or (logic_kakariko_rooftop_gs and can_use(Hover_Boots))) and at_night",
             "Bug Rock": "has_bottle"
         },
         "exits": {
@@ -1004,7 +1002,9 @@
             "Kak Potion Shop Front": "is_child or at_day",
             "Kak Redead Grotto": "can_open_bomb_grotto",
             "Kak Impas Ledge": "
-                (is_child and at_day) or (is_adult and logic_visible_collisions) or can_use(Hookshot)",
+                (is_child and at_day) or (is_adult and logic_visible_collisions)",
+            "Kak Impas Rooftop": "
+                can_use(Hookshot) or (logic_kakariko_rooftop_gs and can_use(Hover_Boots))",
             "Kak Odd Medicine Rooftop": "
                 can_use(Hookshot) or 
                 (logic_man_on_roof and 
@@ -1022,6 +1022,18 @@
         "hint": "Kakariko Village",
         "exits": {
             "Kak Impas House Back": "True",
+            "Kakariko Village": "True"
+        }
+    },
+    {
+        "region_name": "Kak Impas Rooftop",
+        "scene": "Kakariko Village",
+        "hint": "Kakariko Village",
+        "locations": {
+            "Kak GS Above Impas House": "is_adult and at_night"
+        },
+        "exits": {
+            "Kak Impas Ledge": "True",
             "Kakariko Village": "True"
         }
     },
@@ -1356,7 +1368,7 @@
         "region_name": "DMT Owl Flight",
         "scene": "Death Mountain",
         "exits": {
-            "Kak Impas Ledge": "True"
+            "Kak Impas Rooftop": "True"
         }
     },
     {
