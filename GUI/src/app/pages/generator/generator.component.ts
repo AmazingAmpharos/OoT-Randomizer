@@ -104,7 +104,7 @@ export class GeneratorComponent implements OnInit {
     if (this.global.getGlobalVar('electronAvailable'))
       this.getSettingsString();
     else //Web only: Check if we should auto import settings/presets from a prior version
-      this.checkImportSettings();
+      this.checkAutoImportSettings();
   }
 
   runEventListeners() {
@@ -1239,7 +1239,7 @@ export class GeneratorComponent implements OnInit {
     }
   }
 
-  checkImportSettings() { //Web only
+  checkAutoImportSettings() { //Web only
 
     let userSettings = null;
     let isGenerator = this.global.getGlobalVar("appType") == "generator";
@@ -1274,12 +1274,10 @@ export class GeneratorComponent implements OnInit {
 
         if (closestFoundVersion) {
 
-          //Import and reload settings
+          //Import settings
           let importedSettings = JSON.parse(localStorage.getItem(storageSettingsKey + closestFoundVersion));
 
           this.global.applySettingsObject(importedSettings);
-          this.global.saveCurrentSettingsToFile();
-
           this.recheckAllSettings("", false, true);
 
           console.log("Imported settings from prior version:", closestFoundVersion, importedSettings);
@@ -1310,8 +1308,8 @@ export class GeneratorComponent implements OnInit {
             }
           }
 
-          this.cd.markForCheck();
-          this.cd.detectChanges();
+          //Refresh GUI
+          this.afterSettingChange();
         }
       }
     }

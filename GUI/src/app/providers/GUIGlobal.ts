@@ -538,9 +538,25 @@ export class GUIGlobal {
 
   isVersionNewer(newVersion: string, oldVersion: string) {
 
+    //Strip away dev strings
+    if (oldVersion.startsWith("dev_"))
+      oldVersion = oldVersion.replace('dev_', '');
+
+    if (newVersion.startsWith("dev_"))
+      newVersion = newVersion.replace('dev_', '');
+
     let oldSplit = oldVersion.replace('v', '').replace(' ', '.').split('.');
     let newSplit = newVersion.replace('v', '').replace(' ', '.').split('.');
 
+    //Version is not newer if the new version doesn't satisfy the format
+    if (newSplit.length < 3)
+      return false;
+
+    //Version is newer if the old version doesn't satisfy the format
+    if (oldSplit.length < 3)
+      return true;
+
+    //Compare major.minor.revision
     if (Number(newSplit[0]) > Number(oldSplit[0])) {
       return true;
     }
