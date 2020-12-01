@@ -296,7 +296,7 @@ hintTable = {
     'HF Cow Grotto Cow':                                           ("the #cobwebbed cow# gifts", "a #cow behind webs# in a grotto gifts", ['overworld', 'sometimes']),
     'ZF GS Hidden Cave':                                           ("a spider high #above the icy waters# holds", None, ['overworld', 'sometimes']),
     'Wasteland Chest':                                             (["#deep in the wasteland# is", "beneath #the sands#, flames reveal"], None, ['overworld', 'sometimes']),
-    'Colossus GS Bean Patch':                                      ("a #spider buried in the wasteland# holds", None, ['overworld', 'sometimes']),
+    'Wasteland GS':                                                ("a #spider in the wasteland# holds", None, ['overworld', 'sometimes']),
     'Graveyard Composers Grave Chest':                             (["#flames in the Composers' Grave# reveal", "the #Composer Brothers hid#"], None, ['overworld', 'sometimes']),
     'ZF Bottom Freestanding PoH':                                  ("#under the icy waters# lies", None, ['overworld', 'sometimes']),
     'GC Pot Freestanding PoH':                                     ("spinning #Goron pottery# contains", None, ['overworld', 'sometimes']),
@@ -875,7 +875,7 @@ hintTable = {
     'GF GS Archery Range':                                         ("night reveals a #spider in a fortress# holding", None, 'exclude'),
     'GF GS Top Floor':                                             ("night reveals a #spider in a fortress# holding", None, 'exclude'),
 
-    'Wasteland GS':                                                ("a #spider in the Wasteland# holds", None, 'exclude'),
+    'Colossus GS Bean Patch':                                      ("a #spider buried in the desert# holds", None, 'exclude'),
     'Colossus GS Hill':                                            ("night reveals a #spider deep in the desert# holding", None, 'exclude'),
     'Colossus GS Tree':                                            ("night reveals a #spider deep in the desert# holding", None, 'exclude'),
 
