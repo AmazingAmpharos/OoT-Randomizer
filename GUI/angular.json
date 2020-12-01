@@ -35,11 +35,11 @@
               "node_modules/nebular-icons/scss/nebular-icons.scss",
               "node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss",
               "node_modules/@fortawesome/fontawesome-free/scss/brands.scss",
-              "node_modules/pace-js/templates/pace-theme-flash.tmpl.css",
+              "node_modules/pace-progress/templates/pace-theme-flash.tmpl.css",
               "src/app/@theme/styles/styles.scss"
             ],
             "scripts": [
-              "node_modules/pace-js/pace.min.js"
+              "node_modules/pace-progress/pace.min.js"
             ],
             "es5BrowserSupport": true
           },

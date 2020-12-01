@@ -137,7 +137,7 @@
     "ngx-color-picker": "https://github.com/dragonbane0/ngx-color-picker/tarball/7471e8595e5bf508813c5f6b1964e53ac9902448",
     "node-sass": "4.14.1",
     "normalize.css": "6.0.0",
-    "pace-js": "1.0.2",
+    "pace-progress": "https://github.com/dragonbane0/pace/tarball/bcbd25563bf6193b223f856dc1668c0705fd8710",
     "popper.js": "1.15.0",
     "protractor": "5.4.2",
     "roboto-fontface": "0.8.0",
