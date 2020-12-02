@@ -456,5 +456,6 @@ class TestValidSpoilers(unittest.TestCase):
                     with open(settings_file, 'w') as f:
                         d = {k: settings.__dict__[k] for k in out_keys}
                         json.dump(d, f, indent=0)
+                    logging.getLogger('').exception(f'Failed to generate with these settings:\n{settings.get_settings_display()}\n')
                     raise
 
