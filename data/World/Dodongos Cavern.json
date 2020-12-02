@@ -5,7 +5,7 @@
         "exits": {
             "Death Mountain": "True",
             "Dodongos Cavern Lobby": "
-                here(can_blast_or_smash) or Progressive_Strength_Upgrade"
+                here(can_blast_or_smash or Progressive_Strength_Upgrade)"
         }
     },
     {
