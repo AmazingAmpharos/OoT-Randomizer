@@ -1,0 +1,7 @@
+{
+"create_spoiler": true,
+"compress_rom": "None",
+"trials": 4,
+"hints": "always",
+"hint_dist": "tournament"
+}

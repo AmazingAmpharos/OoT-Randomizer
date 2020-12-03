@@ -826,8 +826,11 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     while stoneGroups:
         if fixed_hint_types:
             hint_type = fixed_hint_types.pop(0)
-            if hint_dist[hint_type][1] > len(stoneGroups):
-                raise Exception('Not enough gossip stone locations for fixed hint type %s.' % hint_type)
+            copies = hint_dist[hint_type][1]
+            if copies > len(stoneGroups):
+                # Quiet to avoid leaking information.
+                logging.getLogger('').debug(f'Not enough gossip stone locations ({len(stoneGroups)} groups) for fixed hint type {hint_type} with {copies} copies, proceeding with available stones.')
+                copies = len(stoneGroups)
         else:
             custom_fixed = False
             # Make sure there are enough stones left for each hint type
@@ -856,6 +859,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
                     weighted_hint_prob.append(p)
 
                 hint_type = random_choices(hint_types, weights=weighted_hint_prob)[0]
+                copies = hint_dist[hint_type][1]
             except IndexError:
                 raise Exception('Not enough valid hints to fill gossip stone locations.')
 
@@ -866,10 +870,10 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             hint_prob[index] = 0
             # Zero out the probability in the base distribution in case the probability list is modified
             # to fit hint types in remaining gossip stones
-            hint_dist[hint_type] = (0.0, hint_dist[hint_type][1])
+            hint_dist[hint_type] = (0.0, copies)
         else:
             gossip_text, location = hint
-            place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, hint_dist[hint_type][1], location)
+            place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, copies, location)
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
                 if location is None:
