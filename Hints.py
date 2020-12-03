@@ -1025,27 +1025,33 @@ def get_raw_text(string):
             text += char
     return text
 
+
+def HintDistFiles():
+    return [os.path.join(data_path('Hints/'), d)
+            for d in os.listdir(data_path('Hints/'))
+            if d.endswith('.json')]
+
+
 def HintDistList():
-    dists_json = os.listdir(data_path('Hints/'))
     dists = {}
-    for d in dists_json:
-        dist = read_json(os.path.join(data_path('Hints/'), d))
+    for d in HintDistFiles():
+        dist = read_json(d)
         dist_name = dist['name']
         gui_name = dist['gui_name']
         dists.update({ dist_name: gui_name })
     return dists
 
+
 def HintDistTips():
-    dists_json = os.listdir(data_path('Hints/'))
     tips = ""
     first_dist = True
     line_char_limit = 33
-    for d in dists_json:
+    for d in HintDistFiles():
         if not first_dist:
             tips = tips + "\n"
         else:
             first_dist = False
-        dist = read_json(os.path.join(data_path('Hints/'), d))
+        dist = read_json(d)
         gui_name = dist['gui_name']
         desc = dist['description']
         i = 0

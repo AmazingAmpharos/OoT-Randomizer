@@ -6,7 +6,7 @@ import os
 from DungeonList import create_dungeons
 from Entrance import Entrance
 from HintList import getRequiredHints
-from Hints import get_hint_area, hint_dist_keys
+from Hints import get_hint_area, hint_dist_keys, HintDistFiles
 from Item import Item, ItemFactory, MakeEventItem
 from ItemList import item_table
 from Location import Location, LocationFactory
@@ -115,9 +115,8 @@ class World(object):
         self.resolve_random_settings()
 
         if len(settings.hint_dist_user) == 0:
-            dists_json = os.listdir(data_path('Hints/'))
-            for d in dists_json:
-                dist = read_json(os.path.join(data_path('Hints/'), d))
+            for d in HintDistFiles():
+                dist = read_json(d)
                 if dist['name'] == self.hint_dist:
                     self.hint_dist_user = dist
         else:
