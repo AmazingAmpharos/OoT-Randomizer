@@ -44,8 +44,8 @@ location_table = OrderedDict([
     ("Phantom Ganon",                                   ("Boss",        None,  0x66, (0x0CA3D07, 0x0D4ED79),   None)),
     ("Volvagia",                                        ("Boss",        None,  0x67, (0x0CA3D93, 0x0D10135),   None)),
     ("Morpha",                                          ("Boss",        None,  0x68, (0x0CA3E1F, 0x0D5A3A9),   None)),
-    ("Twinrova",                                        ("Boss",        None,  0x69, (0x0CA3EB3, 0x0D39FF1),   None)),
     ("Bongo Bongo",                                     ("Boss",        None,  0x6A, (0x0CA3F43, 0x0D13E19),   None)),
+    ("Twinrova",                                        ("Boss",        None,  0x69, (0x0CA3EB3, 0x0D39FF1),   None)),
     ("Ganon",                                           ("Event",       None,  None, None,                     None)),
 
     ## Songs
