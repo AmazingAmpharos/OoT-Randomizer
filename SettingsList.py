@@ -2212,8 +2212,7 @@ setting_infos = [
             to be reachable.
 
             'All': The randomizer will guarantee that every item is
-            obtainable and every location is reachable. In other words,
-            you will be able to 100% the game.
+            obtainable and every location is reachable.
 
             'All Goals': The randomizer will guarantee that every
             goal item is obtainable, not just the amount required to
@@ -2223,14 +2222,10 @@ setting_infos = [
             set to 1 Medallion and Ganon's Boss Key to 1 Gold
             Skulltula Token, all 6 Medallions and all 100 Tokens will
             be obtainable. In Triforce Hunt, this will instead
-            guarantee that all Triforce Pieces can be obtained. You
-            can think of this as the setting that guarantees that
-            you'll be able to beat all dungeons, when used with the
-            appropriate Rainbow Bridge and Ganon Boss Key requirements.
+            guarantee that all Triforce Pieces can be obtained.
 
             'Required Only': Only required items and locations
-            to beat the game will be guaranteed reachable. In other
-            words, you will be able to Any% the game.
+            to beat the game will be guaranteed reachable.
         ''',
         gui_params={
             "hide_when_disabled": True,
