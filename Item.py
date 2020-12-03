@@ -158,6 +158,7 @@ class Item(object):
             return self.world.bridge == 'tokens' or self.world.lacs_condition == 'tokens'
         #TODO check Bingo goals
 
+
     def __str__(self):
         return str(self.__unicode__())
 

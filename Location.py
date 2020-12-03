@@ -1,4 +1,3 @@
-
 from LocationList import location_table, location_is_viewable
 from Region import TimeOfDay
 from enum import Enum
