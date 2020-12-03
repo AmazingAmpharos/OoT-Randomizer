@@ -228,9 +228,9 @@
           "name": "main_section",
           "text": "",
           "col_span": 4,
-          "row_span": [1,1,1],
+          "row_span": [2,2,2],
           "settings": [
-            "all_reachable",
+            "reachable_locations",
             "logic_no_night_tokens_without_suns_song"
           ]
         },

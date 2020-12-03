@@ -42,7 +42,7 @@
     "shuffle_bosskeys": "dungeon",
     "shuffle_ganon_bosskey": "remove",
     "enhance_map_compass": false,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": true,
     "disabled_locations": [
       "Deku Theater Mask of Truth",
@@ -137,7 +137,7 @@
     "lacs_rewards": 9,
     "lacs_tokens": 100,
     "enhance_map_compass": false,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": false,
     "disabled_locations": [
       "Deku Theater Mask of Truth"
@@ -240,7 +240,7 @@
     "shuffle_bosskeys": "dungeon",
     "shuffle_ganon_bosskey": "remove",
     "enhance_map_compass": false,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": false,
     "disabled_locations": [
       "Deku Theater Mask of Truth"
@@ -347,7 +347,7 @@
     "lacs_rewards": 9,
     "lacs_tokens": 100,
     "enhance_map_compass": false,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": false,
     "disabled_locations": [
         "Deku Theater Mask of Truth"
@@ -448,7 +448,7 @@
     "shuffle_bosskeys": "dungeon",
     "shuffle_ganon_bosskey": "remove",
     "enhance_map_compass": false,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": false,
     "disabled_locations": [
       "Kak 40 Gold Skulltula Reward",
@@ -551,7 +551,7 @@
     "lacs_rewards": 9,
     "lacs_tokens": 100,
     "enhance_map_compass": true,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": false,
     "disabled_locations": [
         "Deku Theater Skull Mask",
@@ -638,7 +638,7 @@
     "shuffle_bosskeys": "keysanity",
     "shuffle_ganon_bosskey": "keysanity",
     "enhance_map_compass": true,
-    "all_reachable": false,
+    "reachable_locations": "beatable",
     "logic_no_night_tokens_without_suns_song": false,
     "disabled_locations": [],
     "allowed_tricks": [

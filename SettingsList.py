@@ -2174,7 +2174,7 @@ setting_infos = [
             'glitchless': 'Glitchless',
             'glitched':   'Glitched',
             'none':       'No Logic',
-            },
+        },
         gui_tooltip    = '''\
             Logic provides guiding sets of rules for world generation
             which the Randomizer uses to ensure the generated seeds 
@@ -2194,22 +2194,44 @@ setting_infos = [
             'glitched'  : {'settings' : ['allowed_tricks', 'shuffle_interior_entrances', 'shuffle_grotto_entrances',
                                          'shuffle_dungeon_entrances', 'shuffle_overworld_entrances', 'owl_drops',
                                          'warp_songs', 'spawn_positions', 'mq_dungeons_random', 'mq_dungeons', ]},
-            'none'      : {'settings' : ['allowed_tricks', 'logic_no_night_tokens_without_suns_song', 'all_reachable']},
+            'none'      : {'settings' : ['allowed_tricks', 'logic_no_night_tokens_without_suns_song', 'reachable_locations']},
         },
         shared         = True,
     ),
-    Checkbutton(
-        name           = 'all_reachable',
-        gui_text       = 'All Locations Reachable',
+    Combobox(
+        name           = 'reachable_locations',
+        gui_text       = 'Guarantee Reachable Locations',
+        default        = 'all',
+        choices        = {
+            'all':      'All',
+            'goals':    'All Goals',
+            'beatable': 'Required Only',
+        },
         gui_tooltip    = '''\
-            When this option is enabled, the randomizer will
-            guarantee that every item is obtainable and every
-            location is reachable.
+            This determines which items and locations are guaranteed
+            to be reachable.
 
-            When disabled, only required items and locations
-            to beat the game will be guaranteed reachable.
+            'All': The randomizer will guarantee that every item is
+            obtainable and every location is reachable. In other words,
+            you will be able to 100% the game.
+
+            'All Goals': The randomizer will guarantee that every
+            goal item is obtainable, not just the amount required to
+            beat the game, but otherwise behaves like 'Required Only'.
+            Goal items are the items required for the rainbow bridge
+            and/or Ganon's Boss Key, so for example if the bridge is
+            set to 1 Medallion and Ganon's Boss Key to 1 Gold
+            Skulltula Token, all 6 Medallions and all 100 Tokens will
+            be obtainable. In Triforce Hunt, this will instead
+            guarantee that all Triforce Pieces can be obtained. You
+            can think of this as the setting that guarantees that
+            you'll be able to beat all dungeons, when used with the
+            appropriate Rainbow Bridge and Ganon Boss Key requirements.
+
+            'Required Only': Only required items and locations
+            to beat the game will be guaranteed reachable. In other
+            words, you will be able to Any% the game.
         ''',
-        default        = True,
         gui_params={
             "hide_when_disabled": True,
         },

@@ -50,7 +50,7 @@ class World(object):
 
         # rename a few attributes...
         self.keysanity = self.shuffle_smallkeys in ['keysanity', 'remove', 'any_dungeon', 'overworld']
-        self.check_beatable_only = not self.all_reachable
+        self.check_beatable_only = self.reachable_locations != 'all'
 
         self.shuffle_special_interior_entrances = self.shuffle_interior_entrances == 'all'
         self.shuffle_interior_entrances = self.shuffle_interior_entrances in ['simple', 'all']

@@ -31,7 +31,7 @@
     "shuffle_bosskeys": "dungeon",
     "shuffle_ganon_bosskey": "lacs_medallions",
     "enhance_map_compass": false,
-    "all_reachable": true,
+    "reachable_locations": "all",
     "logic_no_night_tokens_without_suns_song": false,
     "logic_lens": "chest",
     "disabled_locations": [],
