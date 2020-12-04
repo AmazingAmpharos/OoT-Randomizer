@@ -33,13 +33,16 @@ the user wishes a pre-decompressed ROM may be supplied as input. Please be sure 
 playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
 impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, there are three recommended emulators: [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch), 
-[Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk) and [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64). 
-In a nutshell the differences are: Bizhawk is resource-intensive, but easy to set up and the only emulator to support 
-[Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive but can be frustrating to set up; 
-Project64 is easy to set up and the least resource-intensive, but versions compatible with OoTR are banned for races organized by our community. 
-Please follow the guides on our wiki carefully to ensure a stable game experience. For questions and tech support we kindly refer you to our 
-[Discord](https://discord.gg/q6m6kzK).
+For general use, there are three recommended emulators: [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64), 
+[Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk) and [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch).
+In a nutshell the differences are: Project64 is the lightest emulator and the easiest to setup, however only v2.4+ runs OoTR well and it is also the 
+only stable version that is allowed for races; Bizhawk is the most resource-intensive, but easier to set up than RetroArch and the only race-legal emulator 
+to support [Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive than Bizhawk and the only of these 
+three to work on platforms other than Windows, but it can be frustrating to set up; Please follow 
+[the guides on our wiki](https://wiki.ootrandomizer.com/index.php?title=Setup#Emulators) carefully to ensure a stable game experience and that 
+[the settings requirements](https://wiki.ootrandomizer.com/index.php?title=Racing#Emulator_Settings_Requirements) for races are met. OoTR can also be run on
+an N64 using an [EverDrive](https://wiki.ootrandomizer.com/index.php?title=Everdrive), or on Wii Virtual Console. For questions and tech support we kindly 
+refer you to our [Discord](https://discord.gg/q6m6kzK).
 
 ## General Description
 
