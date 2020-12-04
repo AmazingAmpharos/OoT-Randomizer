@@ -2208,24 +2208,17 @@ setting_infos = [
             'beatable': 'Required Only',
         },
         gui_tooltip    = '''\
-            This determines which items and locations are guaranteed
-            to be reachable.
+            This determines which items and locations are guaranteed to be reachable.
 
-            'All': The randomizer will guarantee that every item is
-            obtainable and every location is reachable.
+            'All': The randomizer will guarantee that every item is obtainable and every location is reachable.
 
-            'All Goals': The randomizer will guarantee that every
-            goal item is obtainable, not just the amount required to
-            beat the game, but otherwise behaves like 'Required Only'.
-            Goal items are the items required for the rainbow bridge
-            and/or Ganon's Boss Key, so for example if the bridge is
-            set to 1 Medallion and Ganon's Boss Key to 1 Gold
-            Skulltula Token, all 6 Medallions and all 100 Tokens will
-            be obtainable. In Triforce Hunt, this will instead
-            guarantee that all Triforce Pieces can be obtained.
+            'All Goals': The randomizer will guarantee that every goal item is obtainable, not just the amount required
+            to beat the game, but otherwise behaves like 'Required Only'.
+            Goal items are the items required for the rainbow bridge and/or Ganon's Boss Key, so for example if the bridge is
+            set to 1 Medallion and Ganon's Boss Key to 1 Gold Skulltula Token, all 6 Medallions and all 100 Tokens will
+            be obtainable. In Triforce Hunt, this will also guarantee that all Triforce Pieces can be obtained.
 
-            'Required Only': Only required items and locations
-            to beat the game will be guaranteed reachable.
+            'Required Only': Only required items and locations to beat the game will be guaranteed reachable.
         ''',
         gui_params={
             "hide_when_disabled": True,
