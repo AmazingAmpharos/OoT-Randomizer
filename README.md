@@ -40,7 +40,7 @@ only stable version that is allowed for races; Bizhawk is the most resource-inte
 to support [Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive than Bizhawk and the only of these 
 three to work on platforms other than Windows, but it can be frustrating to set up; Please follow 
 [the guides on our wiki](https://wiki.ootrandomizer.com/index.php?title=Setup#Emulators) carefully to ensure a stable game experience and that 
-[the settings requirements](https://wiki.ootrandomizer.com/index.php?title=Racing#Emulator_Settings_Requirements) for races are met. OoTR can also be run on
+[the settings requirements for races](https://wiki.ootrandomizer.com/index.php?title=Racing#Emulator_Settings_Requirements) are met. OoTR can also be run on
 an N64 using an [EverDrive](https://wiki.ootrandomizer.com/index.php?title=Everdrive), or on Wii Virtual Console. For questions and tech support we kindly 
 refer you to our [Discord](https://discord.gg/q6m6kzK).
 
