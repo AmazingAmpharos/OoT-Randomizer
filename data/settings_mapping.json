@@ -210,6 +210,7 @@
             "shuffle_fortresskeys",
             "shuffle_bosskeys",
             "shuffle_ganon_bosskey",
+            "lacs_condition",
             "lacs_medallions",
             "lacs_stones",
             "lacs_rewards",
