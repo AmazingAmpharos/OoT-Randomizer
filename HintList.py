@@ -1114,7 +1114,7 @@ hintTable = {
     'ZD Storms Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
     'GF Storms Grotto':                                         ("a small #Fairy Fountain#", None, 'region'),
 
-    '1001':                                                     ("Ganondorf 2020!", None, 'junk'),
+    '1001':                                                     ("Ganondorf 2022!", None, 'junk'),
     '1002':                                                     ("They say that monarchy is a terrible system of governance.", None, 'junk'),
     '1003':                                                     ("They say that Zelda is a poor leader.", None, 'junk'),
     '1004':                                                     ("These hints can be quite useful. This is an exception.", None, 'junk'),
