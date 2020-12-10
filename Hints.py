@@ -24,6 +24,9 @@ bingoBottlesForHints = (
     "Bottle with Big Poe", "Bottle with Poe",
 )
 
+defaultHintDists = [
+    'balanced.json', 'bingo.json', 'scrubs.json', 'strong.json', 'tournament.json', 'useless.json', 'very_strong.json'
+]
 
 class RegionRestriction(Enum):
     NONE = 0,
@@ -1031,9 +1034,10 @@ def get_raw_text(string):
 
 
 def HintDistFiles():
-    return [os.path.join(data_path('Hints/'), d)
-            for d in os.listdir(data_path('Hints/'))
-            if d.endswith('.json')]
+    return [os.path.join(data_path('Hints/'), d) for d in defaultHintDists] + [
+            os.path.join(data_path('Hints/'), d)
+            for d in sorted(os.listdir(data_path('Hints/')))
+            if d.endswith('.json') and d not in defaultHintDists]
 
 
 def HintDistList():

@@ -98,6 +98,10 @@ do that.
 
 ## Changelog
 
+### Dev
+
+* Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
+
 ### 6.0
 
 #### New Features
