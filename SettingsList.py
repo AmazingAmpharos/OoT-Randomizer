@@ -2265,6 +2265,11 @@ setting_infos = [
 
             Bombchus only count as major items if they
             are considered in logic.
+
+            This setting has potential to conflict with
+            other randomizer settings. Should seeds fail
+            to generate continuously, consider turning this
+            option off.
         ''',
         shared         = True,
         gui_params     = {
