@@ -1179,6 +1179,7 @@ hintTable = {
     '1068':                                                     ("They say Ganon's tail is vulnerable to nuts, arrows, swords, explosives, hammers...^...sticks, seeds, boomerangs...^...rods, shovels, iron balls, angry bees...", None, 'junk'),
     '1069':                                                     ("They say that you're wasting time reading this hint, but I disagree. Talk to me again!", None, 'junk'),
     '1070':                                                     ("They say Ganondorf knows where to find the instrument of his doom.", None, 'junk'),
+    '1071':                                                     ("I heard @ is pretty good at Zelda.", None, 'junk'),
 
     'Deku Tree':                                                ("an ancient tree", "Deku Tree", 'dungeonName'),
     'Dodongos Cavern':                                          ("an immense cavern", "Dodongo's Cavern", 'dungeonName'),
@@ -1191,7 +1192,7 @@ hintTable = {
     'Ice Cavern':                                               ("a frozen maze", "Ice Cavern", 'dungeonName'),
     'Bottom of the Well':                                       ("a shadow\'s prison", "Bottom of the Well", 'dungeonName'),
     'Gerudo Training Grounds':                                  ("the test of thieves", "Gerudo Training Grounds", 'dungeonName'),
-    'Ganons Castle':                                            ("a conquered citadel", "Ganon's Castle", 'dungeonName'),
+    'Ganons Castle':                                            ("a conquered citadel", "Inside Ganon's Castle", 'dungeonName'),
     
     'Queen Gohma':                                              ("One inside an #ancient tree#...", "One in the #Deku Tree#...", 'boss'),
     'King Dodongo':                                             ("One within an #immense cavern#...", "One in #Dodongo's Cavern#...", 'boss'),
