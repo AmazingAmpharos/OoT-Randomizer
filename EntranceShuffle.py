@@ -477,7 +477,7 @@ def shuffle_random_entrances(worlds):
 
         # Shuffle all entrances among the pools to shuffle
         for pool_type, entrance_pool in one_way_entrance_pools.items():
-            shuffle_entrance_pool(world, worlds, entrance_pool, one_way_target_entrance_pools[pool_type], locations_to_ensure_reachable, check_all=True)
+            shuffle_entrance_pool(world, worlds, entrance_pool, one_way_target_entrance_pools[pool_type], locations_to_ensure_reachable, check_all=True, retry_count=5)
             # Delete all targets that we just placed from other one way target pools so multiple one way entrances don't use the same target
             replaced_entrances = [entrance.replaces for entrance in entrance_pool]
             for remaining_target in chain.from_iterable(one_way_target_entrance_pools.values()):
