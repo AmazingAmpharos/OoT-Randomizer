@@ -466,7 +466,7 @@ def shuffle_random_entrances(worlds):
                         break
 
         # Place priority entrances
-        shuffle_one_way_priority_entrances(worlds, one_way_priorities, one_way_entrance_pools, one_way_target_entrance_pools, locations_to_ensure_reachable, complete_itempool, retry_count=2)
+        shuffle_one_way_priority_entrances(worlds, world, one_way_priorities, one_way_entrance_pools, one_way_target_entrance_pools, locations_to_ensure_reachable, complete_itempool, retry_count=2)
 
         # Delete all targets that we just placed from one way target pools so multiple one way entrances don't use the same target
         replaced_entrances = [entrance.replaces for entrance in chain.from_iterable(one_way_entrance_pools.values())]
@@ -517,14 +517,14 @@ def shuffle_random_entrances(worlds):
             raise EntranceShuffleError('Worlds are not valid after shuffling entrances, Reason: %s' % error)
 
 
-def shuffle_one_way_priority_entrances(worlds, one_way_priorities, one_way_entrance_pools, one_way_target_entrance_pools, locations_to_ensure_reachable, complete_itempool, retry_count=2):
+def shuffle_one_way_priority_entrances(worlds, world, one_way_priorities, one_way_entrance_pools, one_way_target_entrance_pools, locations_to_ensure_reachable, complete_itempool, retry_count=2):
     while retry_count:
         retry_count -= 1
         rollbacks = []
 
         try:
             for key, (regions, types) in one_way_priorities.items():
-                place_one_way_priority_entrance(worlds, key, regions, types, rollbacks, locations_to_ensure_reachable, complete_itempool, one_way_entrance_pools, one_way_target_entrance_pools)
+                place_one_way_priority_entrance(worlds, world, key, regions, types, rollbacks, locations_to_ensure_reachable, complete_itempool, one_way_entrance_pools, one_way_target_entrance_pools)
 
             # If all entrances could be connected without issues, log connections and continue
             for entrance, target in rollbacks:
@@ -534,10 +534,10 @@ def shuffle_one_way_priority_entrances(worlds, one_way_priorities, one_way_entra
         except EntranceShuffleError as error:
             for entrance, target in rollbacks:
                 restore_connections(entrance, target)
-            logging.getLogger('').info('Failed to place all priority one-way entrances for world %d. Will retry %d more times', one_way_entrance_pool[0].world.id, retry_count)
+            logging.getLogger('').info('Failed to place all priority one-way entrances for world %d. Will retry %d more times', world.id, retry_count)
             logging.getLogger('').info('\t%s' % error)
 
-    raise EntranceShuffleError('Priority one-way entrance placement attempt count exceeded for world %d' % one_way_entrance_pool[0].world.id)
+    raise EntranceShuffleError('Priority one-way entrance placement attempt count exceeded for world %d' % world.id)
 
 
 # Shuffle all entrances within a provided pool
@@ -633,7 +633,7 @@ def replace_entrance(worlds, entrance, target, rollbacks, locations_to_ensure_re
 # Connect one random entrance from entrance pools to one random target in the respective target pool.
 # Entrance chosen will have one of the allowed types.
 # Target chosen will lead to one of the allowed regions.
-def place_one_way_priority_entrance(worlds, priority_name, allowed_regions, allowed_types, rollbacks, locations_to_ensure_reachable, complete_itempool, one_way_entrance_pools, one_way_target_entrance_pools):
+def place_one_way_priority_entrance(worlds, world, priority_name, allowed_regions, allowed_types, rollbacks, locations_to_ensure_reachable, complete_itempool, one_way_entrance_pools, one_way_target_entrance_pools):
     # Combine the entrances for allowed types in one list.
     # Shuffle this list.
     # Pick the first one not already set, not adult spawn, that has a valid target entrance.
@@ -648,12 +648,16 @@ def place_one_way_priority_entrance(worlds, priority_name, allowed_regions, allo
         if entrance.parent_region.name == 'Adult Spawn':
             if priority_name != 'Nocturne' or entrance.world.hints == "mask":
                 continue
+        # If not shuffling dungeons, Nocturne requires adult access.
+        if not entrance.world.shuffle_dungeon_entrances and priority_name == 'Nocturne':
+            if entrance.type != 'WarpSong' and entrance.parent_region.name != 'Adult Spawn':
+                continue
         for target in one_way_target_entrance_pools[entrance.type]:
             if target.connected_region and target.connected_region.name in allowed_regions:
                 if replace_entrance(worlds, entrance, target, rollbacks, locations_to_ensure_reachable, complete_itempool):
                     logging.getLogger('').debug(f'Priority placement for {priority_name}: placing {entrance} as {target}')
                     return
-    raise EntranceShuffleError(f'Unable to place priority one-way entrance for {priority_name} [World {world.id}.')
+    raise EntranceShuffleError(f'Unable to place priority one-way entrance for {priority_name} [World {world.id}].')
 
 
 # Shuffle entrances by placing them instead of entrances in the provided target entrances list
