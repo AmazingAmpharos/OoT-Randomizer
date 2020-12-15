@@ -653,7 +653,7 @@ def buildGossipHints(spoiler, worlds):
         location = world.light_arrow_location
         if location is None:
             continue
-        if can_reach_hint(worlds, world.get_location("Ganondorf Hint"), location):
+        if world.misc_hints and can_reach_hint(worlds, world.get_location("Ganondorf Hint"), location):
             light_arrow_world = location.world
             if light_arrow_world.id not in checkedLocations:
                 checkedLocations[light_arrow_world.id] = set()
@@ -889,7 +889,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
 
 # builds text that is displayed at the temple of time altar for child and adult, rewards pulled based off of item in a fixed order.
-def buildAltarHints(world, messages, include_rewards=True):
+def buildAltarHints(world, messages, include_rewards=True, include_wincons=True):
     # text that appears at altar as a child.
     child_text = '\x08'
     if include_rewards:
@@ -919,9 +919,12 @@ def buildAltarHints(world, messages, include_rewards=True):
         ]
         for (reward, color) in bossRewardsMedallions:
             adult_text += buildBossString(reward, color, world)
-    adult_text += buildBridgeReqsString(world)
-    adult_text += '\x04'
-    adult_text += buildGanonBossKeyString(world)
+    if include_wincons:
+        adult_text += buildBridgeReqsString(world)
+        adult_text += '\x04'
+        adult_text += buildGanonBossKeyString(world)
+    else:
+        adult_text += getHint('Adult Altar Text End', world.clearer_hints).text
     adult_text += '\x0B'
     update_message_by_id(messages, 0x7057, get_raw_text(adult_text), 0x20)
 
