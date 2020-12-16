@@ -820,6 +820,9 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
                     place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, hint_dist['named-item'][1], location)
                     if not place_ok:
                         raise Exception('Not enough gossip stones for user-provided item hints')
+    
+    # Shuffle named items if named-item hints are not required
+    random.shuffle(world.item_hints)
 
     hint_types = list(hint_types)
     hint_prob  = list(hint_prob)
