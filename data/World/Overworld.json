@@ -529,8 +529,7 @@
             "Gerudo Fortress": "True",
             "GV Upper Stream": "True",
             "GV Crate Ledge": "
-                logic_valley_crate_hovers and can_use(Hover_Boots) and
-                (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love))",
+                logic_valley_crate_hovers and can_use(Hover_Boots) and can_take_damage",
             "Gerudo Valley": "
                 is_child or can_ride_epona or can_use(Longshot) or
                 gerudo_fortress == 'open' or 'Carpenter Rescue'",
@@ -986,7 +985,7 @@
             "Kak GS Watchtower": "
                 is_child and (Slingshot or has_bombchus or 
                     (logic_kakariko_tower_gs and (Sticks or Kokiri_Sword) and
-                    (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))) and at_night",
+                    can_take_damage)) and at_night",
             "Bug Rock": "has_bottle"
         },
         "exits": {
@@ -1009,8 +1008,7 @@
                 can_use(Hookshot) or 
                 (logic_man_on_roof and 
                     (is_adult or at_day or Slingshot or has_bombchus or 
-                        (logic_kakariko_tower_gs and (Sticks or Kokiri_Sword) and
-                            (damage_multiplier != 'ohko' or Fairy or can_use(Nayrus_Love)))))",
+                        (logic_kakariko_tower_gs and (Sticks or Kokiri_Sword) and can_take_damage)))",
             "Kak Backyard": "is_adult or at_day",
             "Graveyard": "True",
             "Kak Behind Gate": "is_adult or 'Kakariko Village Gate Open'"
@@ -1307,7 +1305,7 @@
                 can_blast_or_smash or 
                 (logic_dmt_bombable and is_child and Progressive_Strength_Upgrade)",
             "DMT Freestanding PoH": "
-                (damage_multiplier != 'ohko') or can_use(Nayrus_Love) or Fairy or can_use(Hover_Boots) or
+                can_take_damage or can_use(Hover_Boots) or
                 (is_adult and here(can_plant_bean and (has_explosives or Progressive_Strength_Upgrade)))",
             "DMT GS Bean Patch": "
                 can_plant_bugs and can_child_attack and
