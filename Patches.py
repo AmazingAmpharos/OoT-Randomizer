@@ -1270,6 +1270,20 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     new_message = "\x08What should I do!?\x01My \x05\x41Cuccos\x05\x40 have all flown away!\x04You, little boy, please!\x01Please gather at least \x05\x41%d Cuccos\x05\x40\x01for me.\x02" % world.chicken_count
     update_message_by_id(messages, 0x5036, new_message)
 
+    # Update "Princess Ruto got the Spiritual Stone!" text before the midboss in Jabu
+    reward_text = {'Kokiri Emerald':   "\x05\x42Kokiri Emerald\x05\x40",
+                   'Goron Ruby':       "\x05\x41Goron Ruby\x05\x40",
+                   'Zora Sapphire':    "\x05\x43Zora Sapphire\x05\x40",
+                   'Forest Medallion': "\x05\x42Forest Medallion\x05\x40",
+                   'Fire Medallion':   "\x05\x41Fire Medallion\x05\x40",
+                   'Water Medallion':  "\x05\x43Water Medallion\x05\x40",
+                   'Spirit Medallion': "\x05\x46Spirit Medallion\x05\x40",
+                   'Shadow Medallion': "\x05\x45Shadow Medallion\x05\x40",
+                   'Light Medallion':  "\x05\x44Light Medallion\x05\x40"
+    }
+    new_message = "\x1a\x08Princess Ruto got the \x01%s!\x09\x01\x14\x02But\x14\x00 why Princess Ruto?\x02" % reward_text[world.get_location('Barinade').item.name]
+    update_message_by_id(messages, 0x4050, new_message)
+
     # use faster jabu elevator
     if not world.dungeon_mq['Jabu Jabus Belly'] and world.shuffle_scrubs == 'off':
         symbol = rom.sym('JABU_ELEVATOR_ENABLE')
