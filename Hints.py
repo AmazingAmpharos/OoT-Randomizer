@@ -300,7 +300,7 @@ def colorText(gossip_text):
     return text
 
 
-class HintAreaNotFoundError(RuntimeError):
+class HintAreaNotFound(RuntimeError):
     pass
 
 
@@ -323,7 +323,7 @@ def get_hint_area(spot):
 
         spot_queue.extend(list(filter(lambda ent: ent not in already_checked, parent_region.entrances)))
 
-    raise HintAreaNotFoundError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
+    raise HintAreaNotFound('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
 def get_woth_hint(spoiler, world, checked):

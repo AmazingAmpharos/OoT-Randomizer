@@ -9,7 +9,7 @@ from Rules import set_entrances_based_rules
 from Entrance import Entrance
 from State import State
 from Item import ItemFactory
-from Hints import get_hint_area, HintAreaNotFoundError
+from Hints import get_hint_area, HintAreaNotFound
 
 
 def set_all_entrances_data(world):
@@ -629,14 +629,14 @@ def validate_world(world, worlds, entrance_placed, locations_to_ensure_reachable
         # Ensure Kak Potion Shop entrances are in the same hint area so there is no ambiguity as to which entrance is used for hints
         potion_front_entrance = get_entrance_replacing(world.get_region('Kak Potion Shop Front'), 'Kakariko Village -> Kak Potion Shop Front')
         potion_back_entrance = get_entrance_replacing(world.get_region('Kak Potion Shop Back'), 'Kak Backyard -> Kak Potion Shop Back')
-        if potion_front_entrance is not None and potion_back_entrance is not None and same_hint_area(potion_front_entrance, potion_back_entrance):
+        if potion_front_entrance is not None and potion_back_entrance is not None and not same_hint_area(potion_front_entrance, potion_back_entrance):
             raise EntranceShuffleError('Kak Potion Shop entrances are not in the same hint area')
 
         # When cows are shuffled, ensure the same thing for Impa's House, since the cow is reachable from both sides
         if world.shuffle_cows:
             impas_front_entrance = get_entrance_replacing(world.get_region('Kak Impas House'), 'Kakariko Village -> Kak Impas House')
             impas_back_entrance = get_entrance_replacing(world.get_region('Kak Impas House Back'), 'Kak Impas Ledge -> Kak Impas House Back')
-            if impas_front_entrance is not None and impas_back_entrance is not None and same_hint_area(impas_front_entrance, impas_back_entrance):
+            if impas_front_entrance is not None and impas_back_entrance is not None and not same_hint_area(impas_front_entrance, impas_back_entrance):
                 raise EntranceShuffleError('Kak Impas House entrances are not in the same hint area')
 
     if (world.shuffle_special_interior_entrances or world.shuffle_overworld_entrances or world.spawn_positions) and \
@@ -707,7 +707,7 @@ def entrance_unreachable_as(entrance, age, already_checked=None):
 def same_hint_area(first, second):
     try:
         return get_hint_area(first) == get_hint_area(second)
-    except HintAreaNotFoundError:
+    except HintAreaNotFound:
         return False
 
 
