@@ -9,7 +9,7 @@ from Rules import set_entrances_based_rules
 from Entrance import Entrance
 from State import State
 from Item import ItemFactory
-from Hints import get_hint_area
+from Hints import get_hint_area, HintAreaNotFoundError
 
 
 def set_all_entrances_data(world):
@@ -707,7 +707,7 @@ def entrance_unreachable_as(entrance, age, already_checked=None):
 def same_hint_area(first, second):
     try:
         return get_hint_area(first) == get_hint_area(second)
-    except RuntimError:
+    except HintAreaNotFoundError:
         return False
 
 
