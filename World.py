@@ -173,6 +173,8 @@ class World(object):
                     raise Exception('Custom hint text too large for %s', loc['location'])
                 self.hint_text_overrides.update({loc['location']: loc['text']})
 
+        self.named_item_pool = list(self.item_hints)
+
         self.always_hints = [hint.name for hint in getRequiredHints(self)]
         
         self.state = State(self)
