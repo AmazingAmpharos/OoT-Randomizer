@@ -455,18 +455,20 @@ def get_specific_item_hint(spoiler, world, checked):
 
     location = random.choice(locations)
     checked.add(location.name)
-
-    if world.hint_dist_user['vague_named_items']:
-        item_text = 'an aid to the hero'
-    else:
-        item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
-
+    item_text = getHint(getItemGenericName(location.item), world.clearer_hints).text
+    
     if location.parent_region.dungeon:
         location_text = getHint(location.parent_region.dungeon.name, world.clearer_hints).text
-        return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
+        if world.hint_dist_user['vague_named_items']:
+            return (GossipText('#%s# may be on the hero\'s path.' % (location_text), ['Green']), location)
+        else:
+            return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
     else:
         location_text = get_hint_area(location)
-        return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
+        if world.hint_dist_user['vague_named_items']:
+            return (GossipText('#%s# may be on the hero\'s path.' % (location_text), ['Green']), location)
+        else:
+            return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
 
 
 def get_random_location_hint(spoiler, world, checked):
