@@ -2206,7 +2206,7 @@ setting_infos = [
             guarantee that every item is obtainable and every
             location is reachable.
 
-            When disabled, only required items and locations
+            When disabled, only items and locations required
             to beat the game will be guaranteed reachable.
         ''',
         default        = True,
