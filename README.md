@@ -106,6 +106,7 @@ do that.
 * `Skip Child Zelda` in Multiworld (with Song Shuffle: Anywhere) now correctly provides items to the right player.
 * Smarter replacement of required warp songs when warp songs are shuffled. 
 * Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
+* Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
 
 ### 6.0
 
