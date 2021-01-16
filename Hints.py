@@ -828,7 +828,9 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
                     if not place_ok:
                         raise Exception('Not enough gossip stones for user-provided item hints')
     
-    # Shuffle named items if named-item hints are not required
+    # Shuffle named items hints
+    # When all items are not required to be hinted, this allows for
+    # opportunity-style hints to be drawn at random from the defined list.
     random.shuffle(world.named_item_pool)
 
     hint_types = list(hint_types)
