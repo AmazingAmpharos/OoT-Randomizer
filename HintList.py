@@ -1134,7 +1134,7 @@ hintTable = {
     '1023':                                                     ("I'll make you eat those words.", None, 'junk'),
     '1024':                                                     ("What happened to Sheik?", None, 'junk'),
     '1025':                                                     ("L2P @.", None, 'junk'),
-    '1026':                                                     ("I heard @ isn't very good at Zelda.", None, 'junk'),
+    '1026':                                                     ("I've heard Sploosh Kaboom is a tricky game.", None, 'junk'),
     '1027':                                                     ("I'm Lonk from Pennsylvania.", None, 'junk'),
     '1028':                                                     ("I bet you'd like to have more bombs.", None, 'junk'),
     '1029':                                                     ("When all else fails, use Fire.", None, 'junk'),
