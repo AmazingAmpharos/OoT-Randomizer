@@ -3,7 +3,8 @@
     "gui_name":              "Scrubs",
     "description":           "Tournament hints used for Scrubs Races. Duplicates of each hint, Skull Mask is an always hint, 5 WotH, 3 Foolish, 8 sometimes. Can also be used to simulate S3 Tournament hints.",
     "add_locations":         [
-        { "location": "Deku Theater Skull Mask", "types": ["always"] }
+        { "location": "Deku Theater Skull Mask", "types": ["always"] },
+        { "location": "Deku Theater Mask of Truth", "types": ["always"] }
     ],
     "remove_locations":      [],
     "add_items":             [],
