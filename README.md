@@ -108,6 +108,10 @@ do that.
 * Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
 * Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
 
+#### Other Changes
+
+* Add ability to provide settings through stdin (useful for shell scripting).
+
 ### 6.0
 
 #### New Features

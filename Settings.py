@@ -328,10 +328,7 @@ def get_settings_from_command_line_args():
     if args.settings == '-':
         settings = Settings(json.loads(sys.stdin.read()))
     else:
-        if args.settings is None:
-            settingsFile = local_path('settings.sav')
-        else:
-            settingsFile = local_path(args.settings)
+        settingsFile = local_path(args.settings or 'settings.sav')
 
         try:
             with open(settingsFile) as f:
