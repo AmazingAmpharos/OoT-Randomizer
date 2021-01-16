@@ -9,7 +9,7 @@ from Rules import set_entrances_based_rules
 from Entrance import Entrance
 from State import State
 from Item import ItemFactory
-from Hints import get_hint_area
+from Hints import get_hint_area, HintAreaNotFound
 
 
 def set_all_entrances_data(world):
@@ -733,16 +733,18 @@ def validate_world(world, worlds, entrance_placed, locations_to_ensure_reachable
 
     if world.shuffle_interior_entrances and \
        (entrance_placed == None or entrance_placed.type in ['Interior', 'SpecialInterior']):
-        # Ensure Kak Potion Shop entrances are in the same hint region so there is no ambiguity as to which entrance is used for hints
+        # Ensure Kak Potion Shop entrances are in the same hint area so there is no ambiguity as to which entrance is used for hints
         potion_front_entrance = get_entrance_replacing(world.get_region('Kak Potion Shop Front'), 'Kakariko Village -> Kak Potion Shop Front')
         potion_back_entrance = get_entrance_replacing(world.get_region('Kak Potion Shop Back'), 'Kak Backyard -> Kak Potion Shop Back')
-        check_same_hint_region(potion_front_entrance, potion_back_entrance)
+        if potion_front_entrance is not None and potion_back_entrance is not None and not same_hint_area(potion_front_entrance, potion_back_entrance):
+            raise EntranceShuffleError('Kak Potion Shop entrances are not in the same hint area')
 
         # When cows are shuffled, ensure the same thing for Impa's House, since the cow is reachable from both sides
         if world.shuffle_cows:
             impas_front_entrance = get_entrance_replacing(world.get_region('Kak Impas House'), 'Kakariko Village -> Kak Impas House')
             impas_back_entrance = get_entrance_replacing(world.get_region('Kak Impas House Back'), 'Kak Impas Ledge -> Kak Impas House Back')
-            check_same_hint_region(impas_front_entrance, impas_back_entrance)
+            if impas_front_entrance is not None and impas_back_entrance is not None and not same_hint_area(impas_front_entrance, impas_back_entrance):
+                raise EntranceShuffleError('Kak Impas House entrances are not in the same hint area')
 
     if (world.shuffle_special_interior_entrances or world.shuffle_overworld_entrances or world.spawn_positions) and \
        (entrance_placed == None or entrance_placed.type in ['SpecialInterior', 'Overworld', 'Spawn', 'WarpSong', 'OwlDrop']):
@@ -808,19 +810,27 @@ def entrance_unreachable_as(entrance, age, already_checked=None):
     return True
 
 
-# Shorthand function to check and validate that two entrances are in the same hint region
-def check_same_hint_region(first, second):
-    if  first.parent_region.hint is not None and second.parent_region.hint is not None and \
-        first.parent_region.hint != second.parent_region.hint:
-        raise EntranceShuffleError('Entrances are not in the same hint region')
+# Returns whether two entrances are in the same hint area
+def same_hint_area(first, second):
+    try:
+        return get_hint_area(first) == get_hint_area(second)
+    except HintAreaNotFound:
+        return False
 
 
 # Shorthand function to find an entrance with the requested name leading to a specific region
 def get_entrance_replacing(region, entrance_name):
+    original_entrance = region.world.get_entrance(entrance_name)
+
+    if not original_entrance.shuffled:
+        return original_entrance
+
     try:
-        return next(filter(lambda entrance: entrance.replaces and entrance.replaces.name == entrance_name, region.entrances))
+        return next(filter(lambda entrance: entrance.replaces and entrance.replaces.name == entrance_name and \
+                                            entrance.parent_region and entrance.parent_region.name != 'Root Exits' and \
+                                            entrance.type not in ('OwlDrop', 'Spawn', 'WarpSong'), region.entrances))
     except StopIteration:
-        return region.world.get_entrance(entrance_name)
+        return None
 
 
 # Change connections between an entrance and a target assumed entrance, in order to test the connections afterwards if necessary
