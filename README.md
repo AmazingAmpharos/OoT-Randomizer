@@ -101,6 +101,7 @@ do that.
 ### Dev
 
 * Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
+* Smarter replacement of required warp songs when warp songs are shuffled.
 
 ### 6.0
 
