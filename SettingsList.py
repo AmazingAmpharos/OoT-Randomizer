@@ -2218,7 +2218,7 @@ setting_infos = [
             set to 1 Medallion and Ganon's Boss Key to 1 Gold Skulltula Token, all 6 Medallions and all 100 Tokens will
             be obtainable. In Triforce Hunt, this will also guarantee that all Triforce Pieces can be obtained.
 
-            'Required Only': Only required items and locations to beat the game will be guaranteed reachable.
+            'Required Only': Only items and locations required to beat the game will be guaranteed reachable.
         ''',
         gui_params={
             "hide_when_disabled": True,
@@ -2254,8 +2254,8 @@ setting_infos = [
         gui_text       = 'Dungeons Have One Major Item',
         gui_tooltip    = '''\
             Dungeons have exactly one major item. 
-            This naturally makes each dungeon similar in 
-            value instead of valued based on chest count.
+            This naturally makes each dungeon similar in value
+            rather than vary based on shuffled locations.
 
             Spirit Temple Colossus hands count as part 
             of the dungeon. Spirit Temple has TWO items 
@@ -2275,6 +2275,10 @@ setting_infos = [
 
             Bombchus only count as major items if they
             are considered in logic.
+
+            This setting has potential to conflict with
+            other randomizer settings. Should seeds continuously
+            fail to generate, consider turning this option off.
         ''',
         shared         = True,
         gui_params     = {

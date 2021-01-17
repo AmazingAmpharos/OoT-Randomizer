@@ -8,6 +8,7 @@ This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo
   * [Settings](#settings)
   * [Known Issues](#known-issues)
 * [Changelog](#changelog)
+  * [6.0](#60)
   * [5.2](#52)
   * [5.1](#51)
   * [5.0](#50)
@@ -32,13 +33,16 @@ the user wishes a pre-decompressed ROM may be supplied as input. Please be sure 
 playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
 impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, there are three recommended emulators: [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch), 
-[Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk) and [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64). 
-In a nutshell the differences are: Bizhawk is resource-intensive, but easy to set up and the only emulator to support 
-[Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld); RetroArch is less resource-intensive but can be frustrating to set up; 
-Project64 is easy to set up and the least resource-intensive, but versions compatible with OoTR are banned for races organized by our community. 
-Please follow the guides on our wiki carefully to ensure a stable game experience. For questions and tech support we kindly refer you to our 
-[Discord](https://discord.gg/q6m6kzK).
+For general use, there are three recommended emulators: [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64), [Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk), and [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch).
+In a nutshell the differences are:
+* Project64 is the lightest emulator and the easiest to setup, however, you will need a stable version from 2.4 or later to run OoTR well (and earlier versions are not permitted for use in OoTR races).
+* Bizhawk is the most resource-intensive, but easier to set up than RetroArch and the only race-legal emulator to support [Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld).
+* RetroArch is less resource-intensive than Bizhawk and the only of these three to work on platforms other than Windows, but it can be frustrating to set up.
+
+Please follow [the guides on our wiki](https://wiki.ootrandomizer.com/index.php?title=Setup#Emulators) carefully to ensure a stable game experience and that
+[the settings requirements for races](https://wiki.ootrandomizer.com/index.php?title=Racing#Emulator_Settings_Requirements) are met. OoTR can also be run on
+an N64 using an [EverDrive](https://wiki.ootrandomizer.com/index.php?title=Everdrive), or on Wii Virtual Console. For questions and tech support we kindly
+refer you to our [Discord](https://discord.gg/q6m6kzK).
 
 ## General Description
 
@@ -95,6 +99,20 @@ do that.
 ## Changelog
 
 ### Dev
+
+#### Bug Fixes
+
+* Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
+* `Skip Child Zelda` in Multiworld (with Song Shuffle: Anywhere) now correctly provides items to the right player.
+* Smarter replacement of required warp songs when warp songs are shuffled. 
+* Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
+* Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
+
+#### Other Changes
+
+* Add ability to provide settings through stdin (useful for shell scripting).
+
+### 6.0
 
 #### New Features
 
@@ -248,6 +266,7 @@ do that.
 * Easy and Hell Mode presets have been updated to add in the new features and/or tricks as relevant!
 
 #### Bug Fixes
+* Stealing Epona no longer crashes with the Fast Epona Race setting when you have Epona's Song but no ocarina.
 * Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
 * Avoid crashing on some systems when using child items as adult.
 * Ensure Ice Traps have valid models if they can be seen.

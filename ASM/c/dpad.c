@@ -74,7 +74,7 @@ void draw_dpad() {
                 sprite_draw(db, &items_sprite, 0, 285, 66, 12, 12);
             }
         }
-        if (z64_file.items[0x07] != -1){
+        if (z64_file.items[0x07] == 0x07 || z64_file.items[0x07] == 0x08){
             if(alpha==0xFF && !CAN_USE_OCARINA) gDPSetPrimColor(db->p++, 0, 0, 0xFF, 0xFF, 0xFF, 0x46);
             sprite_load(db, &items_sprite, z64_file.items[0x07], 1);
             sprite_draw(db, &items_sprite, 0, 273, 77, 12,12);

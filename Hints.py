@@ -24,6 +24,9 @@ bingoBottlesForHints = (
     "Bottle with Big Poe", "Bottle with Poe",
 )
 
+defaultHintDists = [
+    'balanced.json', 'bingo.json', 'scrubs.json', 'strong.json', 'tournament.json', 'useless.json', 'very_strong.json'
+]
 
 class RegionRestriction(Enum):
     NONE = 0,
@@ -297,6 +300,10 @@ def colorText(gossip_text):
     return text
 
 
+class HintAreaNotFound(RuntimeError):
+    pass
+
+
 # Peforms a breadth first search to find the closest hint area from a given spot (location or entrance)
 # May fail to find a hint if the given spot is only accessible from the root and not from any other region with a hint area
 def get_hint_area(spot):
@@ -316,7 +323,7 @@ def get_hint_area(spot):
 
         spot_queue.extend(list(filter(lambda ent: ent not in already_checked, parent_region.entrances)))
 
-    raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
+    raise HintAreaNotFound('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
 def get_woth_hint(spoiler, world, checked):
@@ -826,8 +833,11 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
     while stoneGroups:
         if fixed_hint_types:
             hint_type = fixed_hint_types.pop(0)
-            if hint_dist[hint_type][1] > len(stoneGroups):
-                raise Exception('Not enough gossip stone locations for fixed hint type %s.' % hint_type)
+            copies = hint_dist[hint_type][1]
+            if copies > len(stoneGroups):
+                # Quiet to avoid leaking information.
+                logging.getLogger('').debug(f'Not enough gossip stone locations ({len(stoneGroups)} groups) for fixed hint type {hint_type} with {copies} copies, proceeding with available stones.')
+                copies = len(stoneGroups)
         else:
             custom_fixed = False
             # Make sure there are enough stones left for each hint type
@@ -856,6 +866,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
                     weighted_hint_prob.append(p)
 
                 hint_type = random_choices(hint_types, weights=weighted_hint_prob)[0]
+                copies = hint_dist[hint_type][1]
             except IndexError:
                 raise Exception('Not enough valid hints to fill gossip stone locations.')
 
@@ -866,10 +877,10 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
             hint_prob[index] = 0
             # Zero out the probability in the base distribution in case the probability list is modified
             # to fit hint types in remaining gossip stones
-            hint_dist[hint_type] = (0.0, hint_dist[hint_type][1])
+            hint_dist[hint_type] = (0.0, copies)
         else:
             gossip_text, location = hint
-            place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, hint_dist[hint_type][1], location)
+            place_ok = add_hint(spoiler, world, stoneGroups, gossip_text, copies, location)
             if place_ok:
                 hint_counts[hint_type] = hint_counts.get(hint_type, 0) + 1
                 if location is None:
@@ -1025,27 +1036,34 @@ def get_raw_text(string):
             text += char
     return text
 
+
+def HintDistFiles():
+    return [os.path.join(data_path('Hints/'), d) for d in defaultHintDists] + [
+            os.path.join(data_path('Hints/'), d)
+            for d in sorted(os.listdir(data_path('Hints/')))
+            if d.endswith('.json') and d not in defaultHintDists]
+
+
 def HintDistList():
-    dists_json = os.listdir(data_path('Hints/'))
     dists = {}
-    for d in dists_json:
-        dist = read_json(os.path.join(data_path('Hints/'), d))
+    for d in HintDistFiles():
+        dist = read_json(d)
         dist_name = dist['name']
         gui_name = dist['gui_name']
         dists.update({ dist_name: gui_name })
     return dists
 
+
 def HintDistTips():
-    dists_json = os.listdir(data_path('Hints/'))
     tips = ""
     first_dist = True
     line_char_limit = 33
-    for d in dists_json:
+    for d in HintDistFiles():
         if not first_dist:
             tips = tips + "\n"
         else:
             first_dist = False
-        dist = read_json(os.path.join(data_path('Hints/'), d))
+        dist = read_json(d)
         gui_name = dist['gui_name']
         desc = dist['description']
         i = 0
