@@ -10,7 +10,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 
 #This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
-#Some basic items that various modes require are placed here, including stones and medallions. Medallion requirements for the two relevant entrances are also decided.
+#Some basic items that various modes require are placed here, including stones and medallions. 
 
 
 alwaysitems = ([
