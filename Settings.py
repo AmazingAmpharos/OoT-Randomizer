@@ -325,19 +325,19 @@ def get_settings_from_command_line_args():
 
     args = parser.parse_args()
 
-    if args.settings is None:
-        settingsFile = local_path('settings.sav')
+    if args.settings == '-':
+        settings = Settings(json.loads(sys.stdin.read()))
     else:
-        settingsFile = local_path(args.settings)
+        settingsFile = local_path(args.settings or 'settings.sav')
 
-    try:
-        with open(settingsFile) as f:
-            settings = Settings(json.load(f))
-    except Exception as ex:
-        if args.settings is None:
-            settings = Settings({})
-        else:
-            raise ex
+        try:
+            with open(settingsFile) as f:
+                settings = Settings(json.load(f))
+        except Exception as ex:
+            if args.settings is None:
+                settings = Settings({})
+            else:
+                raise ex
 
     settings.output_settings = args.output_settings
 

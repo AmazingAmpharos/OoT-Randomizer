@@ -300,6 +300,10 @@ def colorText(gossip_text):
     return text
 
 
+class HintAreaNotFound(RuntimeError):
+    pass
+
+
 # Peforms a breadth first search to find the closest hint area from a given spot (location or entrance)
 # May fail to find a hint if the given spot is only accessible from the root and not from any other region with a hint area
 def get_hint_area(spot):
@@ -319,7 +323,7 @@ def get_hint_area(spot):
 
         spot_queue.extend(list(filter(lambda ent: ent not in already_checked, parent_region.entrances)))
 
-    raise RuntimeError('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
+    raise HintAreaNotFound('No hint area could be found for %s [World %d]' % (spot, spot.world.id))
 
 
 def get_woth_hint(spoiler, world, checked):
