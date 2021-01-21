@@ -356,6 +356,7 @@ def get_barren_hint(spoiler, world, checked):
 
     areas = list(filter(lambda area:
         area not in checked
+        and area not in world.hint_type_overrides['barren']
         and not (world.barren_dungeon >= world.hint_dist_user['dungeons_barren_limit'] and world.empty_areas[area]['dungeon']),
         world.empty_areas.keys()))
 
