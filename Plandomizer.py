@@ -660,7 +660,7 @@ class WorldDistribution(object):
         """
         world = worlds[player_id]
         if ignore_pools:
-            pool = [pool for i, pool in enumerate(item_pools) if i not in ignore_pools]
+            pool = [pool if i not in ignore_pools else [] for i, pool in enumerate(item_pools)]
         else:
             pool = item_pools
         try:
@@ -735,6 +735,10 @@ class WorldDistribution(object):
         except IndexError:
             raise RuntimeError(
                 'Unknown item %s being placed on location %s in world %d.' % (record.item, location, self.id + 1))
+        # Ensure pool copy is persisted to real pool
+        for i, new_pool in enumerate(pool):
+            if new_pool:
+                item_pools[i] = new_pool
         return item
 
     def cloak(self, worlds, location_pools, model_pools):
