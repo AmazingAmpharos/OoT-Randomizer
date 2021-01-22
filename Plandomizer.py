@@ -693,7 +693,13 @@ class WorldDistribution(object):
         except KeyError:
             if location.type == 'Shop' and "Buy" in record.item:
                 try:
-                    self.pool_remove_item(pool, "Buy *", 1, world_id=player_id)
+                    removed_item = self.pool_remove_item(pool, "Buy *", 1, world_id=player_id)[0]
+                    if removed_item.name in self.item_pool:
+                        # Update item_pool after item is removed
+                        if self.item_pool[removed_item.name].count == 1:
+                            del self.item_pool[removed_item.name]
+                        else:
+                            self.item_pool[removed_item.name].count -= 1
                     item = ItemFactory([record.item], world=world)[0]
                 except KeyError:
                     raise RuntimeError(
@@ -727,7 +733,7 @@ class WorldDistribution(object):
                 except KeyError:
                     raise RuntimeError(
                         'Too many items were added to world %d, and not enough junk is available to be removed.' % (self.id + 1))
-            # Update item_pool
+            # Update item_pool after item is replaced
             if item.name not in self.item_pool:
                 self.item_pool[item.name] = ItemPoolRecord()
             else:
