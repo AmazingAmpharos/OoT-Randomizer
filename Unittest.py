@@ -259,13 +259,15 @@ class TestPlandomizer(unittest.TestCase):
             "plando-item-pool-matches-items-placed-after-starting-items-replaced",
             "plando-change-triforce-piece-count",
             "plando-use-normal-triforce-piece-count",
+            "plando-shop-items",
         ]
         for filename in filenames:
             with self.subTest(filename + " pool accuracy"):
                 distribution_file, spoiler = generate_with_plandomizer(filename)
                 actual_pool = get_actual_pool(spoiler)
                 for item in spoiler['item_pool']:
-                    self.assertEqual(actual_pool[item], spoiler['item_pool'][item])
+                    self.assertEqual(actual_pool[item], spoiler['item_pool'][item],
+                    f"Pool item {item} count mismatch")
         filename = "plando-list-exhaustion"
         with self.subTest(filename + " pool accuracy"):
             distribution_file, spoiler = generate_with_plandomizer(filename)
