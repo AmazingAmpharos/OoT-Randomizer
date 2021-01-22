@@ -626,7 +626,8 @@ class WorldDistribution(object):
                 ignore_pools = [2]
             if is_invert and location.type == 'Song' and world.shuffle_song_items == 'song':
                 ignore_pools = [i for i in range(len(item_pools)) if i != 2]
-            if location.type == 'Shop':
+            # location.price will be None for Shop Buy items
+            if location.type == 'Shop' and location.price is None:
                 ignore_pools = [i for i in range(len(item_pools)) if i != 0]
 
             item = self.get_item(ignore_pools, item_pools, location, player_id, record, worlds)
