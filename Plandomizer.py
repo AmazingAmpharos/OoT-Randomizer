@@ -1077,16 +1077,24 @@ def pattern_matcher(self, pattern):
     if pattern.startswith('#'):   
         group = search_groups[pattern[1:]]
         if pattern == '#MajorItem':
-            if (not self.settings.shuffle_gerudo_card or self.settings.gerudo_fortress == 'open') and 'Gerudo Membership Card' in group:
-                group.remove('Gerudo Membership Card')
             if self.settings.zora_fountain == "open" and 'Rutos Letter' in group:
                 group.remove('Rutos Letter')
             if not self.settings.triforce_hunt and 'Triforce Piece' in group:
                 group.remove('Triforce Piece')
-            if not self.settings.shuffle_beans and 'Magic Bean Pack' in group:
-                group.remove('Magic Bean Pack')
             if not self.settings.bombchus_in_logic and 'Bombchus' in group:
                 group.remove('Bombchus')
+            if not self.settings.shuffle_kokiri_sword and 'Kokiri Sword' in group:
+                group.remove('Kokiri Sword')
+            if not self.settings.shuffle_ocarinas and 'Ocarina' in group:
+                group.remove('Ocarina')
+            if not self.settings.shuffle_weird_egg and 'Weird Egg' in group:
+                group.remove('Weird Egg')
+            if (not self.settings.shuffle_gerudo_card or self.settings.gerudo_fortress == 'open') and 'Gerudo Membership Card' in group:
+                group.remove('Gerudo Membership Card')
+            if not self.settings.shuffle_beans and 'Magic Bean Pack' in group:
+                group.remove('Magic Bean Pack')
+            if not self.settings.shuffle_medigoron_carpet_salesman and "Giants Knife" in group:
+                group.remove('Giants Knife')
         return lambda s: invert != (s in group)
     wildcard_begin = pattern.startswith('*')
     if wildcard_begin:
