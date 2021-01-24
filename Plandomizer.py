@@ -379,30 +379,38 @@ class WorldDistribution(object):
             if record.type == 'remove':
                 self.pool_remove_item([pool], item_name, record.count)
 
+        remove_egg = False
         for item_name, record in self.item_pool.items():
             if record.type == 'set':
                 if item_name == '#Junk':
                     raise ValueError('#Junk item group cannot have a set number of items')
-                predicate = pattern_matcher(self, item_name)
-                pool_match = [item for item in pool if predicate(item)]
-                for item in pool_match:
-                    self.base_pool.remove(item)
-
-                add_count = record.count - len(pool_match)
-                if add_count > 0:
-                    added_items = self.pool_add_item(pool, item_name, add_count)
-                    for item in added_items:
-                        if bottle_matcher(item):
-                            bottles += 1
-                        elif trade_matcher(item):
-                            self.pool_remove_item([pool], "#AdultTrade", 1)
+                elif item_name == 'Weird Egg' and not self.settings.shuffle_weird_egg:
+                    remove_egg = True
+                elif item_name == 'Weird Egg' and self.item_pool['Weird Egg'].count > 1:
+                    self.item_pool['Weird Egg'].count = 1
                 else:
-                    removed_items = self.pool_remove_item([pool], item_name, -add_count)
-                    for item in removed_items:
-                        if bottle_matcher(item):
-                            bottles -= 1
-                        elif trade_matcher(item):
-                            self.pool_add_item(pool, "#AdultTrade", 1)
+                    predicate = pattern_matcher(self, item_name)
+                    pool_match = [item for item in pool if predicate(item)]
+                    for item in pool_match:
+                        self.base_pool.remove(item)
+
+                    add_count = record.count - len(pool_match)
+                    if add_count > 0:
+                        added_items = self.pool_add_item(pool, item_name, add_count)
+                        for item in added_items:
+                            if bottle_matcher(item):
+                                bottles += 1
+                            elif trade_matcher(item):
+                                self.pool_remove_item([pool], "#AdultTrade", 1)
+                    else:
+                        removed_items = self.pool_remove_item([pool], item_name, -add_count)
+                        for item in removed_items:
+                            if bottle_matcher(item):
+                                bottles -= 1
+                            elif trade_matcher(item):
+                                self.pool_add_item(pool, "#AdultTrade", 1)           
+        if remove_egg:
+            del self.item_pool['Weird Egg']
 
         if bottles > 0:
             self.pool_remove_item([pool], '#Bottle', bottles)
