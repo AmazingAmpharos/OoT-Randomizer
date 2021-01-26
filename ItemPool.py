@@ -1334,7 +1334,7 @@ def get_pool_core(world):
                     pending_junk_pool.remove(item)
                 # Remove pending junk already added to the pool by alter_pool from the pending_junk_pool
                 if item in pool:
-                    count = pool.count(item)
+                    count = min(pool.count(item), pending_junk_pool.count(item))
                     for _ in range(count):
                         pending_junk_pool.remove(item)
 
