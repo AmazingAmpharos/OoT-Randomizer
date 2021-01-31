@@ -540,7 +540,9 @@ def get_entrance_hint(spoiler, world, checked):
     shuffled_entrance_hints = list(filter(lambda entrance_hint: world.get_entrance(entrance_hint.name).shuffled, entrance_hints))
 
     regions_with_hint = [hint.name for hint in getHintGroup('region', world)]
-    valid_entrance_hints = list(filter(lambda entrance_hint: world.get_entrance(entrance_hint.name).connected_region.name in regions_with_hint, shuffled_entrance_hints))
+    valid_entrance_hints = list(filter(lambda entrance_hint:
+                                       (world.get_entrance(entrance_hint.name).connected_region.name in regions_with_hint or
+                                        world.get_entrance(entrance_hint.name).connected_region.dungeon), shuffled_entrance_hints))
 
     if not valid_entrance_hints:
         return None
