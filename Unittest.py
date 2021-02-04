@@ -235,7 +235,8 @@ class TestPlandomizer(unittest.TestCase):
             "plando-num-bottles-fountain-closed-good",
             "plando-num-bottles-fountain-open-good",
             "plando-change-triforce-piece-count",
-            "plando-use-normal-triforce-piece-count"
+            "plando-use-normal-triforce-piece-count",
+            "disabled-song-location",
         ]
         for filename in filenames:
             with self.subTest(filename):

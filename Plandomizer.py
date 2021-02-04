@@ -595,7 +595,7 @@ class WorldDistribution(object):
                     record.item = random_choices(allowed_choices)[0]
             else:  # Choices still available in item pool, choose one, mark it as a used item
                 record.item = random_choices(valid_items)[0]
-                if used_items is not None:
+                if used_items is not None and record.item[0] != '#':
                     used_items.append(record.item)
 
             player_id = self.id if record.player is None else record.player - 1
@@ -663,32 +663,7 @@ class WorldDistribution(object):
         else:
             pool = item_pools
         try:
-            if record.item == "#Bottle":
-                try:
-                    item = self.pool_replace_item(pool, "#Bottle", player_id, record.item, worlds)
-                    # Update item_pool
-                    if item.name not in self.item_pool:
-                        self.item_pool[item.name] = ItemPoolRecord()
-                    else:
-                        self.item_pool[item.name].count += 1
-                except KeyError:
-                    raise RuntimeError(
-                        'Too many bottles were added to world %d, and not enough bottles are available in the item pool to be removed.' % (
-                                self.id + 1))
-            elif record.item == "#AdultTrade":
-                try:
-                    item = self.pool_replace_item(pool, "#AdultTrade", player_id, record.item, worlds)
-                    # Update item_pool
-                    if item.name not in self.item_pool:
-                        self.item_pool[item.name] = ItemPoolRecord()
-                    else:
-                        self.item_pool[item.name].count += 1
-                except KeyError:
-                    raise RuntimeError(
-                        'Too many adult trade items were added to world %d, and not enough adult trade items are available in the item pool to be removed.' % (
-                                self.id + 1))
-            else:
-                item = self.pool_remove_item(pool, record.item, 1, world_id=player_id)[0]
+            item = self.pool_remove_item(pool, record.item, 1, world_id=player_id)[0]
         except KeyError:
             if location.type == 'Shop' and "Buy" in record.item:
                 try:
@@ -1122,8 +1097,26 @@ def get_valid_items_from_record(itempool, used_items, record):
     :return: list:
                 All items in the record that exist in the item pool but have not already been used. Can be empty.
     """
+    valid_items = []
     predicate = pattern_matcher(record.item)
-    valid_items = [item.name for item in itempool if predicate(item.name)]
+    if isinstance(record.item, list):
+        for choice in record.item:
+            if choice[0] == '#' and choice[1:] in item_groups:
+                for item in itempool:
+                    if predicate(item.name):
+                        valid_items.append(choice)
+                        break
+        for item in itempool:
+            if item.name in record.item and predicate(item.name):
+                valid_items.append(item.name)
+    else:
+        if record.item[0] == '#' and record.item[1:] in item_groups:
+            for item in itempool:
+                if predicate(item.name):
+                    valid_items = [record.item]
+                    break
+        else:
+            valid_items = [record.item]
     if used_items is not None:
         for used_item in used_items:
             if used_item in valid_items:
