@@ -20,11 +20,11 @@ void wait_for_reset_combo(){
 			s_reset_delay--;
 		}
 		else {
-			z64_game.common.state_continue = 0;
-			z64_game.common.next_ctor = (void*)TitleSetup_Init_Func;
-			z64_game.common.next_size = sizeof(z64_ctxt_t);
 			STOP_SFX();
 			SET_BGM(BGM_STOP);
+			z64_game.common.state_continue = 0;
+			z64_game.common.next_ctor = (void*)TitleSetup_Init_Func;
+			z64_game.common.next_size = sizeof(z64_game_t);
 		}
 	}
 	else {
