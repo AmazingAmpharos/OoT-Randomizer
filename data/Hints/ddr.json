@@ -1,7 +1,7 @@
 {
       "name":                  "ddr",
       "gui_name":              "DDR",
-      "description":           "DDR weekly race settings. 2 WotH, 3 Barren, 3 named-item, remainder sometimes. Prevents some items from being hinted in WotH or Sometimes.",
+      "description":           "DDR weekly race hints. Duplicates of each hint, 2 WotH, 3 Barren, 3 Named-Item, remainder of hints are Sometimes. Prevents some items from being hinted in WotH or Sometimes.",
       "add_locations":         [
           { "location": "Deku Theater Skull Mask",	"types": ["always"]}
           ],     
