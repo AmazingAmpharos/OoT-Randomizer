@@ -25,7 +25,7 @@ bingoBottlesForHints = (
 )
 
 defaultHintDists = [
-    'balanced.json', 'bingo.json', 'scrubs.json', 'strong.json', 'tournament.json', 'useless.json', 'very_strong.json'
+    'balanced.json', 'bingo.json', 'ddr.json', 'scrubs.json', 'strong.json', 'tournament.json', 'useless.json', 'very_strong.json'
 ]
 
 class RegionRestriction(Enum):
