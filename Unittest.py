@@ -220,7 +220,7 @@ class TestPlandomizer(unittest.TestCase):
                         _, spoiler = generate_with_plandomizer("plando-explicit-item-pool")
                         self.assertGreater(spoiler['item_pool']['Ice Trap'], 6)
                 if filename == "bombchu-bowling-ice-trap":
-                    with self.subTest("ice trap models on bombchu bowling"):
+                    with self.subTest("ice trap models in non-standard visible locations"):
                         for location in distribution_file['locations']:
                             self.assertIn('model', spoiler['locations'][location])
 
