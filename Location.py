@@ -67,7 +67,7 @@ class Location(object):
         self.access_rules = [lambda_rule]
 
 
-    def can_fill(self, state, item, check_access=True, extra_location_checks=[]):
+    def can_fill(self, state, item, check_access=True, extra_location_checks=()):
         if self.minor_only and item.majoritem:
             return False
         if self.is_disabled() or not self.can_fill_fast(item) or (check_access and not state.search.spot_access(self, 'either')):
@@ -153,4 +153,3 @@ class DisableType(Enum):
     ENABLED  = 0
     PENDING = 1
     DISABLED = 2
-
