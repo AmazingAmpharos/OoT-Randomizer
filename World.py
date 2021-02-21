@@ -72,18 +72,6 @@ class World(object):
             # (specifically, for randomize_settings)
             self.shuffle_ganon_bosskey = 'triforce'
 
-        # # Determine LACS Condition
-        # if self.shuffle_ganon_bosskey == 'lacs_medallions' or self.shuffle_light_arrows == 'lacs_medallions':
-        #     self.lacs_condition = 'medallions'
-        # elif self.shuffle_ganon_bosskey == 'lacs_dungeons' or self.shuffle_light_arrows == 'lacs_dungeons':
-        #     self.lacs_condition = 'dungeons'
-        # elif self.shuffle_ganon_bosskey == 'lacs_stones' or self.shuffle_light_arrows = 'lacs_stones':
-        #     self.lacs_condition = 'stones'
-        # elif self.shuffle_ganon_bosskey == 'lacs_tokens' or self.shuffle_light_arrows = 'lacs_tokens':
-        #     self.lacs_condition = 'tokens'
-        # else:
-        #     self.lacs_condition = 'vanilla'
-
         # trials that can be skipped will be decided later
         self.skipped_trials = {
             'Forest': False,
