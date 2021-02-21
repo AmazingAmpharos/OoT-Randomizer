@@ -72,7 +72,7 @@ class Location(object):
             return False
         if self.is_disabled() or not self.can_fill_fast(item) or (check_access and not state.search.spot_access(self, 'either')):
             return False
-        if len(extra_location_checks) == 0:
+        if not extra_location_checks:
             return True
         search_with_this = state.search.copy()
         search_with_this.collect(item)
