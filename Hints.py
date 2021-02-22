@@ -431,27 +431,30 @@ def get_good_item_hint(spoiler, world, checked):
 
 
 def get_specific_item_hint(spoiler, world, checked):
-    itemname = world.named_item_pool.pop(0)
-    if itemname == "Bottle" and world.hint_dist == "bingo":
-        locations = [
-            location for location in world.get_filled_locations()
-            if (is_not_checked(location, checked)
-                and location.name not in world.hint_exclusions
-                and location.item.name in bingoBottlesForHints
-                and not location.locked
-                and location.name not in world.hint_type_overrides['named-item'])
-        ]
-    else:
-        locations = [
-            location for location in world.get_filled_locations()
-            if (is_not_checked(location, checked)
-                and location.name not in world.hint_exclusions
-                and location.item.name == itemname
-                and not location.locked
-                and location.name not in world.hint_type_overrides['named-item'])
-        ]
-    if not locations:
-        return None
+    while True:
+        itemname = world.named_item_pool.pop(0)
+        if itemname == "Bottle" and world.hint_dist == "bingo":
+            locations = [
+                location for location in world.get_filled_locations()
+                if (is_not_checked(location, checked)
+                    and location.name not in world.hint_exclusions
+                    and location.item.name in bingoBottlesForHints
+                    and not location.locked
+                    and location.name not in world.hint_type_overrides['named-item'])
+            ]
+        else:
+            locations = [
+                location for location in world.get_filled_locations()
+                if (is_not_checked(location, checked)
+                    and location.name not in world.hint_exclusions
+                    and location.item.name == itemname
+                    and not location.locked
+                    and location.name not in world.hint_type_overrides['named-item'])
+            ]
+        if len(locations) > 0:
+            break
+        if len(world.named_item_pool) == 0:
+            return None
 
     location = random.choice(locations)
     checked.add(location.name)
@@ -459,13 +462,13 @@ def get_specific_item_hint(spoiler, world, checked):
     
     if location.parent_region.dungeon:
         location_text = getHint(location.parent_region.dungeon.name, world.clearer_hints).text
-        if world.hint_dist_user['vague_named_items']:
+        if world.hint_dist_user.get('vague_named_items', False):
             return (GossipText('#%s# may be on the hero\'s path.' % (location_text), ['Green']), location)
         else:
             return (GossipText('#%s# hoards #%s#.' % (location_text, item_text), ['Green', 'Red']), location)
     else:
         location_text = get_hint_area(location)
-        if world.hint_dist_user['vague_named_items']:
+        if world.hint_dist_user.get('vague_named_items', False):
             return (GossipText('#%s# may be on the hero\'s path.' % (location_text), ['Green']), location)
         else:
             return (GossipText('#%s# can be found at #%s#.' % (item_text, location_text), ['Red', 'Green']), location)
@@ -736,7 +739,7 @@ def buildWorldGossipHints(spoiler, world, checkedLocations=None):
 
         if world.shopsanity != "off" and "Progressive Wallet" not in world.item_hints:
             world.item_hints.append("Progressive Wallet")
-        world.named_item_pool = world.item_hints
+        world.named_item_pool = list(world.item_hints)
 
 
     # Load hint distro from distribution file or pre-defined settings
