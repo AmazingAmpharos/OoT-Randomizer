@@ -105,7 +105,7 @@ def resolve_settings(settings, window=dummy_window()):
         settings.player_num = settings.world_count
 
     # Set to a custom hint distribution if plando is overriding the distro
-    if len(settings.hint_dist_user) == 0:
+    if len(settings.hint_dist_user) != 0:
         settings.hint_dist = 'custom'
 
     logger.info('OoT Randomizer Version %s  -  Seed: %s', __version__, settings.seed)
