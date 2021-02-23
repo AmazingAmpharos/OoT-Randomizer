@@ -24,7 +24,7 @@ void wait_for_reset_combo(){
 			SET_BGM(BGM_STOP);
 			z64_game.common.state_continue = 0;
 			z64_game.common.next_ctor = (void*)TitleSetup_Init_Func;
-			z64_game.common.next_size = sizeof(z64_game_t);
+			z64_game.common.next_size = sizeof(z64_ctxt_t);
 		}
 	}
 	else {
