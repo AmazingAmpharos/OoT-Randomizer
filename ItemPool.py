@@ -1294,8 +1294,6 @@ def get_pool_core(world):
 
     if not world.keysanity and not world.dungeon_mq['Fire Temple']:
         world.state.collect(ItemFactory('Small Key (Fire Temple)'))
-    if not world.dungeon_mq['Water Temple']:
-        world.state.collect(ItemFactory('Small Key (Water Temple)'))
 
     if world.triforce_hunt:
         triforce_count = int((TriforceCounts[world.item_pool_value] * world.triforce_goal_per_world).to_integral_value(rounding=ROUND_HALF_UP))
