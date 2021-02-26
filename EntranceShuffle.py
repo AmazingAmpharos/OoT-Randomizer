@@ -389,7 +389,7 @@ def shuffle_random_entrances(worlds):
 
         if worlds[0].warp_songs:
             one_way_entrance_pools['WarpSong'] = world.get_shufflable_entrances(type='WarpSong')
-            if worlds[0].all_reachable and worlds[0].logic_rules == 'glitchless':
+            if worlds[0].reachable_locations == 'all' and worlds[0].logic_rules == 'glitchless':
                 # In glitchless, there aren't any other ways to access these areas
                 one_way_priorities['Bolero'] = priority_entrance_table['Bolero']
                 one_way_priorities['Nocturne'] = priority_entrance_table['Nocturne']

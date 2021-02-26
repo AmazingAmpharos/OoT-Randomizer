@@ -829,7 +829,7 @@
     "bridge":                                  "open",
     "triforce_hunt":                           false,
     "logic_rules":                             "glitchless",
-    "all_reachable":                           true,
+    "reachable_locations":                     "all",
     "bombchus_in_logic":                       false,
     "one_item_per_dungeon":                    false,
     "trials_random":                           false,
