@@ -98,8 +98,6 @@ class World(object):
             'Ganons Castle': False
         }
 
-        self.can_take_damage = True
-
         self.resolve_random_settings()
 
         if len(settings.hint_dist_user) == 0:
@@ -191,7 +189,6 @@ class World(object):
         new_world.big_poe_count = copy.copy(self.big_poe_count)
         new_world.starting_tod = self.starting_tod
         new_world.starting_age = self.starting_age
-        new_world.can_take_damage = self.can_take_damage
         new_world.shop_prices = copy.copy(self.shop_prices)
         new_world.triforce_goal = self.triforce_goal
         new_world.triforce_count = self.triforce_count
