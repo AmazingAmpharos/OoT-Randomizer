@@ -983,7 +983,7 @@ def buildGanonBossKeyString(world):
     if world.shuffle_ganon_bosskey == 'remove':
         string += "And the door to the \x05\x41evil one\x05\x40's chamber will be left #unlocked#."
     else:
-        if 'lacs_' in world.shuffle_ganon_bosskey:
+        if world.shuffle_ganon_bosskey == 'on_lacs':
             item_req_string = getHint(world.shuffle_ganon_bosskey, world.clearer_hints).text
             if world.lacs_condition == 'medallions':
                 item_req_string = str(world.lacs_medallions) + ' ' + item_req_string
