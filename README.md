@@ -100,6 +100,10 @@ do that.
 
 ### Dev
 
+#### New Features
+
+* Added a GameCube-style reset. Hold B + C-Right + Start for ten frames to reset to the title screen.
+
 #### Bug Fixes
 
 * Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
