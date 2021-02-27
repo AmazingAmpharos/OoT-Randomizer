@@ -104,6 +104,7 @@ do that.
 
 * Added a GameCube-style reset. Hold B + C-Right + Start for ten frames to reset to the title screen.
 * New separate setting `LACS Condition` to select what goal items are required for the Light Arrows Cutscene.
+* New option `Misc. Hints` controls whether the Temple of Time altar and Ganondorf give hints, defaulting on to preserve behavior. Hell Mode disables this setting.
 
 #### Bug Fixes
 

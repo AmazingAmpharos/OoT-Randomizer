@@ -3561,6 +3561,35 @@ setting_infos = [
         ''',
         shared         = True,
     ),
+    Checkbutton(
+        name           = 'misc_hints',
+        gui_text       = 'Misc. Hints',
+        gui_tooltip    = '''\
+            This setting adds some hints at locations
+            other than Gossip Stones:
+
+            Reading the Temple of Time altar as child
+            will tell you the locations of the
+            Spiritual Stones (unless Maps and Compasses
+            Give Information is enabled).
+
+            Reading the Temple of Time altar as adult
+            will tell you the locations of the Medallions
+            (unless Maps and Compasses Give Information
+            is enabled), as well as the conditions for
+            building the Rainbow Bridge and getting the
+            Boss Key for Ganon's Castle.
+
+            Talking to Ganondorf in his boss room will
+            tell you the location of the Light Arrows.
+
+            If this setting is enabled and Ganondorf
+            is reachable without Light Arrows, Gossip
+            Stones will never hint the Light Arrows.
+        ''',
+        shared         = True,
+        default        = True,
+    ),
     Combobox(
         name           = 'ice_trap_appearance',
         gui_text       = 'Ice Trap Appearance',

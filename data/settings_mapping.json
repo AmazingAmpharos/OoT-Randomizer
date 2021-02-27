@@ -335,6 +335,7 @@
             "hints",
             "hint_dist",
             "bingosync_url",
+            "misc_hints",
             "text_shuffle",
             "damage_multiplier",
 			"no_collectible_hearts",
