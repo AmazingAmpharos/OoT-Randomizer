@@ -1,6 +1,7 @@
 from LocationList import location_table, location_is_viewable
 from Region import TimeOfDay
 from enum import Enum
+from itertools import chain
 
 
 class Location(object):
@@ -67,13 +68,17 @@ class Location(object):
         self.access_rules = [lambda_rule]
 
 
-    def can_fill(self, state, item, check_access=True):
+    def can_fill(self, state, item, check_access=True, extra_location_checks=()):
         if self.minor_only and item.majoritem:
             return False
-        return (
-            not self.is_disabled() and 
-            self.can_fill_fast(item) and
-            (not check_access or state.search.spot_access(self, 'either')))
+        if self.is_disabled() or not self.can_fill_fast(item) or (check_access and not state.search.spot_access(self, 'either')):
+            return False
+        if not extra_location_checks:
+            return True
+        search_with_this = state.search.copy()
+        search_with_this.collect(item)
+        search_with_this.collect_locations(chain(search_with_this.progression_locations(), extra_location_checks))
+        return all(map(search_with_this.visited, extra_location_checks))
 
 
     def can_fill_fast(self, item, manual=False):
@@ -149,4 +154,3 @@ class DisableType(Enum):
     ENABLED  = 0
     PENDING = 1
     DISABLED = 2
-
