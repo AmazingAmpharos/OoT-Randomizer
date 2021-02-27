@@ -689,6 +689,7 @@ exclude_from_major = [
     'Bombchus (10)',
     'Bombchus (20)',
     'Odd Potion',
+    'Triforce Piece'
 ]
 exclude_from_major.extend(tradeitems)
 
