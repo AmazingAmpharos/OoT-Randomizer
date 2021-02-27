@@ -9,9 +9,7 @@ from LocationList import location_groups
 from decimal import Decimal, ROUND_HALF_UP
 
 
-#This file sets the item pools for various modes. Timed modes and triforce hunt are enforced first, and then extra items are specified per mode to fill in the remaining space.
-#Some basic items that various modes require are placed here, including pendants and crystals. Medallion requirements for the two relevant entrances are also decided.
-
+# Generates itempools and places fixed items based on settings.
 
 alwaysitems = ([
     'Biggoron Sword',
@@ -1322,6 +1320,9 @@ def get_pool_core(world):
 
     for item,max in item_difficulty_max[world.item_pool_value].items():
         replace_max_item(pool, item, max)
+
+    if world.damage_multiplier in ['ohko', 'quadruple'] and world.item_pool_value == 'minimal':
+        pending_junk_pool.append('Nayrus Love')
 
     world.distribution.alter_pool(world, pool)
 

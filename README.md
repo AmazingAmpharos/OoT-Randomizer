@@ -120,6 +120,7 @@ do that.
 
 * Add ability to provide settings through stdin (useful for shell scripting).
 * Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
+* Added Nayru's Love back to the minimal item pool on high damage settings.
 
 ### 6.0
 
