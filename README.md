@@ -121,6 +121,7 @@ do that.
 * Add ability to provide settings through stdin (useful for shell scripting).
 * Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
 * Added Nayru's Love back to the minimal item pool on high damage settings.
+* Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
 
 ### 6.0
 
