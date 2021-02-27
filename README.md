@@ -103,6 +103,7 @@ do that.
 #### New Features
 
 * Added a GameCube-style reset. Hold B + C-Right + Start for ten frames to reset to the title screen.
+* New separate setting `LACS Condition` to select what goal items are required for the Light Arrows Cutscene.
 
 #### Bug Fixes
 

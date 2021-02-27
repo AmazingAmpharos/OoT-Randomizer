@@ -1856,8 +1856,7 @@ setting_infos = [
 
                          - Logic Rules
                          - (Random) Number of MQ Dungeons
-                         - Rainbow Bridge Requirement: Gold Skulltula Tokens
-                         - Ganon's Boss Key On LACS: Gold Skulltula Tokens
+                         - Rainbow Bridge/LACS Requirements: Gold Skulltula Tokens
                          - Variable numbers of Spiritual Stones, Medallions, or Dungeons
                          for Rainbow Bridge and Ganon's Boss Key on LACS 
                          (you will always be required to obtain all the relevant rewards)
@@ -2137,7 +2136,7 @@ setting_infos = [
             'randomize_key': 'randomize_settings',
         },
         disable        = {
-            True  : {'settings' : ['shuffle_ganon_bosskey', 'lacs_medallions', 'lacs_stones', 'lacs_rewards', 'lacs_tokens']},
+            True  : {'settings' : ['shuffle_ganon_bosskey']},
             False : {'settings' : ['triforce_goal_per_world']}
         },
     ),
@@ -3091,11 +3090,7 @@ setting_infos = [
             'overworld':       "Overworld Only",
             'any_dungeon':     "Any Dungeon",
             'keysanity':       "Anywhere (Keysanity)",
-            'lacs_vanilla':    "On LACS: Vanilla",
-            'lacs_stones':     "On LACS: Stones",
-            'lacs_medallions': "On LACS: Medallions",
-            'lacs_dungeons':   "On LACS: Dungeons",
-            'lacs_tokens':     "On LACS: Tokens",
+            'on_lacs':         "Light Arrow Cutscene"
         },
         gui_tooltip    = '''\
             'Remove': Ganon's Castle Boss Key is removed
@@ -3115,24 +3110,11 @@ setting_infos = [
 
             'Anywhere': Ganon's Castle Boss Key can appear
             anywhere in the world.
-            
-            'On LACS': These settings put the boss key on the
-            Light Arrow Cutscene location, from Zelda in Temple
-            of Time as adult, with differing requirements.
-            
-            'On LACS: Vanilla': Shadow and Spirit Medallions.
-            'On LACS: Medallions': A configurable amount of Medallions.
-            'On LACS: Stones': A configurable amount of Spiritual Stones.
-            'On LACS: Dungeons': A configurable amount of Dungeon Rewards.
-            'On LACS: Tokens': A configurable amount of Gold Skulltula Tokens.
+
+            'Light Arrow Cutscene': Ganon's Castle Boss Key will
+            appear on the Light Arrow Cutscene.
         ''',
         shared         = True,
-        disable={
-            '!lacs_stones':  {'settings': ['lacs_stones']},
-            '!lacs_medallions':  {'settings': ['lacs_medallions']},
-            '!lacs_dungeons':  {'settings': ['lacs_rewards']},
-            '!lacs_tokens':  {'settings': ['lacs_tokens']},
-        },
         gui_params     = {
             'randomize_key': 'randomize_settings',
             'distribution': [
@@ -3140,10 +3122,45 @@ setting_infos = [
                 ('dungeon',         2),
                 ('vanilla',         2),
                 ('keysanity',       4),
-                ('lacs_vanilla',    1),
-                ('lacs_medallions', 1),
-                ('lacs_stones',     1),
-                ('lacs_dungeons',   1),
+                ('on_lacs',         1)
+            ],
+        },
+    ),
+    Combobox(
+        name           = 'lacs_condition',
+        gui_text       = 'LACS Condition',
+        default        = 'vanilla',
+        choices        = {
+            'vanilla':    "Vanilla",
+            'stones':     "Stones",
+            'medallions': "Medallions",
+            'dungeons':   "Dungeons",
+            'tokens':     "Tokens",
+        },
+        gui_tooltip    = '''\
+            Sets the condition for the Light Arrow Cutscene
+            check to give you the item from Zelda.
+            
+            'Vanilla': Shadow and Spirit Medallions.
+            'Medallions': A configurable amount of Medallions.
+            'Stones': A configurable amount of Spiritual Stones.
+            'Dungeons': A configurable amount of Dungeon Rewards.
+            'Tokens': A configurable amount of Gold Skulltula Tokens.
+        ''',
+        shared         = True,
+        disable={
+            '!stones':  {'settings': ['lacs_stones']},
+            '!medallions':  {'settings': ['lacs_medallions']},
+            '!dungeons':  {'settings': ['lacs_rewards']},
+            '!tokens':  {'settings': ['lacs_tokens']},
+        },
+        gui_params     = {
+            'randomize_key': 'randomize_settings',
+            'distribution': [
+                ('vanilla',    1),
+                ('medallions', 1),
+                ('stones',     1),
+                ('dungeons',   1),
             ],
         },
     ),
