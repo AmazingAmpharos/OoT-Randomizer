@@ -117,6 +117,7 @@ do that.
 #### Other Changes
 
 * Add ability to provide settings through stdin (useful for shell scripting).
+* Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
 
 ### 6.0
 
