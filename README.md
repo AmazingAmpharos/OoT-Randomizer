@@ -100,6 +100,14 @@ do that.
 
 ### Dev
 
+#### New Features
+
+* Added a GameCube-style reset. Hold B + C-Right + Start for ten frames to reset to the title screen.
+* New setting `Reachable Locations` replaces `All Locations Reachable` and adds a new option "All Goals" which ensures that all goal items for Ganon's Boss Key and the Rainbow Bridge are reachable, regardless of how many are required by the setting.
+  * For example, if the Rainbow Bridge requires 4 medallions, all 6 medallions will be guaranteed reachable.
+* New separate setting `LACS Condition` to select what goal items are required for the Light Arrows Cutscene.
+* New option `Misc. Hints` controls whether the Temple of Time altar and Ganondorf give hints, defaulting on to preserve behavior. Hell Mode disables this setting.
+
 #### Bug Fixes
 
 * Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
@@ -111,6 +119,9 @@ do that.
 #### Other Changes
 
 * Add ability to provide settings through stdin (useful for shell scripting).
+* Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
+* Added Nayru's Love back to the minimal item pool on high damage settings.
+* Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
 
 ### 6.0
 
