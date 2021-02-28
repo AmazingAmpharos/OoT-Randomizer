@@ -11,6 +11,7 @@ from Fill import FillError
 from EntranceShuffle import EntranceShuffleError, change_connections, confirm_replacement, validate_world, check_entrances_compatibility
 from Hints import gossipLocations, GossipText
 from Item import ItemFactory, ItemIterator, IsItem
+from ItemList import item_table
 from ItemPool import item_groups, get_junk_item
 from Location import LocationIterator, LocationFactory, IsLocation
 from LocationList import location_groups
@@ -282,6 +283,24 @@ class WorldDistribution(object):
             if pattern == '#MajorItem':
                 if not self.major_group: # If necessary to compute major_group, do so only once
                     self.major_group = [item for item in group if item in self.base_pool]
+                    # Special handling for things not included in base_pool
+                    if self.distribution.settings.triforce_hunt:
+                        self.major_group.append('Triforce Piece')
+                    major_tokens = self.distribution.settings.shuffle_ganon_bosskey == 'lacs_tokens' or self.distribution.settings.bridge == 'tokens'
+                    if self.distribution.settings.tokensanity == 'all' and major_tokens:
+                        self.major_group.append('Gold Skulltula Token')
+                    if self.distribution.settings.shuffle_smallkeys == 'keysanity':
+                        keys = [name for (name, data) in item_table.items() if data[0] == 'SmallKey' and name != 'Small Key']
+                        self.major_group.extend(keys)
+                    if self.distribution.settings.shuffle_fortresskeys == 'keysanity':
+                        keys = [name for (name, data) in item_table.items() if data[0] == 'FortressSmallKey']
+                        self.major_group.extend(keys)
+                    if self.distribution.settings.shuffle_bosskeys == 'keysanity':
+                        keys = [name for (name, data) in item_table.items() if data[0] == 'BossKey' and name != 'Boss Key']
+                        self.major_group.extend(keys)
+                    if self.distribution.settings.shuffle_ganon_bosskey == 'keysanity':
+                        keys = [name for (name, data) in item_table.items() if data[0] == 'GanonBossKey']
+                        self.major_group.extend(keys)
                 group = self.major_group
             return lambda s: invert != (s in group)
         wildcard_begin = pattern.startswith('*')
