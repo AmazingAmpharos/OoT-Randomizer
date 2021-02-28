@@ -77,7 +77,7 @@ class Location(object):
             return True
         search_with_this = state.search.copy()
         search_with_this.collect(item)
-        search_with_this.collect_locations(chain(search_with_this.progression_locations(), extra_location_checks))
+        search_with_this.collect_locations(list(chain(search_with_this.progression_locations(), extra_location_checks)))
         return all(map(search_with_this.visited, extra_location_checks))
 
 
