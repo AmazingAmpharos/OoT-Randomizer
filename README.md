@@ -132,6 +132,7 @@ do that.
 * Entrance Randomizer: Allow Kakariko Potion Shop and Impa's House to have their entrances appear in different areas if all hints are off.
 * Updated presets.
 * Logic updates.
+* Use HTTPS for the version check to github.
 
 ### 6.0
 
