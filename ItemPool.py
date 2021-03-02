@@ -680,6 +680,17 @@ remove_junk_items = [
 ]
 remove_junk_set = set(remove_junk_items)
 
+exclude_from_major = [ 
+    'Deliver Letter',
+    'Sell Big Poe',
+    'Magic Bean',
+    'Zeldas Letter',
+    'Bombchus (5)',
+    'Bombchus (10)',
+    'Bombchus (20)',
+    'Odd Potion',
+    'Triforce Piece'
+]
 
 item_groups = {
     'Junk': remove_junk_items,
@@ -693,6 +704,7 @@ item_groups = {
     'WarpSong': songlist[6:],
     'HealthUpgrade': ('Heart Container', 'Piece of Heart'),
     'ProgressItem': [name for (name, data) in item_table.items() if data[0] == 'Item' and data[1]],
+    'MajorItem': [name for (name, data) in item_table.items() if (data[0] == 'Item' or data[0] == 'Song') and data[1] and name not in exclude_from_major],
     'DungeonReward': dungeon_rewards,
 
     'ForestFireWater': ('Forest Medallion', 'Fire Medallion', 'Water Medallion'),

@@ -235,7 +235,11 @@ class TestPlandomizer(unittest.TestCase):
             "plando-num-bottles-fountain-closed-good",
             "plando-num-bottles-fountain-open-good",
             "plando-change-triforce-piece-count",
-            "plando-use-normal-triforce-piece-count"
+            "plando-use-normal-triforce-piece-count",
+            "plando-egg-not-shuffled-one-pool",
+            "plando-egg-not-shuffled-two-pool",
+            "plando-egg-shuffled-one-pool",
+            "plando-egg-shuffled-two-pool",
         ]
         for filename in filenames:
             with self.subTest(filename):
@@ -279,6 +283,23 @@ class TestPlandomizer(unittest.TestCase):
             for item in distribution_file['starting_items']:
                 self.assertNotIn(item, actual_pool)
 
+    def test_weird_egg_in_pool(self):
+        # Not shuffled, one in pool: Should remove from pool and not place anywhere
+        not_shuffled_one = "plando-egg-not-shuffled-one-pool"
+        distribution_file, spoiler = generate_with_plandomizer(not_shuffled_one)
+        self.assertNotIn('Weird Egg', spoiler['item_pool'])
+        # Not shuffled, two in pool: Should be the same outcome as previous case
+        not_shuffled_two = "plando-egg-not-shuffled-two-pool"
+        distribution_file, spoiler = generate_with_plandomizer(not_shuffled_two)
+        self.assertNotIn('Weird Egg', spoiler['item_pool'])
+        # Shuffled, one in pool: Valid config, shouldn't have to make any changes, will end with 1 in pool
+        shuffled_one = "plando-egg-shuffled-one-pool"
+        distribution_file, spoiler = generate_with_plandomizer(shuffled_one)
+        self.assertEqual(spoiler['item_pool']['Weird Egg'], 1)
+        # Shuffled, two in pool: Shouldn't have more than one, will remove force to 1 in pool
+        shuffled_two = "plando-egg-shuffled-two-pool"
+        distribution_file, spoiler = generate_with_plandomizer(shuffled_two)
+        self.assertEqual(spoiler['item_pool']['Weird Egg'], 1)
 
 class TestHints(unittest.TestCase):
     def test_skip_zelda(self):
