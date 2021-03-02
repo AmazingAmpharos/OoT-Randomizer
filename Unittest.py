@@ -198,7 +198,7 @@ class TestPlandomizer(unittest.TestCase):
             "plando-item-pool-matches-items-placed-after-starting-items-replaced",
             "plando-new-placed-ice-traps",
             "plando-placed-and-added-ice-traps",
-            "bombchu-bowling-ice-trap",
+            "non-standard-visible-ice-traps",
         ]
         for filename in filenames:
             with self.subTest(filename):
@@ -219,7 +219,7 @@ class TestPlandomizer(unittest.TestCase):
                         # This distribution file should set all junk items to 1 except for ice traps so we will reuse it
                         _, spoiler = generate_with_plandomizer("plando-explicit-item-pool")
                         self.assertGreater(spoiler['item_pool']['Ice Trap'], 6)
-                if filename == "bombchu-bowling-ice-trap":
+                if filename == "non-standard-visible-ice-traps":
                     with self.subTest("ice trap models in non-standard visible locations"):
                         for location in distribution_file['locations']:
                             self.assertIn('model', spoiler['locations'][location])
