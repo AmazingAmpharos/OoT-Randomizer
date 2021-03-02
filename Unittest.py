@@ -240,6 +240,7 @@ class TestPlandomizer(unittest.TestCase):
             "plando-egg-not-shuffled-two-pool",
             "plando-egg-shuffled-one-pool",
             "plando-egg-shuffled-two-pool",
+            "no-ice-trap-pending-junk",
         ]
         for filename in filenames:
             with self.subTest(filename):
@@ -264,6 +265,7 @@ class TestPlandomizer(unittest.TestCase):
             "plando-change-triforce-piece-count",
             "plando-use-normal-triforce-piece-count",
             "plando-shop-items",
+            "no-ice-trap-pending-junk",
         ]
         for filename in filenames:
             with self.subTest(filename + " pool accuracy"):

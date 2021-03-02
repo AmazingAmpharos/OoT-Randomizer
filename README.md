@@ -115,6 +115,7 @@ do that.
 * Smarter replacement of required warp songs when warp songs are shuffled. 
 * Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
 * Fix Plandomizer duplicating placed shop items.
+* Fix some potential failures for placing junk.
 * Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
 
 #### Other Changes
