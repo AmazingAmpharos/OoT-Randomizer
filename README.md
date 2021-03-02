@@ -130,6 +130,7 @@ do that.
 * Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
 * New `#MajorItem` item category for Plandomizer allows placing a random major item.
 * Updated presets.
+* Logic updates.
 
 ### 6.0
 
