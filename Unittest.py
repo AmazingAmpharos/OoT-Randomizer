@@ -241,6 +241,7 @@ class TestPlandomizer(unittest.TestCase):
             "plando-egg-shuffled-one-pool",
             "plando-egg-shuffled-two-pool",
             "no-ice-trap-pending-junk",
+            "disabled-song-location",
         ]
         for filename in filenames:
             with self.subTest(filename):

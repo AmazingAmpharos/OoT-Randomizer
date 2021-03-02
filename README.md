@@ -117,6 +117,7 @@ do that.
 * Fix Entrance Randomizer dungeon entrance hints.
 * Fix Plandomizer duplicating placed shop items.
 * Fix some potential failures for placing junk.
+* Fix disabled song locations getting a general junk item instead of a junk song.
 * Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
 
 #### Other Changes
