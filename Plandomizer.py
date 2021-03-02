@@ -437,13 +437,13 @@ class WorldDistribution(object):
             if record.type == 'set':
                 if item_name == '#Junk':
                     raise ValueError('#Junk item group cannot have a set number of items')
-                elif item_name == 'Weird Egg' and not self.settings.shuffle_weird_egg:
+                elif item_name == 'Weird Egg' and not self.distribution.settings.shuffle_weird_egg:
                     remove_egg = True
                     continue
                 elif item_name == 'Weird Egg' and self.item_pool['Weird Egg'].count > 1:
                     self.item_pool['Weird Egg'].count = 1
                     continue
-                predicate = self.pattern_matcher(item_name, self.base_pool)
+                predicate = self.pattern_matcher(item_name)
                 pool_match = [item for item in pool if predicate(item)]
                 for item in pool_match:
                     self.base_pool.remove(item)
