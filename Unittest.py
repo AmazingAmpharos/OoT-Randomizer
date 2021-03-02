@@ -197,7 +197,8 @@ class TestPlandomizer(unittest.TestCase):
         filenames = [
             "plando-item-pool-matches-items-placed-after-starting-items-replaced",
             "plando-new-placed-ice-traps",
-            "plando-placed-and-added-ice-traps"
+            "plando-placed-and-added-ice-traps",
+            "non-standard-visible-ice-traps",
         ]
         for filename in filenames:
             with self.subTest(filename):
@@ -218,6 +219,10 @@ class TestPlandomizer(unittest.TestCase):
                         # This distribution file should set all junk items to 1 except for ice traps so we will reuse it
                         _, spoiler = generate_with_plandomizer("plando-explicit-item-pool")
                         self.assertGreater(spoiler['item_pool']['Ice Trap'], 6)
+                if filename == "non-standard-visible-ice-traps":
+                    with self.subTest("ice trap models in non-standard visible locations"):
+                        for location in distribution_file['locations']:
+                            self.assertIn('model', spoiler['locations'][location])
 
     def test_should_not_throw_exception(self):
         filenames = [
@@ -484,4 +489,3 @@ class TestValidSpoilers(unittest.TestCase):
                         json.dump(d, f, indent=0)
                     logging.getLogger('').exception(f'Failed to generate with these settings:\n{settings.get_settings_display()}\n')
                     raise
-

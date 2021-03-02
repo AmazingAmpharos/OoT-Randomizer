@@ -914,7 +914,7 @@ location_groups = {
     'CanSee': [name for (name, data) in location_table.items()
                if data[0] in ('Collectable', 'BossHeart', 'GS Token', 'Shop')
                # Treasure Box Shop, Bombchu Bowling, Hyrule Field (OoT), Lake Hylia (RL/FA)
-               or data[0:1] in [['Chest', 0x10], ['NPC', 0x4B], ['NPC', 0x51], ['NPC', 0x57]]],
+               or data[0:2] in [('Chest', 0x10), ('NPC', 0x4B), ('NPC', 0x51), ('NPC', 0x57)]],
     'Dungeon': [name for (name, data) in location_table.items() if data[4] is not None and any(dungeon in data[4] for dungeon in dungeons)],
 }
 
