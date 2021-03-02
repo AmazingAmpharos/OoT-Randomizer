@@ -436,6 +436,10 @@ def get_good_item_hint(spoiler, world, checked):
 
 
 def get_specific_item_hint(spoiler, world, checked):
+    if len(world.named_item_pool) == 0:
+        logger = logging.getLogger('')
+        logger.info("Named item hint requested, but pool is empty.")
+        return None  
     while True:
         itemname = world.named_item_pool.pop(0)
         if itemname == "Bottle" and world.hint_dist == "bingo":
