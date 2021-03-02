@@ -129,6 +129,7 @@ do that.
 * Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
 * Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
 * New `#MajorItem` item category for Plandomizer allows placing a random major item.
+* Entrance Randomizer: Allow Kakariko Potion Shop and Impa's House to have their entrances appear in different areas if all hints are off.
 * Updated presets.
 * Logic updates.
 
