@@ -747,7 +747,8 @@ class WorldDistribution(object):
                 ignore_pools = [2]
             if is_invert and location.type == 'Song' and world.shuffle_song_items == 'song':
                 ignore_pools = [i for i in range(len(item_pools)) if i != 2]
-            if location.type == 'Shop':
+            # location.price will be None for Shop Buy items
+            if location.type == 'Shop' and location.price is None:
                 ignore_pools = [i for i in range(len(item_pools)) if i != 0]
 
             item = self.get_item(ignore_pools, item_pools, location, player_id, record, worlds)
@@ -780,7 +781,7 @@ class WorldDistribution(object):
         """
         world = worlds[player_id]
         if ignore_pools:
-            pool = [pool for i, pool in enumerate(item_pools) if i not in ignore_pools]
+            pool = [pool if i not in ignore_pools else [] for i, pool in enumerate(item_pools)]
         else:
             pool = item_pools
         try:
@@ -813,7 +814,13 @@ class WorldDistribution(object):
         except KeyError:
             if location.type == 'Shop' and "Buy" in record.item:
                 try:
-                    self.pool_remove_item(pool, "Buy *", 1, world_id=player_id)
+                    removed_item = self.pool_remove_item(pool, "Buy *", 1, world_id=player_id)[0]
+                    if removed_item.name in self.item_pool:
+                        # Update item_pool after item is removed
+                        if self.item_pool[removed_item.name].count == 1:
+                            del self.item_pool[removed_item.name]
+                        else:
+                            self.item_pool[removed_item.name].count -= 1
                     item = ItemFactory([record.item], world=world)[0]
                 except KeyError:
                     raise RuntimeError(
@@ -847,7 +854,7 @@ class WorldDistribution(object):
                 except KeyError:
                     raise RuntimeError(
                         'Too many items were added to world %d, and not enough junk is available to be removed.' % (self.id + 1))
-            # Update item_pool
+            # Update item_pool after item is replaced
             if item.name not in self.item_pool:
                 self.item_pool[item.name] = ItemPoolRecord()
             else:
@@ -855,6 +862,10 @@ class WorldDistribution(object):
         except IndexError:
             raise RuntimeError(
                 'Unknown item %s being placed on location %s in world %d.' % (record.item, location, self.id + 1))
+        # Ensure pool copy is persisted to real pool
+        for i, new_pool in enumerate(pool):
+            if new_pool:
+                item_pools[i] = new_pool
         return item
 
     def cloak(self, worlds, location_pools, model_pools):
