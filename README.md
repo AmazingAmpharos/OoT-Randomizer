@@ -122,6 +122,7 @@ do that.
 * Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
 * Added Nayru's Love back to the minimal item pool on high damage settings.
 * Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
+* Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
 
 ### 6.0
 
