@@ -128,6 +128,7 @@ do that.
 * Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
 * Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
 * New `#MajorItem` item category for Plandomizer allows placing a random major item.
+* Updated presets.
 
 ### 6.0
 
