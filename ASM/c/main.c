@@ -15,7 +15,6 @@
 #include "twinrova.h"
 #include "extern_ctxt.h"
 #include "fog.h"
-#include "reset.h"
 
 void c_init() {
     heap_init();
@@ -37,7 +36,6 @@ void before_game_state_update() {
 void after_game_state_update() {
     draw_dungeon_info(&(z64_ctxt.gfx->overlay));
     draw_triforce_count(&(z64_ctxt.gfx->overlay));
-    wait_for_reset_combo();
 }
 
 void after_scene_init() {

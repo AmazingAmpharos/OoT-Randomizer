@@ -100,9 +100,6 @@ do that.
 
 ### Dev
 
-#### New Features
-
-* Added a GameCube-style reset. Hold B + C-Right + Start for ten frames to reset to the title screen.
 * New setting `Reachable Locations` replaces `All Locations Reachable` and adds a new option "All Goals" which ensures that all goal items for Ganon's Boss Key and the Rainbow Bridge are reachable, regardless of how many are required by the setting.
   * For example, if the Rainbow Bridge requires 4 medallions, all 6 medallions will be guaranteed reachable.
 * New separate setting `LACS Condition` to select what goal items are required for the Light Arrows Cutscene.
