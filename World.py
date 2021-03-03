@@ -132,6 +132,7 @@ class World(object):
             self.hint_exclusions.add('Song from Impa')
         self.hint_type_overrides = {}
         self.item_hint_type_overrides = {}
+                
         for dist in hint_dist_keys:
             self.added_hint_types[dist] = []
             for loc in self.hint_dist_user['add_locations']:
@@ -150,6 +151,7 @@ class World(object):
             for i in self.hint_dist_user['remove_items']:
                 if dist in i['types']:
                     self.item_hint_type_overrides[dist].append(i['item'])
+                    
 
         self.hint_text_overrides = {}
         for loc in self.hint_dist_user['add_locations']:
@@ -159,6 +161,7 @@ class World(object):
                     raise Exception('Custom hint text too large for %s', loc['location'])
                 self.hint_text_overrides.update({loc['location']: loc['text']})
 
+        self.item_hints = settings.item_hints + self.item_added_hint_types["named-item"]
         self.named_item_pool = list(self.item_hints)
 
         self.always_hints = [hint.name for hint in getRequiredHints(self)]

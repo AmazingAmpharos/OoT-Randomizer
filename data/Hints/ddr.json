@@ -6,7 +6,20 @@
           { "location": "Deku Theater Skull Mask",	"types": ["always"]}
           ],     
       "remove_locations":      [],    
-      "add_items": [], 
+      "add_items": [
+            {"item":"Hover Boots", "types":["named-item"]},
+            {"item":"Progressive Hookshot", "types":["named-item"]},
+            {"item":"Dins Fire", "types":["named-item"]},
+            {"item":"Bomb Bag", "types":["named-item"]},
+            {"item":"Boomerang", "types":["named-item"]},
+            {"item":"Bow", "types":["named-item"]},
+            {"item":"Megaton Hammer", "types":["named-item"]},
+            {"item":"Iron Boots", "types":["named-item"]},
+            {"item":"Magic Meter", "types":["named-item"]},
+            {"item":"Mirror Shield", "types":["named-item"]},
+            {"item":"Fire Arrows", "types":["named-item"]},
+            {"item":"Progressive Strength Upgrade", "types":["named-item"]}
+      ],  
       "remove_items":          [
           { "item": "Zeldas Lullaby",     "types": ["woth", "sometimes"] },
 	  { "item": "Rutos Letter",   	  "types": ["woth", "sometimes"] },
