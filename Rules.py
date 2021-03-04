@@ -68,8 +68,6 @@ def set_rules(world):
 
 def create_shop_rule(location):
     def required_wallets(price):
-        if price > 32767: # Price will be too high and player can get item with any wallet or rupee amount.
-            return 0
         if price > 500:
             return 3
         if price > 200:
