@@ -33,6 +33,7 @@ def set_rules(world):
                 # If price was specified in plando, use it here so access rule is set correctly.
                 if location.name in world.distribution.locations and world.distribution.locations[location.name].price is not None:
                     location.price = world.distribution.locations[location.name].price
+                    world.shop_prices[location.name] = world.distribution.locations[location.name].price
                 location.add_rule(create_shop_rule(location))
             else:
                 add_item_rule(location, lambda location, item: item.type == 'Shop' and item.world.id == location.world.id)
