@@ -642,7 +642,7 @@ class Shop_Item():
         bytes += int_to_bytes(self.object, 2)
         bytes += int_to_bytes(self.model, 2)
         bytes += int_to_bytes(self.func1, 4)
-        bytes += int_to_bytes(self.price, 2)
+        bytes += int_to_bytes(self.price, 2, signed=True)
         bytes += int_to_bytes(self.pieces, 2)
         bytes += int_to_bytes(self.description_message, 2)
         bytes += int_to_bytes(self.purchase_message, 2)
