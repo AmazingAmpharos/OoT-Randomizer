@@ -356,7 +356,7 @@ def parse_control_codes(text):
         bytes = list(text.encode('utf-8'))
 
     i = 0
-    while i < len(bytes) - 2:
+    while i < len(bytes) - 1:
         if (bytes[i], bytes[i+1]) in UTF8_TO_OOT_SPECIAL:
             bytes[i] = UTF8_TO_OOT_SPECIAL[(bytes[i], bytes[i+1])]
             del bytes[i+1]
