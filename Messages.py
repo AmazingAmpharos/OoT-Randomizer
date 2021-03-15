@@ -638,12 +638,7 @@ class Message():
     def from_string(cls, text, id=0, opts=0x00):
         bytes = list(text.encode('utf-8')) + [0x02]
 
-        i = 0
-        while i < len(bytes) - 1:
-            if bytes[i] in SPECIAL_CHARACTERS:
-                del bytes[i-1]
-                i -= 1
-            i+= 1
+        bytes = list(filter(lambda a: a != 194, bytes)) # Clean up garbage values from encoding OoT Chars
 
         return cls(bytes, 0, id, opts, 0, len(bytes) + 1)
 
