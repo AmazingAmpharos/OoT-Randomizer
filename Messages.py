@@ -353,6 +353,8 @@ def parse_control_codes(text):
     else:
         bytes = list(text.encode('utf-8'))
 
+    # Special characters encoded to utf-8 must be re-encoded to OoT's values for them.
+    # Tuple is used due to utf-8 encoding using two bytes.
     i = 0
     while i < len(bytes) - 1:
         if (bytes[i], bytes[i+1]) in UTF8_TO_OOT_SPECIAL:
@@ -636,10 +638,11 @@ class Message():
     def from_string(cls, text, id=0, opts=0x00):
         bytes = list(text.encode('utf-8')) + [0x02]
 
-        bytes = list(filter(lambda a: a != 194, bytes)) # Clean up garbage values from encoding OoT Chars.
+        # Clean up garbage values added when encoding special characters again.
+        bytes = list(filter(lambda a: a != 194, bytes)) # 0xC2 added before each accent char.
         i = 0
         while i < len(bytes) - 1:
-            if bytes[i] in SPECIAL_CHARACTERS and bytes[i] not in UTF8_TO_OOT_SPECIAL.values(): # This indicates it's one of the unique values (A button, etc).
+            if bytes[i] in SPECIAL_CHARACTERS and bytes[i] not in UTF8_TO_OOT_SPECIAL.values(): # This indicates it's one of the button chars (A button, etc).
                 # Have to delete 2 inserted garbage values.
                 del bytes[i-1]
                 del bytes[i-2]
