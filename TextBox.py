@@ -126,7 +126,7 @@ def line_wrap(text, strip_existing_lines=False, strip_existing_boxes=False, repl
                 processed_boxes.append(lines)
                 lines = []
                 box_count += 1
-                
+
     # Construct our final string.
     # This is a hideous level of list comprehension. Sorry.
     return '\x04'.join(['\x01'.join([' '.join([''.join([code.get_string() for code in word]) for word in line]) for line in box]) for box in processed_boxes])

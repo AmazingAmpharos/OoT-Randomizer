@@ -51,7 +51,7 @@ CONTROL_CODES = {
 }
 
 SPECIAL_CHARACTERS = {
-    0x5C: '¥',
+    
     0x80: 'À',
     0x81: 'Á',
     0x82: 'Â',
@@ -98,7 +98,6 @@ SPECIAL_CHARACTERS = {
 }
 
 UTF8_TO_OOT_SPECIAL = {
-    (0xc2, 0xa5): 0x5C,
     (0xc3, 0x80): 0x80,
     (0xc3, 0xae): 0x81,
     (0xc3, 0x82): 0x82,
@@ -638,7 +637,15 @@ class Message():
     def from_string(cls, text, id=0, opts=0x00):
         bytes = list(text.encode('utf-8')) + [0x02]
 
-        bytes = list(filter(lambda a: a != 194, bytes)) # Clean up garbage values from encoding OoT Chars
+        bytes = list(filter(lambda a: a != 194, bytes)) # Clean up garbage values from encoding OoT Chars.
+        i = 0
+        while i < len(bytes) - 1:
+            if bytes[i] in SPECIAL_CHARACTERS and bytes[i] not in UTF8_TO_OOT_SPECIAL.values(): # This indicates it's one of the unique values (A button, etc).
+                # Have to delete 2 inserted garbage values.
+                del bytes[i-1]
+                del bytes[i-2]
+                i -= 2
+            i+= 1
 
         return cls(bytes, 0, id, opts, 0, len(bytes) + 1)
 
