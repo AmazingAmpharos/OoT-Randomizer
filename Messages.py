@@ -51,7 +51,6 @@ CONTROL_CODES = {
 }
 
 SPECIAL_CHARACTERS = {
-    
     0x80: 'À',
     0x81: 'Á',
     0x82: 'Â',
