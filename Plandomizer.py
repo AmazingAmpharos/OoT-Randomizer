@@ -771,10 +771,6 @@ class WorldDistribution(object):
 
             item = self.get_item(ignore_pools, item_pools, location, player_id, record, worlds)
 
-            if record.price is not None and item.type != 'Shop':
-                location.price = record.price
-                world.shop_prices[location.name] = record.price
-
             if location.type == 'Song' and item.type != 'Song':
                 self.song_as_items = True
             location.world.push_item(location, item, True)

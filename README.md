@@ -114,7 +114,9 @@ do that.
 * Smarter replacement of required warp songs when warp songs are shuffled. 
 * Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
 * Fix Entrance Randomizer dungeon entrance hints.
-* Fix Plandomizer duplicating placed shop items.
+* Plandomizer
+  * Correctly consider plando'ed prices in logic, and limit set prices to a range of -32768 to 999.
+  * Fix duplicating placed shop items.
 * Fix some potential failures for placing junk.
 * Fix disabled song locations getting a general junk item instead of a junk song.
 * Fix some spoiler entries for visible ice traps.
