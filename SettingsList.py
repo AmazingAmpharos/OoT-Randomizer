@@ -3556,18 +3556,18 @@ setting_infos = [
         default        = 'none',
         choices        = {
             'none':         'No Text Shuffled',
-            'except_hints': 'Shuffled except Hints and Keys',
+            'except_hints': 'Shuffled except Important Text',
             'complete':     'All Text Shuffled',
         },
         gui_tooltip    = '''\
             Will make things confusing for comedic value.
 
-            'Shuffled except Hints and Keys': Key texts
-            are not shuffled because in keysanity it is
-            inconvenient to figure out which keys are which
-            without the correct text. Similarly, non-shop
-            items sold in shops will also retain standard
-            text for the purpose of accurate price checks.
+            'Shuffled except Important Text': For when
+            you want comedy but don't want to impact
+            gameplay. Text that has an impact on gameplay
+            is not shuffled. This includes all hint text,
+            key text, non-shop items sold in shops, random
+            price scrubs, chicken count and poe count.
         ''',
         shared         = True,
     ),
