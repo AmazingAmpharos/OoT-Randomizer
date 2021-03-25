@@ -335,7 +335,7 @@
         "exits": {
             "Haunted Wasteland": "is_child or 'GF Gate Open' or
                 ((Progressive_Hookshot and (Hover_Boots or can_mega)) or (can_isg and Bombs) )",
-            "Gerudo Training Grounds Lobby": "True"
+            "Gerudo Training Ground Lobby": "True"
         }
     },
     {

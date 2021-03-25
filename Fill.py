@@ -35,8 +35,8 @@ def distribute_items_restrictive(window, worlds, fill_locations=None):
             'Fire Temple Volvagia Heart', 'Water Temple Morpha Heart',
             'Spirit Temple Twinrova Heart', 'Shadow Temple Bongo Bongo Heart',
             'Sheik in Ice Cavern', 'Song from Impa',
-            'Gerudo Training Grounds MQ Ice Arrows Chest',
-            'Gerudo Training Grounds Maze Path Final Chest',
+            'Gerudo Training Ground MQ Ice Arrows Chest',
+            'Gerudo Training Ground Maze Path Final Chest',
             'Bottom of the Well Lens of Truth Chest',
             'Bottom of the Well MQ Lens of Truth Chest']
     else:

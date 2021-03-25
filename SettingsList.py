@@ -131,7 +131,7 @@ class Scale(Setting_Info):
 logic_tricks = {
     'Fewer Tunic Requirements': {
         'name'    : 'logic_fewer_tunic_requirements',
-        'tags'    : ("General", "Fire Temple", "Water Temple", "Gerudo Training Grounds", "Zora's Fountain",),
+        'tags'    : ("General", "Fire Temple", "Water Temple", "Gerudo Training Ground", "Zora's Fountain",),
         'tooltip' : '''\
                     Allows the following possible without Tunics:
                     - Enter Water Temple. The key below the center
@@ -140,7 +140,7 @@ logic_tricks = {
                     accessible, and not Volvagia.
                     - Zora's Fountain Bottom Freestanding PoH.
                     Might not have enough health to resurface.
-                    - Gerudo Training Grounds Underwater
+                    - Gerudo Training Ground Underwater
                     Silver Rupee Chest. May need to make multiple
                     trips.
                     '''},
@@ -315,9 +315,9 @@ logic_tricks = {
                     a particularly egregious example. Logic normally
                     expects Din's Fire and Song of Time.
                     '''},
-    'Gerudo Training Grounds MQ Left Side Silver Rupees with Hookshot': {
+    'Gerudo Training Ground MQ Left Side Silver Rupees with Hookshot': {
         'name'    : 'logic_gtg_mq_with_hookshot',
-        'tags'    : ("Gerudo Training Grounds",),
+        'tags'    : ("Gerudo Training Ground",),
         'tooltip' : '''\
                     The highest silver rupee can be obtained by
                     hookshotting the target and then immediately jump
@@ -1029,9 +1029,9 @@ logic_tricks = {
                     Skulltula and obtain the token by having the Boomerang
                     interact with it along the return path.
                     '''},
-    'Gerudo Training Grounds Left Side Silver Rupees without Hookshot': {
+    'Gerudo Training Ground Left Side Silver Rupees without Hookshot': {
         'name'    : 'logic_gtg_without_hookshot',
-        'tags'    : ("Gerudo Training Grounds",),
+        'tags'    : ("Gerudo Training Ground",),
         'tooltip' : '''\
                     After collecting the rest of the silver rupees in the room,
                     you can reach the final silver rupee on the ceiling by being
@@ -1041,9 +1041,9 @@ logic_tricks = {
                     the edge of a flame wall before it can rise up to block you.
                     To do so without taking damage is more precise.
                     '''},
-    'Gerudo Training Grounds MQ Left Side Silver Rupees without Hookshot': {
+    'Gerudo Training Ground MQ Left Side Silver Rupees without Hookshot': {
         'name'    : 'logic_gtg_mq_without_hookshot',
-        'tags'    : ("Gerudo Training Grounds",),
+        'tags'    : ("Gerudo Training Ground",),
         'tooltip' : '''\
                     After collecting the rest of the silver rupees in the room,
                     you can reach the final silver rupee on the ceiling by being
@@ -1054,18 +1054,18 @@ logic_tricks = {
                     Also included with this trick is that fact that the switch
                     that unbars the door to the final chest of GTG can be hit
                     without a projectile, using a precise jump slash.
-                    This trick supersedes "Gerudo Training Grounds MQ Left Side
+                    This trick supersedes "Gerudo Training Ground MQ Left Side
                     Silver Rupees with Hookshot".
                     '''},
-    'Reach Gerudo Training Grounds Fake Wall Ledge with Hover Boots': {
+    'Reach Gerudo Training Ground Fake Wall Ledge with Hover Boots': {
         'name'    : 'logic_gtg_fake_wall',
-        'tags'    : ("Gerudo Training Grounds",),
+        'tags'    : ("Gerudo Training Ground",),
         'tooltip' : '''\
                     A precise Hover Boots use from the top of the chest can allow
                     you to grab the ledge without needing the usual requirements.
                     In Master Quest, this always skips a Song of Time requirement.
                     In Vanilla, this skips a Hookshot requirement, but is only
-                    relevant if "Gerudo Training Grounds Left Side Silver Rupees
+                    relevant if "Gerudo Training Ground Left Side Silver Rupees
                     without Hookshot" is enabled.
                     '''},
     'Water Temple Cracked Wall with No Additional Items': {
@@ -1421,19 +1421,19 @@ logic_tricks = {
                     Removes the requirements for the Lens of Truth
                     in Ganon's Castle.
                     '''},
-    'Gerudo Training Grounds MQ without Lens of Truth': {
+    'Gerudo Training Ground MQ without Lens of Truth': {
         'name'    : 'logic_lens_gtg_mq',
-        'tags'    : ("Lens of Truth","Gerudo Training Grounds",),
+        'tags'    : ("Lens of Truth","Gerudo Training Ground",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Gerudo Training Grounds MQ.
+                    in Gerudo Training Ground MQ.
                     '''},
-    'Gerudo Training Grounds without Lens of Truth': {
+    'Gerudo Training Ground without Lens of Truth': {
         'name'    : 'logic_lens_gtg',
-        'tags'    : ("Lens of Truth","Gerudo Training Grounds",),
+        'tags'    : ("Lens of Truth","Gerudo Training Ground",),
         'tooltip' : '''\
                     Removes the requirements for the Lens of Truth
-                    in Gerudo Training Grounds.
+                    in Gerudo Training Ground.
                     '''},
     'Jabu MQ without Lens of Truth': {
         'name'    : 'logic_lens_jabu_mq',
@@ -2004,7 +2004,7 @@ setting_infos = [
             'Open Gerudo Fortress': The carpenters are rescued from
             the start of the game, and if 'Shuffle Gerudo Card' is disabled,
             the player starts with the Gerudo Card in the inventory 
-            allowing access to Gerudo Training Grounds.
+            allowing access to Gerudo Training Ground.
         ''',
         shared         = True,
         disable        = {
@@ -2715,7 +2715,7 @@ setting_infos = [
         gui_text       = 'Shuffle Dungeon Entrances',
         gui_tooltip    = '''\
             Shuffle the pool of dungeon entrances, including Bottom 
-            of the Well, Ice Cavern, and Gerudo Training Grounds.
+            of the Well, Ice Cavern, and Gerudo Training Ground.
             However, Ganon's Castle is not shuffled.
 
             Additionally, the entrances of Deku Tree, Fire Temple and 

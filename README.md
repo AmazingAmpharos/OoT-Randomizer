@@ -505,7 +505,7 @@ do that.
     * In the affected modes, a Gerudo is added behind the Wasteland gate who can open the gate
   * Removed RNG from Fishing Minigame
     * Note: The optimal strategy is to have the line stationary for the fish to bite
-  * Can now cast Farore's Wind and play Warp Songs from within Gerudo Training Grounds and all of Ganon's Castle
+  * Can now cast Farore's Wind and play Warp Songs from within Gerudo Training Ground and all of Ganon's Castle
 * Hint Changes
   * Every generic grotto gossip stone has their own hint.
   * The "Very Strong" hint setting can now give multiple Foolish dungeon hints.
