@@ -8,7 +8,7 @@
             "Gerudo Training Ground MQ Hidden Ceiling Chest": "logic_lens_gtg_mq or can_use(Lens_of_Truth)",
             "Gerudo Training Ground MQ Maze Path First Chest": "True",
             "Gerudo Training Ground MQ Maze Path Second Chest": "True",
-            "Gerudo Training Ground MQ Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 1)"
+            "Gerudo Training Ground MQ Maze Path Third Chest": "(Small_Key_Gerudo_Training_Ground, 1)"
         },
         "exits": {
             "Gerudo Fortress": "True",
@@ -86,7 +86,7 @@
             "Gerudo Training Ground MQ Maze Right Side Chest": "True",
             # The switch that opens the door to the Ice Arrows chest can be hit with a precise jumpslash.
             "Gerudo Training Ground MQ Ice Arrows Chest": "
-                (Small_Key_Gerudo_Training_Grounds, 3)"
+                (Small_Key_Gerudo_Training_Ground, 3)"
         },
         "exits": {
             # guarantees fire with torch

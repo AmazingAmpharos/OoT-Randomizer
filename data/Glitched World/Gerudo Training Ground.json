@@ -20,19 +20,19 @@
         "region_name": "Gerudo Training Ground Central Maze",
         "dungeon": "Gerudo Training Ground",
         "locations": {
-            "Gerudo Training Ground Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Grounds, 3)
+            "Gerudo Training Ground Hidden Ceiling Chest": "(Small_Key_Gerudo_Training_Ground, 3)
                 or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(0.5) or can_use(Nayrus_Love)))",
-            "Gerudo Training Ground Maze Path First Chest": "(Small_Key_Gerudo_Training_Grounds, 4)
+            "Gerudo Training Ground Maze Path First Chest": "(Small_Key_Gerudo_Training_Ground, 4)
                 or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(1.0) or can_use(Nayrus_Love)))",
-            "Gerudo Training Ground Maze Path Second Chest": "(Small_Key_Gerudo_Training_Grounds, 6)
+            "Gerudo Training Ground Maze Path Second Chest": "(Small_Key_Gerudo_Training_Ground, 6)
                 or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(1.0) or can_use(Nayrus_Love)))",
-            "Gerudo Training Ground Maze Path Third Chest": "(Small_Key_Gerudo_Training_Grounds, 7)
+            "Gerudo Training Ground Maze Path Third Chest": "(Small_Key_Gerudo_Training_Ground, 7)
                 or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(0.5) or can_use(Nayrus_Love)))",
-            "Gerudo Training Ground Maze Path Final Chest": "(Small_Key_Gerudo_Training_Grounds, 9)
+            "Gerudo Training Ground Maze Path Final Chest": "(Small_Key_Gerudo_Training_Ground, 9)
                 or (can_use(Hookshot) and can_mega) or (is_child and has_explosives and (can_live_dmg(0.5) or can_use(Nayrus_Love)))"
         },
         "exits": {
-            "Gerudo Training Ground Central Maze Right": "(Small_Key_Gerudo_Training_Grounds, 9)
+            "Gerudo Training Ground Central Maze Right": "(Small_Key_Gerudo_Training_Ground, 9)
                 or (can_use(Hookshot) and can_mega) or (is_child and has_explosives)"
         }
     },
