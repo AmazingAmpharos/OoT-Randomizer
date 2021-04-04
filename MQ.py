@@ -1,23 +1,23 @@
 # mzxrules 2018
 # In order to patch MQ to the existing data...
-# 
+#
 # Scenes:
-# 
-# Ice Cavern (Scene 9) needs to have it's header altered to support MQ's path list. This 
+#
+# Ice Cavern (Scene 9) needs to have it's header altered to support MQ's path list. This
 # expansion will delete the otherwise unused alternate headers command
-# 
+#
 # Transition actors will be patched over the old data, as the number of records is the same
-# Path data will be appended to the end of the scene file. 
-# 
+# Path data will be appended to the end of the scene file.
+#
 # The size of a single path on file is NUM_POINTS * 6, rounded up to the nearest 4 byte boundary
 # The total size consumed by the path data is NUM_PATHS * 8, plus the sum of all path file sizes
 # padded to the nearest 0x10 bytes
-# 
-# Collision: 
-# OoT's collision data consists of these elements: vertices, surface types, water boxes, 
+#
+# Collision:
+# OoT's collision data consists of these elements: vertices, surface types, water boxes,
 # camera behavior data, and polys. MQ's vertice and polygon geometry data is identical.
 # However, the surface types and the collision exclusion flags bound to the polys have changed
-# for some polygons, as well as the number of surface type records and camera type records. 
+# for some polygons, as well as the number of surface type records and camera type records.
 #
 # To patch collision, a flag denotes whether collision data cannot be written in place without
 # expanding the size of the scene file. If true, the camera data is relocated to the end
@@ -26,25 +26,25 @@
 # will be shifted to the end of the camera data
 #
 # Rooms:
-# 
+#
 # Object file initialization data will be appended to the end of the room file.
 # The total size consumed by the object file data is NUM_OBJECTS * 0x02, aligned to
 # the nearest 0x04 bytes
-# 
+#
 # Actor spawn data will be appended to the end of the room file, after the objects.
 # The total size consumed by the actor spawn data is NUM_ACTORS * 0x10
-# 
+#
 # Finally:
-# 
+#
 # Scene and room files will be padded to the nearest 0x10 bytes
 #
-# Maps: 
-# Jabu Jabu's B1 map contains no chests in the vanilla layout. Because of this, 
+# Maps:
+# Jabu Jabu's B1 map contains no chests in the vanilla layout. Because of this,
 # the floor map data is missing a vertex pointer that would point within kaleido_scope.
 # As such, if the file moves, the patch will break.
 
 from Utils import data_path
-from Rom import LocalRom
+from Rom import Rom
 import json
 from struct import pack, unpack
 
@@ -54,9 +54,10 @@ SCENE_TABLE = 0xB71440
 class File(object):
     def __init__(self, file):
         self.name = file['Name']
-        self.start = int(file['Start'], 16)
-        self.end = int(file['End'], 16)
-        self.remap = file['RemapStart']
+        self.start = int(file['Start'], 16) if 'Start' in file else 0
+        self.end = int(file['End'], 16) if 'End' in file else self.start
+        self.remap = file['RemapStart'] if 'RemapStart' in file else None
+        self.from_file = self.start
 
         # used to update the file's associated dmadata record
         self.dma_key = self.start
@@ -70,29 +71,35 @@ class File(object):
             remap = "{0:x}".format(self.remap)
         return "{0}: {1:x} {2:x}, remap {3}".format(self.name, self.start, self.end, remap)
 
-    def relocate(self, rom:LocalRom):
+    def relocate(self, rom:Rom):
         if self.remap is None:
-            return
+            self.remap = rom.free_space()
 
         new_start = self.remap
-       
+
         offset = new_start - self.start
         new_end = self.end + offset
 
         rom.buffer[new_start:new_end] = rom.buffer[self.start:self.end]
         self.start = new_start
         self.end = new_end
+        update_dmadata(rom, self)
+
+    # The file will now refer to the new copy of the file
+    def copy(self, rom:Rom):
+        self.dma_key = None
+        self.relocate(rom)
 
 
 class CollisionMesh(object):
-    def __init__(self, rom:LocalRom, start, offset):
+    def __init__(self, rom:Rom, start, offset):
         self.offset = offset
         self.poly_addr = rom.read_int32(start + offset + 0x18)
         self.polytypes_addr = rom.read_int32(start + offset + 0x1C)
         self.camera_data_addr = rom.read_int32(start + offset + 0x20)
         self.polytypes = (self.poly_addr - self.polytypes_addr) // 8
 
-    def write_to_scene(self, rom:LocalRom, start):
+    def write_to_scene(self, rom:Rom, start):
         addr = start + self.offset + 0x18
         rom.write_int32s(addr, [self.poly_addr, self.polytypes_addr, self.camera_data_addr])
 
@@ -111,7 +118,7 @@ class Icon(object):
         self.count = data["Count"];
         self.points = [IconPoint(x) for x in data["IconPoints"]]
 
-    def write_to_minimap(self, rom:LocalRom, addr):
+    def write_to_minimap(self, rom:Rom, addr):
         rom.write_sbyte(addr, self.icon)
         rom.write_byte(addr + 1,  self.count)
         cur = 2
@@ -119,7 +126,7 @@ class Icon(object):
             p.write_to_minimap(rom, addr + cur)
             cur += 0x03
 
-    def write_to_floormap(self, rom:LocalRom, addr):
+    def write_to_floormap(self, rom:Rom, addr):
         rom.write_int16(addr, self.icon)
         rom.write_int32(addr + 0x10, self.count)
 
@@ -135,12 +142,12 @@ class IconPoint(object):
         self.x = point["x"]
         self.y = point["y"]
 
-    def write_to_minimap(self, rom:LocalRom, addr):
+    def write_to_minimap(self, rom:Rom, addr):
         rom.write_sbyte(addr, self.flag)
         rom.write_byte(addr+1, self.x)
         rom.write_byte(addr+2, self.y)
 
-    def write_to_floormap(self, rom:LocalRom, addr):
+    def write_to_floormap(self, rom:Rom, addr):
         rom.write_int16(addr, self.flag)
         rom.write_f32(addr + 4, float(self.x))
         rom.write_f32(addr + 8, float(self.y))
@@ -161,13 +168,13 @@ class Scene(object):
             self.paths.append(item['Points'])
 
 
-    def write_data(self, rom:LocalRom):
-        
+    def write_data(self, rom:Rom):
         # write floormap and minimap data
         self.write_map_data(rom)
 
         # move file to remap address
-        self.file.relocate(rom)
+        if self.file.remap is not None:
+            self.file.relocate(rom)
 
         start = self.file.start
         headcur = self.file.start
@@ -203,7 +210,7 @@ class Scene(object):
         self.file.end = align16(self.file.end)
         update_dmadata(rom, self.file)
         update_scene_table(rom, self.id, self.file.start, self.file.end)
-        
+
         # write room file data
         for room in self.rooms:
             room.write_data(rom)
@@ -216,7 +223,7 @@ class Scene(object):
             cur += 0x08
 
 
-    def write_map_data(self, rom:LocalRom):
+    def write_map_data(self, rom:Rom):
         if self.id >= 10:
             return
 
@@ -232,12 +239,12 @@ class Scene(object):
                 Icon.write_to_floormap(icon, rom, cur)
                 cur += 0xA4
 
-                
+
         # fixes jabu jabu floor B1 having no chest data
         if self.id == 2:
             cur = floormap_vrom + (0x08 * 0x1EC + 4)
             kaleido_scope_chest_verts = 0x803A3DA0 # hax, should be vram 0x8082EA00
-            rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04]) 
+            rom.write_int32s(cur, [0x17, kaleido_scope_chest_verts, 0x04])
 
         # write minimaps
         map_mark_vrom = 0xBF40D0
@@ -247,7 +254,7 @@ class Scene(object):
         array_vrom = map_mark_array_vram - map_mark_vram + map_mark_vrom
         map_mark_scene_vram = rom.read_int32(self.id * 4 + array_vrom)
         mark_vrom = map_mark_scene_vram - map_mark_vram + map_mark_vrom
-        
+
         cur = mark_vrom
         for minimap in self.minimaps:
             for icon in minimap:
@@ -255,9 +262,9 @@ class Scene(object):
                 cur += 0x26
 
 
-    def patch_mesh(self, rom:LocalRom, mesh:CollisionMesh):
+    def patch_mesh(self, rom:Rom, mesh:CollisionMesh):
         start = self.file.start
-        
+
         final_cams = []
 
         # build final camera data
@@ -281,7 +288,7 @@ class Scene(object):
             self.write_cam_data(rom, self.file.end, final_cams)
             mesh.camera_data_addr = get_segment_address(2, self.file.end - self.file.start)
             self.file.end += len(final_cams) * 8
-            
+
         else:
             types_move_addr = mesh.camera_data_addr + (len(final_cams) * 8)
 
@@ -321,7 +328,7 @@ class Scene(object):
         mesh.write_to_scene(rom, self.file.start)
 
 
-    def write_cam_data(self, rom:LocalRom, addr, cam_data):
+    def write_cam_data(self, rom:Rom, addr, cam_data):
 
         for item in cam_data:
             data, pos = item
@@ -331,7 +338,7 @@ class Scene(object):
 
     # appends path data to the end of the rom
     # returns segment address to path data
-    def append_path_data(self, rom:LocalRom):
+    def append_path_data(self, rom:Rom):
         start = self.file.start
         cur = self.file.end
         records = []
@@ -347,7 +354,7 @@ class Scene(object):
             path_size = align4(len(path) * 6)
             cur += path_size
 
-        records_offset = get_segment_address(2, cur - start) 
+        records_offset = get_segment_address(2, cur - start)
         for node, offset in records:
             rom.write_byte(cur, node)
             rom.write_int32(cur + 4, offset)
@@ -364,10 +371,10 @@ class Room(object):
         self.objects = [int(x, 16) for x in room['Objects']]
         self.actors = [convert_actor_data(x) for x in room['Actors']]
 
-    def write_data(self, rom:LocalRom):
-
+    def write_data(self, rom:Rom):
         # move file to remap address
-        self.file.relocate(rom)
+        if self.file.remap is not None:
+            self.file.relocate(rom)
 
         headcur = self.file.start
 
@@ -396,9 +403,9 @@ class Room(object):
         # update file reference
         self.file.end = align16(self.file.end)
         update_dmadata(rom, self.file)
-        
 
-    def append_object_data(self, rom:LocalRom, objects):
+
+    def append_object_data(self, rom:Rom, objects):
         offset = self.file.end - self.file.start
         cur = self.file.end
         rom.write_int16s(cur, objects)
@@ -408,8 +415,8 @@ class Room(object):
         return offset
 
 
-def patch_files(rom:LocalRom, mq_scenes:list):
-    
+def patch_files(rom:Rom, mq_scenes:list):
+
     data = get_json()
     scenes = [Scene(x) for x in data]
     for scene in scenes:
@@ -442,7 +449,7 @@ def patch_ice_cavern_scene_header(rom):
     rom.write_int32s(0x2BEB038, [0x0D000000, 0x02000000])
 
 
-def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
+def patch_spirit_temple_mq_room_6(rom:Rom, room_addr):
     cur = room_addr
 
     actor_list_addr = 0
@@ -450,7 +457,7 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
 
     # scan for actor list and header end
     code = rom.read_byte(cur)
-    while code != 0x14: #terminator  
+    while code != 0x14: #terminator
         if code == 0x01: # actors
             actor_list_addr = rom.read_int32(cur + 4)
             cmd_actors_offset = cur - room_addr
@@ -482,7 +489,7 @@ def patch_spirit_temple_mq_room_6(rom:LocalRom, room_addr):
     b_end = b_start + header_size
 
     rom.buffer[b_start:b_end] = rom.buffer[a_start:a_end]
-    
+
     # make the child header skip the first actor,
     # which avoids the spawning of the block while in the hole
     cmd_addr = room_addr + cmd_actors_offset
@@ -518,16 +525,17 @@ def verify_remap(scenes):
             print("{0} - {1}".format(result, file))
 
 
-def update_dmadata(rom:LocalRom, file:File):
-    key, start, end = file.dma_key, file.start, file.end
-    rom.update_dmadata_record(key, start, end)
+def update_dmadata(rom:Rom, file:File):
+    key, start, end, from_file = file.dma_key, file.start, file.end, file.from_file
+    rom.update_dmadata_record(key, start, end, from_file)
+    file.dma_key = file.start
 
-def update_scene_table(rom:LocalRom, sceneId, start, end):
+def update_scene_table(rom:Rom, sceneId, start, end):
     cur = sceneId * 0x14 + SCENE_TABLE
     rom.write_int32s(cur, [start, end])
 
 
-def write_actor_data(rom:LocalRom, cur, actors):
+def write_actor_data(rom:Rom, cur, actors):
     for actor in actors:
         rom.write_int16s(cur, actor)
         cur += 0x10
@@ -583,9 +591,9 @@ def insert_space(rom, file, vram_start, insert_section, insert_offset, insert_si
         # move relocation if section is increased and it's after the insert
         if insert_section == section and offset >= insert_offset:
             # rebuild new relocation entry
-            rom.write_int32(cur, 
-                ((section + 1) << 30) | 
-                (type << 24) | 
+            rom.write_int32(cur,
+                ((section + 1) << 30) |
+                (type << 24) |
                 (offset + insert_size))
 
         # value contains the vram address
@@ -701,8 +709,8 @@ def add_relocations(rom, file, addresses):
         offset = address - sections[section - 1]
 
         # generate relocation entry
-        relocations.append((section << 30) 
-                        | (type << 24) 
+        relocations.append((section << 30)
+                        | (type << 24)
                         | (offset & 0x00FFFFFF))
 
     # Rebuild Relocation Table

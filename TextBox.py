@@ -2,7 +2,7 @@ import Messages
 
 # Least common multiple of all possible character widths. A line wrap must occur when the combined widths of all of the
 # characters on a line reach this value.
-LINE_WIDTH = 1801800
+NORMAL_LINE_WIDTH = 1801800
 
 # Attempting to display more lines in a single text box will cause additional lines to bleed past the bottom of the box.
 LINES_PER_BOX = 4
@@ -11,83 +11,167 @@ LINES_PER_BOX = 4
 # appear in lower areas of the text box. Eventually, the text box will become uncloseable.
 MAX_CHARACTERS_PER_BOX = 200
 
-LINE_BREAK = '&'
-BOX_BREAK = '^'
+CONTROL_CHARS = {
+    'LINE_BREAK':   ['&', '\x01'],
+    'BOX_BREAK':    ['^', '\x04'],
+    'NAME':         ['@', '\x0F'],
+    'COLOR':        ['#', '\x05\x00'],
+}
+TEXT_END   = '\x02'
 
 
-def lineWrap(text):
-    boxes = text.split(BOX_BREAK)
-    boxesWithWrappedLines = []
+def line_wrap(text, strip_existing_lines=False, strip_existing_boxes=False, replace_control_chars=True):
+    # Replace stand-in characters with their actual control code.
+    if replace_control_chars:
+        for char in CONTROL_CHARS.values():
+            text = text.replace(char[0], char[1])
 
-    for box in boxes:
-        forcedLines = box.split(LINE_BREAK)
-        lines = [line.strip() for forcedLine in forcedLines for line in _wrapLines(forcedLine)]
-        wrapped = LINE_BREAK.join(lines)
+    # Parse the text into a list of control codes.
+    text_codes = Messages.parse_control_codes(text)
 
-        if len(lines) > LINES_PER_BOX:
-            print('Wrapped text exceeds maximum lines per text box. Original text:\n' + box)
+    # Existing line/box break codes to strip.
+    strip_codes = []
+    if strip_existing_boxes:
+        strip_codes.append(0x04)
+    if strip_existing_lines:
+        strip_codes.append(0x01)
 
-        # Subtracting line count so that line breaks aren't counted as characters
-        if len(wrapped) - (len(lines) - 1) > MAX_CHARACTERS_PER_BOX:
-            print('Text length exceeds maximum characters per text box. Original text:\n' + box)
+    # Replace stripped codes with a space.
+    if strip_codes:
+        index = 0
+        while index < len(text_codes):
+            text_code = text_codes[index]
+            if text_code.code in strip_codes:
+                # Check for existing whitespace near this control code.
+                # If one is found, simply remove this text code.
+                if index > 0 and text_codes[index-1].code == 0x20:
+                    text_codes.pop(index)
+                    continue
+                if index + 1 < len(text_codes) and text_codes[index+1].code == 0x20:
+                    text_codes.pop(index)
+                    continue
+                # Replace this text code with a space.
+                text_codes[index] = Messages.Text_Code(0x20, 0)
+            index += 1
 
-        boxesWithWrappedLines.append(wrapped)
+    # Split the text codes by current box breaks.
+    boxes = []
+    start_index = 0
+    end_index = 0
+    for text_code in text_codes:
+        end_index += 1
+        if text_code.code == 0x04:
+            boxes.append(text_codes[start_index:end_index])
+            start_index = end_index
+    boxes.append(text_codes[start_index:end_index])
 
-    return BOX_BREAK.join(boxesWithWrappedLines)
+    # Split the boxes into lines and words.
+    processed_boxes = []
+    for box_codes in boxes:
+        line_width = NORMAL_LINE_WIDTH
+        icon_code = None
+        words = []
+
+        # Group the text codes into words.
+        index = 0
+        while index < len(box_codes):
+            text_code = box_codes[index]
+            index += 1
+
+            # Check for an icon code and lower the width of this box if one is found.
+            if text_code.code == 0x13:
+                line_width = 1441440
+                icon_code = text_code
+
+            # Find us a whole word.
+            if text_code.code in [0x01, 0x04, 0x20]:
+                if index > 1:
+                    words.append(box_codes[0:index-1])
+                if text_code.code in [0x01, 0x04]:
+                    # If we have ran into a line or box break, add it as a "word" as well.
+                    words.append([box_codes[index-1]])
+                box_codes = box_codes[index:]
+                index = 0
+            if index > 0 and index == len(box_codes):
+                words.append(box_codes)
+                box_codes = []
+
+        # Arrange our words into lines.
+        lines = []
+        start_index = 0
+        end_index = 0
+        box_count = 1
+        while end_index < len(words):
+            # Our current confirmed line.
+            end_index += 1
+            line = words[start_index:end_index]
+
+            # If this word is a line/box break, trim our line back a word and deal with it later.
+            break_char = False
+            if words[end_index-1][0].code in [0x01, 0x04]:
+                line = words[start_index:end_index-1]
+                break_char = True
+
+            # Check the width of the line after adding one more word.
+            if end_index == len(words) or break_char or calculate_width(words[start_index:end_index+1]) > line_width:
+                if line or lines:
+                    lines.append(line)
+                start_index = end_index
+
+            # If we've reached the end of the box, finalize it.
+            if end_index == len(words) or words[end_index-1][0].code == 0x04 or len(lines) == LINES_PER_BOX:
+                # Append the same icon to any wrapped boxes.
+                if icon_code and box_count > 1:
+                    lines[0][0] = [icon_code] + lines[0][0]
+                processed_boxes.append(lines)
+                lines = []
+                box_count += 1
+
+    # Construct our final string.
+    # This is a hideous level of list comprehension. Sorry.
+    return '\x04'.join(['\x01'.join([' '.join([''.join([code.get_string() for code in word]) for word in line]) for line in box]) for box in processed_boxes])
 
 
-def _wrapLines(text):
-    lines = []
-    currentLine = []
-    currentWidth = 0
-
-    for word in text.split(' '):
-        currentLinePlusWord = currentLine.copy()
-        currentLinePlusWord.append(word)
-        currentLinePlusWordWidth = _calculateWidth(currentLinePlusWord)
-
-        if (currentLinePlusWordWidth <= LINE_WIDTH):
-            currentLine = currentLinePlusWord
-            currentWidth = currentLinePlusWordWidth
-        else:
-            lines.append(' '.join(currentLine))
-            currentLine = [word]
-            currentWidth = _calculateWidth(currentLine)
-
-    lines.append(' '.join(currentLine))
-
-    return lines
-
-
-def _calculateWidth(words):
-    wordsWidth = 0
+def calculate_width(words):
+    words_width = 0
     for word in words:
         index = 0
         while index < len(word):
             character = word[index]
             index += 1
-            if ord(character) in Messages.CONTROL_CODES:
-                index += Messages.CONTROL_CODES[ord(character)][1]
-            else:
-                wordsWidth += _getCharacterWidth(character)
-    spacesWidth = _getCharacterWidth(' ') * (len(words) - 1)
+            if character.code in Messages.CONTROL_CODES:
+                if character.code == 0x06:
+                    words_width += character.data
+            words_width += get_character_width(chr(character.code))
+    spaces_width = get_character_width(' ') * (len(words) - 1)
 
-    return wordsWidth + spacesWidth
+    return words_width + spaces_width
 
 
-def _getCharacterWidth(character):
+def get_character_width(character):
     try:
-        return characterTable[character]
+        return character_table[character]
     except KeyError:
-        # Control character for color settings; does not affect the width
-        if character == '#':
-            return 0
-        # Control character for displaying the player's name; assume greater than average width
-        elif character == '@':
-            return characterTable['M'] * 8
-        # A sane default with the most common character width
-        else :
-            return characterTable[' ']
+        if ord(character) < 0x20:
+            if character in control_code_width:
+                return sum([character_table[c] for c in control_code_width[character]])
+            else:
+                return 0
+        else:
+            # A sane default with the most common character width
+            return character_table[' ']
+
+
+control_code_width = {
+    '\x0F': '00000000',
+    '\x16': '00\'00"',
+    '\x17': '00\'00"',
+    '\x18': '00000',
+    '\x19': '100',
+    '\x1D': '00',
+    '\x1E': '00000',
+    '\x1F': '00\'00"',
+}
 
 
 # Tediously measured by filling a full line of a gossip stone's text box with one character until it is reasonably full
@@ -96,7 +180,15 @@ def _getCharacterWidth(character):
 # at worst. This ensures that we will never bleed text out of the text box while line wrapping.
 # Larger numbers in the denominator mean more of that character fits on a line; conversely, larger values in this table
 # mean the character is wider and can't fit as many on one line.
-characterTable = {
+character_table = {
+    '\x0F': 655200,
+    '\x16': 292215,
+    '\x17': 292215,
+    '\x18': 300300,
+    '\x19': 145860,
+    '\x1D': 85800,
+    '\x1E': 300300,
+    '\x1F': 265980,
     'a':  51480, # LINE_WIDTH /  35
     'b':  51480, # LINE_WIDTH /  35
     'c':  51480, # LINE_WIDTH /  35
@@ -175,23 +267,24 @@ characterTable = {
 }
 
 # To run tests, enter the following into a python3 REPL:
-# >>> from TextBox import test_lineWrapTests
-# >>> test_lineWrapTests()
-def test_lineWrapTests():
-    test_wrapSimpleLine()
-    test_honorForcedLineWraps()
-    test_honorBoxBreaks()
-    test_honorControlCharacters()
-    test_honorPlayerName()
-    test_maintainMultipleForcedBreaks()
-    test_trimWhitespace()
-    test_supportLongWords()
+# >>> import Messages
+# >>> from TextBox import line_wrap_tests
+# >>> line_wrap_tests()
+def line_wrap_tests():
+    test_wrap_simple_line()
+    test_honor_forced_line_wraps()
+    test_honor_box_breaks()
+    test_honor_control_characters()
+    test_honor_player_name()
+    test_maintain_multiple_forced_breaks()
+    test_trim_whitespace()
+    test_support_long_words()
 
 
-def test_wrapSimpleLine():
+def test_wrap_simple_line():
     words = 'Hello World! Hello World! Hello World!'
-    expected = 'Hello World! Hello World! Hello&World!'
-    result = lineWrap(words)
+    expected = 'Hello World! Hello World! Hello\x01World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Wrap Simple Line" test failed: Got ' + result + ', wanted ' + expected)
@@ -199,10 +292,10 @@ def test_wrapSimpleLine():
         print('"Wrap Simple Line" test passed!')
 
 
-def test_honorForcedLineWraps():
+def test_honor_forced_line_wraps():
     words = 'Hello World! Hello World!&Hello World! Hello World! Hello World!'
-    expected = 'Hello World! Hello World!&Hello World! Hello World! Hello&World!'
-    result = lineWrap(words)
+    expected = 'Hello World! Hello World!\x01Hello World! Hello World! Hello\x01World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Honor Forced Line Wraps" test failed: Got ' + result + ', wanted ' + expected)
@@ -210,10 +303,10 @@ def test_honorForcedLineWraps():
         print('"Honor Forced Line Wraps" test passed!')
 
 
-def test_honorBoxBreaks():
+def test_honor_box_breaks():
     words = 'Hello World! Hello World!^Hello World! Hello World! Hello World!'
-    expected = 'Hello World! Hello World!^Hello World! Hello World! Hello&World!'
-    result = lineWrap(words)
+    expected = 'Hello World! Hello World!\x04Hello World! Hello World! Hello\x01World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Honor Box Breaks" test failed: Got ' + result + ', wanted ' + expected)
@@ -221,10 +314,10 @@ def test_honorBoxBreaks():
         print('"Honor Box Breaks" test passed!')
 
 
-def test_honorControlCharacters():
+def test_honor_control_characters():
     words = 'Hello World! #Hello# World! Hello World!'
-    expected = 'Hello World! #Hello# World! Hello&World!'
-    result = lineWrap(words)
+    expected = 'Hello World! \x05\x00Hello\x05\x00 World! Hello\x01World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Honor Control Characters" test failed: Got ' + result + ', wanted ' + expected)
@@ -232,10 +325,10 @@ def test_honorControlCharacters():
         print('"Honor Control Characters" test passed!')
 
 
-def test_honorPlayerName():
+def test_honor_player_name():
     words = 'Hello @! Hello World! Hello World!'
-    expected = 'Hello @! Hello World!&Hello World!'
-    result = lineWrap(words)
+    expected = 'Hello \x0F! Hello World!\x01Hello World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Honor Player Name" test failed: Got ' + result + ', wanted ' + expected)
@@ -243,10 +336,10 @@ def test_honorPlayerName():
         print('"Honor Player Name" test passed!')
 
 
-def test_maintainMultipleForcedBreaks():
+def test_maintain_multiple_forced_breaks():
     words = 'Hello World!&&&Hello World!'
-    expected = 'Hello World!&&&Hello World!'
-    result = lineWrap(words)
+    expected = 'Hello World!\x01\x01\x01Hello World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Maintain Multiple Forced Breaks" test failed: Got ' + result + ', wanted ' + expected)
@@ -254,10 +347,10 @@ def test_maintainMultipleForcedBreaks():
         print('"Maintain Multiple Forced Breaks" test passed!')
 
 
-def test_trimWhitespace():
+def test_trim_whitespace():
     words = 'Hello World! & Hello World!'
-    expected = 'Hello World!&Hello World!'
-    result = lineWrap(words)
+    expected = 'Hello World!\x01Hello World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Trim Whitespace" test failed: Got ' + result + ', wanted ' + expected)
@@ -265,10 +358,10 @@ def test_trimWhitespace():
         print('"Trim Whitespace" test passed!')
 
 
-def test_supportLongWords():
+def test_support_long_words():
     words = 'Hello World! WWWWWWWWWWWWWWWWWWWW Hello World!'
-    expected = 'Hello World!&WWWWWWWWWWWWWWWWWWWW&Hello World!'
-    result = lineWrap(words)
+    expected = 'Hello World!\x01WWWWWWWWWWWWWWWWWWWW\x01Hello World!'
+    result = line_wrap(words)
 
     if result != expected:
         print('"Support Long Words" test failed: Got ' + result + ', wanted ' + expected)

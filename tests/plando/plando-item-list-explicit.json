@@ -1,0 +1,8 @@
+{
+  "locations": {
+    "KF Midos Top Left Chest":                                   {"item": ["Bow", "Light Arrows", "Magic Meter"]},
+    "KF Midos Top Right Chest":                                  {"item": ["Bow", "Light Arrows", "Magic Meter"]},
+    "KF Midos Bottom Left Chest":                                {"item": ["Bow", "Light Arrows", "Magic Meter"]},
+    "KF Midos Bottom Right Chest":                               {"item": ["Bow", "Light Arrows", "Magic Meter"]}
+  }
+}

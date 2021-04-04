@@ -1,0 +1,11 @@
+{
+  "settings": {
+    "zora_fountain": "open"
+  },
+  "locations": {
+    "KF Midos Top Left Chest":                                   "Bottle with Milk",
+    "KF Midos Top Right Chest":                                  "Bottle with Milk",
+    "KF Midos Bottom Left Chest":                                "Bottle with Milk",
+    "KF Midos Bottom Right Chest":                               "Bottle with Milk"
+  }
+}

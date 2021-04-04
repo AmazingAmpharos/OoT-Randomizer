@@ -1,0 +1,9 @@
+{
+  "item_pool": {
+    "Ice Trap": 1
+  },
+  "locations": {
+    "GV Crate Freestanding PoH":                  "Ice Trap",
+    "GV Chest":                      "Ice Trap"
+  }
+}

@@ -2,1303 +2,728 @@
 
 This is a randomizer for _The Legend of Zelda: Ocarina of Time_ for the Nintendo 64.
 
-# Installation
+* [Installation](#installation)
+* [General Description](#general-description)
+  * [Getting Stuck](#getting-stuck)
+  * [Settings](#settings)
+  * [Known Issues](#known-issues)
+* [Changelog](#changelog)
+  * [6.0](#60)
+  * [5.2](#52)
+  * [5.1](#51)
+  * [5.0](#50)
+  * [4.0](#40)
 
-It is strongly suggested users get the latest release from here: https://github.com/AmazingAmpharos/OoT-Randomizer/releases .
-Simply download the .msi installer and run it. We support  Windows, Mac, and Linux machines.
+## Installation
 
-If you have an incompatible OS or you simply wish to run the script raw, clone this repository and either run '''Gui.py''' for a
-graphical interface or '''OoTRandomizer.py''' for the command line version. Both require Python 3.5+. This will be fully featured,
+It is strongly suggested users use the web generator from here:
+
+https://ootrandomizer.com
+
+If you wish to run the script raw, clone this repository and either run ```Gui.py``` for a
+graphical interface or ```OoTRandomizer.py``` for the command line version. They both require Python 3.6+. This will be fully featured,
 but the seeds you generate will have different random factors than the bundled release.
+To use the GUI, [NodeJS](https://nodejs.org/en/download/) (v12, with npm) will additionally need to be installed.
+The first time ```Gui.py``` is run it will need to install necessary components, which could take a few minutes. Subsequent instances will run much quicker.
+Built-in WAD injection is only supported on the website. To create a WAD from a seed created locally, either use 
+[gzinject](https://github.com/krimtonz/gzinject/tree/0.2.0) or output a patch file and run that through the website.
 
-This randomizer requires The Legend of Zelda: Ocarina of Time version 1.0 NTSC-US version. This randomizer includes an in-built decompressor, but if
+This randomizer requires The Legend of Zelda: Ocarina of Time version ```1.0 NTSC-US```. This randomizer includes an in-built decompressor, but if
 the user wishes a pre-decompressed ROM may be supplied as input. Please be sure your input ROM filename is either a .n64 or .z64 file. For users
 playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
 impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, the recommended emulator is RetroArch; it has been shown to work with minimal issues. Bizhawk and Mupen64plus are generally good choices
-too. If you want to play on Project 64 for whatever reason, you can but you will need to set the rando to use 8 MB of RAM and will want to play with the
-cheat code 8109C58A 0000 to partially fix Project 64's tragically poor handling of OoT's pause menu. Project 64 also has one particular crash that only
-happens for some unknown settings configurations; we cannot support this. I cannot emphasize enough that it is a discouraged emulator to use.
-
-# General Description
-
-This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a more dynamic play experience.
-Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks
-with any possible usage of keys in dungeons.
-
-The items that randomize currently are all items within chests including those in grottos, items given as rewards by NPCs including from minigames and
-Deku Scrub Salesmen, the items given by freestanding Pieces of Heart, Heart Containers, and Keys, and the items obtained when getting the Bottle and the
-Fire Arrows at Lake Hylia or the Ocarina of Time from the Castle Town moat. All dungeons will always have the same number of Maps, Compasses, Small Keys,
-and Boss Keys they had in the original game, but which chests within those dungeons have those things is random. The item pool will contain a Biggoron Sword
-that will not interfere with Medigoron's sale of the Giant's Knife (which is always vanilla), and a randomly selected adult trading quest item other than the
-Odd Potion will be somewhere in the item pool.
-
-Certain types of items are now "progressive", meaning that no matter what order the player encounters these items they will function as a series of upgrades.
-The following item types will be progressive chains:
-
--Hookshot to Longshot
--Bomb Bag to Big Bomb Bag to Biggest Bomb Bag
--Goron Bracelet to Silver Gauntlets to Gold Gauntlets
--Slingshot to Big Bullet Bag to Biggest Bullet Bag
--Bow to Big Quiver to Biggest Quiver
--Silver Scale to Gold Scale
--Adult Wallet to Giant's Wallet
--Deku Stick Capacity Upgrades
--Deku Nut Capacity Upgrades
--Magic Meter to Double Magic  
--Fairy Ocarina to Ocarina of Time
-
-To be more clear about which NPC items are shuffled, it's only the one time permanent item rewards for the most part like NPCs who originally gave Pieces of Heart
-or inventory items. The only exception is that even though in vanilla the reward for 40 Gold Skulltula Tokens was just 10 Bombchus that is still a randomized reward
-in randomizer (but the 200 rupees for all 100 Gold Skulltula Tokens is not randomized so the most tokens that could be required to complete a seed is 50). As a mercy
-to the player, the Ocarina Memory Game in the Lost Woods will start on the final round as that minigame was very long originally, the three day wait on the Claim Check
-is removed, Bombchu Bowling will have a fixed sequence of prizes that is of maximum convenience to the player, Dampe's Gravedigging Tour will always be won on the first
-dig, and the fishing minigame is made much simpler (8 lb fish for child now, 10 lb for adult). Additionally, any NPC who gives a trading quest item either for the child
-or for the adult other than Anju's initial gift as an adult does not have a randomized reward.
-
-A special note is needed for the six Great Fairy Fountains scattered across Hyrule. All six of these fountains now give random item rewards, and the magic and life
-upgrades can now be found as normal items scattered around the world. Happy hunting!
-
-The Ocarina songs are shuffled in a pool amongst themselves, and each learn spot will still have the original conditions it has always had. These conditions may not
-have all been obvious, but here are some high points. Saria will teach her song after completing the events in the Castle Courtyard. The warp songs can mostly only
-be learned by an adult, but the location for Requiem of Spirit is available for even a child if the Desert Colossus can be reached. The location for the Prelude of
-Light requires the Forest Medallion, and the location for the Nocturne of Shadow requires the Forest Medallion, Fire Medallion, and Water Medallions. A setting
-exists to shuffle all songs into the general item pool instead of limiting them to song specific slots.
-
-Speaking of Medallions, each boss in the eight main dungeons will drop a random Spiritual Stone or Medallion, and instead of the Light Medallion being granted by the
-now removed "becoming an adult" cutscene, the player will start every seed with a random Spiritual Stone or Medallion. The pedestal in which the Spiritual Stones
-rest in the Temple of Time has hint text pointing to the locations of the Spiritual Stones and Medallions. A child will be able to read hints for the Spiritual
-Stones while an adult will be able to read hints for the Medallions. This information and some other relevant dungeon based info can be seen in the pause menu by
-holding the "A" button on the c-item menu.
-
-To be very clear on this point, while the rewards for up to 50 Gold Skulltula Tokens are randomized, the tokens themselves are not.
-
-As a service to the player in this very long game, many cutscenes have been greatly shortened or removed and text is as often as possible either omitted or sped up.
-We have been as thorough as our exploration of the game and various technical limitations will allow to make the parts of the game where you're watching and reading
-as short as possible to make as much of your time with this randomizer as possible actual gameplay. I'm sure someone somewhere will miss the owl's interjections; to
-that person, I'm sorry I guess?
-
-A few bugs or other undesirable behaviors in the original game have been fixed. Of note, obtaining the Poacher's Saw will no longer prevent the player from obtaining
-the reward in the Deku Theater for showing the Mask of Truth, and becoming an adult will not automatically equip the child with the Kokiri Sword. Sheik will no longer
-prevent the player from returning to childhood before obtaining the Forest Medallion. Princess Ruto will never disappear from Jabu Jabu's Belly, and the condition for
-the Castle Courtyard being sealed off is now completing the events within as opposed to seeing the Ocarina of Time be thrown into the moat.
-
-One small detail that is important to know is that the locked door in the Fire Temple leading to the section with the Boss Key Chest is removed. This was necessary
-due to the original design of the Fire Temple assuming that the player could not possibly have the Hammer before unlocking the doors leading into the depths of the
-dungeon. This is obviously not true in randomizer, and of all possible solutions to this problem, this seemed the least disruptive. A full clear of the Fire Temple will
-simply result in the player having one extra Small Key. Certain settings configurations will disable this behavior.
-
-Two similar small details apply to the Master Quest versions of dungeons. In Water Temple MQ, a locked door leading to a Gold Skulltula in the northern basement was
-glitched such that it would not appear in the Gamecube release of Master Quest but was fixed in OoT3D's version of Master Quest. In the randomizer, the locked door
-works like an ordinary locked door similar to OoT3D. In Spirit Temple MQ, there is a particular chest that requires hitting a switch in a hole that the adult will
-later push a silver block into. The randomizer does some wizardry under the hood to ensure that the block will never be in the way for the child.
-
-To be clear about the logic rules of what can be where, the randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent
-the use of glitches for those players who enjoy that sort of thing though we offer no guarantees that all glitches will have identical behavior to the original game.
-Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or Scarecrow's Song that
-may not have been important options in the original game. The Lens of Truth is guaranteed available and useable before completion of the Treasure Chest Game is required
-or before walking through any invisible objects or opening any invisible chests is required with the exception of the one invisible wall that is required to enter
-the Bottom of the Well as the original game required passing that invisible wall to reach the Lens of Truth.
-
-One last detail is that the menu is now more like the Majora's Mask menu in that the player can move the cursor through empty spaces. This fixes a major problem from
-the original game in that certain combinations of items would create menu shapes that would be impossible to fully menu through. As of version 3.0, this fix extends
-to the "equipment" subscreen as well.
-
-# Quirks to Know
-
-While all the details of gameplay can't be detailed here, I want to inform you of a few non-obvious game sequences that are likely to get you stuck and one little
-glitch we can do nothing about.
-
--The condition to open the Door of Time is merely playing the Song of Time; the Spiritual Stones are not required. If you enter the Temple of Time via the Prelude
-of Light, playing the Song of Time will create a glitchy cutscene and will not open the door (but you're safe to exit and re-enter and open it properly).  
--The condition to spawn the Ocarina of Time and learn that song is the three Spiritual Stones. The condition to learn a song from Sheik in the Temple of Time is
-possessing the Forest Medallion. The condition to learn a song from Sheik in Kakariko is possessing Forest, Fire, and Water Medallions.  
--The running man in Hyrule Field only spawns if you have all three Spiritual Stones.  
--Skull Kid will only buy the Skull Mask if you have played Saria's Song for him.  
--The center of Death Mountain Crater as an adult can be reached from the summit as an adult by going around to the left with Hover Boots or by jumping down to the right
-and using a combination of the Longshot and Scarecrow's Song. This allows access to Sheik and the Fire Temple without a Bomb Bag.  
--A sword must be equipped to play the fishing minigame. A Slingshot is not required for child target shooting, but the adult does need the Bow to receive the true prize.  
--Other than the fishing minigame, the child can do anything that would seem to require the sword with Deku Sticks. You can buy as many as you want in the Kokiri Forest shop.  
--In the randomizer, possessing the Bomb Bag is the requirement to get bomb drops, buy bombs or Bombchus, or play Bombchu Bowling. If the setting "Bombchus Are Considered in
-Logic" is used, finding any pack of Bombchus allows purchasing Bombchus and playing Bombchu Bowling while possessing a Bomb Bag allows the purchase of bombs.  
--Only the Hookshot, not the Longshot, is needed to do everything on the rooftops of Kakariko.  
--Grottos can be opened with either Bombs or the Hammer.  
--The boulder maze in Goron City can be solved with the Hammer or partially with Bombs as is obvious, but less obvious is that it can be fully solved with Silver Gauntlets.  
--The large colored blocks only encountered by the adult require Goron Bracelet to push.  
--In a few places, out of sight Song of Time blocks can be summoned. The lava room in Gerudo Training Grounds, the beginning of Ganon's Castle Shadow Trial, and the last
-hallway with a caged Goron in Fire Temple are the main cases.
--Adult Link can fully clear Dodongo's Cavern. He can even skip the first section by virtue of being tall.  
--In the Forest Temple, you can reach the room with the Floormaster (vanilla) or Redead (MQ) early by using Hover Boots in the block push room.  
--In the Fire Temple, you can reach the Boss Key door from the beginning with Hover Boots.  
--In the Water Temple, you can from the start with the water down jump to the middle platform level, very carefully aim the Hookshot to the target above, and pull yourself
-to the highest level of the central platform. Then a very well spaced rolling jump can reach the water changing station to raise the water to the highest level. If you
-make poor key choices in Water Temple, this may be what you need to do to untangle the situation.  
--In the Water Temple, Hover Boots can be used to reach the vanilla Boss Key chest without going through the room that requires Bombs and block pushing. Hover Boots can
-also be used in this temple to avoid the Longshot requirement for the middle level chest that requires the Bow.  
--In the Water Temple, Farore's Wind can be placed in the central pillar and then the water can be raised to the highest level in order to reach the Gold Skulltula without
-the Longshot.  
--In the Shadow Temple, you can avoid the need for the Longshot in the room with the invisible spikes by backflipping onto the chest for extra height.  
--In the Shadow Temple, you can Hookshot the ladder to avoid pushing the block to get on the boat.  
--In the Shadow Temple, a combination of the scarecrow and the Longshot can be used to reach Bongo Bongo without needing the Bow.  
--In the Spirit Temple, the child can obtain the vanilla Map chest with Deku Sticks. No fire magic is needed.  
--In the Spirit Temple, you can collect the silver rupees without Hover Boots by jumping directly onto the rolling boulder or with a jump slash.  
--In the Spirit Temple, you can use the Longshot to cross from the hand with the Mirror Shield in vanilla to the other hand.  
--In Ganon's Castle Spirit Trial, the web can be burned with a precise shot through the torch by a normal arrow. Fire Arrows are not required.  
--Like Likes now only eat shields and not tunics.  
--Several Gold Skulltula Tokens can be reached by clever/precise uses of jump slashes and spin attacks (possibly magic spin attacks).  
--This is not a randomizer exclusive mechanic, but getting the ability to summon Pierre the Scarecrow requires playing an eight note song for
-Bonooru the Scarecrow as a child first and then the exact same song for him again as an adult.  
+For general use, there are three recommended emulators: [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64), [Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk), and [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch).
+In a nutshell the differences are:
+* Project64 is the lightest emulator and the easiest to setup, however, you will need a stable version from 2.4 or later to run OoTR well (and earlier versions are not permitted for use in OoTR races).
+* Bizhawk is the most resource-intensive, but easier to set up than RetroArch and the only race-legal emulator to support [Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld).
+* RetroArch is less resource-intensive than Bizhawk and the only of these three to work on platforms other than Windows, but it can be frustrating to set up.
 
-# Known issues
+Please follow [the guides on our wiki](https://wiki.ootrandomizer.com/index.php?title=Setup#Emulators) carefully to ensure a stable game experience and that
+[the settings requirements for races](https://wiki.ootrandomizer.com/index.php?title=Racing#Emulator_Settings_Requirements) are met. OoTR can also be run on
+an N64 using an [EverDrive](https://wiki.ootrandomizer.com/index.php?title=Everdrive), or on Wii Virtual Console. For questions and tech support we kindly
+refer you to our [Discord](https://discord.gg/q6m6kzK).
 
-Sadly for this 3.0 release a few known issues exist. These will hopefully be addressed in future versions.
+## General Description
 
--The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and quit (NOT savestate) and return to fix the issue.  
--Draining the Bottom of the Well with Song of Storms sometimes crashes on specific configurations of Project 64. We aren't sure of the exact story, but this bug is
-easily avoided by playing on a different emulator and probably also avoidable by changing your settings and maybe graphics plug-in.  
--Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences. In particular this can be devastating with Biggoron;
-it is strongly suggested the player save before turning in the Claim Check.  
--Saving and quitting on the very first frame after becomming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
-do that.  
--This randomizer is based on the 1.0 version of Ocarina of Time so some of its specific bugs remain. Some of these like "empty bomb" can be disadvantagous to the
-player.
-
-# Settings
-
-The OoT Randomizer has many different settings users can choose to customize their play experience. Here's a fully detailed list!
-
-# ROM Options
-
-## Base Rom
-
-Specify the input ROM that will be used by the randomizer. Please be sure it is OoT US v1.0.
-
-## Output Directory
-
-Specify where the output ROM will be written on your computer.
-
-## Create Spoiler Log
-
-Decide whether to output a text file detailing where every item can be found and the sequence of play that will lead to seed completion. Selecting this option will
-create a different item configuration than using otherwise identical settings without printing a log; this is intended to prevent cheating in race environments.
-
-## Compress Rom
-
-Decide the format of the output ROM. Compressed is generally recommended for most users; this is necessary for injection into a .wad for use on the Virtual Console,
-and all known N64 emulators have significant crashing problems with uncompressed ROMs. Real N64 hardware doesn't care so generation time can be improved by using
-the uncompressed option if you are playing on a real N64 with a flash cart. You can also choose not to output a ROM at all; this is useful if you just want to look
-at spoiler logs.
-
-## Default Targeting Option
-
-This option specifies whether Z-targeting will default to "Switch" or "Hold" style. Either way, this can still be changed in-game as per usual.
-
-## Multi-World Generation
-
-This option allows for multiple worlds to be generated to be used in co-op play. Each player will get a different ROM designed to work in conjunction with another
-to allow two players to work together to complete the game. Synchronization can be achieved on Bizhawk via the following script:
-
-https://github.com/TestRunnerSRL/bizhawk-co-op
-
-### Player Count
-
-Use this to specify how many players will be participating in this co-op playthrough.
-
-### Player ID
-
-Use this to specify which player number you are in particular. Each participant in the co-op should choose a different number starting with 1.
-
-## Setting String
-
-This is an 18 character string that specifies the totality of other gameplay relevant (non-cosmetic) settings used throughout the randomizer. This string can be shared
-between players and then the "Import Settings String" button can be pressed to automatically change all settings to match another player.
-
-## Seed
-
-This is a string representing the particular configuration of items that will occur in your seed; the purpose is to combine a seed string with an identical settings
-string such that the randomizer will be able to generate the same game for multiple players. If this field is left blank, a random seed will be chosen.
-
-# Main Rules
-
-## Open Forest
-
-Mido does not need to see a sword and shield to reach the Deku Tree and the Kokiri boy blocking the exit to the forest is gone. If this flag is not set, it is
-guaranteed that the Deku Tree can be completed without leaving the forest. This means that within the forest or the Deku Tree itself it will be possible to find
-the Kokiri Sword, Deku Shield for sale, and the Slingshot.
-
-## Open Kakariko Gate
-
-The gate leading up Death Mountain from Kakariko Village is open from the beginning of the game. Normally this requires Zelda's Letter to open. This allows more
-diverse routing early in the game and prevents very long walks in seeds with the Weird Egg shuffled. Two things are important to note. Showing Zelda's Letter to
-the guard is still required to begin the Happy Mask sidequest and to receive a discount on purchasing Hylian Shields. The gate is simply gone for an adult no
-matter what.
-
-## Open Door of Time
-
-The Door of Time is open from the beginning of the game. The Song of Time is still potentially useful to move Song of Time blocks, play songs for the frogs on Zora
-River, or for other such uses. If this flag is not used, the Door of Time must be opened to become an adult as in the original game, but all that is needed to open
-the Door of Time is the Song of Time and any ocarina. The Ocarina of Time in particular and the Spiritual Stones have nothing to do with this.
-
-## Gerudo Fortress
-
-### Default Behavior
-
-Gerudo Fortress will work the same way it did in the original game. All four carpenters must be rescued in order for the Gerudo woman who gives the Gerudo Card to
-appear and for the Gerudo to stop being hostile. Rescuing a carpenter requires having a Gerudo Fortress Small Key and defeating the corresponding guard.
-
-### Rescue One Carpenter
-
-Only the bottom left carpenter must be rescued to complete Gerudo Fortress. Only one Gerudo Fortress Small Key will exist because of this.
-
-### Start with Gerudo Card
-
-The player will start with the Gerudo Card from the beginning of the game. The carpenters will be pre-rescued, and the bridge to Gerudo Fortress as an adult will
-be repaired from the beginning. The Gerudo Card is the requirement in the randomizer to enter Gerudo Training Grounds so it will be an accessible area from the
-moment adulthood is available.
-
-## Rainbow Bridge Requirement
-
-This determines the condition under which the rainbow bridge to Ganon's Castle will spawn.
-
-### All Dungeons
-
-The rainbow bridge spawn requires all medallions and spiritual stones to be in the player's possession.
-
-### All Medallions
-
-All six of the medallions are required to open Ganon's Castle.
-
-### Vanilla
-
-The rainbow bridge spawns under the same conditions it did in the original game, possession of the Light Arrows and having viewed the Zelda cutscene. This
-cutscene in the Temple of Time is triggered by possessing the Shadow and Spirit Medallions.
-
-### Open
-
-The rainbow bridge is always present.
-
-## Random Number of Ganon's Trials
-
-A random number of trials within Ganon's Castle from 0 to 6 will be chosen, and individual trials will be randomly disabled as necessary to match this number.
-Alternatively, a specific number of trials can be specified with the slider below. If a number of trials other than 0 or 6 is chosen and hints are enabled,
-hints will be added to the hint pool informing the player which trials are present (if 1 to 3 trials) or which are missing (if 4 or 5 trials).
-
-## All Locations Reachable
-
-This option will set the logic to try to ensure Link can reach every item location in the game with the exception of "key for key" item locations (a single
-item spot behind a locked door containing the key to open the door). If this option is not used, the logic will allow some items to be in impossible locations
-so long as the set of reachable items is sufficient to complete the game.
-
-## Bombchus Are Considered in Logic
-
-This option fundamentally changes how the Bombchu items found around the world function. With this option on, Bombchus are a progression item and operate as
-a form of progressive item. The first Bombchu pack found will be worth 20 Bombchus and subsequent packs will be worth 10 or 5 Bombchus. Finding Bombchus will
-be considered as logical progression, and having found any Bombchus will be the condition to play Bombchu Bowling or buy Bombchu refills from shops. This flag
-will also add Bombchu (5) buyable items to the shops in Kokiri Forest, Castle Town Bazaar, and Kakariko Bazaar. With this option off, randomly found Bombchu
-items are not considered as logical progression, randomly found Bombchus will have specific denominations based on the values from the original game, and
-finding a Bomb Bag is what enables playing Bombchu Bowling and buying Bombchus from shops which will not have their inventories edited.
-
-## Dungeons Have One Major Item
-
-This option places one "major item" and one only in each of the dungeons. For the purpose of the randomizer, the dungeons are defined as the eight dungeons that
-contain either Medallions or Spiritual Stones as well as Bottom of the Well, Ice Cavern, Gerudo Training Grounds, and Ganon's Castle. The major items are any
-item usable with a c-button that is not simply a form of ammo (Bombchus are major only if "Bombchus are considered in logic" is on), songs, Mirror Shield, swords,
-tunics, boots, Double Defense, Magic Meter/Double Magic, Bullet Bags, Quivers, Bomb Bags, Strength Upgrades, Scales, Wallets, and the Stone of Agony. To be
-clear, this means that rupees, ammo, Deku Stick and Deku Nut ammo expansions, Pieces of Heart, Heart Containers, Gold Skulltula Tokens, Maps, Compasses,
-Small Keys, Boss Keys, Deku Shields, Hylian Shields, and Ice Traps are not considered major items. However, Small Keys and Boss Keys are considered major
-items if the appropriate "keysanity" settings are used. Note that unlike with the distribution of dungeon specific items like keys, this flag does consider
-the hands of the Desert Colossus as Spirit Temple locations, and to mirror the original game, Spirit Temple will get two items instead of just one.
-
-## Dungeon Quest
-
-This option specifies the form dungeons will take. The item pool will be updated to reflect the items originally found in the dungeons used.
-
-### Vanilla
-
-Dungeons will have the same internal layout as they did in the original The Legend of Zelda: Ocarina of Time.
-
-### Master Quest
-
-Dungeons will have the internal layouts found in The Legend of Zelda: Ocarina of Time Master Quest.
-
-### Mixed
-
-Dungeons will each have a random internal layout chosen between the vanilla and Master Quest forms.
-
-## Shuffle Kokiri Sword
-
-This flag adds the Kokiri Sword to the shuffle. With it off, the Kokiri Sword will always be found in its original chest in the Kokiri Forest.
-
-## Shuffle Weird Egg
-
-This flag adds the Weird Egg given by child Malon to the shuffle. With this flag on, child Malon will give a random item and the Weird Egg must be located
-to do the events at Hyrule Castle with Zelda and Impa. These events block interacting with Talon and Malon at Lon Lon Ranch as a child as well as Saria in
-Sacred Forest Meadow and the Happy Mask sidequest.
-
-## Shuffle Ocarinas
-
-This flag adds both the Fairy Ocarina and the Ocarina of Time to the shuffle. The ocarinas are a progressive item; the first found will always be the Fairy
-Ocarina with the second being the Ocarina of Time even though the two are functionally identical. Without this flag on, leaving the Kokiri Forest to the
-Lost Woods bridge as a child will always grant one Ocarina and the other is always available at the gate of Castle Town as a child when all three Spiritual
-Stones are in the player's possession.
-
-## Shuffle Songs with Items
-
-This flag adds the 12 standard ocarina songs to the shuffle as normal items. With this flag on, the spots that contained songs in the original game will
-simply give Link a random item, and the songs can be found as items freely. Without this flag on, songs are still randomized but only between each other.
-In either case, the Scarecrow's Song is not affected; it is still obtained by interacting with Bonooru at Lake Hylia first as a kid and then as an adult.
-
-## Shuffle Gerudo Card
-
-This flag shuffles the Gerudo Card into the general item pool. In the randomizer, this is required to gain access to Gerudo Training Grounds, but it does
-not have any impact on the hostility of the Gerudo in Gerudo Fortress who still check for the carpenter rescue events. Without this flag, the Gerudo
-Card is always given by the Gerudo woman who spawns after the final carpenter is rescued. If Gerudo Fortress is cleared from the beginning of the game,
-the player starts the game with the Gerudo Card and this setting is voided.
-
-## Shuffle Deku Salescrubs
-
-This flag makes every Deku Scrub Salesman in the world sell a random item instead of only the three that sold permanent upgrades in the original game.
-Using this flag adds the various low tier items the other scrubs sold to the item pool for the most part; the potion refills are replaced with Recovery
-Hearts for Red Potions and blue rupees for Green Potions. For each Deku Scrub that sold arrows/seeds depending on age, there will be a 75% chance of
-adding a 30 arrow item and a 25% chance of adding a 30 seed item to the pool. If this is set, once a Deku Scrub Salesman is used, it will disappear
-from the world forever. The individual settings in the dropdown can be used to set the price of each Deku Scrub Salesman to 10 rupees, leave the prices
-as what they were in the original game, or set each price to a random value from 0 to 99 rupees. In all cases, the text for the Deku Scrub Salesmen
-will not update.
-
-## Shopsanity
-
-This setting randomizes the items sold in shops. When it is used, all shop items are randomly re-arranged among all 8 of the original game's shops.
-This setting causes the Bombchu Shop to be open from the very beginning of the game, and this setting considers the two shops in adult Kakariko
-Village to be distinct shops from the two similar shops in child Castle Town; however, the shops in Kokiri Forest, Goron City, and Zora Domain are
-the same shops as both ages. This setting overrides the "Bombchus considered in logic" editing of the shop item pool.
-
-### Off
-
-This disables the Shopsanity feature.
-
-### Shuffled Shops (0 Items)
-
-This causes all of the Shopsanity features described above.
-
-### Shuffled Shops (1-4 Items)
-
-This not only causes all of the Shopsanity features described above, but it also adds 1-4 (depending on the exact setting) items from the general
-item pool into shops to buy for randomly chosen amounts of money. Lower value shop items are removed to make room for this, and low value junk items
-are added to the item pool to fill the extra empty chests this will implicitly create. Using this feature will also replace several of the rupee
-items found throughout the seed with higher value rupees and will add a third Wallet upgrade, the "Tycoon's Wallet", to the item pool which can hold
-up to 999 rupees. The items from the general item pool added to shops will always be on the far left of the shop inventories, and these items can
-always be bought if the player has enough rupees even if they are explosives without an appropriate container or a tunic as a child.
-
-### Shuffled Shops (Random Items)
-
-This is similar to the 1-4 items variant but gives each shop a random number of new items from 0-4. Each shop can have a different amount of unique
-items with this setting.
-
-## Shuffle Dungeon Items
-
-This setting allows the player to decide the natural distribution of dungeon items. Dungeon items can be found confined to their original dungeons,
-spread freely throughout the world, or prevented from existing completely. Items that are prevented from existing completely will be replaced in the
-item pool with an assortment of various low tier junk items. This feature can be specified for Maps/Compasses, Small Keys, and Boss Keys independently.
-If Small Keys or Boss Keys are prevented from existing, this will also remove all locks those keys would be used for from existing as well. If Small Keys
-are left in their original dungeons and the Fire Temple is not in the form of Master Quest, the locked door in the first room that leads to the normal
-location of the Boss Key will be removed.
-
-## Maps and Compasses Give Information
-
-This setting, only available if you start with Maps and Compasses or they are spread across the world, disables the pedestal in the Temple of Time from giving information about
-the location of the Medallions and Spiritual Stones. Instead, the Compass from each of the eight eligible dungeons will tell the player which dungeon has
-which reward. If the dungeon quest is set to mixed, each of the ten Maps will tell the player whether any given dungeon is in the vanilla or Master Quest
-form. The Compasses from Bottom of the Well and Ice Cavern do not give any information.
-
-## Remove Ganon's Door Boss Lock
-
-This setting removes the Boss Key lock from Ganon's Tower. This removes the need to locate the Ganon's Tower Boss Key to finish the game.
-
-## Tokensanity
-
-This setting shuffles the Gold Skulltula item drops into the general pool of locations. The player can choose only to include Gold skulltulas
-found in dungeons for a more mild version of this setting.
-
-# Detailed Logic
-
-## Maximum Expected Skulltula Tokens
-
-This setting can be used to reduce the number of Gold Skulltula Tokens that may be required to finish the game.
-
-## No Nighttime Skulltulas without Sun's Song
-
-This setting causes the logic to expect the player to have an ocarina and the Sun's Song to get Gold Skulltula locations that are only found at
-nighttime.
-
-## No Big Poes
-
-This setting will guarantee that the Big Poe vendor will not have an important item.
-
-## No Child Fishing
-
-This setting will guarantee that the reward from child fishing is not an important item. This is mostly recommended if the player simply must play
-on Bizhawk.
-
-## No Adult Fishing
-
-This setting will guarantee that the reward from adult fishing is not an important item. This is mostly recommended if the player simply must play
-on Bizhawk.
-
-## No Skull Mask Reward
-
-This setting will guarantee that the item obtained from showing the Skull Mask in the Deku Theater is not an important item.
-
-## No Mask of Truth Reward
-
-This setting will guarantee that the item obtained from showing the Mask of Truth in the Deku Theater is not an important item.
-
-## No 1500 Horseback Archery
-
-This setting will guarantee that the item obtained from scoring 1500 points at the horseback archery challenge at Gerudo Fortress is not an
-important item.
-
-## No Lost Woods Memory Game
-
-This setting will guarantee that the item obtained from winning the ocarina memory game in the Lost Woods is not an important item.
-
-## No Racing Dampe a Second Time
-
-This setting will guarantee that the item obtained from finishing with a sub-minute time in the second Dampe race is not an important item.
-
-## No Biggoron Reward
-
-This setting will guarantee that the item obtained from showing the Claim Check to Biggoron is not an important item.
-
-## Adult Trade Sequence
-
-This pair of settings can be used to specify the earliest and latest items that can be allowed to randomly show up in the general item pool.
-Only one item will be in the item pool regardless of this setting; this can merely be used to limit the range of possibilities.
-
-## Enable All Tricks
-
-This is a button to turn on all of the trick related flags.
-
-## Various Advanced Tricks
-
-This setting allows a huge number of minor tricks to be allowed by the logic. Here is a complete list:
-
--A precise jumpslash with either a Deku Stick or the Kokiri Sword can be used to reach a Gold Skulltula on some vines in standad Deku Tree.  
--The Bow can be used to knock down the stairs in Dodongo's Cavern with two well timed shots.  
--The vines in Forest Temple leading to where the well drain switch is in the standard form can be barely reached with the standard Hookshot.  
--The well in Forest Temple can be crossed with just Hookshot by shooting as low as possible on the vines from the far side and swimming under
-the ceiling. This is possible in both versions but can only be required in Forest Temple MQ.  
--A Bombchu from the ground level can be used to hit the switch to bypass the block pushing puzzle in Forest Temple MQ.  
--A rusted switch under a Song of Time block in the standard Fire Temple can be hit by using Hammer into the block.  
--The location with the Boss Key chest in Fire Temple MQ can be reached without the Bow with very particular use of Din's Fire.  
--The upper levels of the old boulder maze in Fire Temple MQ can be reached without explosives by using the Hammer through a wall.  
--In the standard Spirit Temple, the bridge on child side can be lowered with a carefully timed Bombchu.  
--The frozen switch in Spirit Temple MQ can be hit without a fire source by using the Bow and Song of Time very cleverly.  
--The chest in the basement of the standard Bottom of the Well can be reached with only a Strength Upgrade by using a jump slash with a lit
-Deku Stick to access the bomb flowers in the basement.  
--The silver rupees on the left side of Gerudo Training Grounds MQ can be collected with just Hookshot with a somewhat particular jump slash.  
--The first room of the Spirit Trail in Ganon's Castle MQ can be cleared without the Bow by using a Hammer jump slash to hit the rusted switch
-through the thrones.  
--The Gold Skulltula in adult Kokiri Forest can be reached without the Hookshot by using Hover Boots off one of the roots.  
--The child can reach the chest on Death Mountain trail with just the Goron Bracelet by backwalking with the Bomb Flower intended to open
-Dodongo's Cavern and throwing the Bomb Flower at the wall very quickly.  
--Gerudo Fortress can be cleared without any items other than those needed for access. The logic normally guarantees one of the Bow, Hookshot, or
-Hover Boots to help navigate the "kitchen".  
-
-Using this setting will also pre-set all of the lower logic flags to a reasonable configuration to match the trick level. These can then be
-edited as the player desires if the given configuration isn't desired.
-
-## Man on Roof without Hookshot
-
-This allows the logic to consider a trick in which the player does a sidehop off the tall tower in Kakariko Village to reach the man on the
-rooftop with no items.
-
-## Child Deadhand without Kokiri Sword
-
-This allows the logic to consider defeating the Deadhand in Bottom of the Well with Deku Sticks. This is not hard with use of the power crouch
-stab glitch, but consistently landing actual jump slashes on his unusual hitbox is pretty difficult and using normal slashes consumes 9 Deku Sticks.
-
-## Dodongo's Cavern Spike Trap Room Jump without Hover Boots
-
-This allows the logic to consider that the adult can make a particularly useful jump in Dodongo's Cavern to reach the area with the Bomb Bag chest early.
-Due to the precision of the jump, normally the logic expects Hover Boots to complete this path.
-
-## Windmill PoH as Adult with Nothing
-
-This allows the logic to consider a jump the adult can make in the windmill to reach the Piece of Heart within with no items. The jump requires leaping
-from an object on which it is not obvious Link is allowed to stand and has counterintuitive timing so it is not in standard logic.
-
-## Crater's Bean PoH with Hover Boots
-
-This allows the logic to consider using Hover Boots to reach the Piece of Heart atop the volcano in Death Mountain Crater. The path involves walking up a
-very steep slope that is not visibly walkable so it is not in normal logic.
-
-## Zora's Domain Entry with Cucco
-
-This allows the logic to consider using a Cucco on Zora River to enter Zora's Domain as a child without playing Zelda's Lullaby. It requires slipping behind
-the waterfall trickily from the left side.
-
-## Zora's Domain Entry with Hover Boots
-
-This allows the logic to consider this similar trick to the above except as an adult with Hover Boots. This is actually a lot more difficult even though it can
-be done from either side of the waterfall.
-
-## Fewer Tunic Requirements
-
-This relaxes the tunic requirements by the logic somewhat. Normally the logic expects a Goron Tunic to enter Fire Temple or complete the Fire Trial in Ganon's Castle
-and a Zora Tunic to enter Water Temple, collect the underwater silver rupees in Gerudo Training Grounds, or obtain the Piece of Heart at the bottom of the frozen Zora's
-Fountain. With this flag set, the Goron Tunic will not be required to actually enter Fire Temple, only to fight Volvagia or to reach the upper floors. The Zora Tunic
-requirements are removed completely except to reach the chest at the bottom of the central pillar in Water Temple.
-
-## Morpha with Gold Scale
-
-This setting allows entry to the Water Temple with the Gold Scale to be considered. Since you cannot backtrack into Water Temple without Iron Boots, only the Spiritual
-Stone or Medallion obtained from defeating Morpha can be considered by logic either way; since you need the Water Temple Boss Key and Longshot to access Morpha normally,
-this means that this setting is only relevant in either keysanity or keysy relative to the locations of Boss Keys.
-
-## Lens of Truth
-
-This setting alters the expectations about interacting with invisible objects without the Lens of Truth.
-
-### Required Everywhere
-
-This setting requires the Lens of Truth to interact with any invisible object except for whatever was required in the original game to obtain the Lens of Truth.
-
-### Wasteland and Chest Minigame
-
-This setting expects the Lens of Truth to be used only to cross the Haunted Wasteland and to win the Treasure Chest Minigame in Castle Town at night.
-
-### Only Chest Minigame
-
-This setting expects the Lens of Truth to be used only to win the Treasure Chest Minigame in Castle Town at night.
-
-# Other
-
-## Skip Tower Collapse Sequence
-
-This setting causes defeating Ganondorf to skip directly to the Ganon fight without the need to do the collapsing Ganon's Tower sequence.
-
-## Skip Interior Castle Guard Stealth Sequence
-
-This setting causes entering the crawlspace at Hyrule Castle to deposit the player directly into the Castle Courtyard, bypassing the guard
-evasion sequence.
-
-## Skip Epona Race
-
-This setting causes Epona to be stolen from Ingo from the start of the game, only requiring Epona's Song and an ocarina as an adult to summon.
-
-## Fast Chest Cutscenes
-
-This setting causes all chests to open with a quick animation. If this setting is off, certain important items will trigger the slow opening animation.
-
-## Random Big Poe Target Count
-
-This setting causes the number of Big Poes that must be turned into the vendor to obtain his item to be random from 1-10. Alternatively, the number
-of Big Poes requires can be selected manually with the slider below. Note that Big Poes can be found as pre-stocked Bottle contents, and the logic
-can expect using them if the required number is sufficiently low.
-
-## Start with Scarecrow's Song
-
-This flag causes Pierre the Scarecrow to be available to summon for the adult from the beginning of the game. The box below can be used to
-specify the particular desired Scarecrow's Song. This song must be exactly eight notes long and must contain at least two different notes.
-
-## Randomize Ocarina Song Notes
-
-This flag randomizes the particular notes in the 12 standard ocarina songs. This can predictably be pretty obnoxious. In general, the patterns chosen
-for the top row songs will be simpler than the patterns chosen for warp songs.
-
-## Chest Size Matches Contents
-
-This flag causes keys, Ice Traps, and items flagged as progression items to appear in large treasure chests while other items will be in small treasure chests.
-This means that players can choose to skip small treasure chests since they will only contain handy, not essential, items.
-
-## Clearer Hints
-
-This flag changes the text of Gossip Stone hints to be overwhelmingly explicit. This is helpful for players who do not have English as their first language,
-but the hints will be less "fun" and less like the sorts of things that would be said in the original game.
-
-## Gossip Stones
-
-This flag changes the behavior of Gossip Stones to give hints to players. The hints will be distributed as such:
-
--If the required number of trials is 1-3, a hint will be added for each trial that must be done. If the required number of trials is 4 or 5, a hint will be added
-for each trial that can be skipped.  
--Hints will be added for every one of the "always" locations that is allowed to have a random possibly valuable item under the current settings. These hints
-will tell the player what item is at each of these locations. These locations are the rewards for 30, 40, and 50 Gold Skulltula Tokens, the item obtained from
-Biggoron by showing the Claim Check, the item obtained from the Big Poe vendor, both the song and the item slots at the Ocarina of Time, and the item obtained
-from showing the Mask of Truth at the Deku Theater.  
--Some hints will be given for items at a randomly selected number of other locations that are generally somewhat inconvenient to check. The total number of these
-hints will be either 11 or 12 minus the number of always hints placed.  
--3 or 4 hints will be given naming a specific non-dungeon specific item that can be found in a randomly chosen dungeon.  
--1 to 4 hints will be given naming a specific item found in a specific overworld region. Which part of this range is used is determined in part by how many
-trial hints are given.  
--4 to 6 hints will be given naming what region specific progression items other than Gold Skulltula Tokens can be found.  
--3 or 4 hints will be given naming specific regions that are "on the way of the hero" and thus contain at least one required progression item.  
--All remaining hints (33 total unique Gossip Stones exist) will be filled with non-information junk hints.  
-
-This setting allows the player to specify which item is required to interact with the Gossip Stones. The Stone of Agony is the default option as it gives a
-fairly purposeless vanilla item a use and allows both kid and adult to interact with the Gossip Stones. The default Mask of Truth can be used, but this has
-the downside that the Mask of Truth can only be obtained with all Spiritual Stones which tends to make the hints not useful, and using the Mask of Truth
-requires being a child which is another big downside. There is also an option for the information to just be free for those wanting an easier mode.
-
-## Text Shuffle
-
-This setting allows all the text in the game to be shuffled. This is mostly for comedy and is not intended to be a serious gameplay option.
-
-### No Text Shuffled
-
-Leave the text alone.
-
-### Shuffled except Hints and Keys
-
-Shuffle all text other than the useful text giving the player information.
-
-### All Text Shuffled
-
-Shuffle all text even to the player's mechanical disadvantage.
-
-## Difficulty
-
-This setting allows the player to tweak the item pool to make a somewhat harder experience.
-
-### Normal
-
-Leave the item pool alone.
-
-### Hard
-
-Heart Containers, Double Defense, and the second Magic Upgrade are replaced with junk items. One each
-of the ammo expansions (Quiver, Bullet Bag, Bomb Bag Deku Stick Capacity, Deku Nut Capacity) will also
-be replaced with junk items, and all Bombchu pick-ups other than three will similarly be replaced with
-junk.
-
-### Very Hard
-
-In addition to the items from Hard, Pieces of Heart and Nayru's Love are also replaced with junk items.
-One more of each ammo expansion is removed resulting in zero extra ammo capacity for those item types,
-and only one Bombchu pick-up can be found.
-
-### OHKO
-
-In addition to the item changes from Very Hard, Link dies in one hit. Ice Traps are replaced with Recovery Hearts.
-
-# Cosmetics
-
-## Background Music
-
-### Normal
-
-Do not alter the background music.
-
-### No Music
-
-Disable background music. Sound effects will still play. This may be desired by players who like to listen to their own music.
-
-### Random
-
-Background music is shuffled so that different tracks may play in different areas. This may be silly.
-
-## Kokiri Tunic Color
-
-This determines the color of Link's default Kokiri Tunic. This only affects the color when he's wearing it, not the color of the icon in the menu.
-
-### Most Colors
-
-Simply get the particular color selected. Available colors are Kokiri Green, Goron Red, Zora Blue, Black, White, Azure Blue, Vivid Cyan, Light Red,
-Fuchsia, Purple, MM Purple, Twitch Purple, Purple Heart, Persian Rose, Dirty Yellow, Blush Pink, Hot Pink, Rose Pink, Orange, Gray, Gold, Silver,
-Beige, Teal, Blood Red, Blood Orange, Royal Blue, Sonic Blue, NES Green, Dark Green, and Lumen.
-
-### Random Choice
-
-Choose a random color from the set of pre-made colors.
-
-### Completely Random
-
-Generate a random color with numerically random RGB values.
-
-### Custom Color
-
-A special interface will pop up that will allow the user to choose any color from a diverse color wheel or input a desired RGB value.
-
-## Goron Tunic Color
-
-This determines the color of Link's Goron Tunic. This only affects the color when he's wearing it, not the color of the icon in the menu or when
-holding it up after acquiring it. The options are identical to those for the Kokiri Tunic.
-
-## Zora Tunic Color
-
-This determines the color of Link's Zora Tunic. This only affects the color when he's wearing it, not the color of the icon in the menu or when
-holding it up after acquiring it. The options are identical to those for the Kokiri Tunic.
-
-## Low Health SFX
-
-This determines which sound effect to play repeatedly when Link is very low on health. Several of these options are designed to be potentially
-more pleasant to listen to while a few are designed to be more amusing.
-
-### Particular Sounds
-
-Set this particular sound for the heart beep. Available choices are Default, Softer Beep, Rupee, Timer, Tambourine, Recovery Heart, Carrot Refill,
-Navi - Hey!, Zelda - Gasp, Cluck, Mweep!, Iron Boots, Hammer, Sword Bounce, Bow, Gallop, Drawbridge, Switch, Bomb Bounce, Bark, Ribbit, Broken Pot,
-Business Scrub, Guay, and Bongo Bongo. Indeed, one of these is the sound a king might make when moving... very slowly.
-
-### Random Choice
-
-Play a random SFX from the list of choices.
-
-### None
-
-Disable low health heart beeps altogether.
-
-## Navi Color
-
-These options can be used to set Navi's color in a variety of contexts. The lists of pre-set colors here is different, but the same types of options
-exist as for choosing tunic colors.
-
-## Navi Hint
-
-This option sets the SFX that will play when Navi is ready to give a hint. The options are very similar to the Low Health SFX.
-
-## Navi Enemy Target
-
-This option sets the SFX that will play when Navi targets an enemy. The options are very similar to the Low Health SFX.
-
-# Command Line Options
-
-```
--h, --help            
-```
-
-Show the help message and exit.
-
-```
---check_version
-```
-
-Check for the latest version number online (default: False)
-
-```
---checked_version CHECKED_VERSION
-```
-
-Check for the specified version number instead of a number from online.
-
-```
---rom ROM
-```
-
-Path to a The Legend of Zelda: Ocarina of Time NTSC-US v1.0 ROM. (default: ZOOTDEC.z64)
-
-```
---output_dir OUTPUT_DIR
-```
-
-Path to output directory for rom generation.
-
-```
---seed SEED           
-```
-
-Define seed number to generate. (default: None)
-
-```
---count COUNT         
-```
-
-Set the count option (default: None)
-
-```
---world_count WORLD_COUNT       
-```
-
-Use to create a multi-world generation for co-op seeds. World count is the number of players.
-Warning: Increasing the world count will drastically increase generation time. (default: 1)
-
-```
---player_num PLAYER_NUM       
-```
-
-Use to select world to generate when there are multiple worlds. (default: 1)
-
-```
---create_spoiler      
-```
-
-Output a Spoiler File (default: False)
-
-```
---compress_rom [{True,False,None}]
-```
-
-Create a compressed version of the output rom file.
-True: Compresses. Improves stability. Will take longer to generate
-False: Uncompressed. Unstable on emulator. Faster generation
-None: No ROM Output. Creates spoiler log only (default: True)
-
-```
---open_forest
-```
-
-Set whether Kokiri children obstruct your path at the beginning of the game. (default: False)
-
-```
---open_kakariko
-```
-
-The gate in Kakariko Village to Death Mountain Trail is always open, instead of needing Zelda's Letter. (default: False)
-
-```
---open_door_of_time
-```
-
-Set whether the Door of Time is open from the beginning of the game. (default: False)
-
-```
---gerudo_fortress [{normal,fast,open}]
-```
-
-Select how much of Gerudo Fortress is required. (default: normal)
-
-```
---bridge [{medallions,vanilla,dungeons,open}]
-```
-
-Select the condition to spawn the Rainbow Bridge to Ganon's Castle. (default: medallions)
-
-```
---all_reachable
-```
-
-Enables the "Only Ensure Seed Beatable" option (default: False)
-
-```
---all_reachable
-```
-
-Enables the "Only Ensure Seed Beatable" option (default: False)
-
-```
---bombchus_in_logic
-```
-
-Changes how the logic considers Bombchus and other Bombchu related mechanics (default: False)
-
-```
---one_item_per_dungeon
-```
-
-Each dungeon will have exactly one major item. (default: False)
-
-```
---trials_random
-```
-
-Sets the number of trials that must be cleared in Ganon's Castle to a random value (default: False)
-
-```
---trials [{0,1,2,3,4,5,6}]
-```
-
-Sets the number of trials that must be cleared in Ganon's Castle (default: 6)
-
-```
---no_escape_sequence
-```
-
-Removes the tower collapse sequence after defeating Ganondorf (default: False)
-
-```
---no_guard_stealth
-```
-
-Removes the guard evasion sequence in Hyrule Castle (default: False)
-
-```
---no_epona_race
-```
-
-Removes the need to race Ingo to acquire Epona (default: False)
-
-```
---fast_chests
-```
-
-Causes all chests to open with a fast animation (default: False)
-
-```
---big_poe_count_random
-```
-
-Sets the number of Big Poes that must be sold to the vendor for an item to a random value (default: False)
-
-```
---big_poe_count [{1,2,3,4,5,6,7,8,9,10}]
-```
-
-Sets the number of Big Poes that must be sold to the vendor for an item (default: 10)
-
-```
---free_scarecrow
-```
-
-Start the game with the Scarecrow's Song activated and Pierre possible for the adult to summon (default: False)
-
-```
---scarecrow_song [SCARECROW_SONG]
-```
-
-Set Scarecrow's Song if --free_scarecrow is used. Valid notes: A, U, L, R, D (default: DAAAAAAA)
-
-```
---shuffle_kokiri_sword
-```
-
-Include the Kokiri Sword as a randomized item (default: False)
-
-```
---shuffle_weird_egg
-```
-
-Include the Weird Egg as a randomized item (default: False)
-
-```
---shuffle_ocarinas
-```
-
-Include the two ocarinas as randomized items (default: False)
-
-```
---shuffle_song_items
-```
-
-Treat the ocarina songs as normal items and shuffle them into the general item pool (default: False)
-
-```
---shuffle_gerudo_card
-```
-
-Include the Gerudo Card to access Gerudo Training Grounds as a randomized item (default: False)
-
-```
---shuffle_scrubs [{off,low,regular,random}]
-```
-
-Include all Deku Scrub Salesmen as randomized item and determine their prices (default: off)
-
-```
---shopsanity [{off,0,1,2,3,4,random}]
-```
-
-Randomize shop items and add the chosen number of items from the general item pool to shop inventories (default: off)
-
-```
---shuffle_mapcompass [{remove,startwith,dungeon,keysanity}]
-```
-
-Choose the locations Maps and Compasses can be found (default: dungeon)
-
-```
---shuffle_smallkeys [{remove,dungeon,keysanity}]
-```
-
-Choose the locations Small Keys can be found (default: dungeon)
-
-```
---shuffle_bosskeys [{remove,dungeon,keysanity}]
-```
-
-Choose the locations Boss Keys can be found (default: dungeon)
-
-```
---enhance_map_compass
-```
-
-Change the functionality of the Map and Compass to give information about their dungeons. The Temple of Time Altar will no longer provide any dungeon information. (default: False)
-
-```
---unlocked_ganondorf
-```
-
-Remove the Boss Key door leading to Ganondorf (default: False)
-
-```
---tokensanity [{off,dungeons,all}]
-```
-
-Include the chosen Gold Skulltula Token locations in the item shuffle (default: off)
-
-```
---quest [{vanilla,master,mixed}]
-```
-
-Choose the internal layout of the dungeons (default: vanilla)
-
-```
---logic_skulltulas [{0,10,20,30,40,50}]
-```
-
-Choose the maximum number of Gold Skulltula Tokens that could be required (default: 50)
-
-```
---logic_no_night_tokens_without_suns_song
-```
-
-Change logic to expect Sun's Song to defeat nighttime Gold Skulltulas (default: False)
-
-```
---logic_no_big_poes
-```
-
-Prevent the Big Poe vendor from having a required item (default: False)
-
-```
---logic_no_child_fishing
-```
-
-Prevent the prize from fishing as a child from being a required item (default: False)
-
-```
---logic_no_adult_fishing
-```
-
-Prevent the prize from fishing as an adult from being a required item (default: False)
-
-```
---logic_no_trade_skull_mask
-```
-
-Prevent the item obtained by showing the Skull Mask at the Deku Theater from being a required item (default: False)
-
-```
---logic_no_trade_mask_of_truth
-```
-
-Prevent the item obtained by showing the Mask of Truth at the Deku Theater from being a required item (default: False)
-
-```
---logic_no_1500_archery
-```
-
-Prevent the item obtained by scoring 1500 points at horseback archery from being a required item (default: False)
-
-```
---logic_no_memory_game
-```
-
-Prevent the item obtained by completing the ocarina memory game in the Lost Woods from being a required item (default: False)
-
-```
---logic_no_second_dampe_race
-```
-
-Prevent the prize won by finishing the second Dampe race in under 1 minute from being a required item (default: False)
-
-```
---logic_no_trade_biggoron
-```
-
-Prevent the item obtained by showing the Claim Check to Biggoron from being a required item (default: False)
-
-```
---logic_earliest_adult_trade [{pocket_egg,pocket_cucco,cojiro,odd_mushroom,poachers_saw,broken_sword,prescription,eyeball_frog,eyedrops,claim_check}]
-```
-
-Set the earliest item in the adult trade sequence that can be found in the item pool (default: pocket_egg)
-
-```
---logic_latest_adult_trade [{pocket_egg,pocket_cucco,cojiro,odd_mushroom,poachers_saw,broken_sword,prescription,eyeball_frog,eyedrops,claim_check}]
-```
-
-Set the latest item in the adult trade sequence that can be found in the item pool (default: claim_check)
-
-```
---logic_tricks
-```
-
-Enable the logic to consider a large number of minor tricks (default: False)
-
-```
---logic_man_on_roof
-```
-
-Enable the logic to consider the trick to reach the man on the roof in Kakariko Village with a sidehop from the tower (default: False)
-
-```
---logic_child_deadhand
-```
-
-Enable the logic to consider the child defeating Deadhand with only Deku Sticks (default: False)
-
-```
---logic_dc_jump
-```
-
-Enable the logic to consider the trick to bypass the second Lizalfos fight room in Dodongo's Cavern as an adult with a simple jump (default: False)
-
-```
---logic_windmill_poh
-```
-
-Enable the logic to consider the trick to reach the Piece of Heart in the windmill as an adult with nothing (default: False)
-
-```
---logic_crater_bean_poh_with_hovers
-```
-
-Enable the logic to consider the trick to reach the Piece of Heart on the volcano in Death Mountain Crater with Hover Boots (default: False)
-
-```
---logic_zora_with_cucco
-```
-
-Enable the logic to consider the trick to enter Zora's Domain as a child using a Cucco instead of playing Zelda's Lullaby (default: False)
-
-```
---logic_zora_with_hovers
-```
-
-Enable the logic to consider the trick to enter Zora's Domain as an adult using Hover Boots instead of playing Zelda's Lullaby (default: False)
-
-```
---logic_fewer_tunic_requirements
-```
-
-Reduce the number of locations for which the logic expects a tunic upgrade (default: False)
-
-```
---logic_morpha_with_scale
-```
-
-Allows entering Water Temple and beating Morpha with Gold Scale instead of Iron Boots. The Longshot and Boss Key are still required to reach the boss.
-This means that this option is only relevant in keysanity or keysy. (default: False)
-
-```
---logic_lens [{chest,chest-wasteland,all}]
-```
-
-Set which hidden objects the logic expects the Lens of Truth to be used on (default: all)
-
-```
---ocarina_songs
-```
-
-Randomize the particular notes that must be played for each of the 12 standard ocarina songs (default: False)
-
-```
---correct_chest_sizes
-```
-
-Set chest sizes based on contents (default: False)
-
-```
---clearer_hints
-```
-
-Reword hints to be incredibly direct (default: False)
-
-```
---hints [{none,mask,agony,always}]
-```
-
-Enable hints from Gossip Stones and select the condition to read them (default: agony)
-
-```
---text_shuffle [{none,except_hints,complete}]
-```
-
-Shuffle the chosen text randomly (default: none)
-
-```
---difficulty [{normal,hard,very_hard,ohko}]
-```
-
-Alter the item pool to increase difficulty. The ohko option also causes Link to die in one hit. (default: normal)
-
-```
---default_targeting [{hold,switch}]
-```
-
-Set the default Z-targeting setting. It can still be changed in the game's options menu. (default: hold)
-
-```
---background_music [{normal,off,random}]
-```
-
-Choose whether the game's background music will be left alone, disabled, or shuffled randomly. (default: normal)
-
-```
---kokiricolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Azure Blue', 'Vivid Cyan', 'Light Red', 'Fuchsia', 'Purple', 'MM Purple', 'Twitch Purple', 'Purple Heart', 'Persian Rose', 'Dirty Yellow', 'Blush Pink', 'Hot Pink', 'Rose Pink', 'Orange', 'Gray', 'Gold', 'Silver', 'Beige', 'Teal', 'Blood Red', 'Blood Orange', 'Royal Blue', 'Sonic Blue', 'NES Green', 'Dark Green', 'Lumen'}]
-```
-
-Select the color of Link's Kokiri Tunic. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Kokiri Green)
-
-```
---goroncolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Azure Blue', 'Vivid Cyan', 'Light Red', 'Fuchsia', 'Purple', 'MM Purple', 'Twitch Purple', 'Purple Heart', 'Persian Rose', 'Dirty Yellow', 'Blush Pink', 'Hot Pink', 'Rose Pink', 'Orange', 'Gray', 'Gold', 'Silver', 'Beige', 'Teal', 'Blood Red', 'Blood Orange', 'Royal Blue', 'Sonic Blue', 'NES Green', 'Dark Green', 'Lumen'}]
-```
-
-Select the color of Link's Goron Tunic. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Goron Red)
-
-```
---zoracolor [{'Random Choice', 'Completely Random', 'Kokiri Green', 'Goron Red', 'Zora Blue', 'Black', 'White', 'Azure Blue', 'Vivid Cyan', 'Light Red', 'Fuchsia', 'Purple', 'MM Purple', 'Twitch Purple', 'Purple Heart', 'Persian Rose', 'Dirty Yellow', 'Blush Pink', 'Hot Pink', 'Rose Pink', 'Orange', 'Gray', 'Gold', 'Silver', 'Beige', 'Teal', 'Blood Red', 'Blood Orange', 'Royal Blue', 'Sonic Blue', 'NES Green', 'Dark Green', 'Lumen'}]
-```
-
-Select the color of Link's Zora Tunic. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Zora Blue)
-
-```
---navicolordefault [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
-```
-
-Select the color of Navi in idle. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: White)
-
-```
---navicolorenemy [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
-```
-
-Select the color of Navi when she is targeting an enemy. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Yellow)
-
-```
---navicolornpc [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
-```
-
-Select the color of Navi when she is targeting an NPC. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Light Blue)
-
-```
---navicolorprop [{'Random Choice', 'Completely Random', 'Gold', 'White', 'Green', 'Light Blue', 'Yellow', 'Red', 'Magenta', 'Black', 'Tatl', 'Tael', 'Fi', 'Ciela', 'Epona', 'Ezlo', 'King of Red Lions', 'Linebeck', 'Loftwing', 'Midna', 'Phantom Zelda'}]
-```
-
-Select the color of Navi when she is targeting a prop. Can also set Custom (#RRGGBB) using hexadecimal RGB values to set a custom color. (default: Green)
-
-```
---navisfxoverworld [{'Default', 'Random Choice', 'None', 'Cluck', 'Rupee', 'Softer Beep', 'Recovery Heart', 'Timer', 'Low Health', 'Notification', 'Tambourine', 'Carrot Refill', 'Zelda - Gasp', 'Mweep!', 'Ice Break', 'Explosion', 'Crate', 'Great Fairy', 'Moo', 'Bark', 'Ribbit', 'Broken Pot', 'Cockadoodledoo', 'Epona', 'Gold Skulltula', 'Redead', 'Poe', 'Ruto', 'Howl', 'Business Scrub', 'Guay', "H'lo!"}]
-```
-
-Select the sound effect that plays when Navi wishes to speak with the player. (default: Default)
-
-```
---navisfxenemytarget [{'Default', 'Random Choice', 'None', 'Cluck', 'Rupee', 'Softer Beep', 'Recovery Heart', 'Timer', 'Low Health', 'Notification', 'Tambourine', 'Carrot Refill', 'Zelda - Gasp', 'Mweep!', 'Ice Break', 'Explosion', 'Crate', 'Great Fairy', 'Moo', 'Bark', 'Ribbit', 'Broken Pot', 'Cockadoodledoo', 'Epona', 'Gold Skulltula', 'Redead', 'Poe', 'Ruto', 'Howl', 'Business Scrub', 'Guay', "H'lo!"}]
-```
-
-Select the sound effect that plays when Navi targets an enemy. (default: Default)
-
-```
---healthSFX [{'Default', 'Random Choice', 'None', 'Cluck', 'Softer Beep', 'Recovery Heart', 'Timer', 'Notification', 'Tambourine', 'Carrot Refill', 'Navi - Random', 'Navi - Hey!', 'Zelda - Gasp', 'Mweep!', 'Iron Boots', 'Hammer', 'Sword Bounce', 'Bow', 'Gallop', 'Drawbridge', 'Switch', 'Bomb Bounce', 'Bark', 'Ribbit', 'Broken Pot', 'Business Scrub', 'Guay', 'Bongo Bongo'}]
-```
-
-Select the sound effect that loops at low health. (default: Default)
-
-```
---gui
-```
-
-Open the graphical user interface. Preloads selections with set command line parameters.
-
-```
---loglevel [{error,info,warning,debug}]
-```
-
-Select level of logging for output. (default: info)
-
-```
---settings_string SETTINGS_STRING
-```
-
-Enter a settings string that will encode and override most individual settings.
+This program takes _The Legend of Zelda: Ocarina of Time_ and randomizes the locations of the items for a new, more dynamic play experience.
+Proper logic is used to ensure every seed is possible to complete without the use of glitches and will be safe from the possibility of softlocks with any possible usage of keys in dungeons.
+
+The randomizer will ensure a glitchless path through the seed will exist, but the randomizer will not prevent the use of glitches for those players who enjoy that sort of thing, though we offer no guarantees that all glitches will have identical behavior to the original game.
+Glitchless can still mean that clever or unintuitive strategies may be required involving the use of things like Hover Boots, the Hookshot, or other items that may not have been as important in the original game.
+
+Each major dungeon will earn you a random Spiritual Stone or Medallion once completed.
+The particular dungeons where these can be found, as well as other relevant dungeon information can be viewed in the pause menu by holding the "A" button on the C-Item Menu.
+Note, however, that the unlock conditions for dungeon information are settings-dependent.
+
+As a service to the player in this very long game, many cutscenes have been greatly shortened or removed, and text is as often as possible either omitted or sped up. It is likely that someone somewhere will miss the owl's interjections; to that person, I'm sorry I guess?
+
+### Getting Stuck
+
+With a game the size of _Ocarina of Time_, it's quite easy for new Randomizer players to get stuck in certain situations with no apparent path to progressing. 
+Before reporting an issue, please make sure to check out [our Logic wiki page](https://wiki.ootrandomizer.com/index.php?title=Logic). 
+We also have many community members who can help out in our [Discord](https://discord.gg/8nmX7fa).
+
+### Settings
+
+The OoT Randomizer offers many different settings to customize your play experience.
+A comprehensive list can be found [here](https://wiki.ootrandomizer.com/index.php?title=Readme).
+
+#### Plandomizer
+
+"Plan"-domizer is a feature that gives some additional control over the seed generation using a separate distribution file. In such a file you can:
+* Place items at specific locations or restrict items from being placed at specific locations.
+* Add or remove items from the item pool.
+* Select items to start with.
+* Set specific dungeons to be vanilla vs Master Quest.
+* Set which trials are required.
+* Set any regular settings.
+
+Caveat: Plandomizer settings will override most settings in the main OoTR generator settings, particularly list-based settings like enabled tricks or starting inventory. For example, if the Plandomizer distribution file contains an empty list of starting items, and the generator settings include additional starting equipment, the player will start with none of them instead. You will have to edit the Plandomizer file to change such settings, or **delete** completely the line in the Plandomizer file with the given setting to allow the main generator to alter the setting.
+
+See [the Plandomizer wiki page](https://wiki.ootrandomizer.com/index.php?title=Plandomizer) for full details.
+
+### Known issues
+
+Unfortunately, a few known issues exist. These will hopefully be addressed in future versions.
+
+* The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and Hard Reset (NOT savestate) and return to fix the
+issue. You should always Hard Reset to avoid this issue entirely.
+* Versions older than 2.4 of Project64 have known compatablity issues with OoTR. To avoid this either 
+[update to v2.4 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
+* Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
+* Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
+do that.
+* This randomizer is based on the 1.0 version of _Ocarina of Time_, so some of its specific bugs remain.
+
+## Changelog
+
+### Dev
+
+#### New Features
+
+* New setting `Reachable Locations` replaces `All Locations Reachable` and adds a new option "All Goals" which ensures that all goal items for Ganon's Boss Key and the Rainbow Bridge are reachable, regardless of how many are required by the setting.
+  * For example, if the Rainbow Bridge requires 4 medallions, all 6 medallions will be guaranteed reachable.
+* New separate setting `LACS Condition` to select what goal items are required for the Light Arrows Cutscene.
+* New option `Misc. Hints` controls whether the Temple of Time altar and Ganondorf give hints, defaulting on to preserve behavior. Hell Mode disables this setting.
+
+#### Bug Fixes
+
+* Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
+* `Skip Child Zelda` in Multiworld (with Song Shuffle: Anywhere) now correctly provides items to the right player.
+* Smarter replacement of required warp songs when warp songs are shuffled. 
+* Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
+* Fix Entrance Randomizer dungeon entrance hints.
+* Plandomizer
+  * Correctly consider plando'ed prices in logic, and limit set prices to a range of -32768 to 999.
+  * Fix duplicating placed shop items.
+* Fix some potential failures for placing junk.
+* Fix disabled song locations getting a general junk item instead of a junk song.
+* Fix some spoiler entries for visible ice traps.
+* Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
+
+#### Other Changes
+
+* Add ability to provide settings through stdin (useful for shell scripting).
+* Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
+* Added Nayru's Love back to the minimal item pool on high damage settings.
+* Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
+* Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
+* New `#MajorItem` item category for Plandomizer allows placing a random major item.
+* Entrance Randomizer: Allow Kakariko Potion Shop and Impa's House to have their entrances appear in different areas if all hints are off.
+* Updated presets.
+* Added a commandline flag to use a preset by name. This still allows supplying additional settings, e.g. to control cosmetics and ROM output.
+* Logic updates.
+* Use HTTPS for the version check to github.
+
+### 6.0
+
+#### New Features
+
+##### Gameplay
+* New save file screen
+  * Relevant items are shown before hitting 'Yes' to load, instead of just the hearts, magic, dungeon rewards, and deaths. Icons are solid if the save has the item or faded if not.
+  * Triforce pieces aren't shown unless the save has at least 1.
+  * The death counter is now placed at the bottom next to a skull.
+* Updated altar text in the Temple of Time
+  * Now provides rainbow bridge requirements and the shuffle mode of Ganon's Castle Boss Key (info otherwise available in the seed settings). These are always available at the altar regardless of Maps/Compass settings.
+  * Removed misleading vanilla text from the child altar.
+* Various Quality of Life improvements
+  * Speed up boulder lifting
+  * Speed up Gold Gauntlet boulder lifting
+  * Speed up learning Windmill song 
+  * Speed up learning Malon's song
+  * Speed up Kakariko gate opening and closing
+  * Twinrova waits for player to reach the top platform before starting, preventing early snipes
+
+##### 'ROM Options' settings
+* New Cosmetic Plandomizer
+  * Use a JSON file to set your cosmetics and sound settings.
+  * We've added lots of new color options to pick from as well!
+* Custom settings presets (must be json) can be placed in `data/Presets` to be automatically loaded in the GUI.
+
+##### New 'Main Rules' settings and options
+* New setting `Kakariko Gate`
+  * Allows configuring how the Kakariko Gate and the Happy Mask Shop will open.
+  * Default (vanilla) behavior requires showing Zelda's Letter to the guard to open the gate and the shop.
+  * You can configure the gate to be always open or to open automatically upon obtaining the Letter. Both of these options will also open the Happy Mask Shop upon obtaining the Letter.
+* Entrance Randomizer settings overhaul
+  * `Entrance Shuffle` setting replaced with the other independent settings here.
+  * `Shuffle Interior Entrances`: allows a choice of shuffling simple interiors, all interiors, or none.
+  * `Shuffle Grotto Entrances`: allows shuffling grotto/grave entrances.
+  * `Shuffle Dungeon Entrances`: allows shuffling dungeon entrances.
+  * `Shuffle Overworld Entrances`: allows shuffling overworld connections.
+  * `Randomize Owl Drops`: allows randomizing where the owl drops you from each owl spot.
+  * `Randomize Warp Song Destinations`: allows randomizing (to any entrance, not just warp pads!) where each warp song takes you.
+  * `Randomize Overworld Spawns`: allows randomizing (per age) where you start when loading a save in the Overworld.
+  * All these shuffles and randomizations are fixed when the seed is generated; within a seed it will always be the same each time.
+* New options for `Shuffle Songs`
+  * This now allows selecting from three options: shuffling in **song** locations (previously 'off'), shuffling in **anywhere** (previously 'on'), and shuffling in **dungeon** reward locations (new).
+  * The dungeon reward locations are: the 9 boss heart containers, the Lens of Truth chest (BotW), the Ice Arrows chest (GTG), the song reward in Ice Cavern, and the song from Impa in Hyrule Castle.
+  * In multiworld, as before, only the "anywhere" setting will allow songs to be placed in other players' worlds.
+* New setting `Shuffle Medigoron & Carpet Salesman`
+  * Adds the Giant's Knife and a pack of Bombchus to the pool while Medigoron and Carpet Salesman each sell a randomly placed item once for 200 rupees.
+* New options for Key and Map/Compass Shuffle settings
+  * "Overworld Only" will place keys (or maps/compasses) outside of dungeons.
+  * "Any Dungeon" will allow keys (or maps/compasses) to placed in any dungeon, not just the dungeon they belong to!
+  * "Dungeon Only" is renamed "Own Dungeon" for clarity.
+  * Gerudo Fortress Small Keys are configured in a separate setting.
+* New options for `Rainbow Bridge` and `Ganon's Boss Key on Light Arrows Cut Scene`.
+  * Sliders allow customizing the exact number of stones/medallions/dungeons/tokens required.
+  * Ganon's BK on LACS can now be set to require Gold Skulltula Tokens.
+  * `Randomize Main Rules` won't randomize slider values.
+  * Conditional-always hints check for whether 2 or more dungeon rewards are required, as a backstop.
+
+##### 'Other' settings
+* New setting `Skip Child Zelda`
+  * Skips the Hyrule Castle visit as child, returning Malon and Talon to Lon Lon Ranch and granting Zelda's Letter and the song that Impa provides at the start of the game.
+  * Depending on the `Kakariko Gate` and `Complete Mask Quest` settings, may also start with the gate and shop open and masks available.
+  * Removes the Weird Egg (and prevents `Shuffle Weird Egg`).
+* New setting `Skip Some Minigame Phases`
+  * Allows getting both rewards for Horseback Archery and Dampé Race in a single go!
+  * Replaces the `Skip First Dampé Race` setting.
+* New setting `Complete Mask Quest`
+  * Marks all the mask sales complete so that the shop has all masks available to borrow as soon as it opens.
+* New setting `Fast Bunny Hood`
+  * Allows manual toggling on/off of the 1.5x speed boost from MM.
+* New "Hint Distribution" customization options
+  * Old hardcoded hint distributions are now defined by json files in `data/Hints`.
+  * Custom hint distributions can be added to this folder, or defined directly in Plando files.
+  * Many locations that did not previously have item hints now have hints, in case a custom hint distribution makes use of them.
+  * Using the hint distribution "Bingo" allows setting a "Bingosync URL" to build hints for the specific OoTR Bingo board. Otherwise it's a generic hint distribution for OoTR Bingo.
+* Hint distributions can configure groups of stones to all have the same hint, and can also disable stones from receiving useful hints (give them junk hints instead).
+* Tournament hint distribution changes
+  * Grotto stones are disabled and only provide junk hints.
+  * Zelda's Lullaby is never considered for Way of the Hero hints.
+  * Only "always", "Barren", and "WotH" hints have duplicates now.
+  * "Barren" hints will typically be split evenly between dungeon and overworld areas.
+  * Number of unique hints of each type are now (not counting seed-dependent hint types like 'always' and 'trial'): 4 WotH, 2 barren, 5(remainder) sometimes.
+  * The previous Tournament hint distribution has been renamed "Scrubs Tournament".
+* New setting `Hero Mode`
+  * Allows playing without heart drops from enemies or objects. Good luck!!
+
+##### Cosmetics/SFX
+* New cosmetic settings for HUD button colors
+  * These can all be set independently, defaulting to the N64 colors.
+* New cosmetic setting `Item Model Colors Match Cosmetics`
+  * Freestanding models like heart containers, gauntlets, and heart/magic drops will match their respective color settings.
+  * Tunics are not affected, in order to keep freestanding tunics recognizable.
+* Navi Colors section renamed "Misc. Colors"
+  * Navi and sword trails options are now in this section, along with:
+  * New "Rainbow" option in all Navi color settings.
+  * New Boomerang trail inner & outer color settings, including a "Rainbow" option.
+  * New Bombchu trail inner & outer color settings, including a "Rainbow" option.
+  * New Mirror Shield Frame color setting.
+* Added options to `Background Music` and `Fanfares` for randomly selecting only from [custom music](https://wiki.ootrandomizer.com/index.php?title=Readme#Custom_Music_and_Fanfares).
+  
+#### Updated Settings/Tricks
+* `Lens of Truth` setting has been removed and replaced with several independent tricks.
+  * `Lensless Wasteland`: assumes you can navigate the Wasteland to the Colossus without the Lens of Truth.
+  * `<Area> without Lens of Truth`: assumes you can complete the given area without the Lens of Truth. Note that MQ and Vanilla dungeons have separate tricks.
+  * Shadow Temples are split into two separate areas for these tricks.
+  * Glitchless logic now requires Lens (or an appropriate trick) for some checks, particularly in Shadow Temple.
+  * Glitched logic may sometimes assume you can do something without lens regardless of trick settings.
+* New tricks
+  * `Dodongo's Cavern Vines GS from Below with Longshot` - use the Longshot to avoid the staircase.
+  * `Forest Temple First Room GS with Difficult-to-Use Weapons` - use a sword or Deku Sticks to jumpslash, or Bombs as child.
+  * `Spirit Temple Main Room Jump from Hands to Upper Ledges` - make a precise jump without Hookshot or Hover Boots.
+  * `Water Temple Falling Platform Room GS with Boomerang` - use the Boomerang from the very edge of the platform.
+  * `Death Mountain Trail Climb with Hover Boots` - get past the boulders without destroying them.
+  * `Zora's Domain GS with No Additional Items` - use only a jumpslash.
+  * `Ice Cavern Block Room GS with Hover Boots` - reach the GS with the Hover Boots to jumpslash it.
+  * `Hyrule Castle Storms Grotto GS with Just Boomerang` - make a precise throw with the Boomerang to send it behind the wall.
+  * `Water Temple Central Pillar GS with Farore's Wind` - cast inside the pillar before raising the water level. *Previously assumed in logic!*
+  * `Water Temple Central Pillar GS with Iron Boots` - unlock the door on the middle level before raising the water.
+  * `Water Temple Dragon Statue Switch from Above the Water as Adult` - trigger the switch from dry land, then use Iron Boots, any Scale, or a jump dive coming from the river.
+  * `Water Temple Dragon Statue Switch from Above the Water as Child` - same but for child. The Scale dive is very precise.
+  * `Goron City Grotto with Hookshot While Taking Damage` - brave the heat, but be quick.
+  * `Dodongo's Cavern Two Scrub Room with Strength` - position a block correctly and adult can bring a bomb flower to the wall.
+  * `Shadow Temple Falling Spikes GS with Hover Boots` - make a precise move to get on the falling spikes, then another precise move to grab the token.
+  * `Deku Tree MQ Roll Under the Spiked Log` - roll at the right time to shrink your hintbox. *Previously assumed in logic!*
+  * `Bottom of the Well MQ Jump Over the Pits` - Use a sidehop or backflip to jump over the pits. *Previously assumed in logic!*
+  * `Water Temple MQ Central Pillar with Fire Arrows` - Angled torches have hard-to-hit hitboxes. *Previously assumed in logic!*
+  * `Forest Temple MQ Twisted Hallway Switch with Jump Slash` - Hit the switch from above with a jump slash, after getting in place with Hover Boots or some glass blocks. *Previously assumed in logic!*
+  * `Fire Temple MQ Lower to Upper Lizalfos Maze with Hover Boots` - Hover Boots can get you up from a crate.
+  * `Fire Temple MQ Lower to Upper Lizalfos Maze with Precise Jump` - You can even jump up from a crate without the Hover Boots!
+  * `Fire Temple MQ Above Flame Wall Maze GS from Below with Longshot` - Point the Longshot at the right pointin the ceiling to obtain the token.
+  * `Shadow Temple MQ Invisible Blades Silver Rupees without Song of Time` - Get a boost from a Like Like into a silver rupee, but don't die in the process.
+  * `Deku Tree MQ Compass Room GS Boulders with Just Hammer` - Jump slash from the top of the vines.
+  * `Spirit Temple MQ Sun Block Room as Child without Song of Time` - Throw a crate onto the switch to unbar the door briefly.
+  * `Water Temple MQ North Basement GS without Small Key` - There's an invisible Hookshot target you can use.
+  * `Death Mountain Trail Lower Red Rock GS with Hover Boots` - Kill the Skulltula, get on the fence, and then backflip onto the the rock.
+  * `Ice Cavern MQ Red Ice GS without Song of Time` - Side-hop into the right place and you have a brief amount of time to use Blue Fire.
+  * `Kakariko Rooftop GS with Hover Boots` - Some tricky movements with the Hover Boots can get you up onto Impa's House.
+  * `Dodongo's Cavern MQ Light the Eyes with Strength` - You have to move very quickly to light the eyes with a Bomb Flower.
+  * `Dodongo's Cavern MQ Back Areas as Child without Explosives` - Use pots, Armos, etc to progress through the room. Not relevant without "Light the Eyes with Strength" above, which is much harder for child.
+  * `Fire Trial MQ with Hookshot` - Hit the target from a precise position with precise aim.
+* Removed tricks
+  * `Water Temple Boss Key Chest with Iron Boots`
+  * `Water Temple Dragon Statue with Bombchu` - superseded by the new Dragon Statue tricks.
+  * `Bottom of the Well Like Like GS without Boomerang` - the Like Like can be permanently killed, so this isn't logically valid.
+* Changed Tricks
+  * Burning the two vertical webs in the Deku Tree basement with bow is now default logic. The relevant trick has been renamed to `Deku Tree Basement Web to Gohma with Bow` to reflect that it now only applies to the web immediately before Gohma.
+  * `Reach Forest Temple MQ Twisted Hallway Switch with Hookshot` - renamed `Forest Temple MQ Twisted Hallway Switch with Hookshot`.
+  * `Fire Temple MQ Boulder Maze Side Room without Box` - renamed `Fire Temple MQ Lizalfos Maze Side Room without Box`.
+  * `Fire Temple MQ Big Lava Room Blocked Door without Hookshot` - can be done without damage, so it's now allowed in OHKO.
+  * `Forest Temple Scarecrow Route` - renamed `Forest Temple East Courtyard Door Frame with Hover Boots` and can be done in Vanilla or MQ.
+* Tricks can be filtered in the GUI using a new dropdown.
+* Easy and Hell Mode presets have been updated to add in the new features and/or tricks as relevant!
+
+#### Bug Fixes
+* Stealing Epona no longer crashes with the Fast Epona Race setting when you have Epona's Song but no ocarina.
+* Bunny Hood speed bonus now applies correctly in cases other than child running at full speed.
+* Avoid crashing on some systems when using child items as adult.
+* Ensure Ice Traps have valid models if they can be seen.
+* Limit Kokiri Tunic RGB values in Glitched Logic to prevent Weirdshot crashes.
+* Prevent Gerudo guards from throwing child Link in jail.
+* Fix hints not being readable on Mask of Truth setting.
+* Prevent Collection Delay from the Carpenter Boss when mashing through the text with an item in hand.
+* Gray note songs do not play back when learning them, adding consistency and preventing Sun's Song from causing bugs.
+  With this set of changes to song learning, Sun's Song can now be played right after you learn it and it will function properly.
+* Empty Bomb fix improved to work in all scenarios.
+* Fast warp song hack now sets transition to white fade for consistency.
+* Royal Family Tomb moves out of the way instantly.
+* Fix Zelda from being frozen at the start of the final battle.
+* Fix (hopefully) any remaining issues fishing on BizHawk.
+* Drop Ruto before entering Big Octo room if the miniboss has been defeated.
+* Prevent an errant `@` from showing up in Triforce Hunt.
+* Move the Stone of Agony indicator above any small keys if both are present.
+* Fix model/icon colors in `Item Model Colors Match Cosmetics` not returning to default with a cosmetic patch setting them to defaults.
+* Ensure Ganondorf always hints one of the first reachable Light Arrows.
+* Don't require that child can reach Ganondorf in order for Light Arrows not to be hinted WotH.
+* Allow playthrough to collect a second 'Bottle with Letter' as its first empty bottle.
+* Fix some issues with `Randomize Main Rules`:
+  * Closed Forest implies starting as child.
+  * Triforce Hunt won't accidentally place the Boss Key for Ganon's Castle.
+  * Other conflicts are now prevented.
+* Fix a rare issue in ER with using time-passing regions to gain new access.
+* Fix a rare issue where settings strings weren't allocated enough bits.
+* Fix the version number in the ROM header being potentially wrong after patching.
+* Fix the CRC for uncompressed ROMs.
+* The seed generator can now retry a few times in case of failure.
+* Exclude a line from text shuffle so the Malon race is completable.
+* Minor plandomizer fixes and improvements.
+* Various logic fixes.
+
+#### Other Changes
+* Most locations and a few items have been renamed to improve spoiler output and standardize.
+  * This will break settings and distribution files from previous versions that reference these locations and items.
+* Reordered locations more naturally in the locations part of the spoiler.
+* Default for `Shuffle Weird Egg` is now off.
+* In-game hints overhaul.
+* File 3 has been removed from generated ROMs to free up some space.
+* The Zora Sapphire in Jabu Jabu's Big Octo room is now the actual dungeon reward.
+* The number of Triforces available in Triforce Hunt now rounds to the nearest whole number instead of the nearest whole **even** number.
+* "No Logic" seeds can now disable locations.
+* Cosmetic logs contain the display names of SFX instead of their internal key names.
+* Performance improvements to seed generation.
+* Generator GUI updated to use node-sass 4.14.1.
+* Updated development n64 compilation process to use latest available toolchain.
+* Changed some C code to support GCC 10 in development n64 compilation.
+* Added decompressor source and updated Decompress binaries.
+* OoTRandomizer.py returns an error code on failure to interact better with user scripting.
+* Plandomizer distribution files are copied to the Output directory next to the Spoiler and Cosmetics logs.
+* Mweep.
+
+### 5.2
+
+#### New Features
+* Triforce Hunt
+  * Collect some number of Triforce Pieces to beat the game instead of beating Ganon.
+  * Multiworld Triforce counts are collective, so once the total is reached across all players everyone wins.
+  * If enabled via randomizing main rules, the count is always 20.
+* Separate Double Defense model
+  * Now appears as a color-shifted version of the Heart Container, with a transparent interior and prominent gold border.
+* Visual Stone of Agony indicator
+  * When the player has the Stone of Agony, it will appear on-screen above the rupee count when the player is near a hidden grotto.
+  * The icon vibrates based on proximity to the grotto entrance, similar to the rumble pak.
+  * A real rumble pak is not required.
+* Starting Inventory
+  * A new tab in the GUI allows setting initial inventory, without having to create a Plandomizer file.
+  * Items are divided into sections in the GUI based on category.
+  * Trade quest items, Gerudo Membership Card, Scarecrow Song not included.
+    * To start with the Gerudo Membership Card, set `Gerudo Fortress` to `Open Fortress` and disable `Shuffle Gerudo Card` ('Main Rules' tab).
+    * To start with the Scarecrow Song, enable `Free Scarecrow's Song` ('Other' tab).
+
+#### Updated Settings 
+* Open Zora Fountain now has an open only adult option.
+* Added a new setting `Ice Trap Appearance` to select whether ice traps appear as major items (the default), junk items, or anything. This appearance can affect chest size with `Chest Size Matches Contents` enabled.
+* Removed settings `Start with Fast Travel`, `Start with Tycoon's Wallet`, `Start with Deku Equipment`.
+  * These have been replaced with settings in the "Starting Inventory" tab.
+* New settings `Start with Consumables` (enable to start with max Sticks, Nuts, and ammo), `Starting Hearts` (changes starting max health).
+* New list settings `Starting Equipment` (swords, shields, strength, etc.), `Starting Items` (c-items), `Starting Songs` (songs).
+* Logic now requires Stone of Agony to access any hidden grotto.
+  * A new trick `Hidden Grottos without Stone of Agony` will bypass this.
+  * Stone of Agony is now only considered a useless item (for barren areas) when this trick is on and Gossip Stones do not use it.
+* Added a new trick `Goron City Spinning Pot PoH with Strength`, which allows stopping the Spinning Pot using a bomb flower.
+* Hell Mode preset includes both the above tricks.
+* Tricks enabled/disabled in a Plandomizer file now take precedence over Tricks in 'Detailed Logic', even if the Plandomizer file has an empty list.
+  * An empty list means the seed will be beatable without any tricks.
+  * If there's no `allowed_tricks` item in the file, the Detailed Logic tricks apply instead.
+  * If there is an `allowed_tricks` list in the file, it will not be possible to disable any of the enabled tricks (or enabling more) without editing the file.
+
+#### Other Changes
+* Cosmetic heart color setting now applies in the file select screen.
+* Cosmetic tunic color setting now applies to the icons in the pause menu.
+* Non-Always Location hints cannot be placed for an area that already has a Foolish hint.
+  * If the location hint is placed first, then it can still appear in a foolish hinted area, however in Tournament hint distribution the Foolish hints are placed first so that cannot happen.
+* The location containing Light Arrows will be considered a hinted location if Ganondorf's hint can be reached without them.
+* Ganondorf no longer hints at his Boss Key chest contents, except when Light Arrows don't exist (only possible in Triforce Hunt).
+* Improved Entrance Randomizer hints.
+* Updated Compressor. The GUI progress bar is now granular. If for some reason, the rom won't fit into 32MB, then the compressor will increase the output size.
+* Revised some settings tooltips.
+* Refactored Logic once again. It now uses helper json rules and rules can reference other rules.
+* Disabled settings don't show up in the spoiler.
+* Plando will now accept JSON lists for `item` in the location dictionary to randomly choose between for placement.
+  * Attempts to not exceed item pool values until all the pool counts for the items in the list are reached.
+* Plando locations are matched without regard to case.
+* "Start with" settings are now handled by the Plando library.
+* Further seed generation speed improvements.
+* The main search algorithm was renamed Search (from Playthrough) to avoid confusion with the spoiler playthrough.
+* General code cleanup and typo fixes.
+* Added more Plando unittests.
+
+#### Bug Fixes
+* Minor stability fix in Plando.
+* Spoilers for plando'd seeds now correctly show the tricks enabled for the seed.
+* Plando no longer occasionally attempts to place an item on a location where it's not allowed.
+* Plando starting items and items set in specific locations now count toward the pool allocation. (Starting items are replaced with junk.)
+* Plando now refuses to place more than the maximum amount of bottles, adult trade items, shop items, or total non-junk items.
+* Plando no longer places Ice Traps as Junk if `Ice Traps` is set to 'off'.
+* Other various Plando bug fixes.
+* Starting items for adult that auto-equip should do so correctly now. (Non-Kokiri Tunics won't autoequip at the moment.)
+* Fixed two chests in MQ Shadow Temple that had swapped names in plando and spoilers.
+* Removed (unnecessarily) duplicated/overlapping hints.
+* Hints that should come in multiples (duplicates) no longer come in singletons in certain corner cases.
+* Randomizing main rules now works correctly.
+* Removed a misleading random "trials" value from the non-randomized settings in the spoiler.
+* Fix seed values with spaces no longer working.
+* Removed a mispasted option description from Gauntlets colors tooltips.
+* Major armips fix should prevent some crashes in Dev builds. (Devs: required armips version >= 0.10.0-68-g8669ffd)
+* Miscellaneous logic fixes.
+* Other bug fixes.
+
+### 5.1
+
+#### New Features
+* `Skip First Dampé Race` 
+  * Allows getting both rewards in one race if the 60 second target is cleared
+* Rupee Icon Color changes based on your current wallet upgrade
+
+#### Updated Settings 
+* Improve `Ear Safe` to be less painful
+* `Tokensanity: Overworld Only` 
+  * Shuffles Gold Skultulla Tokens in the overworld to compliment `Dungeons Only`
+* Configurable Skulltula target for the Bridge Requirement
+* `Randomize Main Rule Settings` still allows setting the `MQ Dungeon Count`
+* `Always Guaranteed Hints` are now determined conditionally based on settings
+* `Default Presets` are updated to better reflect first time beginner settings
+  * The previous `Beginner Preset` is renamed to `Easy Preset`
+
+#### Bug Fixes
+* Improve stability of music related features
+* Fix "...???" textboxes at the entrance of Great Fairies
+* In the unlikely event `Tournament Hints` runs out of hints, the remaining hints are filled with more "Sometimes Good" hints. If those run out as well then it will fill with "Random Locations" hints.
+* The `Gerudo Valley Crate PoH as Adult with Hover Boots` trick now properly takes OHKO into account.
+* Minor GUI tweaks
+* Improve error feedback in GUI and Rules JSON
+
+
+### 5.0
+
+#### New Features
+* New Electron GUI
+  * New GUI now utilizes both Python and Node to bring you an even better interface
+  * Now requires Node (with NPM), in addition to the Python requirement
+* Glitched Logic
+  * New Logic Rules option that takes movement glitches into consideration
+  * Check out the Wiki for more information
+* Entrance Randomizer
+  * Randomize entrances/loading zones
+  * Entrances are connected bidirectionally, and only shuffled with other entrances of the same pool
+  * Ability to randomize entrances (loading zones) among multiple pools:
+    * `Dungeons Only`: All Dungeons except Ganon's Castle
+    * `Simple Indoors`: Dungeons; as well as Houses, Great Fairies, all Open and Hidden Grottos (including small Fairy Fountains and the Lost Woods Stage), and Graves.
+    * `All Indoors`: Dungeons and Simple Indoors, as well as Link’s House, the Temple of Time, the Windmill, and Dampé’s Grave.
+    * `All Indoors & Overworld Entrances`: Almost all loading zones connecting overworld areas, including Owls
+  * Deku Tree, Fire Temple, and Bottom of the Well dungeon entrances are accessible as both ages
+* Starting Age Option
+  * Can now start as child, adult, or random
+* Plan-domizer
+  * Create a custom seed by placing items, hints and/or entrances where you want them
+  * Customize starting items, item pools, active trials and Master Quest dungeons
+  * Plandomizer files match the spoiler log JSON format
+* Additional Customization
+  * Additional Background Music Sequences can now be provided to be shuffled in
+  * Fanfares randomization
+  * Customizable Heart, Magic Meter, and Gauntlet colors
+  * Separate inner and outer Navi colors
+* Added `Randomize Main Rules` option
+* Cow Sanity
+  * Playing Epona's Song for a cow for the first time gives a randomized item.
+* Shuffle Magic Beans
+  * A pack of 10 beans is shuffled into the pool and the Bean Salesman sells a random item once for 60 rupees.
+* Cucco Count
+  * The number of cuccos to be gathered for Anju can be reduced or randomized, and Anju will tell you in-game the target number to catch (similar to 10 Big Poes).
+* Enable Useful Cutscenes prevents some useful cutscenes from being skipped
+  * Re-enables Poes at Forest Temple and Darunia at Fire Temple
+
+#### Major Changes
+* Seeds generation is significantly faster
+* Major refactor of logic for performance and ER
+* Spoiler log is now in JSON format
+* Log files are produced in `Logs` during generation to record any errors.
+* Major Logic Changes
+  * Desert Colossus Hands are now logically part of Spirit Temple
+  * Added the ability to enter drain the Lake Hylia water as Adult after beating Morpha using a new Gossip Stone near the Serenade Warp Pad. Entering Water Temple with Gold Scale and Longshot is now always in logic, however no locations are accessible without additional tricks, Keysanity/Keysy, or Iron Boots.
+  * Disabled Locations will always hold Junk items (except song locations if songs are not shuffled with items)
+* Gameplay Changes
+  * Mechanically, Hot Rodder Goron no longer checks for Bomb Bag
+  * Wearing Bunny Hood increases running speed to match backwalking speed
+  * All Gerudo now check for Gerudo Membership Card instead of Carpenters being freed
+    * This only affects when `Shuffle Gerudo Card` is enabled or in Entrance Randomizer
+    * In the affected modes, a Gerudo is added behind the Wasteland gate who can open the gate
+  * Removed RNG from Fishing Minigame
+    * Note: The optimal strategy is to have the line stationary for the fish to bite
+  * Can now cast Farore's Wind and play Warp Songs from within Gerudo Training Grounds and all of Ganon's Castle
+* Hint Changes
+  * Every generic grotto gossip stone has their own hint.
+  * The "Very Strong" hint setting can now give multiple Foolish dungeon hints.
+  * The “Tournament” hint setting was revised to utilize all 40 hint stones.
+    * Increased to 5 WOTH hints (with a new maximum of 2 Dungeon regions hinted); increased to 3 Foolish hints; Skull Mask added to Tournament hints’ Always hints; 5 Sometimes hints; all hints in this distribution are duplicated onto two Gossip Stones.
+* Cutscene Changes
+  * Burning Kakariko Cutscene can be triggered when entering Kakariko Village from any entrance.
+  * Speedup Owl Flying cutscenes to be almost instant.
+  * Enable Useful Cutscenes setting added (see above in New Features)
+
+#### Updated Settings 
+* Filter added to `Location Exclusion` dropdown
+* More tricks added to the `Enable Tricks` dropdown
+* Shuffle Gerudo Card can now be enabled alongside Open Gerudo Fortress.
+* Forest Options
+  * `Closed Deku`: Open Forest except Mido still blocks the Deku Tree
+* Dungeon Item Options
+  * Added `Vanilla` placement option for small keys, boss keys and maps/compasses
+* Ganon's Boss Key 
+  * Split Ganon’s Boss Key settings from the rest of the Boss Keys setting
+  * Added LACS options that place the key there.
+    * This allows playing with open bridge while still requiring dungeon completion
+  * This replaces the Remove Ganon’s Boss Door Lock option
+* Plentiful Item Pool
+  * Duplicate Ruto's Letter added to plentiful item pool
+* With `Start With Max Rupees` option enabled, wallet upgrades items now fill to max rupees
+
+#### Bug Fixes
+* No longer able to buy Bombchus with only bomb bag when Bombchus in logic
+* Dampé freestanding Piece of Heart no longer requires opening the chest
+* Buying Piece of Heart/Heart Container fully heals Link
+* Learning Sun's Song from Malon no longer causes a softlock
+* Castle and Gerudo guards can no longer cause softlock when catching you
+* Vanilla shop items have correct price in spoiler log with shopsanity enabled
+* Fixed Song of Storms not being usable in Sacred Forest Meadow immediately after learning it
+* Improved Bottled Fairy logic rules for OHKO in ER
+* Fixed `Starting Time of Day` times to better reflect their descriptions with the in-game state
+  * `Night` options will spawn Skulltulas
+* Add compatibility support for Python 3.8
+* Improved Spoiler Logs for Multiworlds with differing Random settings between worlds
+* Lab Dive now completable even with Eyedrops in your possession
+* Great Fairy cutscene no longer plays on additional visits for health and magic refills.
+* Running Man can now fill a Tycoon’s wallet when buying the Bunny Hood from the player
+
+
+### 4.0
+
+#### New Features
+
+* Quick boot equips
+  * Use D-pad left to equip Iron Boots if they're in the inventory, or D-pad right to equip Hover Boots if they're in the inventory.
+  * Press the button again to equip Kokiri Boots.
+* Quick Ocarina
+  * Use D-pad down to pull out the Ocarina.
+* Freestanding models
+  * All freestanding item locations now display the model of the item you will receive.
+* Ice traps now work from any location.
+  * In freestanding locations, appears as a random major item
+  * In shops, appears as a random major item with a misspelling
+* Various speedups
+  * No Talon cutscene when he runs away
+  * Skip "Caught By Gerudo" cutscene
+  * Shorten cutscene when getting Bullet Bag from the Deku Scrub in Lost Woods
+  * Fast pushing and pulling
+    * All types of blocks
+    * Spinnable mirrors in Spirit Temple
+    * Truth spinner in Shadow Temple
+    * Puzzle in basement of Forest Temple
+  * Ocarina minigame shortened to the first round
+    * 5 notes instead of 8
+  * Jabu-Jabu's Belly elevator spawns in a more convenient position
+  * Kakariko carpenter position is offset so he is no longer in your way during the cucco route.
+  * Warp songs now have a normal transition with no cutscene.
+  * Pause screen starts on Inventory Screen instead of Map Screen
+* Gold Skulltula textbox displays current number obtained
+* Poe salesman tells point limit without needing to sell
+* Patch files added so that generated seeds can be distributed legally
+
+#### New Options
+
+* Master Quest dungeon slider
+  * Selects a number of Master Quest dungeons to appear in the game
+    * Ex: 0 - All dungeons will have their default designs.
+    * Ex: 6 - Half of all dungeons will have Master Quest redesigns.
+    * Ex: 12 - All dungeons will have Master Quest redesigns.
+* Damage multiplier
+  * Changes the amount of damage taken
+  * OHKO: Link dies in one hit
+* Item pool
+  * Replaces difficulty
+  * Changes the number of bonus items that are available in the game
+    * Plentiful: Extra major items are added
+    * Balanced: The original item pool
+    * Scarce: Some excess items are removed, including health upgrades
+    * Minimal: Most excess items are removed
+* Start with max rupees
+  * The player begins the game with 99 rupees.
+* Start with Deku equipment
+  * The player begins the game with 10 Deku sticks and 20 Deku nuts.
+  * If playing without shopsanity, the player begins with a Deku shield equipped.
+* Start with fast travel
+  * The player begins the game with the Prelude of Light and Serenade of Water songs learned and the Farore's Wind spell in the inventory.
+  * These three items increase Link's mobility around the map, but don't actually unlock any new items or areas.
+* Start with Tycoon wallet
+* Open Zora's Fountain
+  * King Zora is moved to the side from the start of the game.
+  * Ruto's Letter is removed from the item pool and replaced with an Empty Bottle.
+* Randomize starting time of day
+* Ice traps setting
+    * Off: All ice traps are removed
+    * Normal: Only ice traps from base pool are placed
+    * Extra ice traps: Chance to add extra ice traps when junk items are added to the item pool
+    * Ice trap mayhem: All junk items added will be ice traps
+    * Ice trap onslaught: All junk items will be ice traps, including ones in the base pool
+* New Cosmetics
+  * Added options for Sword Trail colors
+    * Can set the length of the trails
+    * Can set the inner and outer colors
+    * Can set color to "Rainbow"
+  * Additional SFX options
+
+#### Updated Features
+
+* Hints distribution
+    * Changes how many useful hints are available in the game
+    * Useless: Has nothing but junk hints
+    * Balanced: Gives you a mix of useless and useful hints. Hints will not be repeated
+    * Strong: Has some duplicate hints and no junk hints
+    * Very Strong: Has only very useful hints
+    * Tournament: Similar to strong but has no variation in hint types
+* Frogs Ocarina Game added to always hints
+* Hints are only in logic once you are able to reach the location of the gossip stone by logic.
+    * Hints ignore logic if inaccessible
+* Foolish choice hint added
+  * Regions that are a foolish choice will not have any required items no matter what route is taken in logic.
+* Big Poes location does not require a hint if the count set to 3 or less.
+* Add medallion icons to the Temple of Time altar hint
+* Add a hint for 0/6 trials if trial count is random
+* Scrub Shuffle now updates the Business Scrubs' textboxes with the updated price for buying their item.
+
+#### Updated Options
+
+* Chest size matches contents updated
+  * Boss keys appear in gold chests
+  * Small keys appear in small gold chests
+* Free Scarecrow's Song changes
+  * Pulling out ocarina near a spot where Pierre can spawn will do so.
+* Rainbow Bridge changes
+  * Spiritual Stones added as bridge requirement
+  * 100 Gold Skulltula tokens added as bridge requirement
+* Any location can now be excluded from being required.
+* Various advanced tricks has been split into individual tricks to be selected.
+* Choose sound effects ocarina uses when played
+
+#### Bug Fixes
+
+* Deku and Hylian shields from chests no longer become Blue Rupees.
+* Force game language to be English even if a Japanese rom is supplied
+* Door of Time now opens when entering Temple of Time from all spawns.
+* Fix empty bomb glitch
+* Move item cost to after Player in the spoiler log
+* Add Wasteland Bombchu Salesman to spoiler log when required for first Bombchus
+* Fix message text table is too long error when using settings that add a lot of text to the ROM
+* Kokiri Sword no longer required for fishing as child
+* Fix Biggoron Sword collection delay
+* Twinrova phase 2 textbox fix
+* Switches in Forest and Fire Temple lowered by 1 unit to make it easier to press them
+* Equipment menu will now show the name of the item you have in the first column
+* Hover Boots will no longer show up as adult in the first equipment menu slot if a Fairy Slingshot was not gotten before becoming adult.
+* Ammo items now use the correct item fanfare.
+* Fix chest size matches contents to work for all chests
+* Removed key for key logic
+* Removed unused locked door in Water Temple
+* Scarecrow's Song should no longer cause softlocks when played in laggy areas.
+* Text error messages no longer display the Pocket Egg text.
+* Ice traps added back to OHKO as the softlock appears fixed
+* Ganon now says "my castle" instead of "Ganon's Castle" for light arrow hint.
+* Fix various typos in text
+  * Gerudo's Fortress
+  * Zora's River
+  * Red Rupee
+  * Textbox about Dampé's grave
+* "Ganon's Tower" is now just "Ganon's Castle".
+* Dampé's Gravedigging Tour reward correctly flags collection on pickup.
+* Castle Moat Bridge no longer closes when playing the Zelda Escape cutscene.
+* Various logic fixes
+
+#### Multiworld Changes
+
+* Maximum player count increased from 31 to 255
+* Ice traps can now be sent to other worlds.
+* Ganon now tells you the location of your Light Arrows, not the location of some Light Arrows that may exist in your world.
+* Item placement rebalanced so that an item for another player can only be placed on a location that both players can reach in logic
+
+#### Development Version Changes
+
+* Output patch file
+  * Creates a binary patch file instead of a ROM which allows sharing a seed without sharing copyright protected material
+* Patch ROM from file
+  * Applies a generated patch file to the base ROM and creates a randomizer ROM which allows sharing a seed without sharing copyright protected material
+* Settings presets
+  * Adds a functionality to save settings strings for future use
+  * Several presets are already provided.
+* Create settings log if spoiler log is disabled
+* File names no longer include a settings string.
+  * Instead display a shortened SHA-1 hash of the settings string
+* Add option for converting settings to a string and back
+  * Only convert the specified settings to a settings string
+  * If a settings string is specified output the used settings instead
+* Python 3.5 is no longer supported.
+  * You must have Python 3.6 or higher installed to run the randomizer code.
+* Add option to only apply cosmetic patch without generating world data
+* CLI uses a specified settings file instead of taking in each option.
+  * Uses settings.sav as default if it exists
+  * Uses default settings if no settings file is provided and no settings.sav exists
+* Version check is no longer a dialog
+  * Appears in a frame in the main randomizer window
+* Copy settings string button
+* The cosmetic versioning has been added to the ROM. Some cosmetics are only applied if they are safe to do so.
+* Added ability to set the output file name and added file creation logs
+* Major refactor of code

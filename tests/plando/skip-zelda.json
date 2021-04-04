@@ -1,0 +1,16 @@
+{
+"settings": {
+    "skip_child_zelda": true,
+    "tokensanity": "overworld",
+    "hint_dist": "tournament",
+    "disabled_locations": [
+        "HC Great Fairy Reward",
+        "HC GS Storms Grotto",
+        "HC GS Tree"
+    ]
+},
+"locations": {
+    "Song from Impa": "Requiem of Spirit",
+    "Spirit Temple Child Bridge Chest": "Light Arrows"
+}
+}

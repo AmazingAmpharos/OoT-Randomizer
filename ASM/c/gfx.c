@@ -3,12 +3,31 @@
 #include "util.h"
 #include "z64.h"
 
-void disp_buf_init(z64_disp_buf_t *db, Gfx *buf, int size) {
-    db->size = size;
-    db->buf = buf;
-    db->p = buf;
-    db->d = (Gfx *)((char *)buf + size);
-}
+extern uint8_t FONT_TEXTURE[];
+extern uint8_t DPAD_TEXTURE[];
+extern uint8_t TRIFORCE_ICON_TEXTURE[];
+
+Gfx setup_db[] =
+{
+    gsDPPipeSync(),
+
+    gsSPLoadGeometryMode(0),
+    gsDPSetScissor(G_SC_NON_INTERLACE,
+                  0, 0, Z64_SCREEN_WIDTH, Z64_SCREEN_HEIGHT),
+
+    gsDPSetOtherMode(G_AD_DISABLE | G_CD_DISABLE |
+        G_CK_NONE | G_TC_FILT |
+        G_TD_CLAMP | G_TP_NONE |
+        G_TL_TILE | G_TT_NONE |
+        G_PM_NPRIMITIVE | G_CYC_1CYCLE |
+        G_TF_BILERP, // HI
+        G_AC_NONE | G_ZS_PRIM |
+        G_RM_XLU_SURF | G_RM_XLU_SURF2), // LO
+
+    gsSPEndDisplayList()
+};
+
+Gfx empty_dlist[] = { gsSPEndDisplayList() };
 
 sprite_t stones_sprite = {
     NULL, 16, 16, 3,
@@ -32,6 +51,40 @@ sprite_t quest_items_sprite = {
 
 sprite_t font_sprite = {
     NULL, 8, 14, 95,
+    G_IM_FMT_IA, G_IM_SIZ_8b, 1
+};
+
+sprite_t dpad_sprite = {
+    NULL, 32, 32, 1,
+    G_IM_FMT_IA, G_IM_SIZ_16b, 2
+};  
+
+sprite_t triforce_sprite = {
+    NULL, 16, 16, 16,
+    G_IM_FMT_IA, G_IM_SIZ_8b, 1
+};  
+
+sprite_t song_note_sprite = {
+    NULL, 16, 24, 1,
+    G_IM_FMT_IA, G_IM_SIZ_8b, 1
+};
+sprite_t key_rupee_clock_sprite = {
+    NULL, 16, 16, 3,
+    G_IM_FMT_IA, G_IM_SIZ_8b, 1
+};
+
+sprite_t item_digit_sprite = {
+    NULL, 8, 8, 10,
+    G_IM_FMT_IA, G_IM_SIZ_8b, 1
+};
+
+sprite_t linkhead_skull_sprite = {
+    NULL, 16, 16, 2,
+    G_IM_FMT_RGBA, G_IM_SIZ_16b, 2
+};
+
+sprite_t heart_sprite = {
+    NULL, 16, 16, 10,
     G_IM_FMT_IA, G_IM_SIZ_8b, 1
 };
 
@@ -72,36 +125,6 @@ void sprite_draw(z64_disp_buf_t *db, sprite_t *sprite, int tile_index,
             width_factor, height_factor);
 }
 
-z64_disp_buf_t setup_db = {};
-
-void draw_setup(z64_disp_buf_t *db) {
-    gDPPipeSync(db->p++);
-
-    gSPLoadGeometryMode(db->p++, 0);
-    gDPSetScissor(db->p++, G_SC_NON_INTERLACE,
-                  0, 0, Z64_SCREEN_WIDTH, Z64_SCREEN_HEIGHT);
-    gDPSetAlphaDither(db->p++, G_AD_DISABLE);
-    gDPSetColorDither(db->p++, G_CD_DISABLE);
-    gDPSetAlphaCompare(db->p++, G_AC_NONE);
-    gDPSetDepthSource(db->p++, G_ZS_PRIM);
-    gDPSetCombineKey(db->p++, G_CK_NONE);
-    gDPSetTextureConvert(db->p++, G_TC_FILT);
-    gDPSetTextureDetail(db->p++, G_TD_CLAMP);
-    gDPSetTexturePersp(db->p++, G_TP_NONE);
-    gDPSetTextureLOD(db->p++, G_TL_TILE);
-    gDPSetTextureLUT(db->p++, G_TT_NONE);
-    gDPPipelineMode(db->p++, G_PM_NPRIMITIVE);
-
-    gDPSetCycleType(db->p++, G_CYC_1CYCLE);
-    gDPSetRenderMode(db->p++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
-    gDPSetTextureFilter(db->p++, G_TF_BILERP);
-
-    gSPEndDisplayList(db->p++);
-}
-
-extern char FONT_TEXTURE;
-#define font_texture_raw ((uint8_t *)&FONT_TEXTURE)
-
 void gfx_init() {
     file_t title_static = {
         NULL, z64_file_select_static_vaddr, z64_file_select_static_vsize
@@ -117,21 +140,33 @@ void gfx_init() {
         NULL, z64_icon_item_static_vaddr, z64_icon_item_static_vsize
     };
     file_init(&icon_item_static);
+    
+    file_t parameter_static = {
+        NULL, z64_parameter_static_vaddr, z64_parameter_static_vsize
+    };
+    file_init(&parameter_static);
+
+    file_t icon_item_dungeon_static = {
+        NULL, z64_icon_item_dungeon_static_vaddr, z64_icon_item_dungeon_static_vsize
+    };
+    file_init(&icon_item_dungeon_static);
 
     stones_sprite.buf = title_static.buf + 0x2A300;
     medals_sprite.buf = title_static.buf + 0x2980;
     items_sprite.buf = icon_item_static.buf;
     quest_items_sprite.buf = icon_item_24_static.buf;
+    dpad_sprite.buf = DPAD_TEXTURE;
+    triforce_sprite.buf = TRIFORCE_ICON_TEXTURE;
+    song_note_sprite.buf = icon_item_static.buf + 0x00088040;
+    key_rupee_clock_sprite.buf = parameter_static.buf + 0x00001E00;
+    item_digit_sprite.buf = parameter_static.buf + 0x000035C0;
+    linkhead_skull_sprite.buf = icon_item_dungeon_static.buf + 0x00001980;
+    heart_sprite.buf = parameter_static.buf;
 
     int font_bytes = sprite_bytes(&font_sprite);
     font_sprite.buf = heap_alloc(font_bytes);
     for (int i = 0; i < font_bytes / 2; i++) {
-        font_sprite.buf[2*i] = (font_texture_raw[i] >> 4) | 0xF0;
-        font_sprite.buf[2*i + 1] = font_texture_raw[i] | 0xF0;
+        font_sprite.buf[2*i] = (FONT_TEXTURE[i] >> 4) | 0xF0;
+        font_sprite.buf[2*i + 1] = FONT_TEXTURE[i] | 0xF0;
     }
-
-    int setup_size = 32 * sizeof(Gfx);
-    Gfx *setup_buf = heap_alloc(setup_size);
-    disp_buf_init(&setup_db, setup_buf, setup_size);
-    draw_setup(&setup_db);
 }

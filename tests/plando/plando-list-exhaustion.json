@@ -1,0 +1,15 @@
+{
+  "item_pool": {
+    "Bow": 3,
+    "Magic Meter": 2,
+    "Light Arrows": 1
+  },
+  "locations": {
+    "HF Tektite Grotto Freestanding PoH":   ["Bow", "Magic Meter", "Light Arrows"],
+    "Kak Redead Grotto Chest":              ["Bow", "Magic Meter", "Light Arrows"],
+    "Kak Open Grotto Chest":                ["Bow", "Magic Meter", "Light Arrows"],
+    "DMT Storms Grotto Chest":              ["Bow", "Magic Meter", "Light Arrows"],
+    "DMC Upper Grotto Chest":               ["Bow", "Magic Meter", "Light Arrows"],
+    "ZR Open Grotto Chest":                 ["Bow", "Magic Meter", "Light Arrows"]
+  }
+}

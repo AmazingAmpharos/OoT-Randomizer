@@ -2,23 +2,72 @@
 ; Settings and tables which the front-end may write
 ;==================================================================================================
 
-; 0x03481000: Item override table:
-;
-; This table changes the meaning of a given item ID within a given scene. It must be terminated with
-; four 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
-;
-; Row format (4 bytes):
-; SSTTIINN
-; SS = Scene
-; TT = Override Type (0x00 = base item, 0x01 = chest, 0x02 = collectable)
-; II = Override ID (base item or flag)
-; NN = New item ID
+; This is used to determine if and how the cosmetics can be patched
+; It this moves then the version will no longer be valid, so it is important that this does not move
+COSMETIC_CONTEXT:
 
-.area 0x800, 0
-ITEM_OVERRIDES:
-.endarea
+COSMETIC_FORMAT_VERSION:
+.word 0x1F073FD8
+CFG_MAGIC_COLOR:
+.halfword 0x0000, 0x00FF, 0x0000
+CFG_HEART_COLOR:
+.halfword 0x00FF, 0x0046, 0x0032
+CFG_A_BUTTON_COLOR:
+.halfword 0x005A, 0x005A, 0x00FF
+CFG_B_BUTTON_COLOR:
+.halfword 0x0000, 0x0096, 0x0000
+CFG_C_BUTTON_COLOR:
+.halfword 0x00FF, 0x00A0, 0x0000
+CFG_TEXT_CURSOR_COLOR:
+.halfword 0x0000, 0x0050, 0x00C8
+CFG_SHOP_CURSOR_COLOR:
+.halfword 0x0000, 0x0050, 0x00FF
+CFG_A_NOTE_COLOR:
+.halfword 0x0050, 0x0096, 0x00FF
+CFG_C_NOTE_COLOR:
+.halfword 0x00FF, 0x00FF, 0x0032
+CFG_BOOM_TRAIL_INNER_COLOR:
+.byte 0xFF, 0xFF, 0x64
+CFG_BOOM_TRAIL_OUTER_COLOR:
+.byte 0xFF, 0xFF, 0x64
+CFG_BOMBCHU_TRAIL_INNER_COLOR:
+.byte 0xFA, 0x00, 0x00
+CFG_BOMBCHU_TRAIL_OUTER_COLOR:
+.byte 0xFA, 0x00, 0x00
+CFG_DISPLAY_DPAD:
+.byte 0x01
+CFG_RAINBOW_SWORD_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_SWORD_OUTER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_BOOM_TRAIL_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_BOOM_TRAIL_OUTER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_BOMBCHU_TRAIL_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_BOMBCHU_TRAIL_OUTER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_IDLE_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_IDLE_OUTER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_ENEMY_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_ENEMY_OUTER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_NPC_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_NPC_OUTER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_PROP_INNER_ENABLED:
+.byte 0x00
+CFG_RAINBOW_NAVI_PROP_OUTER_ENABLED:
+.byte 0x00
+.align 4
 
-; 0x03481800: Initial Save Data table:
+
+; Initial Save Data table:
 ;
 ; This table describes what extra data should be written when a new save file is created. It must be terminated with
 ; four 0x00 bytes (which will happen by default as long as you don't fill the allotted space).
@@ -33,28 +82,69 @@ ITEM_OVERRIDES:
 INITIAL_SAVE_DATA:
 .endarea
 
-PLAYER_ID:
-.byte 0x00
-COOP_GET_ITEM:
-.byte 0x00
-PLAYER_NAME_ID:
-.byte 0x00
-
-.area 8*32, 0xDF
-PLAYER_NAMES:
+.area 0x20, 0
+EXTENDED_OBJECT_TABLE:
 .endarea
 
-; 0x03481C00: Special items
+BOMBCHUS_IN_LOGIC:
+.word 0x00
 
-LIGHT_ARROW_ITEM:
-.byte 0x5A
-FAIRY_OCARINA_ITEM:
-.byte 0x3B
-FAIRY_ITEMS:
-.byte 0x5D ; Zora's Domain
-.byte 0x5C ; Hyrule Castle
-.byte 0x5E ; Desert Colossus
-.byte 0x51 ; Mountain Summit
-.byte 0x52 ; Crater
-.byte 0x53 ; Ganon's Castle
+RAINBOW_BRIDGE_CONDITION:
+.word 0x00
+; 0 = Open
+; 1 = Medallions
+; 2 = Dungeons
+; 3 = Stones
+; 4 = Vanilla
+; 5 = Tokens
+
+LACS_CONDITION:
+.word 0x00
+; 0 = Vanilla
+; 1 = Medallions
+; 2 = Dungeons
+; 3 = Stones
+
+GOSSIP_HINT_CONDITION:
+.word 0x00
+; 0 = Mask of Truth
+; 1 = Stone of Agony
+; 2 = No Requirements
+
+FREE_SCARECROW_ENABLED:
+.word 0x00
+
+RAINBOW_BRIDGE_COUNT:
+.halfword 0x64
+
+LACS_CONDITION_COUNT:
+.halfword 0x00
+
+JABU_ELEVATOR_ENABLE:
+.byte 0x00
+OCARINAS_SHUFFLED:
+.byte 0x00
+FAST_CHESTS:
+.byte 0x01
+SHUFFLE_COWS:
+.byte 0x00
+SONGS_AS_ITEMS:
+.byte 0x00
+WINDMILL_SONG_ID:
+.byte 0x00
+WINDMILL_TEXT_ID:
+.byte 0x00
+MALON_TEXT_ID:
+.byte 0x00
+DISABLE_TIMERS:
+.byte 0x00
+NO_FOG_STATE:
+.byte 0x00
+DUNGEONS_SHUFFLED:
+.byte 0x00
+OVERWORLD_SHUFFLED:
+.byte 0x00
+FAST_BUNNY_HOOD_ENABLED:
+.byte 0x00
+
 .align 4

@@ -3,7 +3,8 @@
 
 #include "z64.h"
 
-z64_disp_buf_t setup_db;
+extern Gfx setup_db[];
+extern Gfx empty_dlist[];
 
 typedef struct {
     uint8_t *buf;
@@ -15,13 +16,19 @@ typedef struct {
     uint8_t bytes_per_texel;
 } sprite_t;
 
-sprite_t stones_sprite;
-sprite_t medals_sprite;
-sprite_t items_sprite;
-sprite_t quest_items_sprite;
-sprite_t font_sprite;
+extern sprite_t stones_sprite;
+extern sprite_t medals_sprite;
+extern sprite_t items_sprite;
+extern sprite_t quest_items_sprite;
+extern sprite_t font_sprite;
+extern sprite_t dpad_sprite;
+extern sprite_t triforce_sprite;
+extern sprite_t song_note_sprite;
+extern sprite_t key_rupee_clock_sprite;
+extern sprite_t item_digit_sprite;
+extern sprite_t linkhead_skull_sprite;
+extern sprite_t heart_sprite;
 
-void disp_buf_init(z64_disp_buf_t *db, Gfx *buf, int size);
 void gfx_init();
 
 void sprite_load(z64_disp_buf_t *db, sprite_t *sprite,

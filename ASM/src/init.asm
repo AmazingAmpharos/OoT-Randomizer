@@ -2,13 +2,6 @@ init:
     addiu   sp, sp, -0x18
     sw      ra, 0x10 (sp)
 
-    ; Load second code file from ROM
-    li      a0, 0x80405000
-    li      a1, 0x034B3000
-    li      a2, 0xB000
-    jal     0x80000DF0
-    nop
-
     jal     c_init
     nop
 
@@ -18,8 +11,16 @@ init:
     addiu   t6, r0, 0x0140
     lui     at, 0x8010
     sw      t6, 0xE500 (at)
+    addiu   t7, r0, 0x00F0
 
     lw      ra, 0x10 (sp)
-    addiu   sp, sp, 0x18
     jr      ra
-    nop
+    addiu   sp, sp, 0x18
+
+
+Static_ctxt_Init:
+    li      t0, RANDO_CONTEXT
+    sw      t0, 0x15D4(v0)
+    jr      ra    
+    ; Displaced code
+    li      v0, 0x15C0
