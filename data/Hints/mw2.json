@@ -30,6 +30,12 @@
             ]
         },
         {
+            "location": "Temple of Time",
+            "types": [
+                "barren"
+            ]
+        },
+        {
             "location": "Hyrule Castle",
             "types": [
                 "barren"
