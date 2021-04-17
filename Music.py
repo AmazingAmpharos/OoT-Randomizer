@@ -2,7 +2,7 @@
 
 import random
 import os
-from Utils import compare_version
+from Utils import compare_version, data_path
 
 
 # Format: (Title, Sequence ID)
@@ -135,7 +135,7 @@ def process_sequences(rom, sequences, target_sequences, disabled_source_sequence
 
     # If present, load the file containing custom music to exclude
     try:
-        with open(os.path.join(u'.', u'data', u'custom_music_exclusion.txt')) as excl_in:
+        with open(os.path.join(data_path(), u'custom_music_exclusion.txt')) as excl_in:
             seq_exclusion_list = excl_in.readlines()
         seq_exclusion_list = [seq.rstrip() for seq in seq_exclusion_list if seq[0] != '#']
         seq_exclusion_list = [seq for seq in seq_exclusion_list if seq.endswith('.meta')]
