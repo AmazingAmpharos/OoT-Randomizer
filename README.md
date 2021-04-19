@@ -100,17 +100,41 @@ do that.
 
 ### Dev
 
+#### New Features
+
+* New setting `Reachable Locations` replaces `All Locations Reachable` and adds a new option "All Goals" which ensures that all goal items for Ganon's Boss Key and the Rainbow Bridge are reachable, regardless of how many are required by the setting.
+  * For example, if the Rainbow Bridge requires 4 medallions, all 6 medallions will be guaranteed reachable.
+* New separate setting `LACS Condition` to select what goal items are required for the Light Arrows Cutscene.
+* New option `Misc. Hints` controls whether the Temple of Time altar and Ganondorf give hints, defaulting on to preserve behavior. Hell Mode disables this setting.
+
 #### Bug Fixes
 
 * Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
 * `Skip Child Zelda` in Multiworld (with Song Shuffle: Anywhere) now correctly provides items to the right player.
 * Smarter replacement of required warp songs when warp songs are shuffled. 
 * Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
+* Fix Entrance Randomizer dungeon entrance hints.
+* Plandomizer
+  * Correctly consider plando'ed prices in logic, and limit set prices to a range of -32768 to 999.
+  * Fix duplicating placed shop items.
+* Fix some potential failures for placing junk.
+* Fix disabled song locations getting a general junk item instead of a junk song.
+* Fix some spoiler entries for visible ice traps.
 * Fix error thrown on some operating systems for capitalized file extensions .N64/.Z64.
 
 #### Other Changes
 
 * Add ability to provide settings through stdin (useful for shell scripting).
+* Ruto now knows what kind of medallion or stone she gets in Jabu Jabu.
+* Added Nayru's Love back to the minimal item pool on high damage settings.
+* Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
+* Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
+* New `#MajorItem` item category for Plandomizer allows placing a random major item.
+* Entrance Randomizer: Allow Kakariko Potion Shop and Impa's House to have their entrances appear in different areas if all hints are off.
+* Updated presets.
+* Added a commandline flag to use a preset by name. This still allows supplying additional settings, e.g. to control cosmetics and ROM output.
+* Logic updates.
+* Use HTTPS for the version check to github.
 
 ### 6.0
 
