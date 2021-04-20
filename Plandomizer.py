@@ -919,8 +919,7 @@ class Distribution(object):
             **item_groups,
         } 
         if self.src_dict and 'custom_groups' in self.src_dict:
-            for custom_group in self.src_dict['custom_groups']:
-                self.search_groups[custom_group] = self.src_dict['custom_groups'][custom_group]
+            self.search_groups.update(self.src_dict['custom_groups'])
         
         self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
         # One-time init
