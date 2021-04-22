@@ -1747,7 +1747,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         rom.write_byte(symbol, 0x01)
 
     if world.ocarina_songs:
-        replace_songs(rom)
+        replace_songs(world, rom)
 
     # actually write the save table to rom
     world.distribution.give_items(save_context)
