@@ -41,12 +41,6 @@ per_world_keys = (
 )
 
 
-search_groups = {
-    **location_groups,
-    **item_groups,
-}
-
-
 def SimpleRecord(props):
     class Record(object):
         def __init__(self, src_dict=None):
@@ -279,7 +273,7 @@ class WorldDistribution(object):
         if invert:
             pattern = pattern[1:]
         if pattern.startswith('#'):   
-            group = search_groups[pattern[1:]]
+            group = self.distribution.search_groups[pattern[1:]]
             if pattern == '#MajorItem':
                 if not self.major_group: # If necessary to compute major_group, do so only once
                     self.major_group = [item for item in group if item in self.base_pool]
@@ -916,6 +910,13 @@ class Distribution(object):
     def __init__(self, settings, src_dict=None):
         self.src_dict = src_dict or {}
         self.settings = settings
+        self.search_groups = {
+            **location_groups,
+            **item_groups,
+        } 
+        if self.src_dict and 'custom_groups' in self.src_dict:
+            self.search_groups.update(self.src_dict['custom_groups'])
+        
         self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
         # One-time init
         update_dict = {
