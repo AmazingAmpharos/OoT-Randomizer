@@ -133,6 +133,7 @@ do that.
 * Entrance Randomizer: Allow Kakariko Potion Shop and Impa's House to have their entrances appear in different areas if all hints are off.
 * Updated presets.
 * Added a commandline flag to use a preset by name. This still allows supplying additional settings, e.g. to control cosmetics and ROM output.
+* Added internal tracking of what items were where in vanilla OoT.
 * Logic updates.
 * Use HTTPS for the version check to github.
 
