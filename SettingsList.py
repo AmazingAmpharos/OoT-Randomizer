@@ -2190,6 +2190,7 @@ setting_infos = [
             considered available. MAY BE IMPOSSIBLE TO BEAT.
         ''',
         disable        = {
+            'glitchless': {'settings' : ['tricks_list_msg']},
             'glitched'  : {'settings' : ['allowed_tricks', 'shuffle_interior_entrances', 'shuffle_grotto_entrances',
                                          'shuffle_dungeon_entrances', 'shuffle_overworld_entrances', 'owl_drops',
                                          'warp_songs', 'spawn_positions', 'mq_dungeons_random', 'mq_dungeons', ]},
@@ -3345,6 +3346,14 @@ setting_infos = [
             
             Tricks are only relevant for Glitchless logic.
         '''
+    ),
+    Setting_Info(
+        name           = 'tricks_list_msg',
+        type           = str,
+        gui_text       = "Your current logic setting does not support the enabling of tricks.",
+        gui_type       = "Textbox",
+        shared         = True,
+        choices        = {},
     ),
     Combobox(
         name           = 'logic_earliest_adult_trade',
