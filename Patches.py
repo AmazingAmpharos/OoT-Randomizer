@@ -2154,7 +2154,7 @@ def configure_dungeon_info(rom, world):
     rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_map'), int(enhance_map_compass))
-    rom.write_int32(rom.sym('cfg_dungeon_info_reward_enable'), int(world.misc_hints))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_enable'), int(world.misc_hints or enhance_map_compass))
     rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_compass'), int(enhance_map_compass))
     rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_altar'), int(not enhance_map_compass))
     rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)
