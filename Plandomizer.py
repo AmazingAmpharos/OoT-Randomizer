@@ -1157,7 +1157,7 @@ class Distribution(object):
 
     def to_file(self, filename, output_spoiler):
         json = self.to_str(spoiler=output_spoiler)
-        with open(filename, 'w') as outfile:
+        with open(filename, 'w', encoding='utf-8') as outfile:
             outfile.write(json)
 
 
