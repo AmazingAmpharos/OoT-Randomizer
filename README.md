@@ -112,6 +112,7 @@ do that.
 * Fixed a bug where importing from a settings string might not choose the correct hint distribution depending on platform or number of custom hint distributions in the Hints folder.
 * `Skip Child Zelda` in Multiworld (with Song Shuffle: Anywhere) now correctly provides items to the right player.
 * Smarter replacement of required warp songs when warp songs are shuffled. 
+* Disable Sandstorm transitions in certain cases in Entrance Randomizer. In particular, this prevents Sandstorm transitions from triggering strobe effects due to a bug.
 * Fix Entrance Randomizer hint area validation to work with shuffled warp songs.
 * Fix Entrance Randomizer dungeon entrance hints.
 * Plandomizer
