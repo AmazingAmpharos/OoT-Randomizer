@@ -1553,7 +1553,7 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
     for text_id, message in scrub_message_dict.items():
         update_message_by_id(messages, text_id, message)
         if world.shuffle_scrubs == 'random':
-            shuffle_messages.scrubs_message_ids.extend([text_id])
+            shuffle_messages.scrubs_message_ids.append(text_id)
 
     if world.shuffle_grotto_entrances:
         # Build the Grotto Load Table based on grotto entrance data
