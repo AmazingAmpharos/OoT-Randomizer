@@ -280,7 +280,8 @@ class WorldDistribution(object):
                     # Special handling for things not included in base_pool
                     if self.distribution.settings.triforce_hunt:
                         self.major_group.append('Triforce Piece')
-                    major_tokens = self.distribution.settings.shuffle_ganon_bosskey == 'lacs_tokens' or self.distribution.settings.bridge == 'tokens'
+                    major_tokens = (self.distribution.settings.shuffle_ganon_bosskey == 'on_lacs' and
+                            self.distribution.settings.lacs_condition == 'tokens') or self.distribution.settings.bridge == 'tokens'
                     if self.distribution.settings.tokensanity == 'all' and major_tokens:
                         self.major_group.append('Gold Skulltula Token')
                     if self.distribution.settings.shuffle_smallkeys == 'keysanity':
