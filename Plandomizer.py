@@ -14,7 +14,7 @@ from Item import ItemFactory, ItemIterator, IsItem
 from ItemList import item_table
 from ItemPool import item_groups, get_junk_item
 from Location import LocationIterator, LocationFactory, IsLocation
-from LocationList import location_groups
+from LocationList import location_groups, location_table
 from Search import Search
 from Spoiler import HASH_ICONS
 from version import __version__
@@ -714,8 +714,11 @@ class WorldDistribution(object):
         for (location_name, record) in self.pattern_dict_items(locations):
             if record.item is None:
                 continue
-
-            valid_items = self.get_valid_items_from_record(world.itempool, used_items, record)
+            valid_items = []
+            if record.item == "#Vanilla": # Get vanilla item at this location from the location table
+                valid_items.append(location_table[location_name][4]) 
+            else: # Do normal method of getting valid items for this location
+                valid_items = self.get_valid_items_from_record(world.itempool, used_items, record)
             if not valid_items:
                 # Item pool values exceeded. Remove limited items from the list and choose a random value from it
                 limited_items = ['Weird Egg', '#AdultTrade', '#Bottle']
