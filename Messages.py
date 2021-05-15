@@ -955,7 +955,9 @@ def shuffle_messages(messages, except_hints=True, always_allow_skip=True):
     def is_exempt(m):
         hint_ids = (
             GOSSIP_STONE_MESSAGES + TEMPLE_HINTS_MESSAGES + LIGHT_ARROW_HINT +
-            list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages
+            list(KEYSANITY_MESSAGES.keys()) + shuffle_messages.shop_item_messages +
+            shuffle_messages.scrubs_message_ids +
+            [0x5036, 0x70F5] # Chicken count and poe count respectively
         )
         shuffle_exempt = [
             0x208D,         # "One more lap!" for Cow in House race.
