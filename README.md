@@ -33,9 +33,9 @@ the user wishes a pre-decompressed ROM may be supplied as input. Please be sure 
 playing via any means other than on real N64 hardware, the use of the "Compress patched ROM" flag is strongly encouraged as uncompressed ROMs are
 impossible to inject for the Virtual Console and have random crashing problems on all emulators.
 
-For general use, there are three recommended emulators: [Project 64 (v2.4+)](https://wiki.ootrandomizer.com/index.php?title=Project64), [Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk), and [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch).
+For general use, there are three recommended emulators: [Project 64 (v3.0+)](https://wiki.ootrandomizer.com/index.php?title=Project64), [Bizhawk](https://wiki.ootrandomizer.com/index.php?title=Bizhawk), and [RetroArch](https://wiki.ootrandomizer.com/index.php?title=Retroarch).
 In a nutshell the differences are:
-* Project64 is the lightest emulator and the easiest to setup, however, you will need a stable version from 2.4 or later to run OoTR well (and earlier versions are not permitted for use in OoTR races).
+* Project64 is the lightest emulator and the easiest to setup, however, you will need the 3.0.0 version or later to run OoTR well (and earlier versions are not permitted for use in OoTR races).
 * Bizhawk is the most resource-intensive, but easier to set up than RetroArch and the only race-legal emulator to support [Multiworld](https://wiki.ootrandomizer.com/index.php?title=Multiworld).
 * RetroArch is less resource-intensive than Bizhawk and the only of these three to work on platforms other than Windows, but it can be frustrating to set up.
 
@@ -89,8 +89,8 @@ Unfortunately, a few known issues exist. These will hopefully be addressed in fu
 
 * The fishing minigame sometimes refuses to allow you to catch fish when playing specifically on Bizhawk. Save and Hard Reset (NOT savestate) and return to fix the
 issue. You should always Hard Reset to avoid this issue entirely.
-* Versions older than 2.4 of Project64 have known compatablity issues with OoTR. To avoid this either 
-[update to v2.4 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
+* Versions older than 3.0 of Project64 have known compatablity issues with OoTR. To avoid this either 
+[update to v3.0 and follow the rest of our PJ64 guide](https://wiki.ootrandomizer.com/index.php?title=Project64) or change to one of our other two supported emulators.
 * Executing the collection delay glitch on various NPCs may have unpredictable and undesirable consequences.
 * Saving and quitting on the very first frame after becoming an adult when you would trigger the Light Arrow cutscene can have undesired consequences. Just don't
 do that.
