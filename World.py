@@ -703,9 +703,10 @@ class World(object):
             else:
                 item_name = item.name
 
-            if item_name not in duplicate_item_woth[world_id]:
-                duplicate_item_woth[world_id][item_name] = []
-            duplicate_item_woth[world_id][item_name].append(location)
+            if item_name not in self.item_hint_type_overrides['barren']:
+                if item_name not in duplicate_item_woth[world_id]:
+                    duplicate_item_woth[world_id][item_name] = []
+                duplicate_item_woth[world_id][item_name].append(location)
 
         # generate the empty area list
         self.empty_areas = {}

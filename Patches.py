@@ -1549,8 +1549,11 @@ def patch_rom(spoiler:Spoiler, world:World, rom:Rom):
         set_deku_salesman_data(rom)
 
     # Update scrub messages.
+    shuffle_messages.scrubs_message_ids = []
     for text_id, message in scrub_message_dict.items():
         update_message_by_id(messages, text_id, message)
+        if world.shuffle_scrubs == 'random':
+            shuffle_messages.scrubs_message_ids.append(text_id)
 
     if world.shuffle_grotto_entrances:
         # Build the Grotto Load Table based on grotto entrance data
@@ -2154,7 +2157,7 @@ def configure_dungeon_info(rom, world):
     rom.write_int32(rom.sym('cfg_dungeon_info_enable'), 1)
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_enable'), int(mq_enable))
     rom.write_int32(rom.sym('cfg_dungeon_info_mq_need_map'), int(enhance_map_compass))
-    rom.write_int32(rom.sym('cfg_dungeon_info_reward_enable'), int(world.misc_hints))
+    rom.write_int32(rom.sym('cfg_dungeon_info_reward_enable'), int(world.misc_hints or enhance_map_compass))
     rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_compass'), int(enhance_map_compass))
     rom.write_int32(rom.sym('cfg_dungeon_info_reward_need_altar'), int(not enhance_map_compass))
     rom.write_bytes(rom.sym('cfg_dungeon_rewards'), dungeon_rewards)

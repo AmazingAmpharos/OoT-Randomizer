@@ -14,7 +14,7 @@ from Item import ItemFactory, ItemIterator, IsItem
 from ItemList import item_table
 from ItemPool import item_groups, get_junk_item
 from Location import LocationIterator, LocationFactory, IsLocation
-from LocationList import location_groups
+from LocationList import location_groups, location_table
 from Search import Search
 from Spoiler import HASH_ICONS
 from version import __version__
@@ -39,12 +39,6 @@ per_world_keys = (
     ':barren_regions',
     'gossip_stones',
 )
-
-
-search_groups = {
-    **location_groups,
-    **item_groups,
-}
 
 
 def SimpleRecord(props):
@@ -279,14 +273,15 @@ class WorldDistribution(object):
         if invert:
             pattern = pattern[1:]
         if pattern.startswith('#'):   
-            group = search_groups[pattern[1:]]
+            group = self.distribution.search_groups[pattern[1:]]
             if pattern == '#MajorItem':
                 if not self.major_group: # If necessary to compute major_group, do so only once
                     self.major_group = [item for item in group if item in self.base_pool]
                     # Special handling for things not included in base_pool
                     if self.distribution.settings.triforce_hunt:
                         self.major_group.append('Triforce Piece')
-                    major_tokens = self.distribution.settings.shuffle_ganon_bosskey == 'lacs_tokens' or self.distribution.settings.bridge == 'tokens'
+                    major_tokens = (self.distribution.settings.shuffle_ganon_bosskey == 'on_lacs' and
+                            self.distribution.settings.lacs_condition == 'tokens') or self.distribution.settings.bridge == 'tokens'
                     if self.distribution.settings.tokensanity == 'all' and major_tokens:
                         self.major_group.append('Gold Skulltula Token')
                     if self.distribution.settings.shuffle_smallkeys == 'keysanity':
@@ -720,8 +715,11 @@ class WorldDistribution(object):
         for (location_name, record) in self.pattern_dict_items(locations):
             if record.item is None:
                 continue
-
-            valid_items = self.get_valid_items_from_record(world.itempool, used_items, record)
+            valid_items = []
+            if record.item == "#Vanilla": # Get vanilla item at this location from the location table
+                valid_items.append(location_table[location_name][4]) 
+            else: # Do normal method of getting valid items for this location
+                valid_items = self.get_valid_items_from_record(world.itempool, used_items, record)
             if not valid_items:
                 # Item pool values exceeded. Remove limited items from the list and choose a random value from it
                 limited_items = ['Weird Egg', '#AdultTrade', '#Bottle']
@@ -916,6 +914,13 @@ class Distribution(object):
     def __init__(self, settings, src_dict=None):
         self.src_dict = src_dict or {}
         self.settings = settings
+        self.search_groups = {
+            **location_groups,
+            **item_groups,
+        } 
+        if self.src_dict and 'custom_groups' in self.src_dict:
+            self.search_groups.update(self.src_dict['custom_groups'])
+        
         self.world_dists = [WorldDistribution(self, id) for id in range(settings.world_count)]
         # One-time init
         update_dict = {
@@ -1156,7 +1161,7 @@ class Distribution(object):
 
     def to_file(self, filename, output_spoiler):
         json = self.to_str(spoiler=output_spoiler)
-        with open(filename, 'w') as outfile:
+        with open(filename, 'w', encoding='utf-8') as outfile:
             outfile.write(json)
 
 

@@ -126,7 +126,7 @@ def LocationFactory(locations, world=None):
         else:
             match_location = next(filter(lambda k: k.lower() == location.lower(), location_table), None)
         if match_location:
-            type, scene, default, addresses, filter_tags = location_table[match_location]
+            type, scene, default, addresses, vanilla_item, filter_tags = location_table[match_location]
             if addresses is None:
                 addresses = (None, None)
             address, address2 = addresses
