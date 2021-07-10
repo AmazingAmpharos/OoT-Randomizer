@@ -323,7 +323,7 @@ def get_random_song():
 
 # create a list of 12 songs, none of which are sub-strings of any other song
 def generate_song_list(world):
-    fixed_songs = {name: Song.from_str(notes) for name, notes in world.distribution.configure_songs().items()} #TODO length checks?
+    fixed_songs = {name: Song.from_str(notes) for name, notes in world.distribution.configure_songs().items()}
     for name1, song1 in fixed_songs.items():
         if not song1.activation:
             raise ValueError(f'{name1} is empty')
