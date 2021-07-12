@@ -3568,7 +3568,7 @@ setting_infos = [
             you want comedy but don't want to impact
             gameplay. Text that has an impact on gameplay
             is not shuffled. This includes all hint text,
-            key text, non-shop items sold in shops, random
+            key text, Good Deal! items sold in shops, random
             price scrubs, chicken count and poe count.
         ''',
         shared         = True,
