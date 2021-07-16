@@ -325,6 +325,8 @@ def get_random_song():
 def generate_song_list(world):
     fixed_songs = {name: Song.from_str(notes) for name, notes in world.distribution.configure_songs().items()}
     for name1, song1 in fixed_songs.items():
+        if name1 not in ROM_INDICES:
+            raise ValueError(f'Unknown song: {name1!r}. Please use one of these: {", ".join(ROM_INDICES)}')
         if not song1.activation:
             raise ValueError(f'{name1} is empty')
         if len(song1.activation) > 8:
