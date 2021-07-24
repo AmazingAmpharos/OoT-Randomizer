@@ -2320,7 +2320,7 @@ setting_infos = [
         gui_text       = 'Skip Child Zelda',
         gui_tooltip    = '''\
             Start having already met Zelda and obtained
-            Zelda's Letter along with the song from Impa.
+            Zelda's Letter along with the item from Impa.
             Supersedes "Skip Child Stealth" since the whole
             sequence is skipped. Similarly, this is
             incompatible with Shuffle Weird Egg.
@@ -2833,34 +2833,36 @@ setting_infos = [
         default        = 'off',
         choices        = {
             'off':    'Off',
-            '0':      'Shuffled Shops (0 Items)',
-            '1':      'Shuffled Shops (1 Items)',
-            '2':      'Shuffled Shops (2 Items)',
-            '3':      'Shuffled Shops (3 Items)',
-            '4':      'Shuffled Shops (4 Items)',
-            'random': 'Shuffled Shops (Random)',
+            '0':      '0 Items Per Shop',
+            '1':      '1 Item Per Shop',
+            '2':      '2 Items Per Shop',
+            '3':      '3 Items Per Shop',
+            '4':      '4 Items Per Shop',
+            'random': 'Random # of Items Per Shop',
         },
         gui_tooltip    = '''\
-            Shop contents are randomized.
-            (X Items): Shops have X random non-shop (Special
-            Deal!) items. They will always be on the left
-            side, and some of the lower value shop items
-            will be replaced to make room for these.
-
-            (Random): Each shop will have a random number
-            of non-shop items up to a maximum of 4.
-
-            The non-shop items have no requirements except
-            money, while the normal shop items (such as
-            200/300 rupee tunics) have normal vanilla
-            requirements. This means that, for example,
-            as a child you cannot buy 200/300 rupee
-            tunics, but you can buy non-shop tunics.
-
-            Non-shop Bombchus will unlock the chu slot
-            in your inventory, which, if Bombchus are in
-            logic, is needed to buy Bombchu refills.
-            Otherwise, the Bomb Bag is required.
+            Randomizes Shop contents.
+            
+            'X Items Per Shop': Each shop will have the
+            specified number of items randomized and they
+            will always appear on the left side
+            (identified by the Special Deal! text).
+            Remaining items will be shuffled between shops.
+            
+            'Random # of Items Per Shop': Each shop will
+            have 0 to 4 Special Deals.
+            
+            The randomized items have no requirements
+            except money, while the remaining items retain
+            normal requirements. Tunics that aren't a
+            Special Deal! will still require you to be an
+            adult to purchase for example.
+            
+            Bombchu Special Deals will unlock the Bombchu
+            slot in your inventory and allow purchase of
+            Bombchu Refills if "Bombchus are considered in
+            logic" is enabled. Otherwise, the Bomb Bag is
+            required to purchase Bombchu Refills.
         ''',
         shared         = True,
         gui_params     = {
@@ -3566,7 +3568,7 @@ setting_infos = [
             you want comedy but don't want to impact
             gameplay. Text that has an impact on gameplay
             is not shuffled. This includes all hint text,
-            key text, non-shop items sold in shops, random
+            key text, Good Deal! items sold in shops, random
             price scrubs, chicken count and poe count.
         ''',
         shared         = True,
