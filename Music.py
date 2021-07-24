@@ -136,7 +136,7 @@ def process_sequences(rom, sequences, target_sequences, disabled_source_sequence
     # Process music data in data/Music/
     # Each sequence requires a valid .seq sequence file and a .meta metadata file
     # Current .meta format: Cosmetic Name\nInstrument Set\nPool
-    for dirpath, _, filenames in os.walk(u'./data/Music'):
+    for dirpath, _, filenames in os.walk(u'./data/Music', followlinks=True):
         for fname in filenames:
             # Find meta file and check if corresponding seq file exists
             if fname.endswith('.meta') and os.path.isfile(os.path.join(dirpath, fname.split('.')[0] + '.seq')):
