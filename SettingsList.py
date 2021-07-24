@@ -3664,17 +3664,24 @@ setting_infos = [
             'minimal':   'Minimal'
         },
         gui_tooltip    = '''\
-            Changes the amount of bonus items that
-            are available in the game.
+            Changes the amount of major items that are 
+            available in the game.
 
-            'Plentiful': Extra major items are added.
+            'Plentiful': One additional copy of each major 
+            item is added.
 
             'Balanced': Original item pool.
 
-            'Scarce': Some excess items are removed,
-            including health upgrades.
+            'Scarce': An extra copy of major item upgrades 
+            that are not required to open location checks 
+            is removed (e.g. Bow upgrade, Magic upgrade). 
+            Heart Containers are removed as well. Number
+            of Bombchu items is reduced.
 
-            'Minimal': Most excess items are removed.
+            'Minimal': All major item upgrades not used to 
+            open location checks are removed. All health 
+            upgrades are removed. Only one Bombchu item is 
+            available.
         ''',
         shared         = True,
     ),
