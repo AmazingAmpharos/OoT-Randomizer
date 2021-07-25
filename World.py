@@ -89,7 +89,7 @@ class World(object):
             'Jabu Jabus Belly': False,
             'Bottom of the Well': False,
             'Ice Cavern': False,
-            'Gerudo Training Grounds': False,
+            'Gerudo Training Ground': False,
             'Forest Temple': False,
             'Fire Temple': False,
             'Water Temple': False,

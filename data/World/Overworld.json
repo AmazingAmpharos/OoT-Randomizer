@@ -577,7 +577,7 @@
         "exits": {
             "GV Fortress Side": "True",
             "GF Outside Gate": "'GF Gate Open'",
-            "Gerudo Training Grounds Lobby": "Gerudo_Membership_Card and is_adult",
+            "Gerudo Training Ground Lobby": "Gerudo_Membership_Card and is_adult",
             "GF Storms Grotto": "is_adult and can_open_storm_grotto" # Not there as child
         }
     },

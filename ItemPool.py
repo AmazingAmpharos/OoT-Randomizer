@@ -581,15 +581,15 @@ vanillaSK = {
     'Forest Temple Well Chest': 'Small Key (Forest Temple)',
     'Ganons Castle Light Trial Invisible Enemies Chest': 'Small Key (Ganons Castle)',
     'Ganons Castle Light Trial Lullaby Chest': 'Small Key (Ganons Castle)',
-    'Gerudo Training Grounds Beamos Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Eye Statue Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Hammer Room Switch Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Heavy Block Third Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Hidden Ceiling Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Near Scarecrow Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Stalfos Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds Freestanding Key': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Ground Beamos Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Eye Statue Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Hammer Room Switch Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Heavy Block Third Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Hidden Ceiling Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Near Scarecrow Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Stalfos Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground Freestanding Key': 'Small Key (Gerudo Training Ground)',
     'Shadow Temple After Wind Hidden Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple Early Silver Rupee Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
@@ -623,9 +623,9 @@ vanillaSK = {
     'Ganons Castle MQ Shadow Trial Eye Switch Chest': 'Small Key (Ganons Castle)',
     'Ganons Castle MQ Spirit Trial Sun Back Left Chest': 'Small Key (Ganons Castle)',
     'Ganons Castle MQ Forest Trial Freestanding Key': 'Small Key (Ganons Castle)',
-    'Gerudo Training Grounds MQ Dinolfos Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds MQ Flame Circle Chest': 'Small Key (Gerudo Training Grounds)',
-    'Gerudo Training Grounds MQ Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Grounds)',
+    'Gerudo Training Ground MQ Dinolfos Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground MQ Flame Circle Chest': 'Small Key (Gerudo Training Ground)',
+    'Gerudo Training Ground MQ Underwater Silver Rupee Chest': 'Small Key (Gerudo Training Ground)',
     'Shadow Temple MQ Falling Spikes Switch Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Invisible Blades Invisible Chest': 'Small Key (Shadow Temple)',
     'Shadow Temple MQ Early Gibdos Chest': 'Small Key (Shadow Temple)',
@@ -1028,7 +1028,7 @@ def get_pool_core(world):
             pool.extend(['Bombchus'] * 2)
         if not world.dungeon_mq['Bottom of the Well']:
             pool.extend(['Bombchus'])
-        if world.dungeon_mq['Gerudo Training Grounds']:
+        if world.dungeon_mq['Gerudo Training Ground']:
             pool.extend(['Bombchus'])
         if world.shuffle_medigoron_carpet_salesman:
             pool.append('Bombchus')
@@ -1041,7 +1041,7 @@ def get_pool_core(world):
                 pool.extend(['Bombchus (10)'] * 2)
         if not world.dungeon_mq['Bottom of the Well']:
                 pool.extend(['Bombchus (10)'])
-        if world.dungeon_mq['Gerudo Training Grounds']:
+        if world.dungeon_mq['Gerudo Training Ground']:
                 pool.extend(['Bombchus (10)'])
         if world.dungeon_mq['Ganons Castle']:
             pool.extend(['Bombchus (10)'])
@@ -1054,7 +1054,7 @@ def get_pool_core(world):
         placed_items['Wasteland Bombchu Salesman'] = 'Bombchus (10)'
 
     pool.extend(['Ice Trap'])
-    if not world.dungeon_mq['Gerudo Training Grounds']:
+    if not world.dungeon_mq['Gerudo Training Ground']:
         pool.extend(['Ice Trap'])
     if not world.dungeon_mq['Ganons Castle']:
         pool.extend(['Ice Trap'] * 4)
@@ -1103,7 +1103,7 @@ def get_pool_core(world):
         pending_junk_pool.append('Small Key (Water Temple)')
         pending_junk_pool.append('Small Key (Shadow Temple)')
         pending_junk_pool.append('Small Key (Spirit Temple)')
-        pending_junk_pool.append('Small Key (Gerudo Training Grounds)')
+        pending_junk_pool.append('Small Key (Gerudo Training Ground)')
         pending_junk_pool.append('Small Key (Ganons Castle)')
 
     if world.item_pool_value == 'plentiful' and world.shuffle_bosskeys in ['any_dungeon', 'overworld', 'keysanity']:
@@ -1217,7 +1217,7 @@ def get_pool_core(world):
         pool.extend(ShT_vanilla)
     if not world.dungeon_mq['Bottom of the Well']:
         pool.extend(BW_vanilla)
-    if world.dungeon_mq['Gerudo Training Grounds']:
+    if world.dungeon_mq['Gerudo Training Ground']:
         pool.extend(GTG_MQ)
     else:
         pool.extend(GTG_vanilla)

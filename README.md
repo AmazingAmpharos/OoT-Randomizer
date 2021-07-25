@@ -131,6 +131,7 @@ do that.
 * Allow special characters (such as the é in Dampé) to appear in in-game hints.
 * Hint distribution changes for named-item hints, including a new `vague_named_items` option for `hint_dist_user` that will name the location but not the item.
 * Hint distributions can now filter areas from being hinted as foolish, via putting the area names in `remove_locations`.
+* Renamed Gerudo Training **Grounds** -> Gerudo Training **Ground** throughout logic to match vanilla name. This will make Plandomizer files incompatible between versions.
 * New `#MajorItem` item category for Plandomizer allows placing a random major item.
 * New `#Vanilla` item category for Plandomizer allows placing the item normally at the location.
 * New Plandomizer support for defining custom item groups.
@@ -512,7 +513,7 @@ do that.
     * In the affected modes, a Gerudo is added behind the Wasteland gate who can open the gate
   * Removed RNG from Fishing Minigame
     * Note: The optimal strategy is to have the line stationary for the fish to bite
-  * Can now cast Farore's Wind and play Warp Songs from within Gerudo Training Grounds and all of Ganon's Castle
+  * Can now cast Farore's Wind and play Warp Songs from within Gerudo Training Ground and all of Ganon's Castle
 * Hint Changes
   * Every generic grotto gossip stone has their own hint.
   * The "Very Strong" hint setting can now give multiple Foolish dungeon hints.
