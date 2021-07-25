@@ -134,6 +134,7 @@ do that.
 * New `#MajorItem` item category for Plandomizer allows placing a random major item.
 * New `#Vanilla` item category for Plandomizer allows placing the item normally at the location.
 * New Plandomizer support for defining custom item groups.
+* Giant's Knife and Biggoron's Sword are considered useless in glitchless logic but not in glitched.
 * Entrance Randomizer: Allow Kakariko Potion Shop and Impa's House to have their entrances appear in different areas if all hints are off.
 * Text Shuffle: Expanded the "Shuffled except Hints and Keys" to include some shop and scrub text, and renamed "Shuffled except Important Text".
 * Updated presets.
