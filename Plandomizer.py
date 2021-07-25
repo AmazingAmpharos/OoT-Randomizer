@@ -33,6 +33,7 @@ per_world_keys = (
     'item_pool',
     'dungeons',
     'trials',
+    'songs',
     'entrances',
     'locations',
     ':woth_locations',
@@ -202,6 +203,17 @@ class TrialRecord(SimpleRecord({'active': None})):
         return 'active' if self.active else 'inactive'
 
 
+class SongRecord(SimpleRecord({'notes': None})):
+    def __init__(self, src_dict=None):
+        if src_dict is None or isinstance(src_dict, str):
+            src_dict = {'notes': src_dict}
+        super().__init__(src_dict)
+
+
+    def to_json(self):
+        return self.notes
+
+
 
 class WorldDistribution(object):
     def __init__(self, distribution, id, src_dict={}):
@@ -218,6 +230,7 @@ class WorldDistribution(object):
             'randomized_settings': {name: record for (name, record) in src_dict.get('randomized_settings', {}).items()},
             'dungeons': {name: DungeonRecord(record) for (name, record) in src_dict.get('dungeons', {}).items()},
             'trials': {name: TrialRecord(record) for (name, record) in src_dict.get('trials', {}).items()},
+            'songs': {name: SongRecord(record) for (name, record) in src_dict.get('songs', {}).items()},
             'item_pool': {name: ItemPoolRecord(record) for (name, record) in src_dict.get('item_pool', {}).items()},
             'starting_items': {name: StarterRecord(record) for (name, record) in src_dict.get('starting_items', {}).items()},
             'entrances': {name: EntranceRecord(record) for (name, record) in src_dict.get('entrances', {}).items()},
@@ -249,6 +262,7 @@ class WorldDistribution(object):
             'starting_items': SortedDict({name: record.to_json() for (name, record) in self.starting_items.items()}),
             'dungeons': {name: record.to_json() for (name, record) in self.dungeons.items()},
             'trials': {name: record.to_json() for (name, record) in self.trials.items()},
+            'songs': {name: record.to_json() for (name, record) in self.songs.items()},
             'item_pool': SortedDict({name: record.to_json() for (name, record) in self.item_pool.items()}),
             'entrances': {name: record.to_json() for (name, record) in self.entrances.items()},
             'locations': {name: [rec.to_json() for rec in record] if is_pattern(name) else record.to_json() for (name, record) in self.locations.items()},
@@ -343,6 +357,14 @@ class WorldDistribution(object):
                 if record.active:
                     dist_chosen.append(name)
         return dist_chosen
+
+
+    def configure_songs(self):
+        dist_notes = {}
+        for (name, record) in self.songs.items():
+            if record.notes is not None:
+                dist_notes[name] = record.notes
+        return dist_notes
 
 
     def configure_randomized_settings(self, world):
@@ -1114,6 +1136,8 @@ class Distribution(object):
             world_dist.randomized_settings = {randomized_item: getattr(world, randomized_item) for randomized_item in world.randomized_list}
             world_dist.dungeons = {dung: DungeonRecord({ 'mq': world.dungeon_mq[dung] }) for dung in world.dungeon_mq}
             world_dist.trials = {trial: TrialRecord({ 'active': not world.skipped_trials[trial] }) for trial in world.skipped_trials}
+            if hasattr(world, 'song_notes'):
+                world_dist.songs = {song: SongRecord({ 'notes': str(world.song_notes[song]) }) for song in world.song_notes}
             world_dist.entrances = {ent.name: EntranceRecord.from_entrance(ent) for ent in spoiler.entrances[world.id]}
             world_dist.locations = {loc: LocationRecord.from_item(item) for (loc, item) in spoiler.locations[world.id].items()}
             world_dist.woth_locations = {loc.name: LocationRecord.from_item(loc.item) for loc in spoiler.required_locations[world.id]}
